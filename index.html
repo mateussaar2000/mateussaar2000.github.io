@@ -1,524 +1,4 @@
-// Try to detect CSV column names
-        function detectColumnNames(firstRow) {
-            const possibleDateCols = ['date', 'trade date', 'transaction date', 'date'];
-            const possibleAccountCols = ['account', 'asset/account', 'source', 'bank'];
-            const possibleDescCols = ['description', 'desc', 'details', 'transaction'];
-            const possibleCategoryCols = ['category', 'categories', 'cat'];
-            const possibleTypeCols = ['type', 'transaction type', 'tx type'];
-            const possibleAmountCols = ['amount', 'amount (cad)', 'cad', 'total', 'value'];
-            
-            const columns = {};
-            
-            // Convert to lowercase for case-insensitive matching
-            const headerKeys = Object.keys(firstRow).map(key => key.toLowerCase());
-            
-            // Find date column
-            columns.date = headerKeys.find(key => possibleDateCols.includes(key)) || 'Trade Date';
-            
-            // Find account column
-            columns.account = headerKeys.find(key => possibleAccountCols.includes(key)) || 'Asset/Account';
-            
-            // Find description column
-            columns.description = headerKeys.find(key => possibleDescCols.includes(key)) || 'Description';
-            
-            // Find category column
-            columns.category = headerKeys.find(key => possibleCategoryCols.includes(key)) || 'Category';
-            
-            // Find type column
-            columns.type = headerKeys.find(key => possibleTypeCols.includes(key)) || 'Type';
-            
-            // Find amount column
-            columns.amount = headerKeys.find(key => possibleAmountCols.includes(key)) || 'Amount (CAD)';
-            
-            return columns;
-        }
-        
-        // Load CSV file
-        async function loadTransactionsFromCSV() {
-            try {
-                // Show loading states
-                document.getElementById('chart-loading').style.display = 'flex';
-                document.getElementById('categories-loading').style.display = 'flex';
-                document.getElementById('transactions-loading').style.display = 'flex';
-                
-                // Fetch the CSV file
-                const response = await fetch('data.csv');
-                if (!response.ok) {
-                    throw new Error(`Failed to load CSV file (Status: ${response.status})`);
-                }
-                
-                const csvText = await response.text();
-                
-                // Handle empty file
-                if (!csvText || csvText.trim() === '') {
-                    throw new Error('CSV file is empty');
-                }
-                
-                // Try to determine if we have a header row
-                const firstLine = csvText.split('\n')[0].trim();
-                const hasHeader = !firstLine.match(/^\d/); // If first line doesn't start with number, assume header
-                
-                // Parse CSV with better error handling
-                Papa.parse(csvText, {
-                    header: true,
-                    skipEmptyLines: 'greedy',
-                    dynamicTyping: true,
-                    transformHeader: header => header.trim(),
-                    complete: function(results) {
-                        if (results.errors.length > 0) {
-                            console.warn('CSV parsing had some errors:', results.errors);
-                            // We'll still try to continue if there are some rows
-                        }
-                        
-                        if (!results.data || results.data.length === 0) {
-                            showError('No data found in CSV file', 'transactions-container', true);
-                            return;
-                        }
-                        
-                        try {
-                            // Try to detect column names
-                            const columns = detectColumnNames(results.data[0]);
-                            
-                            // Process data to match our expected format
-                            transactions = results.data.map(row => {
-                                // Skip completely empty rows
-                                if (Object.values(row).every(val => val === null || val === undefined || val === '')) {
-                                    return null;
-                                }
-                                
-                                // Use original keys if available, otherwise try detected columns or case variations
-                                const dateVal = row['Trade Date'] || row[columns.date] || row.date || row.Date || '';
-                                const accountVal = row['Asset/Account'] || row[columns.account] || row.account || row.Account || '';
-                                const descVal = row['Description'] || row[columns.description] || row.description || row.Description || '';
-                                const categoryVal = row['Category'] || row[columns.category] || row.category || row.Category || null;
-                                
-                                // Determine transaction type
-                                let typeVal = row['Type'] || row[columns.type] || row.type || row.Type || 'unknown';
-                                
-                                // Default amount to 0 if missing
-                                let amountVal = row['Amount (CAD)'] || row[columns.amount] || row.amount || row.Amount || 0;
-                                
-                                // If amount is string, try to parse it
-                                if (typeof amountVal === 'string') {
-                                    // Remove any currency symbols and commas
-                                    amountVal = amountVal.replace(/[$,]/g, '');
-                                    amountVal = parseFloat(amountVal);
-                                }
-                                
-                                // Infer type from amount if type is unknown
-                                if (typeVal === 'unknown' || !typeVal) {
-                                    if (amountVal > 0) {
-                                        typeVal = 'deposit';
-                                    } else if (amountVal < 0) {
-                                        typeVal = 'withdrawal';
-                                    }
-                                }
-                                
-                                return {
-                                    date: dateVal,
-                                    account: accountVal,
-                                    description: descVal,
-                                    category: categoryVal,
-                                    type: typeVal ? typeVal.toLowerCase() : 'unknown',
-                                    amount: amountVal
-                                };
-                            }).filter(Boolean); // Remove null entries
-                            
-                            // Filter out any rows with missing required data
-                            transactions = transactions.filter(t => 
-                                t.date && t.account && (t.amount !== null && t.amount !== undefined)
-                            );
-                            
-                            // If we still have valid transactions, initialize the dashboard
-                            if (transactions.length > 0) {
-                                initializeDashboard();
-                            } else {
-                                showError('No valid transaction data found in CSV. Check that your CSV has proper headers.', 'transactions-container', true);
-                            }
-                        } catch (error) {
-                            console.error('Error processing CSV data:', error);
-                            showError('Error processing CSV data: ' + error.message, 'transactions-container', true);
-                        }
-                    },
-                    error: function(error) {
-                        console.error('Error parsing CSV:', error);
-                        showError('Error parsing CSV file: ' + error.message, 'transactions-container', true);
-                    }
-                });
-            } catch (error) {
-                console.error('Error loading CSV:', error);
-                showError('Error loading CSV file: ' + error.message, 'transactions-container', true);
-            }
-        }
-        
-        // Initialize dashboard with loaded data
-        function initializeDashboard() {
-            // Set month/year from first transaction or use default
-            let monthYear = 'November 2024'; // Default
-            if (transactions.length > 0 && transactions[0].date) {
-                monthYear = getMonthName(transactions[0].date);
-            }
-            
-            document.getElementById('report-date').textContent = monthYear;
-            
-            // Update subtitles
-            document.getElementById('income-subtitle').textContent = monthYear + ' deposits';
-            document.getElementById('expenses-subtitle').textContent = monthYear + ' withdrawals';
-            document.getElementById('transfers-subtitle').textContent = monthYear + ' transfers';
-            document.getElementById('net-subtitle').textContent = monthYear + ' net flow';
-            document.getElementById('chart-subtitle').textContent = 'Breakdown of ' + monthYear + ' transactions';
-            document.getElementById('transactions-subtitle').textContent = 'Your financial activity for ' + monthYear;
-            
-            // Initialize components
-            updateSummaryCards();
-            initializeCashFlowChart();
-            initializeTopSpendingCategories();
-            populateTransactionsTable();
-        }
-        
-        // Update summary cards with calculated totals
-        function updateSummaryCards() {
-            // Calculate totals
-            const income = transactions
-                .filter(t => t.type === 'deposit')
-                .reduce((sum, t) => sum + (t.amount || 0), 0);
-                
-            const expenses = Math.abs(transactions
-                .filter(t => t.type === 'withdrawal')
-                .reduce((sum, t) => sum + (t.amount || 0), 0));
-                
-            const transfers = transactions
-                .filter(t => t.type === 'transfer')
-                .reduce((sum, t) => sum + (t.amount || 0), 0);
-                
-            const netFlow = income - expenses + transfers;
-            
-            // Update the DOM
-            document.getElementById('total-income').textContent = formatCurrency(income);
-            document.getElementById('total-expenses').textContent = formatCurrency(expenses);
-            document.getElementById('total-transfers').textContent = formatCurrency(transfers);
-            document.getElementById('net-cash-flow').textContent = formatCurrency(netFlow);
-            
-            // Add appropriate class to net flow (positive/negative)
-            const netFlowElement = document.getElementById('net-cash-flow');
-            if (netFlow >= 0) {
-                netFlowElement.classList.add('color-income');
-                netFlowElement.classList.remove('color-expense');
-            } else {
-                netFlowElement.classList.add('color-expense');
-                netFlowElement.classList.remove('color-income');
-            }
-        }
-        
-        // Initialize Cash Flow Chart
-        function initializeCashFlowChart() {
-            // Hide loading, show chart
-            document.getElementById('chart-loading').style.display = 'none';
-            document.getElementById('chart-wrapper').style.display = 'block';
-            
-            const ctx = document.getElementById('cash-flow-chart').getContext('2d');
-            
-            // Calculate data for chart
-            const income = transactions
-                .filter(t => t.type === 'deposit')
-                .reduce((sum, t) => sum + (t.amount || 0), 0);
-                
-            const expenses = Math.abs(transactions
-                .filter(t => t.type === 'withdrawal')
-                .reduce((sum, t) => sum + (t.amount || 0), 0));
-                
-            const transfers = transactions
-                .filter(t => t.type === 'transfer')
-                .reduce((sum, t) => sum + (t.amount || 0), 0);
-                
-            const fees = Math.abs(transactions
-                .filter(t => t.type === 'fee')
-                .reduce((sum, t) => sum + (t.amount || 0), 0));
-            
-            // Chart configuration
-            new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Income', 'Expenses', 'Transfers', 'Fees'],
-                    datasets: [{
-                        data: [income, expenses, transfers, fees],
-                        backgroundColor: [
-                            'rgba(34, 197, 94, 0.8)',  // Green for income
-                            'rgba(239, 68, 68, 0.8)',   // Red for expenses
-                            'rgba(59, 130, 246, 0.8)',  // Blue for transfers
-                            'rgba(234, 179, 8, 0.8)'    // Yellow for fees
-                        ],
-                        borderColor: [
-                            'rgba(34, 197, 94, 1)',
-                            'rgba(239, 68, 68, 1)',
-                            'rgba(59, 130, 246, 1)',
-                            'rgba(234, 179, 8, 1)'
-                        ],
-                        borderWidth: 1,
-                        hoverOffset: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    cutout: '65%',
-                    plugins: {
-                        legend: {
-                            position: 'right',
-                            labels: {
-                                boxWidth: 15,
-                                padding: 20,
-                                font: {
-                                    size: 13
-                                }
-                            }
-                        },
-                        tooltip: {
-                            backgroundColor: 'white',
-                            titleColor: '#1e293b',
-                            bodyColor: '#475569',
-                            bodyFont: {
-                                size: 14
-                            },
-                            borderColor: '#e2e8f0',
-                            borderWidth: 1,
-                            padding: 16,
-                            boxPadding: 6,
-                            cornerRadius: 8,
-                            boxWidth: 8,
-                            usePointStyle: true,
-                            callbacks: {
-                                label: function(context) {
-                                    const value = context.raw;
-                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                    const percentage = Math.round(value / total * 100);
-                                    return `${formatCurrency(value)} (${percentage}%)`;
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        // Initialize Top Spending Categories
-        function initializeTopSpendingCategories() {
-            // Hide loading, show categories
-            document.getElementById('categories-loading').style.display = 'none';
-            document.getElementById('category-list').style.display = 'block';
-            
-            const container = document.getElementById('category-list');
-            container.innerHTML = ''; // Clear container
-            
-            // Group expenses by category
-            const categoryExpenses = {};
-            let totalExpenses = 0;
-            
-            transactions.forEach(transaction => {
-                if (transaction.type === 'withdrawal' && transaction.category) {
-                    if (!categoryExpenses[transaction.category]) {
-                        categoryExpenses[transaction.category] = 0;
-                    }
-                    categoryExpenses[transaction.category] += Math.abs(transaction.amount || 0);
-                    totalExpenses += Math.abs(transaction.amount || 0);
-                }
-            });
-            
-            // If no categories, show message
-            if (Object.keys(categoryExpenses).length === 0) {
-                const noData = document.createElement('div');
-                noData.textContent = 'No categorized expenses found';
-                noData.style.textAlign = 'center';
-                noData.style.padding = '2rem 0';
-                noData.style.color = 'var(--text-secondary)';
-                container.appendChild(noData);
-                return;
-            }
-            
-            // Sort categories by amount
-            const sortedCategories = Object.entries(categoryExpenses)
-                .sort((a, b) => b[1] - a[1])
-                .slice(0, 5); // Get top 5 categories
-            
-            // Category icons and colors
-            const categoryConfig = {
-                'Restaurants/Dining': { icon: 'fa-utensils', color: 'var(--accent-red)', class: 'category-icon-dining' },
-                'Utilities': { icon: 'fa-bolt', color: 'var(--accent-purple)', class: 'category-icon-utilities' },
-                'Home Improvement': { icon: 'fa-home', color: 'var(--accent-green)', class: 'category-icon-home' },
-                'Groceries': { icon: 'fa-shopping-basket', color: 'var(--accent-orange)', class: 'category-icon-shopping' },
-                'Automotive Expenses': { icon: 'fa-car', color: 'var(--accent-blue)', class: 'category-icon-auto' },
-                'Gasoline/Fuel': { icon: 'fa-gas-pump', color: 'var(--accent-orange)', class: 'category-icon-auto' },
-                'Clothing/Shoes': { icon: 'fa-tshirt', color: 'var(--accent-purple)', class: 'category-icon-shopping' },
-                'Online Services': { icon: 'fa-laptop', color: 'var(--accent-blue)', class: 'category-icon-utilities' },
-                'General Merchandise': { icon: 'fa-shopping-bag', color: 'var(--accent-orange)', class: 'category-icon-shopping' }
-            };
-            
-            // Default icon and color
-            const defaultConfig = { icon: 'fa-money-bill-wave', color: 'var(--text-secondary)', class: '' };
-            
-            // Create category items
-            sortedCategories.forEach(([category, amount]) => {
-                const percentage = (amount / totalExpenses) * 100;
-                const config = categoryConfig[category] || defaultConfig;
-                
-                const categoryItem = document.createElement('div');
-                categoryItem.className = 'category-item';
-                
-                // Ensure the color is properly formatted for different contexts
-                const bgColor = config.color.startsWith('var(') ? 
-                    `rgba(${getComputedStyle(document.documentElement).getPropertyValue(config.color.substring(4, config.color.length-1)).trim()}, 0.1)` : 
-                    config.color;
-                
-                categoryItem.innerHTML = `
-                    <div class="category-icon ${config.class}" style="background-color: ${bgColor}">
-                        <i class="fas ${config.icon}"></i>
-                    </div>
-                    <div class="category-details">
-                        <div class="category-name">${category}</div>
-                        <div class="category-amount">${formatCurrency(amount)}</div>
-                        <div class="category-progress">
-                            <div class="progress-bar" style="width: ${percentage}%; background-color: ${config.color}"></div>
-                        </div>
-                    </div>
-                `;
-                
-                container.appendChild(categoryItem);
-            });
-        }
-
-        // Populate transactions table
-        function populateTransactionsTable() {
-            // Hide loading, show table
-            document.getElementById('transactions-loading').style.display = 'none';
-            document.getElementById('table-wrapper').style.display = 'block';
-            
-            const tableBody = document.getElementById('transactions-tbody');
-            tableBody.innerHTML = ''; // Clear table body
-            
-            // Sort transactions by date (newest first)
-            const sortedTransactions = [...transactions].sort((a, b) => {
-                try {
-                    // Handle different date formats
-                    let dateA = new Date(a.date);
-                    let dateB = new Date(b.date);
-                    
-                    // If invalid, try to parse MM/DD/YY format
-                    if (isNaN(dateA)) {
-                        const partsA = a.date.split('/');
-                        if (partsA.length === 3) {
-                            dateA = new Date(
-                                2000 + parseInt(partsA[2]), // Assume 20xx
-                                parseInt(partsA[0]) - 1,
-                                parseInt(partsA[1])
-                            );
-                        }
-                    }
-                    
-                    if (isNaN(dateB)) {
-                        const partsB = b.date.split('/');
-                        if (partsB.length === 3) {
-                            dateB = new Date(
-                                2000 + parseInt(partsB[2]), // Assume 20xx
-                                parseInt(partsB[0]) - 1,
-                                parseInt(partsB[1])
-                            );
-                        }
-                    }
-                    
-                    // If still invalid, compare strings as fallback
-                    if (isNaN(dateA) || isNaN(dateB)) {
-                        return b.date.localeCompare(a.date);
-                    }
-                    
-                    return dateB - dateA;
-                } catch (error) {
-                    console.error('Error sorting dates:', error);
-                    return 0; // Keep original order if error
-                }
-            });
-            
-            // Limit to 20 most recent transactions for performance
-            const recentTransactions = sortedTransactions.slice(0, 20);
-            
-            // If no transactions, show message
-            if (recentTransactions.length === 0) {
-                const row = document.createElement('tr');
-                const cell = document.createElement('td');
-                cell.colSpan = 6;
-                cell.textContent = 'No transactions found';
-                cell.style.textAlign = 'center';
-                cell.style.padding = '2rem 0';
-                row.appendChild(cell);
-                tableBody.appendChild(row);
-                return;
-            }
-            
-            // Account colors
-            const accountColors = {
-                'RBC Online Banking': '#ef4444',
-                'CIBC Online Banking': '#3b82f6',
-                'RBC Cash Back': '#f97316',
-                'CIBC VISA': '#8b5cf6',
-                'CIBC Savings': '#0ea5e9'
-            };
-            
-            const defaultColor = '#64748b';
-            
-            recentTransactions.forEach(transaction => {
-                const row = document.createElement('tr');
-                
-                // Format amount as currency
-                const formattedAmount = formatCurrency(transaction.amount);
-                
-                // Generate account initials and determine color
-                const accountName = transaction.account.split(' (')[0];
-                const accountInitials = accountName
-                    .split(' ')
-                    .filter(word => word.length > 0)
-                    .map(word => word[0])
-                    .join('')
-                    .substring(0, 2)
-                    .toUpperCase();
-                
-                // Find matching account color or use default
-                let accountColor = defaultColor;
-                for (const [key, color] of Object.entries(accountColors)) {
-                    if (accountName.includes(key)) {
-                        accountColor = color;
-                        break;
-                    }
-                }
-                
-                // Create row content
-                row.innerHTML = `
-                    <td>${transaction.date}</td>
-                    <td>
-                        <div class="account-cell">
-                            <div class="account-icon" style="background-color: ${accountColor};">${accountInitials}</div>
-                            <div>${accountName}</div>
-                        </div>
-                    </td>
-                    <td>${transaction.description}</td>
-                    <td>${transaction.category || 'Uncategorized'}</td>
-                    <td>
-                        <span class="tag tag-${transaction.type}">
-                            ${transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1)}
-                        </span>
-                    </td>
-                    <td class="${transaction.amount >= 0 ? 'text-positive' : 'text-negative'}">${formattedAmount}</td>
-                `;
-                
-                tableBody.appendChild(row);
-            });
-        }
-
-        // Load data when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            loadTransactionsFromCSV();
-        });
-    </script>
-</body>
-</html><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -986,70 +466,14 @@
             color: var(--accent-red);
         }
 
-        .loading {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 200px;
+        .notice-banner {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--accent-blue);
             color: var(--text-secondary);
-        }
-
-        .loading-spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid rgba(0, 0, 0, 0.1);
-            border-radius: 50%;
-            border-top-color: var(--accent-blue);
-            animation: spin 1s ease-in-out infinite;
-            margin-bottom: 1rem;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .error-message {
-            background-color: rgba(239, 68, 68, 0.1);
-            color: var(--accent-red);
             padding: 1rem;
             border-radius: var(--radius);
-            margin: 1rem 0;
+            margin-bottom: 2rem;
             font-size: 0.875rem;
-        }
-
-        .error-container {
-            text-align: center;
-            padding: 1rem;
-        }
-
-        .error-title {
-            font-size: 1.125rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--accent-red);
-        }
-
-        .error-details {
-            margin-bottom: 1rem;
-            color: var(--text-secondary);
-        }
-
-        .action-button {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background-color: var(--accent-blue);
-            color: white;
-            border-radius: var(--radius);
-            font-size: 0.875rem;
-            font-weight: 500;
-            cursor: pointer;
-            border: none;
-            transition: background-color 0.2s ease;
-        }
-
-        .action-button:hover {
-            background-color: var(--accent-indigo);
         }
 
         .footer {
@@ -1093,13 +517,17 @@
                 </div>
                 <div class="header-actions">
                     <div class="date-label">
-                        <i class="far fa-calendar-alt mr-2"></i> <span id="report-date">Loading...</span>
+                        <i class="far fa-calendar-alt mr-2"></i> November 2024
                     </div>
                 </div>
             </div>
         </header>
 
-        <div class="dashboard-grid" id="summary-cards">
+        <div class="notice-banner">
+            <strong>Note:</strong> We encountered issues reading your CSV file. The dashboard is currently showing sample data. Please make sure your CSV file is properly formatted with headers and proper data types.
+        </div>
+
+        <div class="dashboard-grid">
             <div class="stat-card">
                 <div class="stat-card-indicator indicator-income"></div>
                 <div class="stat-card-header">
@@ -1108,8 +536,8 @@
                         <i class="fas fa-arrow-down"></i>
                     </div>
                 </div>
-                <div class="stat-card-value color-income" id="total-income">$0.00</div>
-                <div class="stat-card-subtitle" id="income-subtitle">Loading...</div>
+                <div class="stat-card-value color-income">$2,664.91</div>
+                <div class="stat-card-subtitle">November deposits</div>
             </div>
 
             <div class="stat-card">
@@ -1120,8 +548,8 @@
                         <i class="fas fa-arrow-up"></i>
                     </div>
                 </div>
-                <div class="stat-card-value color-expense" id="total-expenses">$0.00</div>
-                <div class="stat-card-subtitle" id="expenses-subtitle">Loading...</div>
+                <div class="stat-card-value color-expense">$3,933.12</div>
+                <div class="stat-card-subtitle">November withdrawals</div>
             </div>
 
             <div class="stat-card">
@@ -1132,8 +560,8 @@
                         <i class="fas fa-exchange-alt"></i>
                     </div>
                 </div>
-                <div class="stat-card-value color-transfer" id="total-transfers">$0.00</div>
-                <div class="stat-card-subtitle" id="transfers-subtitle">Loading...</div>
+                <div class="stat-card-value color-transfer">$1,384.08</div>
+                <div class="stat-card-subtitle">November transfers</div>
             </div>
 
             <div class="stat-card">
@@ -1144,8 +572,8 @@
                         <i class="fas fa-chart-line"></i>
                     </div>
                 </div>
-                <div class="stat-card-value color-net" id="net-cash-flow">$0.00</div>
-                <div class="stat-card-subtitle" id="net-subtitle">Loading...</div>
+                <div class="stat-card-value color-net">$115.87</div>
+                <div class="stat-card-subtitle">November net flow</div>
             </div>
         </div>
 
@@ -1154,17 +582,11 @@
                 <div class="section-header">
                     <div>
                         <h2 class="section-title">Cash Flow Analysis</h2>
-                        <p class="section-subtitle" id="chart-subtitle">Loading transaction data...</p>
+                        <p class="section-subtitle">Breakdown of November transactions</p>
                     </div>
                 </div>
-                <div id="cash-flow-chart-container">
-                    <div class="loading" id="chart-loading">
-                        <div class="loading-spinner"></div>
-                        <div>Loading chart data...</div>
-                    </div>
-                    <div class="chart-container" id="chart-wrapper" style="display: none;">
-                        <canvas id="cash-flow-chart"></canvas>
-                    </div>
+                <div class="chart-container">
+                    <canvas id="cash-flow-chart"></canvas>
                 </div>
             </div>
 
@@ -1175,14 +597,8 @@
                         <p class="section-subtitle">Where your money goes</p>
                     </div>
                 </div>
-                <div id="categories-container">
-                    <div class="loading" id="categories-loading">
-                        <div class="loading-spinner"></div>
-                        <div>Loading categories...</div>
-                    </div>
-                    <div class="category-list" id="category-list" style="display: none;">
-                        <!-- Will be populated by JavaScript -->
-                    </div>
+                <div class="category-list" id="category-list">
+                    <!-- Categories will be added here by JavaScript -->
                 </div>
             </div>
         </div>
@@ -1191,31 +607,25 @@
             <div class="section-header">
                 <div>
                     <h2 class="section-title">Recent Transactions</h2>
-                    <p class="section-subtitle" id="transactions-subtitle">Loading transactions...</p>
+                    <p class="section-subtitle">Your financial activity for November</p>
                 </div>
             </div>
-            <div id="transactions-container">
-                <div class="loading" id="transactions-loading">
-                    <div class="loading-spinner"></div>
-                    <div>Loading transactions...</div>
-                </div>
-                <div class="table-container" id="table-wrapper" style="display: none;">
-                    <table class="transactions-table">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Account</th>
-                                <th>Description</th>
-                                <th>Category</th>
-                                <th>Type</th>
-                                <th>Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody id="transactions-tbody">
-                            <!-- Will be populated by JavaScript -->
-                        </tbody>
-                    </table>
-                </div>
+            <div class="table-container">
+                <table class="transactions-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Account</th>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactions-tbody">
+                        <!-- Transactions will be added here by JavaScript -->
+                    </tbody>
+                </table>
             </div>
         </div>
 
@@ -1225,11 +635,10 @@
         </footer>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <script>
-        // Sample data to use if CSV loading fails
-        const sampleTransactions = [
+        // Sample transactions data
+        const transactions = [
             { date: '11/8/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'Contactless Interac purchase - 8827 COSTCO WHOLESAL', category: 'General Merchandise', type: 'withdrawal', amount: -13.64 },
             { date: '11/8/24', account: 'CIBC Online Banking (Recommended) (Chequing)', description: 'Electronic Funds Transfer PREAUTHORIZED DEBIT BELL ALIANT', category: 'Transfers', type: 'transfer', amount: -115.92 },
             { date: '11/7/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'Loan payment', category: null, type: 'withdrawal', amount: -1045.8 },
@@ -1252,39 +661,6 @@
             { date: '11/1/24', account: 'CIBC Online Banking (Recommended) (Chequing)', description: 'Mortgage Payment', category: 'Transfers', type: 'transfer', amount: -1050.00 },
             { date: '11/1/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Home Improvement Store', category: 'Home Improvement', type: 'withdrawal', amount: -264.39 }
         ];
-
-        // Store transactions after loading
-        let transactions = [];
-        
-        // Display error message
-        function showError(message, containerId, showFallbackButton = false) {
-            const container = document.getElementById(containerId);
-            
-            const errorDiv = document.createElement('div');
-            errorDiv.className = 'error-container';
-            
-            let errorContent = `
-                <div class="error-title">Error</div>
-                <div class="error-details">${message}</div>
-            `;
-            
-            if (showFallbackButton) {
-                errorContent += `
-                    <button class="action-button" id="use-sample-data">Use Sample Data Instead</button>
-                `;
-            }
-            
-            errorDiv.innerHTML = errorContent;
-            container.innerHTML = '';
-            container.appendChild(errorDiv);
-            
-            if (showFallbackButton) {
-                document.getElementById('use-sample-data').addEventListener('click', function() {
-                    transactions = [...sampleTransactions];
-                    initializeDashboard();
-                });
-            }
-        }
         
         // Format currency
         function formatCurrency(amount) {
@@ -1295,29 +671,241 @@
             }).format(amount);
         }
         
-        // Get month name from data
-        function getMonthName(dateString) {
-            try {
-                const dateParts = dateString.split('/');
-                if (dateParts.length !== 3) {
-                    return 'November 2024'; // Default fallback
+        // Initialize dashboard when document is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCashFlowChart();
+            initializeTopSpendingCategories();
+            populateTransactionsTable();
+        });
+        
+        // Initialize Cash Flow Chart
+        function initializeCashFlowChart() {
+            const ctx = document.getElementById('cash-flow-chart').getContext('2d');
+            
+            // Calculate data for chart
+            const income = transactions
+                .filter(t => t.type === 'deposit')
+                .reduce((sum, t) => sum + (t.amount || 0), 0);
+                
+            const expenses = Math.abs(transactions
+                .filter(t => t.type === 'withdrawal')
+                .reduce((sum, t) => sum + (t.amount || 0), 0));
+                
+            const transfers = transactions
+                .filter(t => t.type === 'transfer')
+                .reduce((sum, t) => sum + (t.amount || 0), 0);
+                
+            const fees = Math.abs(transactions
+                .filter(t => t.type === 'fee')
+                .reduce((sum, t) => sum + (t.amount || 0), 0));
+            
+            // Chart configuration
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Income', 'Expenses', 'Transfers', 'Fees'],
+                    datasets: [{
+                        data: [income, expenses, transfers, fees],
+                        backgroundColor: [
+                            'rgba(34, 197, 94, 0.8)',  // Green for income
+                            'rgba(239, 68, 68, 0.8)',   // Red for expenses
+                            'rgba(59, 130, 246, 0.8)',  // Blue for transfers
+                            'rgba(234, 179, 8, 0.8)'    // Yellow for fees
+                        ],
+                        borderColor: [
+                            'rgba(34, 197, 94, 1)',
+                            'rgba(239, 68, 68, 1)',
+                            'rgba(59, 130, 246, 1)',
+                            'rgba(234, 179, 8, 1)'
+                        ],
+                        borderWidth: 1,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '65%',
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                boxWidth: 15,
+                                padding: 20,
+                                font: {
+                                    size: 13
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'white',
+                            titleColor: '#1e293b',
+                            bodyColor: '#475569',
+                            bodyFont: {
+                                size: 14
+                            },
+                            borderColor: '#e2e8f0',
+                            borderWidth: 1,
+                            padding: 16,
+                            boxPadding: 6,
+                            cornerRadius: 8,
+                            usePointStyle: true,
+                            callbacks: {
+                                label: function(context) {
+                                    const value = context.raw;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round(value / total * 100);
+                                    return `${formatCurrency(value)} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize Top Spending Categories
+        function initializeTopSpendingCategories() {
+            const container = document.getElementById('category-list');
+            
+            // Group expenses by category
+            const categoryExpenses = {};
+            let totalExpenses = 0;
+            
+            transactions.forEach(transaction => {
+                if (transaction.type === 'withdrawal' && transaction.category) {
+                    if (!categoryExpenses[transaction.category]) {
+                        categoryExpenses[transaction.category] = 0;
+                    }
+                    categoryExpenses[transaction.category] += Math.abs(transaction.amount || 0);
+                    totalExpenses += Math.abs(transaction.amount || 0);
+                }
+            });
+            
+            // Sort categories by amount
+            const sortedCategories = Object.entries(categoryExpenses)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 5); // Get top 5 categories
+            
+            // Category icons and colors
+            const categoryConfig = {
+                'Restaurants/Dining': { icon: 'fa-utensils', color: 'var(--accent-red)', class: 'category-icon-dining' },
+                'Utilities': { icon: 'fa-bolt', color: 'var(--accent-purple)', class: 'category-icon-utilities' },
+                'Home Improvement': { icon: 'fa-home', color: 'var(--accent-green)', class: 'category-icon-home' },
+                'Groceries': { icon: 'fa-shopping-basket', color: 'var(--accent-orange)', class: 'category-icon-shopping' },
+                'Automotive Expenses': { icon: 'fa-car', color: 'var(--accent-blue)', class: 'category-icon-auto' },
+                'Gasoline/Fuel': { icon: 'fa-gas-pump', color: 'var(--accent-orange)', class: 'category-icon-auto' },
+                'Clothing/Shoes': { icon: 'fa-tshirt', color: 'var(--accent-purple)', class: 'category-icon-shopping' },
+                'Online Services': { icon: 'fa-laptop', color: 'var(--accent-blue)', class: 'category-icon-utilities' },
+                'General Merchandise': { icon: 'fa-shopping-bag', color: 'var(--accent-orange)', class: 'category-icon-shopping' }
+            };
+            
+            // Default icon and color
+            const defaultConfig = { icon: 'fa-money-bill-wave', color: 'var(--text-secondary)', class: '' };
+            
+            // Create category items
+            sortedCategories.forEach(([category, amount]) => {
+                const percentage = (amount / totalExpenses) * 100;
+                const config = categoryConfig[category] || defaultConfig;
+                
+                const categoryItem = document.createElement('div');
+                categoryItem.className = 'category-item';
+                
+                // Handle CSS variables for background color
+                let bgColor = config.color;
+                if (bgColor.startsWith('var(')) {
+                    // For CSS variables, we use a lighter version for background
+                    bgColor = `rgba(0, 0, 0, 0.05)`;
                 }
                 
-                const monthNum = parseInt(dateParts[0]);
-                const year = dateParts[2].length === 2 ? '20' + dateParts[2] : dateParts[2];
+                // Create the category item HTML
+                categoryItem.innerHTML = `
+                    <div class="category-icon ${config.class}" style="background-color: ${bgColor}">
+                        <i class="fas ${config.icon}"></i>
+                    </div>
+                    <div class="category-details">
+                        <div class="category-name">${category}</div>
+                        <div class="category-amount">${formatCurrency(amount)}</div>
+                        <div class="category-progress">
+                            <div class="progress-bar" style="width: ${percentage}%; background-color: ${config.color}"></div>
+                        </div>
+                    </div>
+                `;
                 
-                const months = [
-                    'January', 'February', 'March', 'April', 'May', 'June',
-                    'July', 'August', 'September', 'October', 'November', 'December'
-                ];
-                
-                return months[monthNum - 1] + ' ' + year;
-            } catch (error) {
-                console.error('Error parsing date:', error);
-                return 'November 2024'; // Default fallback
-            }
+                container.appendChild(categoryItem);
+            });
         }
-        
-        // Try to detect CSV column names
-        function detectColumnNames(firstRow) {
-            const poss
+
+        // Populate transactions table
+        function populateTransactionsTable() {
+            const tableBody = document.getElementById('transactions-tbody');
+            
+            // Sort transactions by date (newest first)
+            const sortedTransactions = [...transactions].sort((a, b) => {
+                // Simple date comparison for MM/DD/YY format
+                const dateA = new Date(a.date);
+                const dateB = new Date(b.date);
+                return dateB - dateA;
+            });
+            
+            // Account colors
+            const accountColors = {
+                'RBC Online Banking': '#ef4444',
+                'CIBC Online Banking': '#3b82f6',
+                'RBC Cash Back': '#f97316',
+                'CIBC VISA': '#8b5cf6',
+                'CIBC Savings': '#0ea5e9'
+            };
+            
+            const defaultColor = '#64748b';
+            
+            sortedTransactions.forEach(transaction => {
+                const row = document.createElement('tr');
+                
+                // Format amount as currency
+                const formattedAmount = formatCurrency(transaction.amount);
+                
+                // Generate account initials and determine color
+                const accountName = transaction.account.split(' (')[0];
+                const accountInitials = accountName
+                    .split(' ')
+                    .filter(word => word.length > 0)
+                    .map(word => word[0])
+                    .join('')
+                    .substring(0, 2)
+                    .toUpperCase();
+                
+                // Find matching account color or use default
+                let accountColor = defaultColor;
+                for (const [key, color] of Object.entries(accountColors)) {
+                    if (accountName.includes(key)) {
+                        accountColor = color;
+                        break;
+                    }
+                }
+                
+                // Create row content
+                row.innerHTML = `
+                    <td>${transaction.date}</td>
+                    <td>
+                        <div class="account-cell">
+                            <div class="account-icon" style="background-color: ${accountColor};">${accountInitials}</div>
+                            <div>${accountName}</div>
+                        </div>
+                    </td>
+                    <td>${transaction.description}</td>
+                    <td>${transaction.category || 'Uncategorized'}</td>
+                    <td>
+                        <span class="tag tag-${transaction.type}">
+                            ${transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1)}
+                        </span>
+                    </td>
+                    <td class="${transaction.amount >= 0 ? 'text-positive' : 'text-negative'}">${formattedAmount}</td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+    </script>
+</body>
+</html>
