@@ -4,673 +4,931 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Financial Dashboard</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
-        /* Light Theme Design System */
         :root {
-            --bg-primary: #f8fafc;
-            --bg-secondary: #ffffff;
-            --bg-tertiary: #f1f5f9;
-            --text-primary: #0f172a;
-            --text-secondary: #334155;
-            --text-tertiary: #64748b;
-            --accent-primary: #0284c7;
-            --accent-secondary: #0ea5e9;
-            --accent-tertiary: #38bdf8;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
+            /* Modern, Sophisticated Color Palette */
+            --bg-color: #ffffff;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
             --border-color: #e2e8f0;
-            --border-radius: 12px;
-            --card-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-            --transition-speed: 0.3s;
-            --font-primary: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            --accent-blue: #3b82f6;
+            --accent-indigo: #6366f1;
+            --accent-purple: #8b5cf6;
+            --accent-green: #22c55e;
+            --accent-red: #ef4444;
+            --accent-orange: #f97316;
+            --accent-yellow: #eab308;
+            --accent-teal: #14b8a6;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --radius-sm: 0.25rem;
+            --radius: 0.5rem;
+            --radius-md: 0.75rem;
+            --radius-lg: 1rem;
         }
-        
-        /* Base Reset */
+
+        /* Base Styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: var(--font-primary);
         }
-        
+
         body {
-            background-color: var(--bg-primary);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f8fafc;
             color: var(--text-primary);
-            font-size: 16px;
             line-height: 1.5;
-            padding: 0;
-            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
-        
-        .dashboard {
-            max-width: 1440px;
+
+        .container {
+            max-width: 1200px;
             margin: 0 auto;
             padding: 2rem;
         }
-        
-        /* Header Styling */
-        .dashboard-header {
+
+        /* Header */
+        .header {
+            margin-bottom: 2rem;
+        }
+
+        .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1rem;
         }
-        
-        .dashboard-title h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: var(--accent-primary);
-        }
-        
-        .dashboard-title p {
-            color: var(--text-secondary);
-            font-size: 1rem;
-        }
-        
-        .dashboard-meta {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
-        
-        .dashboard-meta-item {
-            text-align: right;
-        }
-        
-        .dashboard-meta-value {
-            font-size: 1.25rem;
-            font-weight: 600;
+
+        .header-title {
+            font-size: 1.875rem;
+            font-weight: 800;
             color: var(--text-primary);
+            line-height: 1.2;
         }
-        
-        .dashboard-meta-label {
-            font-size: 0.75rem;
-            color: var(--text-tertiary);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+
+        .header-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
         }
-        
-        /* Card Grid System */
-        .card-grid {
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .date-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            background-color: var(--card-bg);
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
+            gap: 1rem;
             margin-bottom: 2rem;
         }
-        
-        @media (max-width: 1200px) {
-            .card-grid {
+
+        @media (max-width: 1024px) {
+            .dashboard-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
-        
-        @media (max-width: 768px) {
-            .card-grid {
+
+        @media (max-width: 640px) {
+            .dashboard-grid {
                 grid-template-columns: 1fr;
             }
         }
-        
-        /* Card Styling */
-        .card {
-            background-color: var(--bg-secondary);
-            border-radius: var(--border-radius);
+
+        /* Stats Card */
+        .stat-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
             padding: 1.5rem;
-            box-shadow: var(--card-shadow);
-            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
             position: relative;
             overflow: hidden;
-            border: 1px solid var(--border-color);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-        
-        .card:hover {
+
+        .stat-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow-lg);
         }
-        
-        .card::after {
-            content: "";
+
+        .stat-card-indicator {
             position: absolute;
             top: 0;
             left: 0;
             width: 4px;
             height: 100%;
         }
-        
-        .card-income::after {
-            background: linear-gradient(to bottom, var(--success), transparent);
+
+        .indicator-income {
+            background-color: var(--accent-green);
         }
-        
-        .card-expense::after {
-            background: linear-gradient(to bottom, var(--danger), transparent);
+
+        .indicator-expense {
+            background-color: var(--accent-red);
         }
-        
-        .card-transfer::after {
-            background: linear-gradient(to bottom, var(--accent-primary), transparent);
+
+        .indicator-transfer {
+            background-color: var(--accent-blue);
         }
-        
-        .card-net::after {
-            background: linear-gradient(to bottom, var(--accent-secondary), transparent);
+
+        .indicator-net {
+            background-color: var(--accent-purple);
         }
-        
-        .card-header {
+
+        .stat-card-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             margin-bottom: 1rem;
         }
-        
-        .card-title {
+
+        .stat-card-title {
             font-size: 0.875rem;
+            font-weight: 600;
             color: var(--text-secondary);
-            margin-bottom: 0.25rem;
-            font-weight: 500;
+            letter-spacing: 0.025em;
         }
-        
-        .card-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+
+        .stat-card-icon {
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.125rem;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.05);
+            color: var(--text-primary);
         }
-        
-        .card-income .card-icon {
-            background-color: rgba(16, 185, 129, 0.1);
-            color: var(--success);
+
+        .icon-income {
+            background-color: rgba(34, 197, 94, 0.1);
+            color: var(--accent-green);
         }
-        
-        .card-expense .card-icon {
+
+        .icon-expense {
             background-color: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
+            color: var(--accent-red);
         }
-        
-        .card-transfer .card-icon {
-            background-color: rgba(14, 165, 233, 0.1);
-            color: var(--accent-primary);
+
+        .icon-transfer {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: var(--accent-blue);
         }
-        
-        .card-net .card-icon {
-            background-color: rgba(6, 182, 212, 0.1);
-            color: var(--accent-secondary);
+
+        .icon-net {
+            background-color: rgba(139, 92, 246, 0.1);
+            color: var(--accent-purple);
         }
-        
-        .card-value {
+
+        .stat-card-value {
             font-size: 2rem;
             font-weight: 700;
+            line-height: 1.2;
             margin-bottom: 0.5rem;
-            line-height: 1.1;
         }
-        
-        .positive {
-            color: var(--success);
+
+        .color-income {
+            color: var(--accent-green);
         }
-        
-        .negative {
-            color: var(--danger);
+
+        .color-expense {
+            color: var(--accent-red);
         }
-        
-        .neutral {
-            color: var(--accent-primary);
+
+        .color-transfer {
+            color: var(--accent-blue);
         }
-        
-        .card-subtitle {
-            font-size: 0.75rem;
-            color: var(--text-tertiary);
+
+        .color-net {
+            color: var(--accent-purple);
         }
-        
-        /* Chart Container */
-        .chart-row {
+
+        .stat-card-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        /* Main Content Grid */
+        .main-content {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: 3fr 2fr;
             gap: 1.5rem;
             margin-bottom: 2rem;
         }
-        
-        @media (max-width: 992px) {
-            .chart-row {
+
+        @media (max-width: 768px) {
+            .main-content {
                 grid-template-columns: 1fr;
             }
         }
-        
-        .chart-card {
-            background-color: var(--bg-secondary);
-            border-radius: var(--border-radius);
+
+        /* Section Styling */
+        .section {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
             padding: 1.5rem;
-            box-shadow: var(--card-shadow);
+            box-shadow: var(--shadow-md);
             border: 1px solid var(--border-color);
         }
-        
-        .chart-header {
-            margin-bottom: 1rem;
-        }
-        
-        .chart-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-            color: var(--text-primary);
-        }
-        
-        .chart-subtitle {
-            font-size: 0.875rem;
-            color: var(--text-tertiary);
-        }
-        
-        .chart-container {
-            position: relative;
-            height: 320px; /* Increased height to ensure legends fit */
-            width: 100%;
-            margin-top: 1rem;
-            padding-bottom: 1rem; /* Extra padding for legends */
-        }
-        
-        /* Transactions Table */
-        .transactions-card {
-            background-color: var(--bg-secondary);
-            border-radius: var(--border-radius);
-            padding: 1.5rem;
-            box-shadow: var(--card-shadow);
-            margin-bottom: 2rem;
-            border: 1px solid var(--border-color);
-        }
-        
-        .transactions-header {
+
+        .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
             border-bottom: 1px solid var(--border-color);
         }
-        
-        .transactions-title {
-            font-size: 1.25rem;
-            font-weight: 600;
+
+        .section-title {
+            font-size: 1.125rem;
+            font-weight: 700;
             color: var(--text-primary);
         }
-        
+
+        .section-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        /* Cash Flow Chart Section */
+        .chart-container {
+            position: relative;
+            height: 350px;
+            margin-top: 1rem;
+        }
+
+        /* Spending Categories Section */
+        .category-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .category-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem;
+            border-radius: var(--radius);
+            transition: background-color 0.2s ease;
+        }
+
+        .category-item:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        .category-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .category-icon-dining {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--accent-red);
+        }
+
+        .category-icon-home {
+            background-color: rgba(34, 197, 94, 0.1);
+            color: var(--accent-green);
+        }
+
+        .category-icon-auto {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: var(--accent-blue);
+        }
+
+        .category-icon-utilities {
+            background-color: rgba(139, 92, 246, 0.1);
+            color: var(--accent-purple);
+        }
+
+        .category-icon-shopping {
+            background-color: rgba(249, 115, 22, 0.1);
+            color: var(--accent-orange);
+        }
+
+        .category-details {
+            flex-grow: 1;
+        }
+
+        .category-name {
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .category-progress {
+            width: 100%;
+            height: 6px;
+            background-color: rgba(0, 0, 0, 0.05);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-bar {
+            height: 100%;
+            border-radius: 3px;
+        }
+
+        .category-amount {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--accent-red);
+        }
+
+        /* Transactions Section */
+        .transactions-section {
+            margin-top: 2rem;
+        }
+
         .table-container {
             overflow-x: auto;
-            max-height: 500px; /* Fixed height */
+            margin-top: 1rem;
+            max-height: 500px;
             overflow-y: auto;
         }
-        
+
         .transactions-table {
             width: 100%;
             border-collapse: separate;
             border-spacing: 0;
         }
-        
+
         .transactions-table th {
-            background-color: var(--bg-tertiary);
-            padding: 1rem;
+            padding: 0.75rem 1rem;
             text-align: left;
+            font-size: 0.75rem;
             font-weight: 600;
             color: var(--text-secondary);
-            font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
+            background-color: #f8fafc;
             border-bottom: 1px solid var(--border-color);
             position: sticky;
             top: 0;
-            z-index: 1;
+            z-index: 10;
         }
-        
-        .transactions-table th:first-child {
-            border-top-left-radius: 8px;
-        }
-        
-        .transactions-table th:last-child {
-            border-top-right-radius: 8px;
-        }
-        
+
         .transactions-table td {
             padding: 1rem;
             font-size: 0.875rem;
             color: var(--text-primary);
             border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
         }
-        
+
+        .transactions-table tbody tr:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
         .transactions-table tr:last-child td {
             border-bottom: none;
         }
-        
-        .transactions-table tr:hover td {
-            background-color: var(--bg-tertiary);
-        }
-        
+
         .account-cell {
             display: flex;
             align-items: center;
             gap: 0.75rem;
         }
-        
+
         .account-icon {
             width: 2rem;
             height: 2rem;
-            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            border-radius: 50%;
             font-size: 0.75rem;
-            font-weight: 600;
+            font-weight: 700;
             color: white;
-            background-color: var(--text-tertiary);
+            flex-shrink: 0;
         }
-        
-        .tx-badge {
+
+        .tag {
             display: inline-flex;
             align-items: center;
             padding: 0.25rem 0.75rem;
-            border-radius: 4px;
+            border-radius: 9999px;
             font-size: 0.75rem;
             font-weight: 500;
+            white-space: nowrap;
         }
-        
-        .badge-deposit {
-            background-color: rgba(16, 185, 129, 0.1);
-            color: var(--success);
+
+        .tag-deposit {
+            background-color: rgba(34, 197, 94, 0.1);
+            color: var(--accent-green);
         }
-        
-        .badge-withdrawal {
+
+        .tag-withdrawal {
             background-color: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
+            color: var(--accent-red);
         }
-        
-        .badge-transfer {
-            background-color: rgba(14, 165, 233, 0.1);
-            color: var(--accent-primary);
+
+        .tag-transfer {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: var(--accent-blue);
         }
-        
-        .badge-fee {
-            background-color: rgba(245, 158, 11, 0.1);
-            color: var(--warning);
+
+        .tag-fee {
+            background-color: rgba(234, 179, 8, 0.1);
+            color: var(--accent-yellow);
         }
-        
+
+        .text-positive {
+            color: var(--accent-green);
+        }
+
+        .text-negative {
+            color: var(--accent-red);
+        }
+
+        /* Loading State */
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+            color: var(--text-secondary);
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--accent-blue);
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Errors */
+        .error-message {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--accent-red);
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin: 1rem 0;
+            font-size: 0.875rem;
+        }
+
         /* Footer */
-        .dashboard-footer {
+        .footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            font-size: 0.875rem;
+            color: var(--text-muted);
             padding-top: 1rem;
             border-top: 1px solid var(--border-color);
-            font-size: 0.875rem;
-            color: var(--text-tertiary);
         }
-        
+
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+            width: 8px;
+            height: 8px;
         }
-        
+
         ::-webkit-scrollbar-track {
-            background: var(--bg-tertiary);
+            background-color: #f1f5f9;
+            border-radius: 4px;
         }
-        
+
         ::-webkit-scrollbar-thumb {
-            background: var(--accent-tertiary);
-            border-radius: 3px;
+            background-color: #cbd5e1;
+            border-radius: 4px;
         }
-        
+
         ::-webkit-scrollbar-thumb:hover {
-            background: var(--accent-primary);
+            background-color: #94a3b8;
         }
     </style>
 </head>
 <body>
-    <div class="dashboard">
-        <div class="dashboard-header">
-            <div class="dashboard-title">
-                <h1>Financial Dashboard</h1>
-                <p>November 2024 Transaction Analysis</p>
-            </div>
-            <div class="dashboard-meta">
-                <div class="dashboard-meta-item">
-                    <div class="dashboard-meta-value">21</div>
-                    <div class="dashboard-meta-label">Transactions</div>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <div>
+                    <h1 class="header-title">Financial Dashboard</h1>
+                    <p class="header-subtitle">Track your financial activity with ease</p>
                 </div>
-                <div class="dashboard-meta-item">
-                    <div class="dashboard-meta-value">5</div>
-                    <div class="dashboard-meta-label">Accounts</div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card-grid">
-            <div class="card card-income">
-                <div class="card-header">
-                    <div>
-                        <div class="card-title">TOTAL INCOME</div>
+                <div class="header-actions">
+                    <div class="date-label">
+                        <i class="far fa-calendar-alt mr-2"></i> <span id="report-date">Loading...</span>
                     </div>
-                    <div class="card-icon">
+                </div>
+            </div>
+        </header>
+
+        <div class="dashboard-grid" id="summary-cards">
+            <div class="stat-card">
+                <div class="stat-card-indicator indicator-income"></div>
+                <div class="stat-card-header">
+                    <div class="stat-card-title">TOTAL INCOME</div>
+                    <div class="stat-card-icon icon-income">
                         <i class="fas fa-arrow-down"></i>
                     </div>
                 </div>
-                <div class="card-value positive">$2,664.91</div>
-                <div class="card-subtitle">November deposits</div>
+                <div class="stat-card-value color-income" id="total-income">$0.00</div>
+                <div class="stat-card-subtitle" id="income-subtitle">Loading...</div>
             </div>
-            
-            <div class="card card-expense">
-                <div class="card-header">
-                    <div>
-                        <div class="card-title">TOTAL EXPENSES</div>
-                    </div>
-                    <div class="card-icon">
+
+            <div class="stat-card">
+                <div class="stat-card-indicator indicator-expense"></div>
+                <div class="stat-card-header">
+                    <div class="stat-card-title">TOTAL EXPENSES</div>
+                    <div class="stat-card-icon icon-expense">
                         <i class="fas fa-arrow-up"></i>
                     </div>
                 </div>
-                <div class="card-value negative">$3,933.12</div>
-                <div class="card-subtitle">November withdrawals</div>
+                <div class="stat-card-value color-expense" id="total-expenses">$0.00</div>
+                <div class="stat-card-subtitle" id="expenses-subtitle">Loading...</div>
             </div>
-            
-            <div class="card card-transfer">
-                <div class="card-header">
-                    <div>
-                        <div class="card-title">TRANSFERS</div>
-                    </div>
-                    <div class="card-icon">
+
+            <div class="stat-card">
+                <div class="stat-card-indicator indicator-transfer"></div>
+                <div class="stat-card-header">
+                    <div class="stat-card-title">TRANSFERS</div>
+                    <div class="stat-card-icon icon-transfer">
                         <i class="fas fa-exchange-alt"></i>
                     </div>
                 </div>
-                <div class="card-value neutral">$1,384.08</div>
-                <div class="card-subtitle">November transfers</div>
+                <div class="stat-card-value color-transfer" id="total-transfers">$0.00</div>
+                <div class="stat-card-subtitle" id="transfers-subtitle">Loading...</div>
             </div>
-            
-            <div class="card card-net">
-                <div class="card-header">
-                    <div>
-                        <div class="card-title">NET CASH FLOW</div>
-                    </div>
-                    <div class="card-icon">
+
+            <div class="stat-card">
+                <div class="stat-card-indicator indicator-net"></div>
+                <div class="stat-card-header">
+                    <div class="stat-card-title">NET CASH FLOW</div>
+                    <div class="stat-card-icon icon-net">
                         <i class="fas fa-chart-line"></i>
                     </div>
                 </div>
-                <div class="card-value positive">$115.87</div>
-                <div class="card-subtitle">November net flow</div>
+                <div class="stat-card-value color-net" id="net-cash-flow">$0.00</div>
+                <div class="stat-card-subtitle" id="net-subtitle">Loading...</div>
             </div>
         </div>
-        
-        <div class="chart-row">
-            <div class="chart-card">
-                <div class="chart-header">
-                    <div class="chart-title">Cash Flow</div>
-                    <div class="chart-subtitle">Income vs Expenses by Transaction Type</div>
+
+        <div class="main-content">
+            <div class="section">
+                <div class="section-header">
+                    <div>
+                        <h2 class="section-title">Cash Flow Analysis</h2>
+                        <p class="section-subtitle" id="chart-subtitle">Loading transaction data...</p>
+                    </div>
                 </div>
-                <div class="chart-container">
-                    <canvas id="cash-flow-chart"></canvas>
+                <div id="cash-flow-chart-container">
+                    <div class="loading" id="chart-loading">
+                        <div class="loading-spinner"></div>
+                        <div>Loading chart data...</div>
+                    </div>
+                    <div class="chart-container" id="chart-wrapper" style="display: none;">
+                        <canvas id="cash-flow-chart"></canvas>
+                    </div>
                 </div>
             </div>
-            
-            <div class="chart-card">
-                <div class="chart-header">
-                    <div class="chart-title">Account Balances</div>
-                    <div class="chart-subtitle">Current Balance Across All Accounts</div>
+
+            <div class="section">
+                <div class="section-header">
+                    <div>
+                        <h2 class="section-title">Top Spending Categories</h2>
+                        <p class="section-subtitle">Where your money goes</p>
+                    </div>
                 </div>
-                <div class="chart-container">
-                    <canvas id="accounts-chart"></canvas>
+                <div id="categories-container">
+                    <div class="loading" id="categories-loading">
+                        <div class="loading-spinner"></div>
+                        <div>Loading categories...</div>
+                    </div>
+                    <div class="category-list" id="category-list" style="display: none;">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section transactions-section">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Recent Transactions</h2>
+                    <p class="section-subtitle" id="transactions-subtitle">Loading transactions...</p>
+                </div>
+            </div>
+            <div id="transactions-container">
+                <div class="loading" id="transactions-loading">
+                    <div class="loading-spinner"></div>
+                    <div>Loading transactions...</div>
+                </div>
+                <div class="table-container" id="table-wrapper" style="display: none;">
+                    <table class="transactions-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Account</th>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactions-tbody">
+                            <!-- Will be populated by JavaScript -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-        
-        <div class="transactions-card">
-            <div class="transactions-header">
-                <div class="transactions-title">Recent Transactions</div>
-            </div>
-            <div class="table-container">
-                <table class="transactions-table" id="transactions-table">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Account</th>
-                            <th>Description</th>
-                            <th>Category</th>
-                            <th>Type</th>
-                            <th>Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Table body will be populated by JavaScript -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        
-        <div class="dashboard-footer">
-            <div>Financial Dashboard © 2024</div>
-            <div>Data powered by Wealthica</div>
-        </div>
+
+        <footer class="footer">
+            <div>Financial Dashboard v1.0</div>
+            <div>&copy; 2024 • All rights reserved</div>
+        </footer>
     </div>
-    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <script>
-        // Chart.js Global Configuration
-        Chart.defaults.font.family = "'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif";
-        Chart.defaults.color = '#64748b'; // text-tertiary color
-        Chart.defaults.plugins.legend.labels.usePointStyle = true;
-        Chart.defaults.plugins.legend.labels.pointStyle = 'circle';
+        // Store transactions after loading
+        let transactions = [];
         
-        // November transactions data
-        const novemberTransactions = [
-            { date: '11/8/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'Contactless Interac purchase - 8827 COSTCO WHOLESAL', category: 'General Merchandise', type: 'withdrawal', amount: -13.64 },
-            { date: '11/8/24', account: 'CIBC Online Banking (Recommended) (Chequing)', description: 'Electronic Funds Transfer PREAUTHORIZED DEBIT BELL ALIANT', category: 'Transfers', type: 'transfer', amount: -115.92 },
-            { date: '11/7/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'Loan payment', category: null, type: 'withdrawal', amount: -1045.8 },
-            { date: '11/7/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'ATM Withdrawal', category: null, type: 'withdrawal', amount: -16.5 },
-            { date: '11/7/24', account: 'RBC Online Banking (RBC Cash Back Mastercard)', description: 'Credit Card Payment', category: 'Credit Card Payments', type: 'transfer', amount: 1000.00 },
-            { date: '11/6/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Restaurant Purchase', category: 'Restaurants/Dining', type: 'withdrawal', amount: -52.36 },
-            { date: '11/6/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Service Fee', category: 'Service Charges/Fees', type: 'fee', amount: -5.00 },
-            { date: '11/6/24', account: 'RBC Online Banking (RBC Cash Back Mastercard)', description: 'Gasoline Purchase', category: 'Gasoline/Fuel', type: 'withdrawal', amount: -46.79 },
-            { date: '11/5/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'ATM Withdrawal', category: null, type: 'withdrawal', amount: -200.00 },
-            { date: '11/5/24', account: 'CIBC Online Banking (Recommended) (Chequing)', description: 'Mobile Deposit', category: null, type: 'deposit', amount: 856.23 },
-            { date: '11/5/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Shopping - Clothing', category: 'Clothing/Shoes', type: 'withdrawal', amount: -89.32 },
-            { date: '11/4/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Gas Station Purchase', category: 'Automotive Expenses', type: 'withdrawal', amount: -67.85 },
-            { date: '11/4/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'Utility Bill Payment', category: 'Utilities', type: 'withdrawal', amount: -145.32 },
-            { date: '11/4/24', account: 'CIBC Online Banking (Recommended) (Savings)', description: 'Transfer from Savings', category: 'Transfers', type: 'transfer', amount: 500.00 },
-            { date: '11/3/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Credit Card Payment', category: 'Credit Card Payments', type: 'transfer', amount: 200.00 },
-            { date: '11/3/24', account: 'CIBC Online Banking (Recommended) (Chequing)', description: 'Grocery Shopping', category: 'Groceries', type: 'withdrawal', amount: -142.76 },
-            { date: '11/2/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'Restaurant Dining', category: 'Restaurants/Dining', type: 'withdrawal', amount: -56.78 },
-            { date: '11/2/24', account: 'RBC Online Banking (RBC Cash Back Mastercard)', description: 'Online Subscription', category: 'Online Services', type: 'withdrawal', amount: -14.99 },
-            { date: '11/1/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'Payroll Deposit', category: null, type: 'deposit', amount: 1808.68 },
-            { date: '11/1/24', account: 'CIBC Online Banking (Recommended) (Chequing)', description: 'Mortgage Payment', category: 'Transfers', type: 'transfer', amount: -1050.00 },
-            { date: '11/1/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Home Improvement Store', category: 'Home Improvement', type: 'withdrawal', amount: -264.39 }
-        ];
+        // Display error message
+        function showError(message, containerId) {
+            const container = document.getElementById(containerId);
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.textContent = message;
+            container.innerHTML = '';
+            container.appendChild(errorDiv);
+        }
         
-        // Account data
-        const accountsData = {
-            labels: ['RBC Advantage', 'CIBC Chequing', 'RBC Mastercard', 'CIBC VISA', 'CIBC Savings'],
-            balances: [-1718.09, 1118.11, -304.35, -1083.24, -1674.63]
-        };
+        // Format currency
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 2
+            }).format(amount);
+        }
         
-        // Initialize page
-        document.addEventListener('DOMContentLoaded', function() {
+        // Get month name from data
+        function getMonthName(dateString) {
+            try {
+                const dateParts = dateString.split('/');
+                const monthNum = parseInt(dateParts[0]);
+                const year = parseInt('20' + dateParts[2]);
+                
+                const months = [
+                    'January', 'February', 'March', 'April', 'May', 'June',
+                    'July', 'August', 'September', 'October', 'November', 'December'
+                ];
+                
+                return months[monthNum - 1] + ' ' + year;
+            } catch (error) {
+                return 'Unknown Date';
+            }
+        }
+        
+        // Load CSV file
+        async function loadTransactionsFromCSV() {
+            try {
+                // Show loading states
+                document.getElementById('chart-loading').style.display = 'flex';
+                document.getElementById('categories-loading').style.display = 'flex';
+                document.getElementById('transactions-loading').style.display = 'flex';
+                
+                // Fetch the CSV file
+                const response = await fetch('data.csv');
+                if (!response.ok) {
+                    throw new Error('Failed to load CSV file');
+                }
+                
+                const csvText = await response.text();
+                
+                // Parse CSV
+                Papa.parse(csvText, {
+                    header: true,
+                    skipEmptyLines: true,
+                    dynamicTyping: true, // Automatically convert numeric values
+                    complete: function(results) {
+                        if (results.errors.length > 0) {
+                            console.error('CSV parsing errors:', results.errors);
+                            showError('Error parsing CSV data', 'transactions-container');
+                        } else {
+                            // Process data to match our expected format
+                            transactions = results.data.map(row => {
+                                // Assuming your CSV has these fields, adjust as needed based on your actual CSV structure
+                                return {
+                                    date: row['Trade Date'] || '',
+                                    account: row['Asset/Account'] || '',
+                                    description: row['Description'] || '',
+                                    category: row['Category'] || null,
+                                    type: row['Type'] || 'unknown',
+                                    amount: row['Amount (CAD)'] || 0
+                                };
+                            });
+                            
+                            // Filter out any rows with missing required data
+                            transactions = transactions.filter(t => 
+                                t.date && t.account && (t.amount !== null && t.amount !== undefined)
+                            );
+                            
+                            // Initialize dashboard
+                            if (transactions.length > 0) {
+                                initializeDashboard();
+                            } else {
+                                showError('No valid transaction data found in CSV', 'transactions-container');
+                            }
+                        }
+                    },
+                    error: function(error) {
+                        console.error('Error parsing CSV:', error);
+                        showError('Error parsing CSV file', 'transactions-container');
+                    }
+                });
+            } catch (error) {
+                console.error('Error loading CSV:', error);
+                showError('Error loading CSV file: ' + error.message, 'transactions-container');
+            }
+        }
+        
+        // Initialize dashboard with loaded data
+        function initializeDashboard() {
+            // Set month/year from first transaction
+            if (transactions.length > 0) {
+                const monthYear = getMonthName(transactions[0].date);
+                document.getElementById('report-date').textContent = monthYear;
+                
+                // Update subtitles
+                document.getElementById('income-subtitle').textContent = monthYear + ' deposits';
+                document.getElementById('expenses-subtitle').textContent = monthYear + ' withdrawals';
+                document.getElementById('transfers-subtitle').textContent = monthYear + ' transfers';
+                document.getElementById('net-subtitle').textContent = monthYear + ' net flow';
+                document.getElementById('chart-subtitle').textContent = 'Breakdown of ' + monthYear + ' transactions';
+                document.getElementById('transactions-subtitle').textContent = 'Your financial activity for ' + monthYear;
+            }
+            
+            // Initialize components
+            updateSummaryCards();
             initializeCashFlowChart();
-            initializeAccountsChart();
+            initializeTopSpendingCategories();
             populateTransactionsTable();
-        });
+        }
+        
+        // Update summary cards with calculated totals
+        function updateSummaryCards() {
+            // Calculate totals
+            const income = transactions
+                .filter(t => t.type === 'deposit')
+                .reduce((sum, t) => sum + (t.amount || 0), 0);
+                
+            const expenses = Math.abs(transactions
+                .filter(t => t.type === 'withdrawal')
+                .reduce((sum, t) => sum + (t.amount || 0), 0));
+                
+            const transfers = transactions
+                .filter(t => t.type === 'transfer')
+                .reduce((sum, t) => sum + (t.amount || 0), 0);
+                
+            const netFlow = income - expenses + transfers;
+            
+            // Update the DOM
+            document.getElementById('total-income').textContent = formatCurrency(income);
+            document.getElementById('total-expenses').textContent = formatCurrency(expenses);
+            document.getElementById('total-transfers').textContent = formatCurrency(transfers);
+            document.getElementById('net-cash-flow').textContent = formatCurrency(netFlow);
+            
+            // Add appropriate class to net flow (positive/negative)
+            const netFlowElement = document.getElementById('net-cash-flow');
+            if (netFlow >= 0) {
+                netFlowElement.classList.add('color-income');
+                netFlowElement.classList.remove('color-expense');
+            } else {
+                netFlowElement.classList.add('color-expense');
+                netFlowElement.classList.remove('color-income');
+            }
+        }
         
         // Initialize Cash Flow Chart
         function initializeCashFlowChart() {
+            // Hide loading, show chart
+            document.getElementById('chart-loading').style.display = 'none';
+            document.getElementById('chart-wrapper').style.display = 'block';
+            
             const ctx = document.getElementById('cash-flow-chart').getContext('2d');
             
             // Calculate data for chart
-            const income = novemberTransactions
+            const income = transactions
                 .filter(t => t.type === 'deposit')
-                .reduce((sum, t) => sum + t.amount, 0);
+                .reduce((sum, t) => sum + (t.amount || 0), 0);
                 
-            const expenses = Math.abs(novemberTransactions
+            const expenses = Math.abs(transactions
                 .filter(t => t.type === 'withdrawal')
-                .reduce((sum, t) => sum + t.amount, 0));
+                .reduce((sum, t) => sum + (t.amount || 0), 0));
                 
-            const transfers = novemberTransactions
+            const transfers = transactions
                 .filter(t => t.type === 'transfer')
-                .reduce((sum, t) => sum + t.amount, 0);
+                .reduce((sum, t) => sum + (t.amount || 0), 0);
                 
-            const fees = Math.abs(novemberTransactions
+            const fees = Math.abs(transactions
                 .filter(t => t.type === 'fee')
-                .reduce((sum, t) => sum + t.amount, 0));
+                .reduce((sum, t) => sum + (t.amount || 0), 0));
             
+            // Chart configuration
             new Chart(ctx, {
-                type: 'pie', // Changed from doughnut to pie for better space usage
+                type: 'doughnut',
                 data: {
                     labels: ['Income', 'Expenses', 'Transfers', 'Fees'],
                     datasets: [{
                         data: [income, expenses, transfers, fees],
                         backgroundColor: [
-                            'rgba(16, 185, 129, 0.7)',  // Success
-                            'rgba(239, 68, 68, 0.7)',   // Danger
-                            'rgba(14, 165, 233, 0.7)',  // Primary
-                            'rgba(245, 158, 11, 0.7)'   // Warning
+                            'rgba(34, 197, 94, 0.8)',  // Green for income
+                            'rgba(239, 68, 68, 0.8)',   // Red for expenses
+                            'rgba(59, 130, 246, 0.8)',  // Blue for transfers
+                            'rgba(234, 179, 8, 0.8)'    // Yellow for fees
                         ],
                         borderColor: [
-                            'rgb(16, 185, 129)',
-                            'rgb(239, 68, 68)',
-                            'rgb(14, 165, 233)',
-                            'rgb(245, 158, 11)'
+                            'rgba(34, 197, 94, 1)',
+                            'rgba(239, 68, 68, 1)',
+                            'rgba(59, 130, 246, 1)',
+                            'rgba(234, 179, 8, 1)'
                         ],
-                        borderWidth: 2
+                        borderWidth: 1,
+                        hoverOffset: 4
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    layout: {
-                        padding: {
-                            bottom: 10 // Add padding to ensure labels fit
-                        }
-                    },
+                    cutout: '65%',
                     plugins: {
                         legend: {
-                            position: 'top', // Move legend to top to avoid overflow
+                            position: 'right',
                             labels: {
-                                padding: 15
+                                boxWidth: 15,
+                                padding: 20,
+                                font: {
+                                    size: 13
+                                }
                             }
                         },
                         tooltip: {
-                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                            titleColor: '#0f172a',
-                            bodyColor: '#334155',
-                            bodyFont: { 
-                                size: 14 
+                            backgroundColor: 'white',
+                            titleColor: '#1e293b',
+                            bodyColor: '#475569',
+                            bodyFont: {
+                                size: 14
                             },
                             borderColor: '#e2e8f0',
                             borderWidth: 1,
-                            padding: 12,
+                            padding: 16,
+                            boxPadding: 6,
+                            cornerRadius: 8,
+                            boxWidth: 8,
+                            usePointStyle: true,
                             callbacks: {
                                 label: function(context) {
                                     const value = context.raw;
                                     const total = context.dataset.data.reduce((a, b) => a + b, 0);
                                     const percentage = Math.round(value / total * 100);
-                                    return `$${value.toLocaleString(undefined, {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                    })} (${percentage}%)`;
+                                    return `${formatCurrency(value)} (${percentage}%)`;
                                 }
                             }
                         }
@@ -678,133 +936,157 @@
                 }
             });
         }
-        
-        // Initialize Accounts Chart
-        function initializeAccountsChart() {
-            const ctx = document.getElementById('accounts-chart').getContext('2d');
+
+        // Initialize Top Spending Categories
+        function initializeTopSpendingCategories() {
+            // Hide loading, show categories
+            document.getElementById('categories-loading').style.display = 'none';
+            document.getElementById('category-list').style.display = 'block';
             
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: accountsData.labels,
-                    datasets: [{
-                        label: 'Account Balance',
-                        data: accountsData.balances,
-                        backgroundColor: accountsData.balances.map(balance => 
-                            balance >= 0 
-                                ? 'rgba(16, 185, 129, 0.7)'   // Success
-                                : 'rgba(239, 68, 68, 0.7)'    // Danger
-                        ),
-                        borderColor: accountsData.balances.map(balance => 
-                            balance >= 0 
-                                ? 'rgb(16, 185, 129)'
-                                : 'rgb(239, 68, 68)'
-                        ),
-                        borderWidth: 2,
-                        borderRadius: 6
-                    }]
-                },
-                options: {
-                    indexAxis: 'y',
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        x: {
-                            grid: {
-                                color: 'rgba(226, 232, 240, 0.5)'
-                            },
-                            ticks: {
-                                callback: function(value) {
-                                    if (value === 0) return '$0';
-                                    return (value > 0 ? '+$' : '-$') + Math.abs(value).toLocaleString();
-                                }
-                            }
-                        },
-                        y: {
-                            grid: {
-                                display: false
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                            titleColor: '#0f172a',
-                            bodyColor: '#334155',
-                            bodyFont: { 
-                                size: 14 
-                            },
-                            borderColor: '#e2e8f0',
-                            borderWidth: 1,
-                            padding: 12,
-                            callbacks: {
-                                title: function(context) {
-                                    return context[0].label + ' Account';
-                                },
-                                label: function(context) {
-                                    const value = context.raw;
-                                    const prefix = value >= 0 ? '+' : '-';
-                                    return `Balance: ${prefix}$${Math.abs(value).toLocaleString(undefined, {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                    })}`;
-                                },
-                                footer: function(context) {
-                                    const value = context[0].raw;
-                                    return value >= 0 ? 'Positive Balance' : 'Negative Balance';
-                                }
-                            }
-                        }
+            const container = document.getElementById('category-list');
+            container.innerHTML = ''; // Clear container
+            
+            // Group expenses by category
+            const categoryExpenses = {};
+            let totalExpenses = 0;
+            
+            transactions.forEach(transaction => {
+                if (transaction.type === 'withdrawal' && transaction.category) {
+                    if (!categoryExpenses[transaction.category]) {
+                        categoryExpenses[transaction.category] = 0;
                     }
+                    categoryExpenses[transaction.category] += Math.abs(transaction.amount || 0);
+                    totalExpenses += Math.abs(transaction.amount || 0);
                 }
             });
+            
+            // If no categories, show message
+            if (Object.keys(categoryExpenses).length === 0) {
+                const noData = document.createElement('div');
+                noData.textContent = 'No categorized expenses found';
+                noData.style.textAlign = 'center';
+                noData.style.padding = '2rem 0';
+                noData.style.color = 'var(--text-secondary)';
+                container.appendChild(noData);
+                return;
+            }
+            
+            // Sort categories by amount
+            const sortedCategories = Object.entries(categoryExpenses)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 5); // Get top 5 categories
+            
+            // Category icons and colors
+            const categoryConfig = {
+                'Restaurants/Dining': { icon: 'fa-utensils', color: 'var(--accent-red)', class: 'category-icon-dining' },
+                'Utilities': { icon: 'fa-bolt', color: 'var(--accent-purple)', class: 'category-icon-utilities' },
+                'Home Improvement': { icon: 'fa-home', color: 'var(--accent-green)', class: 'category-icon-home' },
+                'Groceries': { icon: 'fa-shopping-basket', color: 'var(--accent-orange)', class: 'category-icon-shopping' },
+                'Automotive Expenses': { icon: 'fa-car', color: 'var(--accent-blue)', class: 'category-icon-auto' },
+                'Gasoline/Fuel': { icon: 'fa-gas-pump', color: 'var(--accent-orange)', class: 'category-icon-auto' },
+                'Clothing/Shoes': { icon: 'fa-tshirt', color: 'var(--accent-purple)', class: 'category-icon-shopping' },
+                'Online Services': { icon: 'fa-laptop', color: 'var(--accent-blue)', class: 'category-icon-utilities' },
+                'General Merchandise': { icon: 'fa-shopping-bag', color: 'var(--accent-orange)', class: 'category-icon-shopping' }
+            };
+            
+            // Default icon and color
+            const defaultConfig = { icon: 'fa-money-bill-wave', color: 'var(--text-secondary)', class: '' };
+            
+            // Create category items
+            sortedCategories.forEach(([category, amount]) => {
+                const percentage = (amount / totalExpenses) * 100;
+                const config = categoryConfig[category] || defaultConfig;
+                
+                const categoryItem = document.createElement('div');
+                categoryItem.className = 'category-item';
+                
+                const formattedAmount = formatCurrency(amount);
+                const formattedPercentage = percentage.toFixed(1) + '%';
+                
+                categoryItem.innerHTML = `
+                    <div class="category-icon ${config.class}" style="background-color: ${config.color === defaultConfig.color ? 'rgba(0,0,0,0.05)' : config.color.replace('var(', 'rgba(').replace(')', ', 0.1)')}">
+                        <i class="fas ${config.icon}"></i>
+                    </div>
+                    <div class="category-details">
+                        <div class="category-name">${category}</div>
+                        <div class="category-amount">${formattedAmount}</div>
+                        <div class="category-progress">
+                            <div class="progress-bar" style="width: ${percentage}%; background-color: ${config.color}"></div>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(categoryItem);
+            });
         }
-        
+
         // Populate transactions table
         function populateTransactionsTable() {
-            const tableBody = document.querySelector('#transactions-table tbody');
+            // Hide loading, show table
+            document.getElementById('transactions-loading').style.display = 'none';
+            document.getElementById('table-wrapper').style.display = 'block';
+            
+            const tableBody = document.getElementById('transactions-tbody');
+            tableBody.innerHTML = ''; // Clear table body
             
             // Sort transactions by date (newest first)
-            const sortedTransactions = [...novemberTransactions].sort((a, b) => {
-                return new Date(b.date) - new Date(a.date);
+            const sortedTransactions = [...transactions].sort((a, b) => {
+                // Parse dates (MM/DD/YY format)
+                const dateA = new Date(a.date);
+                const dateB = new Date(b.date);
+                return dateB - dateA;
             });
             
-            sortedTransactions.forEach(transaction => {
+            // Limit to 20 most recent transactions for performance
+            const recentTransactions = sortedTransactions.slice(0, 20);
+            
+            // If no transactions, show message
+            if (recentTransactions.length === 0) {
+                const row = document.createElement('tr');
+                const cell = document.createElement('td');
+                cell.colSpan = 6;
+                cell.textContent = 'No transactions found';
+                cell.style.textAlign = 'center';
+                cell.style.padding = '2rem 0';
+                row.appendChild(cell);
+                tableBody.appendChild(row);
+                return;
+            }
+            
+            // Account colors
+            const accountColors = {
+                'RBC Online Banking': '#ef4444',
+                'CIBC Online Banking': '#3b82f6',
+                'RBC Cash Back': '#f97316',
+                'CIBC VISA': '#8b5cf6',
+                'CIBC Savings': '#0ea5e9'
+            };
+            
+            const defaultColor = '#64748b';
+            
+            recentTransactions.forEach(transaction => {
                 const row = document.createElement('tr');
                 
                 // Format amount as currency
-                const formattedAmount = new Intl.NumberFormat('en-US', {
-                    style: 'currency',
-                    currency: 'USD',
-                    minimumFractionDigits: 2
-                }).format(transaction.amount);
+                const formattedAmount = formatCurrency(transaction.amount);
                 
                 // Generate account initials and determine color
                 const accountName = transaction.account.split(' (')[0];
                 const accountInitials = accountName
                     .split(' ')
+                    .filter(word => word.length > 0)
                     .map(word => word[0])
                     .join('')
                     .substring(0, 2)
                     .toUpperCase();
                 
-                // Set account color based on account name
-                let accountColor;
-                if (accountName.includes('RBC Advantage')) {
-                    accountColor = '#ef4444';
-                } else if (accountName.includes('CIBC Chequing')) {
-                    accountColor = '#10b981';
-                } else if (accountName.includes('RBC Cash Back')) {
-                    accountColor = '#f59e0b';
-                } else if (accountName.includes('CIBC VISA')) {
-                    accountColor = '#8b5cf6';
-                } else if (accountName.includes('CIBC Savings')) {
-                    accountColor = '#0ea5e9';
-                } else {
-                    accountColor = '#64748b';
+                // Find matching account color or use default
+                let accountColor = defaultColor;
+                for (const [key, color] of Object.entries(accountColors)) {
+                    if (accountName.includes(key)) {
+                        accountColor = color;
+                        break;
+                    }
                 }
                 
                 // Create row content
@@ -819,16 +1101,21 @@
                     <td>${transaction.description}</td>
                     <td>${transaction.category || 'Uncategorized'}</td>
                     <td>
-                        <span class="tx-badge badge-${transaction.type}">
+                        <span class="tag tag-${transaction.type}">
                             ${transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1)}
                         </span>
                     </td>
-                    <td class="${transaction.amount >= 0 ? 'positive' : 'negative'}">${formattedAmount}</td>
+                    <td class="${transaction.amount >= 0 ? 'text-positive' : 'text-negative'}">${formattedAmount}</td>
                 `;
                 
                 tableBody.appendChild(row);
             });
         }
+
+        // Load data when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTransactionsFromCSV();
+        });
     </script>
 </body>
 </html>
