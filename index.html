@@ -633,7 +633,7 @@
           errorMessage.style.border = "1px solid #fca5a5";
           errorMessage.style.borderRadius = "8px";
           errorMessage.style.marginBottom = "1rem";
-          errorMessage.textContent = "We encountered issues reading your CSV file. The dashboard is currently showing sample data. Please make sure your CSV file is properly formatted with headers and proper data types.";
+          errorMessage.textContent = "Failed to load financial data. Please check the console for details.";
           document.querySelector(".dashboard").insertBefore(errorMessage, document.querySelector(".dashboard").firstChild);
           
           // Use fallback sample data
