@@ -1,729 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Financial Dashboard</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <style>
-        :root {
-            /* Modern, Sophisticated Color Palette */
-            --bg-color: #ffffff;
-            --card-bg: #ffffff;
-            --text-primary: #1e293b;
-            --text-secondary: #475569;
-            --text-muted: #94a3b8;
-            --border-color: #e2e8f0;
-            --accent-blue: #3b82f6;
-            --accent-indigo: #6366f1;
-            --accent-purple: #8b5cf6;
-            --accent-green: #22c55e;
-            --accent-red: #ef4444;
-            --accent-orange: #f97316;
-            --accent-yellow: #eab308;
-            --accent-teal: #14b8a6;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            --radius-sm: 0.25rem;
-            --radius: 0.5rem;
-            --radius-md: 0.75rem;
-            --radius-lg: 1rem;
-        }
-
-        /* Base Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f8fafc;
-            color: var(--text-primary);
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        /* Header */
-        .header {
-            margin-bottom: 2rem;
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .header-title {
-            font-size: 1.875rem;
-            font-weight: 800;
-            color: var(--text-primary);
-            line-height: 1.2;
-        }
-
-        .header-subtitle {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            margin-top: 0.25rem;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .date-label {
-            font-size: 0.875rem;
-            font-weight: 600;
-            background-color: var(--card-bg);
-            color: var(--text-secondary);
-            padding: 0.5rem 1rem;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-        }
-
-        /* Dashboard Grid */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        @media (max-width: 1024px) {
-            .dashboard-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 640px) {
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Stats Card */
-        .stat-card {
-            background-color: var(--card-bg);
-            border-radius: var(--radius-lg);
-            padding: 1.5rem;
-            box-shadow: var(--shadow-md);
-            border: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .stat-card-indicator {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-        }
-
-        .indicator-income {
-            background-color: var(--accent-green);
-        }
-
-        .indicator-expense {
-            background-color: var(--accent-red);
-        }
-
-        .indicator-transfer {
-            background-color: var(--accent-blue);
-        }
-
-        .indicator-net {
-            background-color: var(--accent-purple);
-        }
-
-        .stat-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-        }
-
-        .stat-card-title {
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            letter-spacing: 0.025em;
-        }
-
-        .stat-card-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 2.5rem;
-            height: 2.5rem;
-            border-radius: 50%;
-            background-color: rgba(0, 0, 0, 0.05);
-            color: var(--text-primary);
-        }
-
-        .icon-income {
-            background-color: rgba(34, 197, 94, 0.1);
-            color: var(--accent-green);
-        }
-
-        .icon-expense {
-            background-color: rgba(239, 68, 68, 0.1);
-            color: var(--accent-red);
-        }
-
-        .icon-transfer {
-            background-color: rgba(59, 130, 246, 0.1);
-            color: var(--accent-blue);
-        }
-
-        .icon-net {
-            background-color: rgba(139, 92, 246, 0.1);
-            color: var(--accent-purple);
-        }
-
-        .stat-card-value {
-            font-size: 2rem;
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 0.5rem;
-        }
-
-        .color-income {
-            color: var(--accent-green);
-        }
-
-        .color-expense {
-            color: var(--accent-red);
-        }
-
-        .color-transfer {
-            color: var(--accent-blue);
-        }
-
-        .color-net {
-            color: var(--accent-purple);
-        }
-
-        .stat-card-subtitle {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-        }
-
-        /* Main Content Grid */
-        .main-content {
-            display: grid;
-            grid-template-columns: 3fr 2fr;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Section Styling */
-        .section {
-            background-color: var(--card-bg);
-            border-radius: var(--radius-lg);
-            padding: 1.5rem;
-            box-shadow: var(--shadow-md);
-            border: 1px solid var(--border-color);
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.25rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .section-title {
-            font-size: 1.125rem;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .section-subtitle {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            margin-top: 0.25rem;
-        }
-
-        /* Cash Flow Chart Section */
-        .chart-container {
-            position: relative;
-            height: 350px;
-            margin-top: 1rem;
-        }
-
-        /* Spending Categories Section */
-        .category-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .category-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 0.75rem;
-            border-radius: var(--radius);
-            transition: background-color 0.2s ease;
-        }
-
-        .category-item:hover {
-            background-color: rgba(0, 0, 0, 0.02);
-        }
-
-        .category-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 2.5rem;
-            height: 2.5rem;
-            border-radius: 50%;
-            font-size: 1rem;
-            flex-shrink: 0;
-        }
-
-        .category-icon-dining {
-            background-color: rgba(239, 68, 68, 0.1);
-            color: var(--accent-red);
-        }
-
-        .category-icon-home {
-            background-color: rgba(34, 197, 94, 0.1);
-            color: var(--accent-green);
-        }
-
-        .category-icon-auto {
-            background-color: rgba(59, 130, 246, 0.1);
-            color: var(--accent-blue);
-        }
-
-        .category-icon-utilities {
-            background-color: rgba(139, 92, 246, 0.1);
-            color: var(--accent-purple);
-        }
-
-        .category-icon-shopping {
-            background-color: rgba(249, 115, 22, 0.1);
-            color: var(--accent-orange);
-        }
-
-        .category-details {
-            flex-grow: 1;
-        }
-
-        .category-name {
-            font-weight: 600;
-            font-size: 0.875rem;
-            color: var(--text-primary);
-            margin-bottom: 0.25rem;
-        }
-
-        .category-progress {
-            width: 100%;
-            height: 6px;
-            background-color: rgba(0, 0, 0, 0.05);
-            border-radius: 3px;
-            overflow: hidden;
-            margin-top: 0.5rem;
-        }
-
-        .progress-bar {
-            height: 100%;
-            border-radius: 3px;
-        }
-
-        .category-amount {
-            font-weight: 700;
-            font-size: 1rem;
-            color: var(--accent-red);
-        }
-
-        /* Transactions Section */
-        .transactions-section {
-            margin-top: 2rem;
-        }
-
-        .table-container {
-            overflow-x: auto;
-            margin-top: 1rem;
-            max-height: 500px;
-            overflow-y: auto;
-        }
-
-        .transactions-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-        }
-
-        .transactions-table th {
-            padding: 0.75rem 1rem;
-            text-align: left;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            background-color: #f8fafc;
-            border-bottom: 1px solid var(--border-color);
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
-        .transactions-table td {
-            padding: 1rem;
-            font-size: 0.875rem;
-            color: var(--text-primary);
-            border-bottom: 1px solid var(--border-color);
-            vertical-align: middle;
-        }
-
-        .transactions-table tbody tr:hover {
-            background-color: rgba(0, 0, 0, 0.02);
-        }
-
-        .transactions-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .account-cell {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .account-icon {
-            width: 2rem;
-            height: 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: white;
-            flex-shrink: 0;
-        }
-
-        .tag {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            white-space: nowrap;
-        }
-
-        .tag-deposit {
-            background-color: rgba(34, 197, 94, 0.1);
-            color: var(--accent-green);
-        }
-
-        .tag-withdrawal {
-            background-color: rgba(239, 68, 68, 0.1);
-            color: var(--accent-red);
-        }
-
-        .tag-transfer {
-            background-color: rgba(59, 130, 246, 0.1);
-            color: var(--accent-blue);
-        }
-
-        .tag-fee {
-            background-color: rgba(234, 179, 8, 0.1);
-            color: var(--accent-yellow);
-        }
-
-        .text-positive {
-            color: var(--accent-green);
-        }
-
-        .text-negative {
-            color: var(--accent-red);
-        }
-
-        /* Loading State */
-        .loading {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 200px;
-            color: var(--text-secondary);
-        }
-
-        .loading-spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid rgba(0, 0, 0, 0.1);
-            border-radius: 50%;
-            border-top-color: var(--accent-blue);
-            animation: spin 1s ease-in-out infinite;
-            margin-bottom: 1rem;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Errors */
-        .error-message {
-            background-color: rgba(239, 68, 68, 0.1);
-            color: var(--accent-red);
-            padding: 1rem;
-            border-radius: var(--radius);
-            margin: 1rem 0;
-            font-size: 0.875rem;
-        }
-
-        /* Footer */
-        .footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            padding-top: 1rem;
-            border-top: 1px solid var(--border-color);
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background-color: #f1f5f9;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background-color: #cbd5e1;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background-color: #94a3b8;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <header class="header">
-            <div class="header-content">
-                <div>
-                    <h1 class="header-title">Financial Dashboard</h1>
-                    <p class="header-subtitle">Track your financial activity with ease</p>
-                </div>
-                <div class="header-actions">
-                    <div class="date-label">
-                        <i class="far fa-calendar-alt mr-2"></i> <span id="report-date">Loading...</span>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <div class="dashboard-grid" id="summary-cards">
-            <div class="stat-card">
-                <div class="stat-card-indicator indicator-income"></div>
-                <div class="stat-card-header">
-                    <div class="stat-card-title">TOTAL INCOME</div>
-                    <div class="stat-card-icon icon-income">
-                        <i class="fas fa-arrow-down"></i>
-                    </div>
-                </div>
-                <div class="stat-card-value color-income" id="total-income">$0.00</div>
-                <div class="stat-card-subtitle" id="income-subtitle">Loading...</div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-card-indicator indicator-expense"></div>
-                <div class="stat-card-header">
-                    <div class="stat-card-title">TOTAL EXPENSES</div>
-                    <div class="stat-card-icon icon-expense">
-                        <i class="fas fa-arrow-up"></i>
-                    </div>
-                </div>
-                <div class="stat-card-value color-expense" id="total-expenses">$0.00</div>
-                <div class="stat-card-subtitle" id="expenses-subtitle">Loading...</div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-card-indicator indicator-transfer"></div>
-                <div class="stat-card-header">
-                    <div class="stat-card-title">TRANSFERS</div>
-                    <div class="stat-card-icon icon-transfer">
-                        <i class="fas fa-exchange-alt"></i>
-                    </div>
-                </div>
-                <div class="stat-card-value color-transfer" id="total-transfers">$0.00</div>
-                <div class="stat-card-subtitle" id="transfers-subtitle">Loading...</div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-card-indicator indicator-net"></div>
-                <div class="stat-card-header">
-                    <div class="stat-card-title">NET CASH FLOW</div>
-                    <div class="stat-card-icon icon-net">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                </div>
-                <div class="stat-card-value color-net" id="net-cash-flow">$0.00</div>
-                <div class="stat-card-subtitle" id="net-subtitle">Loading...</div>
-            </div>
-        </div>
-
-        <div class="main-content">
-            <div class="section">
-                <div class="section-header">
-                    <div>
-                        <h2 class="section-title">Cash Flow Analysis</h2>
-                        <p class="section-subtitle" id="chart-subtitle">Loading transaction data...</p>
-                    </div>
-                </div>
-                <div id="cash-flow-chart-container">
-                    <div class="loading" id="chart-loading">
-                        <div class="loading-spinner"></div>
-                        <div>Loading chart data...</div>
-                    </div>
-                    <div class="chart-container" id="chart-wrapper" style="display: none;">
-                        <canvas id="cash-flow-chart"></canvas>
-                    </div>
-                </div>
-            </div>
-
-            <div class="section">
-                <div class="section-header">
-                    <div>
-                        <h2 class="section-title">Top Spending Categories</h2>
-                        <p class="section-subtitle">Where your money goes</p>
-                    </div>
-                </div>
-                <div id="categories-container">
-                    <div class="loading" id="categories-loading">
-                        <div class="loading-spinner"></div>
-                        <div>Loading categories...</div>
-                    </div>
-                    <div class="category-list" id="category-list" style="display: none;">
-                        <!-- Will be populated by JavaScript -->
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="section transactions-section">
-            <div class="section-header">
-                <div>
-                    <h2 class="section-title">Recent Transactions</h2>
-                    <p class="section-subtitle" id="transactions-subtitle">Loading transactions...</p>
-                </div>
-            </div>
-            <div id="transactions-container">
-                <div class="loading" id="transactions-loading">
-                    <div class="loading-spinner"></div>
-                    <div>Loading transactions...</div>
-                </div>
-                <div class="table-container" id="table-wrapper" style="display: none;">
-                    <table class="transactions-table">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Account</th>
-                                <th>Description</th>
-                                <th>Category</th>
-                                <th>Type</th>
-                                <th>Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody id="transactions-tbody">
-                            <!-- Will be populated by JavaScript -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <footer class="footer">
-            <div>Financial Dashboard v1.0</div>
-            <div>&copy; 2024 • All rights reserved</div>
-        </footer>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <script>
-        // Store transactions after loading
-        let transactions = [];
-        
-        // Display error message
-        function showError(message, containerId) {
-            const container = document.getElementById(containerId);
-            const errorDiv = document.createElement('div');
-            errorDiv.className = 'error-message';
-            errorDiv.textContent = message;
-            container.innerHTML = '';
-            container.appendChild(errorDiv);
-        }
-        
-        // Format currency
-        function formatCurrency(amount) {
-            return new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 2
-            }).format(amount);
-        }
-        
-        // Get month name from data
-        function getMonthName(dateString) {
-            try {
-                const dateParts = dateString.split('/');
-                const monthNum = parseInt(dateParts[0]);
-                const year = parseInt('20' + dateParts[2]);
-                
-                const months = [
-                    'January', 'February', 'March', 'April', 'May', 'June',
-                    'July', 'August', 'September', 'October', 'November', 'December'
-                ];
-                
-                return months[monthNum - 1] + ' ' + year;
-            } catch (error) {
-                return 'Unknown Date';
-            }
+// Try to detect CSV column names
+        function detectColumnNames(firstRow) {
+            const possibleDateCols = ['date', 'trade date', 'transaction date', 'date'];
+            const possibleAccountCols = ['account', 'asset/account', 'source', 'bank'];
+            const possibleDescCols = ['description', 'desc', 'details', 'transaction'];
+            const possibleCategoryCols = ['category', 'categories', 'cat'];
+            const possibleTypeCols = ['type', 'transaction type', 'tx type'];
+            const possibleAmountCols = ['amount', 'amount (cad)', 'cad', 'total', 'value'];
+            
+            const columns = {};
+            
+            // Convert to lowercase for case-insensitive matching
+            const headerKeys = Object.keys(firstRow).map(key => key.toLowerCase());
+            
+            // Find date column
+            columns.date = headerKeys.find(key => possibleDateCols.includes(key)) || 'Trade Date';
+            
+            // Find account column
+            columns.account = headerKeys.find(key => possibleAccountCols.includes(key)) || 'Asset/Account';
+            
+            // Find description column
+            columns.description = headerKeys.find(key => possibleDescCols.includes(key)) || 'Description';
+            
+            // Find category column
+            columns.category = headerKeys.find(key => possibleCategoryCols.includes(key)) || 'Category';
+            
+            // Find type column
+            columns.type = headerKeys.find(key => possibleTypeCols.includes(key)) || 'Type';
+            
+            // Find amount column
+            columns.amount = headerKeys.find(key => possibleAmountCols.includes(key)) || 'Amount (CAD)';
+            
+            return columns;
         }
         
         // Load CSV file
@@ -737,73 +44,130 @@
                 // Fetch the CSV file
                 const response = await fetch('data.csv');
                 if (!response.ok) {
-                    throw new Error('Failed to load CSV file');
+                    throw new Error(`Failed to load CSV file (Status: ${response.status})`);
                 }
                 
                 const csvText = await response.text();
                 
-                // Parse CSV
+                // Handle empty file
+                if (!csvText || csvText.trim() === '') {
+                    throw new Error('CSV file is empty');
+                }
+                
+                // Try to determine if we have a header row
+                const firstLine = csvText.split('\n')[0].trim();
+                const hasHeader = !firstLine.match(/^\d/); // If first line doesn't start with number, assume header
+                
+                // Parse CSV with better error handling
                 Papa.parse(csvText, {
                     header: true,
-                    skipEmptyLines: true,
-                    dynamicTyping: true, // Automatically convert numeric values
+                    skipEmptyLines: 'greedy',
+                    dynamicTyping: true,
+                    transformHeader: header => header.trim(),
                     complete: function(results) {
                         if (results.errors.length > 0) {
-                            console.error('CSV parsing errors:', results.errors);
-                            showError('Error parsing CSV data', 'transactions-container');
-                        } else {
+                            console.warn('CSV parsing had some errors:', results.errors);
+                            // We'll still try to continue if there are some rows
+                        }
+                        
+                        if (!results.data || results.data.length === 0) {
+                            showError('No data found in CSV file', 'transactions-container', true);
+                            return;
+                        }
+                        
+                        try {
+                            // Try to detect column names
+                            const columns = detectColumnNames(results.data[0]);
+                            
                             // Process data to match our expected format
                             transactions = results.data.map(row => {
-                                // Assuming your CSV has these fields, adjust as needed based on your actual CSV structure
+                                // Skip completely empty rows
+                                if (Object.values(row).every(val => val === null || val === undefined || val === '')) {
+                                    return null;
+                                }
+                                
+                                // Use original keys if available, otherwise try detected columns or case variations
+                                const dateVal = row['Trade Date'] || row[columns.date] || row.date || row.Date || '';
+                                const accountVal = row['Asset/Account'] || row[columns.account] || row.account || row.Account || '';
+                                const descVal = row['Description'] || row[columns.description] || row.description || row.Description || '';
+                                const categoryVal = row['Category'] || row[columns.category] || row.category || row.Category || null;
+                                
+                                // Determine transaction type
+                                let typeVal = row['Type'] || row[columns.type] || row.type || row.Type || 'unknown';
+                                
+                                // Default amount to 0 if missing
+                                let amountVal = row['Amount (CAD)'] || row[columns.amount] || row.amount || row.Amount || 0;
+                                
+                                // If amount is string, try to parse it
+                                if (typeof amountVal === 'string') {
+                                    // Remove any currency symbols and commas
+                                    amountVal = amountVal.replace(/[$,]/g, '');
+                                    amountVal = parseFloat(amountVal);
+                                }
+                                
+                                // Infer type from amount if type is unknown
+                                if (typeVal === 'unknown' || !typeVal) {
+                                    if (amountVal > 0) {
+                                        typeVal = 'deposit';
+                                    } else if (amountVal < 0) {
+                                        typeVal = 'withdrawal';
+                                    }
+                                }
+                                
                                 return {
-                                    date: row['Trade Date'] || '',
-                                    account: row['Asset/Account'] || '',
-                                    description: row['Description'] || '',
-                                    category: row['Category'] || null,
-                                    type: row['Type'] || 'unknown',
-                                    amount: row['Amount (CAD)'] || 0
+                                    date: dateVal,
+                                    account: accountVal,
+                                    description: descVal,
+                                    category: categoryVal,
+                                    type: typeVal ? typeVal.toLowerCase() : 'unknown',
+                                    amount: amountVal
                                 };
-                            });
+                            }).filter(Boolean); // Remove null entries
                             
                             // Filter out any rows with missing required data
                             transactions = transactions.filter(t => 
                                 t.date && t.account && (t.amount !== null && t.amount !== undefined)
                             );
                             
-                            // Initialize dashboard
+                            // If we still have valid transactions, initialize the dashboard
                             if (transactions.length > 0) {
                                 initializeDashboard();
                             } else {
-                                showError('No valid transaction data found in CSV', 'transactions-container');
+                                showError('No valid transaction data found in CSV. Check that your CSV has proper headers.', 'transactions-container', true);
                             }
+                        } catch (error) {
+                            console.error('Error processing CSV data:', error);
+                            showError('Error processing CSV data: ' + error.message, 'transactions-container', true);
                         }
                     },
                     error: function(error) {
                         console.error('Error parsing CSV:', error);
-                        showError('Error parsing CSV file', 'transactions-container');
+                        showError('Error parsing CSV file: ' + error.message, 'transactions-container', true);
                     }
                 });
             } catch (error) {
                 console.error('Error loading CSV:', error);
-                showError('Error loading CSV file: ' + error.message, 'transactions-container');
+                showError('Error loading CSV file: ' + error.message, 'transactions-container', true);
             }
         }
         
         // Initialize dashboard with loaded data
         function initializeDashboard() {
-            // Set month/year from first transaction
-            if (transactions.length > 0) {
-                const monthYear = getMonthName(transactions[0].date);
-                document.getElementById('report-date').textContent = monthYear;
-                
-                // Update subtitles
-                document.getElementById('income-subtitle').textContent = monthYear + ' deposits';
-                document.getElementById('expenses-subtitle').textContent = monthYear + ' withdrawals';
-                document.getElementById('transfers-subtitle').textContent = monthYear + ' transfers';
-                document.getElementById('net-subtitle').textContent = monthYear + ' net flow';
-                document.getElementById('chart-subtitle').textContent = 'Breakdown of ' + monthYear + ' transactions';
-                document.getElementById('transactions-subtitle').textContent = 'Your financial activity for ' + monthYear;
+            // Set month/year from first transaction or use default
+            let monthYear = 'November 2024'; // Default
+            if (transactions.length > 0 && transactions[0].date) {
+                monthYear = getMonthName(transactions[0].date);
             }
+            
+            document.getElementById('report-date').textContent = monthYear;
+            
+            // Update subtitles
+            document.getElementById('income-subtitle').textContent = monthYear + ' deposits';
+            document.getElementById('expenses-subtitle').textContent = monthYear + ' withdrawals';
+            document.getElementById('transfers-subtitle').textContent = monthYear + ' transfers';
+            document.getElementById('net-subtitle').textContent = monthYear + ' net flow';
+            document.getElementById('chart-subtitle').textContent = 'Breakdown of ' + monthYear + ' transactions';
+            document.getElementById('transactions-subtitle').textContent = 'Your financial activity for ' + monthYear;
             
             // Initialize components
             updateSummaryCards();
@@ -1000,16 +364,18 @@
                 const categoryItem = document.createElement('div');
                 categoryItem.className = 'category-item';
                 
-                const formattedAmount = formatCurrency(amount);
-                const formattedPercentage = percentage.toFixed(1) + '%';
+                // Ensure the color is properly formatted for different contexts
+                const bgColor = config.color.startsWith('var(') ? 
+                    `rgba(${getComputedStyle(document.documentElement).getPropertyValue(config.color.substring(4, config.color.length-1)).trim()}, 0.1)` : 
+                    config.color;
                 
                 categoryItem.innerHTML = `
-                    <div class="category-icon ${config.class}" style="background-color: ${config.color === defaultConfig.color ? 'rgba(0,0,0,0.05)' : config.color.replace('var(', 'rgba(').replace(')', ', 0.1)')}">
+                    <div class="category-icon ${config.class}" style="background-color: ${bgColor}">
                         <i class="fas ${config.icon}"></i>
                     </div>
                     <div class="category-details">
                         <div class="category-name">${category}</div>
-                        <div class="category-amount">${formattedAmount}</div>
+                        <div class="category-amount">${formatCurrency(amount)}</div>
                         <div class="category-progress">
                             <div class="progress-bar" style="width: ${percentage}%; background-color: ${config.color}"></div>
                         </div>
@@ -1031,10 +397,44 @@
             
             // Sort transactions by date (newest first)
             const sortedTransactions = [...transactions].sort((a, b) => {
-                // Parse dates (MM/DD/YY format)
-                const dateA = new Date(a.date);
-                const dateB = new Date(b.date);
-                return dateB - dateA;
+                try {
+                    // Handle different date formats
+                    let dateA = new Date(a.date);
+                    let dateB = new Date(b.date);
+                    
+                    // If invalid, try to parse MM/DD/YY format
+                    if (isNaN(dateA)) {
+                        const partsA = a.date.split('/');
+                        if (partsA.length === 3) {
+                            dateA = new Date(
+                                2000 + parseInt(partsA[2]), // Assume 20xx
+                                parseInt(partsA[0]) - 1,
+                                parseInt(partsA[1])
+                            );
+                        }
+                    }
+                    
+                    if (isNaN(dateB)) {
+                        const partsB = b.date.split('/');
+                        if (partsB.length === 3) {
+                            dateB = new Date(
+                                2000 + parseInt(partsB[2]), // Assume 20xx
+                                parseInt(partsB[0]) - 1,
+                                parseInt(partsB[1])
+                            );
+                        }
+                    }
+                    
+                    // If still invalid, compare strings as fallback
+                    if (isNaN(dateA) || isNaN(dateB)) {
+                        return b.date.localeCompare(a.date);
+                    }
+                    
+                    return dateB - dateA;
+                } catch (error) {
+                    console.error('Error sorting dates:', error);
+                    return 0; // Keep original order if error
+                }
             });
             
             // Limit to 20 most recent transactions for performance
@@ -1118,4 +518,806 @@
         });
     </script>
 </body>
-</html>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Same CSS styles as before */
+        :root {
+            --bg-color: #ffffff;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --border-color: #e2e8f0;
+            --accent-blue: #3b82f6;
+            --accent-indigo: #6366f1;
+            --accent-purple: #8b5cf6;
+            --accent-green: #22c55e;
+            --accent-red: #ef4444;
+            --accent-orange: #f97316;
+            --accent-yellow: #eab308;
+            --accent-teal: #14b8a6;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --radius-sm: 0.25rem;
+            --radius: 0.5rem;
+            --radius-md: 0.75rem;
+            --radius-lg: 1rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f8fafc;
+            color: var(--text-primary);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            margin-bottom: 2rem;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .header-title {
+            font-size: 1.875rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+
+        .header-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .date-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            background-color: var(--card-bg);
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .stat-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-card-indicator {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+        }
+
+        .indicator-income {
+            background-color: var(--accent-green);
+        }
+
+        .indicator-expense {
+            background-color: var(--accent-red);
+        }
+
+        .indicator-transfer {
+            background-color: var(--accent-blue);
+        }
+
+        .indicator-net {
+            background-color: var(--accent-purple);
+        }
+
+        .stat-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .stat-card-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            letter-spacing: 0.025em;
+        }
+
+        .stat-card-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.05);
+            color: var(--text-primary);
+        }
+
+        .icon-income {
+            background-color: rgba(34, 197, 94, 0.1);
+            color: var(--accent-green);
+        }
+
+        .icon-expense {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--accent-red);
+        }
+
+        .icon-transfer {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: var(--accent-blue);
+        }
+
+        .icon-net {
+            background-color: rgba(139, 92, 246, 0.1);
+            color: var(--accent-purple);
+        }
+
+        .stat-card-value {
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 0.5rem;
+        }
+
+        .color-income {
+            color: var(--accent-green);
+        }
+
+        .color-expense {
+            color: var(--accent-red);
+        }
+
+        .color-transfer {
+            color: var(--accent-blue);
+        }
+
+        .color-net {
+            color: var(--accent-purple);
+        }
+
+        .stat-card-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 3fr 2fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .section {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 350px;
+            margin-top: 1rem;
+        }
+
+        .category-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .category-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem;
+            border-radius: var(--radius);
+            transition: background-color 0.2s ease;
+        }
+
+        .category-item:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        .category-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .category-icon-dining {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--accent-red);
+        }
+
+        .category-icon-home {
+            background-color: rgba(34, 197, 94, 0.1);
+            color: var(--accent-green);
+        }
+
+        .category-icon-auto {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: var(--accent-blue);
+        }
+
+        .category-icon-utilities {
+            background-color: rgba(139, 92, 246, 0.1);
+            color: var(--accent-purple);
+        }
+
+        .category-icon-shopping {
+            background-color: rgba(249, 115, 22, 0.1);
+            color: var(--accent-orange);
+        }
+
+        .category-details {
+            flex-grow: 1;
+        }
+
+        .category-name {
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .category-progress {
+            width: 100%;
+            height: 6px;
+            background-color: rgba(0, 0, 0, 0.05);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-bar {
+            height: 100%;
+            border-radius: 3px;
+        }
+
+        .category-amount {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--accent-red);
+        }
+
+        .transactions-section {
+            margin-top: 2rem;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin-top: 1rem;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .transactions-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .transactions-table th {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background-color: #f8fafc;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .transactions-table td {
+            padding: 1rem;
+            font-size: 0.875rem;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+        }
+
+        .transactions-table tbody tr:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        .transactions-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .account-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .account-icon {
+            width: 2rem;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .tag-deposit {
+            background-color: rgba(34, 197, 94, 0.1);
+            color: var(--accent-green);
+        }
+
+        .tag-withdrawal {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--accent-red);
+        }
+
+        .tag-transfer {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: var(--accent-blue);
+        }
+
+        .tag-fee {
+            background-color: rgba(234, 179, 8, 0.1);
+            color: var(--accent-yellow);
+        }
+
+        .text-positive {
+            color: var(--accent-green);
+        }
+
+        .text-negative {
+            color: var(--accent-red);
+        }
+
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+            color: var(--text-secondary);
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--accent-blue);
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--accent-red);
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin: 1rem 0;
+            font-size: 0.875rem;
+        }
+
+        .error-container {
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .error-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--accent-red);
+        }
+
+        .error-details {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .action-button {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: var(--accent-blue);
+            color: white;
+            border-radius: var(--radius);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.2s ease;
+        }
+
+        .action-button:hover {
+            background-color: var(--accent-indigo);
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background-color: #f1f5f9;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <div>
+                    <h1 class="header-title">Financial Dashboard</h1>
+                    <p class="header-subtitle">Track your financial activity with ease</p>
+                </div>
+                <div class="header-actions">
+                    <div class="date-label">
+                        <i class="far fa-calendar-alt mr-2"></i> <span id="report-date">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="dashboard-grid" id="summary-cards">
+            <div class="stat-card">
+                <div class="stat-card-indicator indicator-income"></div>
+                <div class="stat-card-header">
+                    <div class="stat-card-title">TOTAL INCOME</div>
+                    <div class="stat-card-icon icon-income">
+                        <i class="fas fa-arrow-down"></i>
+                    </div>
+                </div>
+                <div class="stat-card-value color-income" id="total-income">$0.00</div>
+                <div class="stat-card-subtitle" id="income-subtitle">Loading...</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-card-indicator indicator-expense"></div>
+                <div class="stat-card-header">
+                    <div class="stat-card-title">TOTAL EXPENSES</div>
+                    <div class="stat-card-icon icon-expense">
+                        <i class="fas fa-arrow-up"></i>
+                    </div>
+                </div>
+                <div class="stat-card-value color-expense" id="total-expenses">$0.00</div>
+                <div class="stat-card-subtitle" id="expenses-subtitle">Loading...</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-card-indicator indicator-transfer"></div>
+                <div class="stat-card-header">
+                    <div class="stat-card-title">TRANSFERS</div>
+                    <div class="stat-card-icon icon-transfer">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                </div>
+                <div class="stat-card-value color-transfer" id="total-transfers">$0.00</div>
+                <div class="stat-card-subtitle" id="transfers-subtitle">Loading...</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-card-indicator indicator-net"></div>
+                <div class="stat-card-header">
+                    <div class="stat-card-title">NET CASH FLOW</div>
+                    <div class="stat-card-icon icon-net">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+                <div class="stat-card-value color-net" id="net-cash-flow">$0.00</div>
+                <div class="stat-card-subtitle" id="net-subtitle">Loading...</div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="section">
+                <div class="section-header">
+                    <div>
+                        <h2 class="section-title">Cash Flow Analysis</h2>
+                        <p class="section-subtitle" id="chart-subtitle">Loading transaction data...</p>
+                    </div>
+                </div>
+                <div id="cash-flow-chart-container">
+                    <div class="loading" id="chart-loading">
+                        <div class="loading-spinner"></div>
+                        <div>Loading chart data...</div>
+                    </div>
+                    <div class="chart-container" id="chart-wrapper" style="display: none;">
+                        <canvas id="cash-flow-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <div>
+                        <h2 class="section-title">Top Spending Categories</h2>
+                        <p class="section-subtitle">Where your money goes</p>
+                    </div>
+                </div>
+                <div id="categories-container">
+                    <div class="loading" id="categories-loading">
+                        <div class="loading-spinner"></div>
+                        <div>Loading categories...</div>
+                    </div>
+                    <div class="category-list" id="category-list" style="display: none;">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section transactions-section">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Recent Transactions</h2>
+                    <p class="section-subtitle" id="transactions-subtitle">Loading transactions...</p>
+                </div>
+            </div>
+            <div id="transactions-container">
+                <div class="loading" id="transactions-loading">
+                    <div class="loading-spinner"></div>
+                    <div>Loading transactions...</div>
+                </div>
+                <div class="table-container" id="table-wrapper" style="display: none;">
+                    <table class="transactions-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Account</th>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactions-tbody">
+                            <!-- Will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div>Financial Dashboard v1.0</div>
+            <div>&copy; 2024 • All rights reserved</div>
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script>
+        // Sample data to use if CSV loading fails
+        const sampleTransactions = [
+            { date: '11/8/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'Contactless Interac purchase - 8827 COSTCO WHOLESAL', category: 'General Merchandise', type: 'withdrawal', amount: -13.64 },
+            { date: '11/8/24', account: 'CIBC Online Banking (Recommended) (Chequing)', description: 'Electronic Funds Transfer PREAUTHORIZED DEBIT BELL ALIANT', category: 'Transfers', type: 'transfer', amount: -115.92 },
+            { date: '11/7/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'Loan payment', category: null, type: 'withdrawal', amount: -1045.8 },
+            { date: '11/7/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'ATM Withdrawal', category: null, type: 'withdrawal', amount: -16.5 },
+            { date: '11/7/24', account: 'RBC Online Banking (RBC Cash Back Mastercard)', description: 'Credit Card Payment', category: 'Credit Card Payments', type: 'transfer', amount: 1000.00 },
+            { date: '11/6/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Restaurant Purchase', category: 'Restaurants/Dining', type: 'withdrawal', amount: -52.36 },
+            { date: '11/6/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Service Fee', category: 'Service Charges/Fees', type: 'fee', amount: -5.00 },
+            { date: '11/6/24', account: 'RBC Online Banking (RBC Cash Back Mastercard)', description: 'Gasoline Purchase', category: 'Gasoline/Fuel', type: 'withdrawal', amount: -46.79 },
+            { date: '11/5/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'ATM Withdrawal', category: null, type: 'withdrawal', amount: -200.00 },
+            { date: '11/5/24', account: 'CIBC Online Banking (Recommended) (Chequing)', description: 'Mobile Deposit', category: null, type: 'deposit', amount: 856.23 },
+            { date: '11/5/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Shopping - Clothing', category: 'Clothing/Shoes', type: 'withdrawal', amount: -89.32 },
+            { date: '11/4/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Gas Station Purchase', category: 'Automotive Expenses', type: 'withdrawal', amount: -67.85 },
+            { date: '11/4/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'Utility Bill Payment', category: 'Utilities', type: 'withdrawal', amount: -145.32 },
+            { date: '11/4/24', account: 'CIBC Online Banking (Recommended) (Savings)', description: 'Transfer from Savings', category: 'Transfers', type: 'transfer', amount: 500.00 },
+            { date: '11/3/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Credit Card Payment', category: 'Credit Card Payments', type: 'transfer', amount: 200.00 },
+            { date: '11/3/24', account: 'CIBC Online Banking (Recommended) (Chequing)', description: 'Grocery Shopping', category: 'Groceries', type: 'withdrawal', amount: -142.76 },
+            { date: '11/2/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'Restaurant Dining', category: 'Restaurants/Dining', type: 'withdrawal', amount: -56.78 },
+            { date: '11/2/24', account: 'RBC Online Banking (RBC Cash Back Mastercard)', description: 'Online Subscription', category: 'Online Services', type: 'withdrawal', amount: -14.99 },
+            { date: '11/1/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'Payroll Deposit', category: null, type: 'deposit', amount: 1808.68 },
+            { date: '11/1/24', account: 'CIBC Online Banking (Recommended) (Chequing)', description: 'Mortgage Payment', category: 'Transfers', type: 'transfer', amount: -1050.00 },
+            { date: '11/1/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Home Improvement Store', category: 'Home Improvement', type: 'withdrawal', amount: -264.39 }
+        ];
+
+        // Store transactions after loading
+        let transactions = [];
+        
+        // Display error message
+        function showError(message, containerId, showFallbackButton = false) {
+            const container = document.getElementById(containerId);
+            
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-container';
+            
+            let errorContent = `
+                <div class="error-title">Error</div>
+                <div class="error-details">${message}</div>
+            `;
+            
+            if (showFallbackButton) {
+                errorContent += `
+                    <button class="action-button" id="use-sample-data">Use Sample Data Instead</button>
+                `;
+            }
+            
+            errorDiv.innerHTML = errorContent;
+            container.innerHTML = '';
+            container.appendChild(errorDiv);
+            
+            if (showFallbackButton) {
+                document.getElementById('use-sample-data').addEventListener('click', function() {
+                    transactions = [...sampleTransactions];
+                    initializeDashboard();
+                });
+            }
+        }
+        
+        // Format currency
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 2
+            }).format(amount);
+        }
+        
+        // Get month name from data
+        function getMonthName(dateString) {
+            try {
+                const dateParts = dateString.split('/');
+                if (dateParts.length !== 3) {
+                    return 'November 2024'; // Default fallback
+                }
+                
+                const monthNum = parseInt(dateParts[0]);
+                const year = dateParts[2].length === 2 ? '20' + dateParts[2] : dateParts[2];
+                
+                const months = [
+                    'January', 'February', 'March', 'April', 'May', 'June',
+                    'July', 'August', 'September', 'October', 'November', 'December'
+                ];
+                
+                return months[monthNum - 1] + ' ' + year;
+            } catch (error) {
+                console.error('Error parsing date:', error);
+                return 'November 2024'; // Default fallback
+            }
+        }
+        
+        // Try to detect CSV column names
+        function detectColumnNames(firstRow) {
+            const poss
