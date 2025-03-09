@@ -4,7 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Financial Dashboard</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    rel="stylesheet"
+  />
   <style>
     /* Light Theme Design System */
     :root {
@@ -639,9 +642,8 @@
       { date: "11/1/24", account: "CIBC Online Banking (CIBC VISA)", description: "Home Improvement Store", category: "Home Improvement", type: "withdrawal", amount: -264.39 }
     ];
 
-    // Load CSV data (or use fallback data when running via file://)
+    // Load data – if running under file://, use fallback sample data immediately.
     document.addEventListener("DOMContentLoaded", function () {
-      // If running from file://, use fallback data
       if (window.location.protocol === "file:") {
         console.warn("Running from file://; using fallback sample data.");
         transactions = sampleTransactions;
