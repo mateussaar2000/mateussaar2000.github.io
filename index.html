@@ -434,11 +434,11 @@
       </div>
       <div class="dashboard-meta">
         <div class="dashboard-meta-item">
-          <div class="dashboard-meta-value">21</div>
+          <div class="dashboard-meta-value" id="transactions-count">21</div>
           <div class="dashboard-meta-label">Transactions</div>
         </div>
         <div class="dashboard-meta-item">
-          <div class="dashboard-meta-value">5</div>
+          <div class="dashboard-meta-value" id="accounts-count">5</div>
           <div class="dashboard-meta-label">Accounts</div>
         </div>
       </div>
@@ -454,7 +454,7 @@
             <i class="fas fa-arrow-down"></i>
           </div>
         </div>
-        <div class="card-value positive">$2,664.91</div>
+        <div class="card-value positive" id="total-income">$2,664.91</div>
         <div class="card-subtitle">November deposits</div>
       </div>
 
@@ -467,7 +467,7 @@
             <i class="fas fa-arrow-up"></i>
           </div>
         </div>
-        <div class="card-value negative">$3,933.12</div>
+        <div class="card-value negative" id="total-expenses">$3,933.12</div>
         <div class="card-subtitle">November withdrawals</div>
       </div>
 
@@ -480,7 +480,7 @@
             <i class="fas fa-exchange-alt"></i>
           </div>
         </div>
-        <div class="card-value neutral">$1,384.08</div>
+        <div class="card-value neutral" id="total-transfers">$1,384.08</div>
         <div class="card-subtitle">November transfers</div>
       </div>
 
@@ -493,7 +493,7 @@
             <i class="fas fa-chart-line"></i>
           </div>
         </div>
-        <div class="card-value positive">$115.87</div>
+        <div class="card-value positive" id="net-cash-flow">$115.87</div>
         <div class="card-subtitle">November net flow</div>
       </div>
     </div>
@@ -559,10 +559,44 @@
         const values = row.split(delimiter);
         const obj = {};
         headers.forEach((header, index) => {
-          obj[header.trim()] = values[index].trim();
+          obj[header.trim()] = values[index] ? values[index].trim() : "";
         });
         return obj;
       });
+    }
+
+    // Format number as currency
+    function formatCurrency(num) {
+      return num.toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+    }
+
+    // Update dashboard metrics (top cards and meta data)
+    function updateDashboardMetrics() {
+      const totalIncome = transactions
+        .filter(t => t.type === "deposit")
+        .reduce((sum, t) => sum + t.amount, 0);
+      const totalExpenses = Math.abs(
+        transactions.filter(t => t.type === "withdrawal")
+          .reduce((sum, t) => sum + t.amount, 0)
+      );
+      const totalTransfers = transactions
+        .filter(t => t.type === "transfer")
+        .reduce((sum, t) => sum + t.amount, 0);
+      const netCashFlow = totalIncome - totalExpenses + totalTransfers;
+
+      // Update card values
+      document.getElementById("total-income").innerText = formatCurrency(totalIncome);
+      document.getElementById("total-expenses").innerText = formatCurrency(totalExpenses);
+      document.getElementById("total-transfers").innerText = formatCurrency(totalTransfers);
+      document.getElementById("net-cash-flow").innerText = formatCurrency(netCashFlow);
+
+      // Update transaction count meta
+      document.getElementById("transactions-count").innerText = transactions.length;
     }
 
     // Chart.js Global Configuration
@@ -571,7 +605,7 @@
     Chart.defaults.plugins.legend.labels.usePointStyle = true;
     Chart.defaults.plugins.legend.labels.pointStyle = "circle";
 
-    // Accounts data remains hardcoded
+    // Hardcoded accounts data
     const accountsData = {
       labels: ["RBC Advantage", "CIBC Chequing", "RBC Mastercard", "CIBC VISA", "CIBC Savings"],
       balances: [-1718.09, 1118.11, -304.35, -1083.24, -1674.63]
@@ -580,7 +614,7 @@
     // Global transactions variable to hold CSV or fallback data
     let transactions = [];
 
-    // Fallback sample data if CSV fails (format matches the expected keys)
+    // Fallback sample data if CSV fails
     const sampleTransactions = [
       { date: "11/8/24", account: "RBC Online Banking (RBC Advantage Banking)", description: "Contactless Interac purchase - 8827 COSTCO WHOLESAL", category: "General Merchandise", type: "withdrawal", amount: -13.64 },
       { date: "11/8/24", account: "CIBC Online Banking (Chequing)", description: "Electronic Funds Transfer PREAUTHORIZED DEBIT BELL ALIANT", category: "Transfers", type: "transfer", amount: -115.92 },
@@ -620,6 +654,7 @@
             type: row["Type"].toLowerCase(),
             amount: parseFloat(row["Currency Amount"])
           }));
+          updateDashboardMetrics();
           initializeCashFlowChart();
           initializeAccountsChart();
           populateTransactionsTable();
@@ -638,6 +673,7 @@
           
           // Use fallback sample data
           transactions = sampleTransactions;
+          updateDashboardMetrics();
           initializeCashFlowChart();
           initializeAccountsChart();
           populateTransactionsTable();
@@ -648,19 +684,17 @@
     function initializeCashFlowChart() {
       const ctx = document.getElementById("cash-flow-chart").getContext("2d");
       const income = transactions
-        .filter((t) => t.type === "deposit")
+        .filter(t => t.type === "deposit")
         .reduce((sum, t) => sum + t.amount, 0);
       const expenses = Math.abs(
-        transactions
-          .filter((t) => t.type === "withdrawal")
+        transactions.filter(t => t.type === "withdrawal")
           .reduce((sum, t) => sum + t.amount, 0)
       );
       const transfers = transactions
-        .filter((t) => t.type === "transfer")
+        .filter(t => t.type === "transfer")
         .reduce((sum, t) => sum + t.amount, 0);
       const fees = Math.abs(
-        transactions
-          .filter((t) => t.type === "fee")
+        transactions.filter(t => t.type === "fee")
           .reduce((sum, t) => sum + t.amount, 0)
       );
 
@@ -704,7 +738,7 @@
                   const value = context.raw;
                   const total = context.dataset.data.reduce((a, b) => a + b, 0);
                   const percentage = Math.round((value / total) * 100);
-                  return `$${value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} (${percentage}%)`;
+                  return `${formatCurrency(value)} (${percentage}%)`;
                 }
               }
             }
@@ -724,10 +758,10 @@
           datasets: [{
             label: "Account Balance",
             data: accountsData.balances,
-            backgroundColor: accountsData.balances.map((balance) =>
+            backgroundColor: accountsData.balances.map(balance =>
               balance >= 0 ? "rgba(16, 185, 129, 0.7)" : "rgba(239, 68, 68, 0.7)"
             ),
-            borderColor: accountsData.balances.map((balance) =>
+            borderColor: accountsData.balances.map(balance =>
               balance >= 0 ? "rgb(16, 185, 129)" : "rgb(239, 68, 68)"
             ),
             borderWidth: 2,
@@ -767,7 +801,7 @@
                 label: function (context) {
                   const value = context.raw;
                   const prefix = value >= 0 ? "+" : "-";
-                  return `Balance: ${prefix}$${Math.abs(value).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                  return `Balance: ${prefix}${formatCurrency(Math.abs(value))}`;
                 },
                 footer: function (context) {
                   const value = context[0].raw;
@@ -783,15 +817,12 @@
     // Populate transactions table
     function populateTransactionsTable() {
       const tableBody = document.querySelector("#transactions-table tbody");
+      tableBody.innerHTML = ""; // Clear previous content
       const sortedTransactions = [...transactions].sort((a, b) => new Date(b.date) - new Date(a.date));
 
       sortedTransactions.forEach((transaction) => {
         const row = document.createElement("tr");
-        const formattedAmount = new Intl.NumberFormat("en-US", {
-          style: "currency",
-          currency: "USD",
-          minimumFractionDigits: 2
-        }).format(transaction.amount);
+        const formattedAmount = formatCurrency(transaction.amount);
 
         const accountName = transaction.account.split(" (")[0];
         const accountInitials = accountName.split(" ").map(word => word[0]).join("").substring(0, 2).toUpperCase();
