@@ -507,7 +507,8 @@
           <div class="chart-subtitle">Income vs Expenses by Transaction Type</div>
         </div>
         <div class="chart-container">
-          <canvas id="cash-flow-chart"></canvas>
+          <!-- Inline dimensions added as fallback -->
+          <canvas id="cash-flow-chart" style="width:100%; height:320px;"></canvas>
         </div>
       </div>
 
@@ -517,7 +518,7 @@
           <div class="chart-subtitle">Current Balance Across All Accounts</div>
         </div>
         <div class="chart-container">
-          <canvas id="accounts-chart"></canvas>
+          <canvas id="accounts-chart" style="width:100%; height:320px;"></canvas>
         </div>
       </div>
     </div>
@@ -555,6 +556,13 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
   <script>
     window.onload = function () {
+      if (typeof Chart === "undefined") {
+        console.error("Chart.js library did not load!");
+        return;
+      } else {
+        console.log("Chart.js library loaded successfully.");
+      }
+      
       // Data for dashboard transactions
       const transactions = [
         { date: "3/8/25", account: "RBC Online Banking (RBC Advantage Banking)", description: "Interac purchase", category: "chequing", type: "withdrawal", amount: -14.94 },
@@ -579,10 +587,10 @@
         { date: "3/3/25", account: "RBC Online Banking (RBC Advantage Banking)", description: "e-Transfer sent Kristof SHQKMN", category: "chequing", type: "withdrawal", amount: -30 }
       ];
 
-      // Populate the transactions table
+      console.log("Populating transaction table...");
       populateTransactionTable();
-
-      // Initialize charts based on transactions data
+      
+      console.log("Initializing charts...");
       initializeCharts();
 
       // --- Function Definitions ---
@@ -650,7 +658,6 @@
           balances: Object.values(accountMap).map((balance) => parseFloat(balance.toFixed(2))),
         };
 
-        // Create charts
         createCashFlowChart(transactions);
         createAccountsChart(accountsData);
       }
@@ -672,49 +679,54 @@
           .filter((t) => t.type === "transfer")
           .reduce((sum, t) => sum + Math.abs(t.amount), 0);
 
-        new Chart(ctx, {
-          type: "pie",
-          data: {
-            labels: ["Income", "Expenses", "Transfers"],
-            datasets: [
-              {
-                data: [income, expenses, transfers],
-                backgroundColor: [
-                  "rgba(16, 185, 129, 0.7)",
-                  "rgba(239, 68, 68, 0.7)",
-                  "rgba(14, 165, 233, 0.7)",
-                ],
-                borderColor: [
-                  "rgb(16, 185, 129)",
-                  "rgb(239, 68, 68)",
-                  "rgb(14, 165, 233)",
-                ],
-                borderWidth: 2,
-              },
-            ],
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                position: "top",
-                labels: { padding: 15 },
-              },
-              tooltip: {
-                callbacks: {
-                  label: function (context) {
-                    const value = context.raw;
-                    return "$" + value.toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    });
+        try {
+          new Chart(ctx, {
+            type: "pie",
+            data: {
+              labels: ["Income", "Expenses", "Transfers"],
+              datasets: [
+                {
+                  data: [income, expenses, transfers],
+                  backgroundColor: [
+                    "rgba(16, 185, 129, 0.7)",
+                    "rgba(239, 68, 68, 0.7)",
+                    "rgba(14, 165, 233, 0.7)",
+                  ],
+                  borderColor: [
+                    "rgb(16, 185, 129)",
+                    "rgb(239, 68, 68)",
+                    "rgb(14, 165, 233)",
+                  ],
+                  borderWidth: 2,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  position: "top",
+                  labels: { padding: 15 },
+                },
+                tooltip: {
+                  callbacks: {
+                    label: function (context) {
+                      const value = context.raw;
+                      return "$" + value.toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      });
+                    },
                   },
                 },
               },
             },
-          },
-        });
+          });
+          console.log("Cash flow chart created.");
+        } catch (error) {
+          console.error("Error creating cash flow chart:", error);
+        }
       }
 
       function createAccountsChart(accountsData) {
@@ -724,61 +736,66 @@
           return;
         }
         const ctx = accountsCanvas.getContext("2d");
-        new Chart(ctx, {
-          type: "bar",
-          data: {
-            labels: accountsData.labels,
-            datasets: [
-              {
-                label: "Account Balance",
-                data: accountsData.balances,
-                backgroundColor: accountsData.balances.map((balance) =>
-                  balance >= 0 ? "rgba(16, 185, 129, 0.7)" : "rgba(239, 68, 68, 0.7)"
-                ),
-                borderColor: accountsData.balances.map((balance) =>
-                  balance >= 0 ? "rgb(16, 185, 129)" : "rgb(239, 68, 68)"
-                ),
-                borderWidth: 2,
-                borderRadius: 6,
+        try {
+          new Chart(ctx, {
+            type: "bar",
+            data: {
+              labels: accountsData.labels,
+              datasets: [
+                {
+                  label: "Account Balance",
+                  data: accountsData.balances,
+                  backgroundColor: accountsData.balances.map((balance) =>
+                    balance >= 0 ? "rgba(16, 185, 129, 0.7)" : "rgba(239, 68, 68, 0.7)"
+                  ),
+                  borderColor: accountsData.balances.map((balance) =>
+                    balance >= 0 ? "rgb(16, 185, 129)" : "rgb(239, 68, 68)"
+                  ),
+                  borderWidth: 2,
+                  borderRadius: 6,
+                },
+              ],
+            },
+            options: {
+              indexAxis: "y",
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                x: {
+                  grid: { color: "rgba(226, 232, 240, 0.5)" },
+                  ticks: {
+                    callback: function (value) {
+                      if (value === 0) return "$0";
+                      return (value > 0 ? "+$" : "-$") + Math.abs(value).toLocaleString();
+                    },
+                  },
+                },
+                y: { grid: { display: false } },
               },
-            ],
-          },
-          options: {
-            indexAxis: "y",
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              x: {
-                grid: { color: "rgba(226, 232, 240, 0.5)" },
-                ticks: {
-                  callback: function (value) {
-                    if (value === 0) return "$0";
-                    return (value > 0 ? "+$" : "-$") + Math.abs(value).toLocaleString();
+              plugins: {
+                legend: { display: false },
+                tooltip: {
+                  callbacks: {
+                    title: function (context) {
+                      return context[0].label + " Account";
+                    },
+                    label: function (context) {
+                      const value = context.raw;
+                      const prefix = value >= 0 ? "+" : "-";
+                      return "Balance: " + prefix + "$" + Math.abs(value).toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      });
+                    },
                   },
                 },
               },
-              y: { grid: { display: false } },
             },
-            plugins: {
-              legend: { display: false },
-              tooltip: {
-                callbacks: {
-                  title: function (context) {
-                    return context[0].label + " Account";
-                  },
-                  label: function (context) {
-                    const value = context.raw;
-                    const prefix = value >= 0 ? "+" : "-";
-                    return "Balance: " + prefix + "$" + Math.abs(value).toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    });
-                  },
-                },
-              },
-            },
-          },
-        });
+          });
+          console.log("Accounts chart created.");
+        } catch (error) {
+          console.error("Error creating accounts chart:", error);
+        }
       }
     };
   </script>
