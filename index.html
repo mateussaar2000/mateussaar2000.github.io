@@ -211,14 +211,13 @@
                 <span>Financial Dashboard</span>
               </a>
             </li>
-            <!-- New navigation item for ontario_vs_calgary.html -->
+            <!-- Hard-coded static pages -->
             <li class="nav-item">
               <a href="#" class="nav-link" data-page="ontario_vs_calgary">
                 <span class="nav-icon"><i class="fas fa-chart-line"></i></span>
                 <span>Ontario vs Calgary</span>
               </a>
             </li>
-            <!-- Hard-coded additional pages -->
             <li class="nav-item">
               <a href="#" class="nav-link" data-page="Ship_Technical_Data_Network_Light">
                 <span class="nav-icon"><i class="fas fa-sun"></i></span>
@@ -231,7 +230,7 @@
                 <span>Ship Technical Data Network Dark</span>
               </a>
             </li>
-            <!-- Additional pages will be automatically added here by JavaScript -->
+            <!-- Additional pages will be appended below if not already present -->
           </ul>
         </div>
       </nav>
@@ -269,7 +268,6 @@
       const sidebarToggle = document.getElementById("sidebar-toggle");
       const pageTitle = document.getElementById("page-title");
       const contentContainer = document.getElementById("content");
-      const navLinks = document.querySelectorAll(".nav-link");
       const pageNav = document.getElementById("page-nav");
 
       // Toggle sidebar on mobile
@@ -295,49 +293,36 @@
 
           if (pageName === "home") {
             const homeTemplate = document.getElementById("home-template");
-            if (homeTemplate) {
-              contentContainer.innerHTML = homeTemplate.innerHTML;
-            } else {
-              contentContainer.innerHTML = `
-                <div>
-                  <h2>Welcome to My GitHub Pages Website</h2>
-                  <p>Select a page from the sidebar to view its content.</p>
-                  <p>To add a new page, simply create an HTML file and add it to your GitHub repository.</p>
-                </div>
-              `;
-            }
+            contentContainer.innerHTML = homeTemplate ? homeTemplate.innerHTML : `
+              <div>
+                <h2>Welcome to My GitHub Pages Website</h2>
+                <p>Select a page from the sidebar to view its content.</p>
+                <p>To add a new page, simply create an HTML file and add it to your GitHub repository.</p>
+              </div>
+            `;
             pageTitle.textContent = "Home";
             return;
           }
 
           const response = await fetch(`${pageName}.html`);
-
           if (!response.ok) {
             throw new Error(`Failed to load page: ${response.status}`);
           }
-
           const html = await response.text();
 
           // Extract title
           const titleMatch = html.match(/<title>(.*?)<\/title>/i);
-          const title = titleMatch ? titleMatch[1] : pageName;
-          pageTitle.textContent = title;
+          pageTitle.textContent = titleMatch ? titleMatch[1] : pageName;
 
           // Extract body content
           const bodyMatch = html.match(/<body[^>]*>([\s\S]*)<\/body>/i);
-          const bodyContent = bodyMatch ? bodyMatch[1] : html;
-
-          // Update content
-          contentContainer.innerHTML = bodyContent;
+          contentContainer.innerHTML = bodyMatch ? bodyMatch[1] : html;
 
           // Handle styles
           const styleMatch = html.match(/<style[^>]*>([\s\S]*?)<\/style>/gi);
           if (styleMatch) {
-            // Remove any existing page-specific styles
             const oldStyles = document.querySelectorAll(`style[data-page="${pageName}"]`);
             oldStyles.forEach((style) => style.remove());
-
-            // Add new styles
             styleMatch.forEach((styleTag) => {
               const styleContent = styleTag.match(/<style[^>]*>([\s\S]*?)<\/style>/i)[1];
               const style = document.createElement("style");
@@ -378,29 +363,10 @@
         }
       }
 
-      // Initialize site
-      function initSite() {
-        // Get page from URL hash or default to home
-        const pageName = window.location.hash.substring(1) || "home";
-
-        // Update active nav link
-        updateActiveNavLink(pageName);
-
-        // Load initial page content
-        loadPageContent(pageName);
-
-        // Check for available pages
-        fetchAvailablePages();
-
-        // Ensure the correct page is active on initial load
-        if (pageName === "home") {
-          document.querySelector('.nav-link[data-page="home"]').classList.add("active");
-        }
-      }
-
       // Update the active navigation link
       function updateActiveNavLink(pageName) {
-        navLinks.forEach((link) => {
+        const links = document.querySelectorAll(".nav-link");
+        links.forEach(link => {
           if (link.getAttribute("data-page") === pageName) {
             link.classList.add("active");
           } else {
@@ -415,20 +381,10 @@
         if (link) {
           event.preventDefault();
           const pageName = link.getAttribute("data-page");
-
-          // Update URL hash
           window.location.hash = pageName;
-
-          // Update active state
           updateActiveNavLink(pageName);
-
-          // Load page content
           loadPageContent(pageName);
-
-          // Close sidebar on mobile
-          if (window.innerWidth <= 768) {
-            sidebar.classList.remove("active");
-          }
+          if (window.innerWidth <= 768) sidebar.classList.remove("active");
         }
       });
 
@@ -439,13 +395,12 @@
         loadPageContent(pageName);
       });
 
-      // Check for available pages
+      // Update navigation with pages from pages.json without removing hard-coded items
       async function fetchAvailablePages() {
         try {
           const response = await fetch("pages.json");
           if (response.ok) {
             const pages = await response.json();
-            console.log("Loaded pages from pages.json:", pages);
             updateNavigation(pages);
           } else {
             console.warn("Could not load pages.json, using default navigation");
@@ -455,37 +410,37 @@
         }
       }
 
-      // Update navigation with available pages
+      // Modified updateNavigation: Append only new pages.
       function updateNavigation(pages = []) {
         if (!pages.length) return;
-        console.log("Updating navigation with pages:", pages);
-
-        // Clear existing navigation
-        pageNav.innerHTML = "";
-
-        // Add all pages from pages.json
         pages.forEach((page) => {
-          const item = document.createElement("li");
-          item.className = "nav-item";
-
-          // Determine icon (default to fa-file if not specified)
-          const icon = page.icon || "fa-file";
-
-          item.innerHTML = `
-            <a href="#" class="nav-link" data-page="${page.id}">
-              <span class="nav-icon"><i class="fas ${icon}"></i></span>
-              <span>${page.title}</span>
-            </a>
-          `;
-          pageNav.appendChild(item);
+          // Check if the page already exists in the navigation
+          if (!document.querySelector(`.nav-link[data-page="${page.id}"]`)) {
+            const item = document.createElement("li");
+            item.className = "nav-item";
+            const icon = page.icon || "fa-file";
+            item.innerHTML = `
+              <a href="#" class="nav-link" data-page="${page.id}">
+                <span class="nav-icon"><i class="fas ${icon}"></i></span>
+                <span>${page.title}</span>
+              </a>
+            `;
+            pageNav.appendChild(item);
+          }
         });
-
-        // Update active link
+        // Refresh active link state after appending new items.
         const pageName = window.location.hash.substring(1) || "home";
         updateActiveNavLink(pageName);
       }
 
       // Initialize the site
+      function initSite() {
+        const pageName = window.location.hash.substring(1) || "home";
+        updateActiveNavLink(pageName);
+        loadPageContent(pageName);
+        fetchAvailablePages();
+      }
+
       initSite();
     });
   </script>
