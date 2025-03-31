@@ -3,24 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ship Technical Data Network Graph showing various metrics and performance indicators.">
+    <meta name="keywords" content="Ship Data, Technical Data, Network Graph, D3.js, Visualization">
     <title>Ship Technical Data Network Graph</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
 
-
+        /* Reset and base styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Inter', -apple-system, sans-serif;
             background-color: #ffffff;
             color: #334155;
-            margin: 0;
-            padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -31,7 +32,8 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
-        
+
+        /* Container styles */
         .container {
             width: 100%;
             height: 100%;
@@ -39,7 +41,7 @@
             flex-direction: column;
             align-items: center;
         }
-        
+
         h1 {
             color: #1e293b;
             margin: 20px 0;
@@ -48,7 +50,7 @@
             letter-spacing: -0.02em;
             font-size: 1.75rem;
         }
-        
+
         .controls {
             margin: 10px 0 20px;
             display: flex;
@@ -59,7 +61,7 @@
             width: 90%;
             max-width: 900px;
         }
-        
+
         button {
             background-color: #f1f5f9;
             color: #334155;
@@ -73,30 +75,30 @@
             font-family: 'Inter', sans-serif;
             box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
-        
+
         button:hover {
             background-color: #e2e8f0;
             color: #1e293b;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        
+
         #graph {
             width: 100%;
             height: calc(100% - 120px);
             position: relative;
         }
-        
+
         .node {
             cursor: pointer;
             transition: all 0.2s ease;
         }
-        
+
         .link {
             stroke: #cbd5e1;
             stroke-opacity: 0.6;
             transition: all 0.2s ease;
         }
-        
+
         .node-label text {
             pointer-events: none;
             text-anchor: middle;
@@ -104,7 +106,7 @@
             font-weight: 400;
             fill: #1e293b;
         }
-        
+
         .value-label {
             pointer-events: none;
             font-size: 0.75rem;
@@ -115,7 +117,7 @@
             transition: opacity 0.2s ease;
             font-weight: 400;
         }
-        
+
         .tooltip {
             position: absolute;
             padding: 12px 16px;
@@ -131,26 +133,26 @@
             font-size: 0.875rem;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
-        
+
         .tooltip h3 {
             margin: 0 0 8px 0;
             color: #0ea5e9;
             font-weight: 500;
             font-size: 1rem;
         }
-        
+
         .tooltip p {
             margin: 0 0 6px 0;
             line-height: 1.5;
             color: #64748b;
             font-weight: 400;
         }
-        
+
         .tooltip p strong {
             color: #334155;
             font-weight: 500;
         }
-        
+
         .legend {
             position: absolute;
             top: 20px;
@@ -163,21 +165,21 @@
             font-size: 0.875rem;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
-        
+
         .legend h3 {
             margin: 0 0 12px 0;
             font-weight: 500;
             font-size: 1rem;
             color: #334155;
         }
-        
+
         .legend-item {
             display: flex;
             align-items: center;
             margin-bottom: 8px;
             color: #64748b;
         }
-        
+
         .legend-color {
             width: 12px;
             height: 12px;
@@ -190,13 +192,13 @@
     <div class="container">
         <h1>Ship Technical Data Network Graph</h1>
         <div class="controls">
-            <button id="resetZoom">Reset View</button>
-            <button id="toggleLabels">Toggle All Values</button>
-            <button id="showGeneral">General Characteristics</button>
-            <button id="showOperational">Operational Parameters</button>
-            <button id="showFuel">Fuel and Consumption</button>
-            <button id="showEnvironmental">Environmental Performance</button>
-            <button id="showEconomic">Economic Metrics</button>
+            <button id="resetZoom" aria-label="Reset View">Reset View</button>
+            <button id="toggleLabels" aria-label="Toggle All Values">Toggle All Values</button>
+            <button id="showGeneral" aria-label="Show General Characteristics">General Characteristics</button>
+            <button id="showOperational" aria-label="Show Operational Parameters">Operational Parameters</button>
+            <button id="showFuel" aria-label="Show Fuel and Consumption">Fuel and Consumption</button>
+            <button id="showEnvironmental" aria-label="Show Environmental Performance">Environmental Performance</button>
+            <button id="showEconomic" aria-label="Show Economic Metrics">Economic Metrics</button>
         </div>
         <div id="graph"></div>
         <div class="tooltip"></div>
@@ -282,7 +284,7 @@
             ],
             links: []
         };
-        
+
         // Create links
         // Root to categories
         data.links.push(
@@ -292,16 +294,16 @@
             { source: "Ship Data", target: "Environmental Performance", value: 1 },
             { source: "Ship Data", target: "Economic Metrics", value: 1 }
         );
-        
+
         // Categories to metrics
         data.nodes.filter(node => node.group === "metric").forEach(node => {
             data.links.push({ source: node.category, target: node.id, value: 1 });
         });
-        
+
         // Set up D3 visualization
         const width = window.innerWidth;
         const height = window.innerHeight - 150;
-        
+
         // Create SVG
         const svg = d3.select("#graph")
             .append("svg")
@@ -311,7 +313,7 @@
             .call(d3.zoom().on("zoom", (event) => {
                 g.attr("transform", event.transform);
             }));
-        
+
         // Add subtle grid pattern to background
         svg.append("defs")
             .append("pattern")
@@ -324,7 +326,7 @@
             .attr("fill", "none")
             .attr("stroke", "#e2e8f0")
             .attr("stroke-width", 1);
-        
+
         svg.append("rect")
             .attr("width", width)
             .attr("height", height)
@@ -332,17 +334,17 @@
             .attr("y", -height / 2)
             .attr("fill", "url(#grid)")
             .attr("opacity", 0.5);
-        
+
         const g = svg.append("g");
-        
+
         // Color scheme - Tailwind vibrant colors
         const colorScale = d3.scaleOrdinal()
             .domain(["General Characteristics", "Operational Parameters", "Fuel and Consumption", "Environmental Performance", "Economic Metrics"])
             .range(["#0ea5e9", "#22c55e", "#ef4444", "#8b5cf6", "#f59e0b"]);
-        
+
         // Create tooltip
         const tooltip = d3.select(".tooltip");
-        
+
         // Create force simulation
         const simulation = d3.forceSimulation(data.nodes)
             .force("link", d3.forceLink(data.links).id(d => d.id).distance(d => {
@@ -362,14 +364,14 @@
                 if (d.group === "category") return 60;
                 return 50;
             }));
-        
+
         // Create links with gradient effect
         const linkGroups = g.append("g")
             .attr("class", "links")
             .selectAll("g")
             .data(data.links)
             .enter().append("g");
-        
+
         // Create linear gradients for each link
         linkGroups.append("linearGradient")
             .attr("id", (d, i) => `link-gradient-${i}`)
@@ -394,14 +396,14 @@
                     })
                     .attr("stop-opacity", 0.7);
             });
-        
+
         // Create the actual link paths
         const link = linkGroups.append("path")
             .attr("class", "link")
             .attr("stroke", (d, i) => `url(#link-gradient-${i})`)
             .attr("stroke-width", 1.5)
             .attr("fill", "none");
-        
+
         // Node groups - keeping the node and its labels together
         const nodeGroups = g.append("g")
             .attr("class", "node-groups")
@@ -413,14 +415,14 @@
                 .on("start", dragstarted)
                 .on("drag", dragged)
                 .on("end", dragended));
-        
+
         // Add circles to node groups with glowing effect
         const node = nodeGroups.append("g")
             .attr("class", "node-container");
-        
+
         // Add glow filter
         const defs = svg.append("defs");
-        
+
         // Glow filter for nodes
         const glowFilter = defs.append("filter")
             .attr("id", "glow")
@@ -428,17 +430,17 @@
             .attr("y", "-50%")
             .attr("width", "200%")
             .attr("height", "200%");
-            
+
         glowFilter.append("feGaussianBlur")
             .attr("stdDeviation", "2")
             .attr("result", "coloredBlur");
-            
+
         const glowMerge = glowFilter.append("feMerge");
         glowMerge.append("feMergeNode")
             .attr("in", "coloredBlur");
         glowMerge.append("feMergeNode")
             .attr("in", "SourceGraphic");
-        
+
         // Add circle base
         node.append("circle")
             .attr("class", d => `node-base ${d.group}`)
@@ -459,7 +461,7 @@
                 return 2;
             })
             .attr("filter", "url(#glow)");
-        
+
         // Add inner circle
         node.append("circle")
             .attr("class", d => `node-inner ${d.group}`)
@@ -474,11 +476,11 @@
                 return colorScale(d.category);
             })
             .attr("opacity", 0.3);
-        
+
         // Node labels as groups (to handle multiline text)
         const nodeLabelGroups = nodeGroups.append("g")
             .attr("class", "node-label");
-        
+
         // Root node label
         nodeLabelGroups.filter(d => d.group === "root")
             .append("text")
@@ -487,19 +489,19 @@
             .attr("font-size", "16px")
             .attr("text-anchor", "middle")
             .attr("dominant-baseline", "middle");
-        
+
         // Category node labels
         nodeLabelGroups.filter(d => d.group === "category")
             .each(function(d) {
                 const words = d.id.split(' ');
                 const el = d3.select(this);
-                
+
                 // Split into two lines if more than one word
                 if (words.length > 1) {
                     const midpoint = Math.ceil(words.length / 2);
                     const firstLine = words.slice(0, midpoint).join(' ');
                     const secondLine = words.slice(midpoint).join(' ');
-                    
+
                     el.append("text")
                         .text(firstLine)
                         .attr("dy", "-0.3em")
@@ -507,7 +509,7 @@
                         .attr("font-size", "12px")
                         .attr("text-anchor", "middle")
                         .attr("font-weight", "500");
-                    
+
                     el.append("text")
                         .text(secondLine)
                         .attr("dy", "0.9em")
@@ -525,22 +527,22 @@
                         .attr("font-weight", "500");
                 }
             });
-        
+
         // Metric node labels (above the circle)
         nodeLabelGroups.filter(d => d.group === "metric")
             .each(function(d) {
                 const words = d.id.split(' ');
                 const el = d3.select(this);
-                
+
                 // Position above the node
                 el.attr("transform", "translate(0, -28)");
-                
+
                 // For longer labels, split into multiple lines
                 if (words.length > 2) {
                     const lines = [];
                     let currentLine = [];
                     let currentLength = 0;
-                    
+
                     // Split into lines of reasonable length
                     words.forEach(word => {
                         if (currentLength + word.length > 15 && currentLine.length > 0) {
@@ -552,11 +554,11 @@
                             currentLength += word.length + 1;
                         }
                     });
-                    
+
                     if (currentLine.length > 0) {
                         lines.push(currentLine.join(' '));
                     }
-                    
+
                     // Add each line
                     lines.forEach((line, i) => {
                         const yOffset = (i - (lines.length - 1) / 2) * 1.2;
@@ -576,14 +578,14 @@
                         .attr("text-anchor", "middle");
                 }
             });
-        
+
         // Value labels (below the circle)
         nodeGroups.filter(d => d.group === "metric")
             .append("text")
             .attr("class", "value-label")
             .text(d => d.value)
             .attr("y", 30);
-        
+
         // Update simulation with curved links
         simulation.on("tick", () => {
             // Update links with curve
@@ -591,56 +593,56 @@
                 const dx = d.target.x - d.source.x;
                 const dy = d.target.y - d.source.y;
                 const dr = Math.sqrt(dx * dx + dy * dy) * 1.2; // curve strength
-                
+
                 return `M${d.source.x},${d.source.y}A${dr},${dr} 0 0,1 ${d.target.x},${d.target.y}`;
             });
-            
+
             nodeGroups.attr("transform", d => `translate(${d.x}, ${d.y})`);
         });
-        
+
         // Interaction functions
         function dragstarted(event, d) {
             if (!event.active) simulation.alphaTarget(0.3).restart();
             d.fx = d.x;
             d.fy = d.y;
         }
-        
+
         function dragged(event, d) {
             d.fx = event.x;
             d.fy = event.y;
         }
-        
+
         function dragended(event, d) {
             if (!event.active) simulation.alphaTarget(0);
             d.fx = null;
             d.fy = null;
         }
-        
+
         // Node hover effects
         nodeGroups.on("mouseover", function(event, d) {
             const relatedLinks = data.links.filter(link => 
                 link.source.id === d.id || link.target.id === d.id);
             const relatedNodes = new Set();
-            
+
             relatedLinks.forEach(link => {
                 relatedNodes.add(link.source.id);
                 relatedNodes.add(link.target.id);
             });
-            
+
             d3.selectAll(".link")
                 .style("stroke-opacity", link => 
                     relatedLinks.includes(link) ? 0.8 : 0.1)
                 .style("stroke-width", link => 
                     relatedLinks.includes(link) ? 3 : 1);
-            
+
             d3.selectAll(".node-base")
                 .style("opacity", node => 
                     relatedNodes.has(node.id) || node.id === d.id ? 1 : 0.2);
-            
+
             d3.selectAll(".node-inner")
                 .style("opacity", node => 
                     relatedNodes.has(node.id) || node.id === d.id ? 0.8 : 0.1);
-            
+
             // Show tooltip
             if (d.group === "metric") {
                 tooltip
@@ -648,7 +650,7 @@
                     .html(`<h3>${d.id}</h3><p><strong>Value:</strong> ${d.value}</p><p><strong>Category:</strong> ${d.category}</p>`)
                     .style("left", (event.pageX + 15) + "px")
                     .style("top", (event.pageY - 28) + "px");
-                
+
                 // Show the value labels of neighboring nodes
                 d3.selectAll(".value-label")
                     .style("opacity", node => 
@@ -659,7 +661,7 @@
                     .html(`<h3>${d.id}</h3><p>Click to highlight all metrics in this category</p>`)
                     .style("left", (event.pageX + 15) + "px")
                     .style("top", (event.pageY - 28) + "px");
-                
+
                 // Show all value labels in this category
                 d3.selectAll(".value-label")
                     .style("opacity", node => 
@@ -670,15 +672,15 @@
             d3.selectAll(".link")
                 .style("stroke-opacity", 0.4)
                 .style("stroke-width", 1.5);
-            
+
             d3.selectAll(".node-base")
                 .style("opacity", 1);
-            
+
             d3.selectAll(".node-inner")
                 .style("opacity", 0.5);
-            
+
             tooltip.style("opacity", 0);
-            
+
             // Hide all value labels unless toggle is on
             if (!showAllValues) {
                 d3.selectAll(".value-label").style("opacity", 0);
@@ -689,40 +691,40 @@
                 highlightCategory(d.id);
             }
         });
-        
+
         // Button interactions
         let showAllValues = false;
-        
+
         d3.select("#resetZoom").on("click", function() {
             svg.transition()
                 .duration(750)
                 .call(d3.zoom().transform, d3.zoomIdentity);
-            
+
             // Reset all highlights
             d3.selectAll(".node-base").style("opacity", 1);
             d3.selectAll(".node-inner").style("opacity", 0.5);
             d3.selectAll(".link").style("stroke-opacity", 0.4).style("stroke-width", 1.5);
             d3.selectAll(".value-label").style("opacity", showAllValues ? 1 : 0);
         });
-        
+
         d3.select("#toggleLabels").on("click", function() {
             showAllValues = !showAllValues;
             d3.selectAll(".value-label")
                 .style("opacity", showAllValues ? 1 : 0);
         });
-        
+
         function highlightCategory(category) {
             // Reset all nodes and links
             d3.selectAll(".node-base")
                 .style("opacity", node => 
                     node.group === "root" || node.id === category || 
                     (node.group === "metric" && node.category === category) ? 1 : 0.1);
-            
+
             d3.selectAll(".node-inner")
                 .style("opacity", node => 
                     node.group === "root" || node.id === category || 
                     (node.group === "metric" && node.category === category) ? 0.8 : 0.1);
-            
+
             d3.selectAll(".link")
                 .style("stroke-opacity", link => 
                     (link.source.id === "Ship Data" && link.target.id === category) ||
@@ -730,33 +732,33 @@
                 .style("stroke-width", link => 
                     (link.source.id === "Ship Data" && link.target.id === category) ||
                     (link.source.id === category) ? 3 : 1);
-            
+
             // Show value labels for the category
             d3.selectAll(".value-label")
                 .style("opacity", node => 
                     node.category === category ? 1 : 0);
         }
-        
+
         d3.select("#showGeneral").on("click", function() {
             highlightCategory("General Characteristics");
         });
-        
+
         d3.select("#showOperational").on("click", function() {
             highlightCategory("Operational Parameters");
         });
-        
+
         d3.select("#showFuel").on("click", function() {
             highlightCategory("Fuel and Consumption");
         });
-        
+
         d3.select("#showEnvironmental").on("click", function() {
             highlightCategory("Environmental Performance");
         });
-        
+
         d3.select("#showEconomic").on("click", function() {
             highlightCategory("Economic Metrics");
         });
-        
+
         // Initial force layout settings
         simulation.alpha(1).restart();
     </script>
