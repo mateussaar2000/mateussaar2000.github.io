@@ -1,760 +1,648 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ship Technical Data Network Graph</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background-color: #0f172a;
-            color: #e2e8f0;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-            font-weight: 400;
-        }
-        
-        .container {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        h1 {
-            color: #f8fafc;
-            margin: 20px 0;
-            text-align: center;
-            font-weight: 500;
-            letter-spacing: -0.02em;
-            font-size: 1.75rem;
-        }
-        
-        .controls {
-            margin: 10px 0 20px;
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            justify-content: center;
-            z-index: 10;
-            width: 90%;
-            max-width: 900px;
-        }
-        
-        button {
-            background-color: #1e293b;
-            color: #e2e8f0;
-            border: 1px solid #334155;
-            padding: 8px 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 400;
-            font-size: 0.875rem;
-            transition: all 0.2s ease;
-            font-family: 'Inter', sans-serif;
-        }
-        
-        button:hover {
-            background-color: #334155;
-            color: #f8fafc;
-        }
-        
-        #graph {
-            width: 100%;
-            height: calc(100% - 120px);
-            position: relative;
-        }
-        
-        .node {
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .link {
-            stroke: #334155;
-            stroke-opacity: 0.4;
-            transition: all 0.2s ease;
-        }
-        
-        .node-label text {
-            pointer-events: none;
-            text-anchor: middle;
-            dominant-baseline: middle;
-            font-weight: 400;
-            fill: #f8fafc;
-        }
-        
-        .value-label {
-            pointer-events: none;
-            font-size: 0.75rem;
-            text-anchor: middle;
-            dominant-baseline: middle;
-            fill: #cbd5e1;
-            opacity: 0;
-            transition: opacity 0.2s ease;
-            font-weight: 300;
-        }
-        
-        .tooltip {
-            position: absolute;
-            padding: 12px 16px;
-            background-color: #1e293b;
-            color: #f8fafc;
-            border-radius: 4px;
-            pointer-events: none;
-            opacity: 0;
-            transition: all 0.2s ease;
-            max-width: 280px;
-            z-index: 1000;
-            border: 1px solid #334155;
-            font-size: 0.875rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        
-        .tooltip h3 {
-            margin: 0 0 8px 0;
-            color: #38bdf8;
-            font-weight: 500;
-            font-size: 1rem;
-        }
-        
-        .tooltip p {
-            margin: 0 0 6px 0;
-            line-height: 1.5;
-            color: #cbd5e1;
-            font-weight: 400;
-        }
-        
-        .tooltip p strong {
-            color: #f8fafc;
-            font-weight: 500;
-        }
-        
-        .legend {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: #1e293b;
-            padding: 16px;
-            border-radius: 4px;
-            border: 1px solid #334155;
-            z-index: 10;
-            font-size: 0.875rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        
-        .legend h3 {
-            margin: 0 0 12px 0;
-            font-weight: 500;
-            font-size: 1rem;
-            color: #f8fafc;
-        }
-        
-        .legend-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 8px;
-            color: #cbd5e1;
-        }
-        
-        .legend-color {
-            width: 12px;
-            height: 12px;
-            border-radius: 3px;
-            margin-right: 12px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ship Technical Data Network Graph</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+    html, body {
+      height: 100%;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background-color: #ffffff;
+      color: #334155;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      font-weight: 400;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    
+    .container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    h1 {
+      color: #1e293b;
+      margin: 20px 0;
+      text-align: center;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      font-size: 1.75rem;
+    }
+    
+    .controls {
+      margin: 10px 0 20px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      z-index: 10;
+      width: 90%;
+      max-width: 900px;
+    }
+    
+    button {
+      background-color: #f1f5f9;
+      color: #334155;
+      border: 1px solid #cbd5e1;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.875rem;
+      transition: all 0.2s ease;
+      font-family: 'Inter', sans-serif;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+    
+    button:hover {
+      background-color: #e2e8f0;
+      color: #1e293b;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    #graph {
+      width: 100%;
+      height: calc(100% - 120px);
+      position: relative;
+    }
+    
+    .node {
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .link {
+      stroke: #cbd5e1;
+      stroke-opacity: 0.6;
+      transition: all 0.2s ease;
+    }
+    
+    .node-label text {
+      pointer-events: none;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      font-weight: 400;
+      fill: #1e293b;
+    }
+    
+    .value-label {
+      pointer-events: none;
+      font-size: 0.75rem;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      fill: #64748b;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      font-weight: 400;
+    }
+    
+    .tooltip {
+      position: absolute;
+      padding: 12px 16px;
+      background-color: #ffffff;
+      color: #334155;
+      border-radius: 4px;
+      pointer-events: none;
+      opacity: 0;
+      transition: all 0.2s ease;
+      max-width: 280px;
+      z-index: 1000;
+      border: 1px solid #e2e8f0;
+      font-size: 0.875rem;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+    
+    .tooltip h3 {
+      margin: 0 0 8px 0;
+      color: #0ea5e9;
+      font-weight: 500;
+      font-size: 1rem;
+    }
+    
+    .tooltip p {
+      margin: 0 0 6px 0;
+      line-height: 1.5;
+      color: #64748b;
+      font-weight: 400;
+    }
+    
+    .tooltip p strong {
+      color: #334155;
+      font-weight: 500;
+    }
+    
+    .legend {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: #ffffff;
+      padding: 16px;
+      border-radius: 4px;
+      border: 1px solid #e2e8f0;
+      z-index: 10;
+      font-size: 0.875rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    
+    .legend h3 {
+      margin: 0 0 12px 0;
+      font-weight: 500;
+      font-size: 1rem;
+      color: #334155;
+    }
+    
+    .legend-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      color: #64748b;
+    }
+    
+    .legend-color {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      margin-right: 12px;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Ship Technical Data Network Graph</h1>
-        <div class="controls">
-            <button id="resetZoom">Reset View</button>
-            <button id="toggleLabels">Toggle All Values</button>
-            <button id="showGeneral">General Characteristics</button>
-            <button id="showOperational">Operational Parameters</button>
-            <button id="showFuel">Fuel and Consumption</button>
-            <button id="showEnvironmental">Environmental Performance</button>
-            <button id="showEconomic">Economic Metrics</button>
-        </div>
-        <div id="graph"></div>
-        <div class="tooltip"></div>
-        <div class="legend">
-            <h3>Categories</h3>
-            <div class="legend-item">
-                <div class="legend-color" style="background-color: #38bdf8;"></div>
-                <div>General Characteristics</div>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background-color: #4ade80;"></div>
-                <div>Operational Parameters</div>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background-color: #fb7185;"></div>
-                <div>Fuel and Consumption</div>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background-color: #a78bfa;"></div>
-                <div>Environmental Performance</div>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background-color: #fbbf24;"></div>
-                <div>Economic Metrics</div>
-            </div>
-        </div>
+  <div class="container">
+    <h1>Ship Technical Data Network Graph</h1>
+    <div class="controls">
+      <button id="resetZoom">Reset View</button>
+      <button id="toggleLabels">Toggle All Values</button>
+      <button id="showGeneral">General Characteristics</button>
+      <button id="showOperational">Operational Parameters</button>
+      <button id="showFuel">Fuel and Consumption</button>
+      <button id="showEnvironmental">Environmental Performance</button>
+      <button id="showEconomic">Economic Metrics</button>
     </div>
+    <div id="graph"></div>
+    <div class="tooltip"></div>
+    <div class="legend">
+      <h3>Categories</h3>
+      <div class="legend-item">
+        <div class="legend-color" style="background-color: #38bdf8;"></div>
+        <div>General Characteristics</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background-color: #4ade80;"></div>
+        <div>Operational Parameters</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background-color: #fb7185;"></div>
+        <div>Fuel and Consumption</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background-color: #a78bfa;"></div>
+        <div>Environmental Performance</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background-color: #fbbf24;"></div>
+        <div>Economic Metrics</div>
+      </div>
+    </div>
+  </div>
 
-    <script>
-        // Data preparation
-        const data = {
-            nodes: [
-                // Root node
-                { id: "Ship Data", group: "root", level: 0 },
-                
-                // Category nodes
-                { id: "General Characteristics", group: "category", level: 1 },
-                { id: "Operational Parameters", group: "category", level: 1 },
-                { id: "Fuel and Consumption", group: "category", level: 1 },
-                { id: "Environmental Performance", group: "category", level: 1 },
-                { id: "Economic Metrics", group: "category", level: 1 },
-                
-                // General Characteristics
-                { id: "Cargo Capacity", group: "metric", level: 2, value: "170,000 m³", category: "General Characteristics" },
-                { id: "Length Overall (LOA)", group: "metric", level: 2, value: "298 m", category: "General Characteristics" },
-                { id: "Beam", group: "metric", level: 2, value: "51 m", category: "General Characteristics" },
-                { id: "Depth", group: "metric", level: 2, value: "27 m", category: "General Characteristics" },
-                { id: "Design Draft", group: "metric", level: 2, value: "12 m", category: "General Characteristics" },
-                { id: "Maximum Draft", group: "metric", level: 2, value: "12.5 m", category: "General Characteristics" },
-                { id: "Displacement", group: "metric", level: 2, value: "121,427.65 tonnes", category: "General Characteristics" },
-                { id: "Crew Complement", group: "metric", level: 2, value: "44", category: "General Characteristics" },
-                { id: "Design Life", group: "metric", level: 2, value: "40 years", category: "General Characteristics" },
-                
-                // Operational Parameters
-                { id: "Design Speed", group: "metric", level: 2, value: "20 knots", category: "Operational Parameters" },
-                { id: "Route Distance (One Way)", group: "metric", level: 2, value: "5,061.12 nm (9,500 km)", category: "Operational Parameters" },
-                { id: "Journey Duration (One Way)", group: "metric", level: 2, value: "11 days", category: "Operational Parameters" },
-                { id: "Round Trip Duration", group: "metric", level: 2, value: "26 days", category: "Operational Parameters" },
-                { id: "Annual Trips", group: "metric", level: 2, value: "13", category: "Operational Parameters" },
-                { id: "Design Wave Height", group: "metric", level: 2, value: "10 feet", category: "Operational Parameters" },
-                
-                // Fuel and Consumption
-                { id: "Daily Fuel Consumption (Diesel)", group: "metric", level: 2, value: "188 tons/day", category: "Fuel and Consumption" },
-                { id: "Hourly Fuel Consumption (Diesel)", group: "metric", level: 2, value: "7.83 tons/hour", category: "Fuel and Consumption" },
-                { id: "Total Fuel per Trip (Diesel)", group: "metric", level: 2, value: "2,068 tons", category: "Fuel and Consumption" },
-                { id: "Hourly Fuel Consumption (LNG)", group: "metric", level: 2, value: "4.4 tons/hour", category: "Fuel and Consumption" },
-                { id: "Total Fuel per Trip (LNG)", group: "metric", level: 2, value: "1,161.6 tons", category: "Fuel and Consumption" },
-                { id: "Maximum Continuous Rating (MCR)", group: "metric", level: 2, value: "29,574.71 kW", category: "Fuel and Consumption" },
-                
-                // Environmental Performance
-                { id: "CII (Diesel)", group: "metric", level: 2, value: "9.73", category: "Environmental Performance" },
-                { id: "CII Rating (Diesel)", group: "metric", level: 2, value: "C", category: "Environmental Performance" },
-                { id: "CII (LNG)", group: "metric", level: 2, value: "4.87", category: "Environmental Performance" },
-                { id: "CII Rating (LNG)", group: "metric", level: 2, value: "A", category: "Environmental Performance" },
-                
-                // Economic Metrics
-                { id: "Revenue per Trip", group: "metric", level: 2, value: "12,334,170 CAD", category: "Economic Metrics" },
-                { id: "Annual Revenue", group: "metric", level: 2, value: "160,344,210 CAD", category: "Economic Metrics" },
-                { id: "Fuel Cost per Trip (Diesel)", group: "metric", level: 2, value: "1,114,259.49 CAD", category: "Economic Metrics" },
-                { id: "Annual Fuel Cost (Diesel)", group: "metric", level: 2, value: "14,485,373.37 CAD", category: "Economic Metrics" },
-                { id: "Fuel Cost per Trip (LNG)", group: "metric", level: 2, value: "677,190.40 CAD", category: "Economic Metrics" },
-                { id: "Annual Fuel Cost (LNG)", group: "metric", level: 2, value: "8,803,475.20 CAD", category: "Economic Metrics" }
-            ],
-            links: []
-        };
-        
-        // Create links
-        // Root to categories
-        data.links.push(
-            { source: "Ship Data", target: "General Characteristics", value: 1 },
-            { source: "Ship Data", target: "Operational Parameters", value: 1 },
-            { source: "Ship Data", target: "Fuel and Consumption", value: 1 },
-            { source: "Ship Data", target: "Environmental Performance", value: 1 },
-            { source: "Ship Data", target: "Economic Metrics", value: 1 }
-        );
-        
-        // Categories to metrics
-        data.nodes.filter(node => node.group === "metric").forEach(node => {
-            data.links.push({ source: node.category, target: node.id, value: 1 });
-        });
-        
-        // Set up D3 visualization
-        const width = window.innerWidth;
-        const height = window.innerHeight - 150;
-        
-        // Create SVG
-        const svg = d3.select("#graph")
-            .append("svg")
-            .attr("width", "100%")
-            .attr("height", "100%")
-            .attr("viewBox", [-width / 2, -height / 2, width, height])
-            .call(d3.zoom().on("zoom", (event) => {
-                g.attr("transform", event.transform);
-            }));
-        
-        // Add subtle grid pattern to background
-        svg.append("defs")
-            .append("pattern")
-            .attr("id", "grid")
-            .attr("width", 40)
-            .attr("height", 40)
-            .attr("patternUnits", "userSpaceOnUse")
-            .append("path")
-            .attr("d", "M 40 0 L 0 0 0 40")
-            .attr("fill", "none")
-            .attr("stroke", "#1e293b")
-            .attr("stroke-width", 1);
-        
-        svg.append("rect")
-            .attr("width", width)
-            .attr("height", height)
-            .attr("x", -width / 2)
-            .attr("y", -height / 2)
-            .attr("fill", "url(#grid)")
-            .attr("opacity", 0.3);
-        
-        const g = svg.append("g");
-        
-        // Color scheme - Tailwind blues, greens, reds, purples, yellows
-        const colorScale = d3.scaleOrdinal()
-            .domain(["General Characteristics", "Operational Parameters", "Fuel and Consumption", "Environmental Performance", "Economic Metrics"])
-            .range(["#38bdf8", "#4ade80", "#fb7185", "#a78bfa", "#fbbf24"]);
-        
-        // Create tooltip
-        const tooltip = d3.select(".tooltip");
-        
-        // Create force simulation
-        const simulation = d3.forceSimulation(data.nodes)
-            .force("link", d3.forceLink(data.links).id(d => d.id).distance(d => {
-                if (d.source.group === "root") return 150;
-                return 120;
-            }))
-            .force("charge", d3.forceManyBody().strength(d => {
-                if (d.group === "root") return -1500;
-                if (d.group === "category") return -1000;
-                return -500;
-            }))
-            .force("x", d3.forceX().strength(0.1))
-            .force("y", d3.forceY().strength(0.1))
-            .force("center", d3.forceCenter(0, 0))
-            .force("collide", d3.forceCollide(d => {
-                if (d.group === "root") return 80;
-                if (d.group === "category") return 60;
-                return 50;
-            }));
-        
-        // Create links with gradient effect
-        const linkGroups = g.append("g")
-            .attr("class", "links")
-            .selectAll("g")
-            .data(data.links)
-            .enter().append("g");
-        
-        // Create linear gradients for each link
-        linkGroups.append("linearGradient")
-            .attr("id", (d, i) => `link-gradient-${i}`)
-            .attr("gradientUnits", "userSpaceOnUse")
-            .each(function(d) {
-                const gradient = d3.select(this);
-                
-                gradient.append("stop")
-                    .attr("offset", "0%")
-                    .attr("stop-color", () => {
-                        if (d.source.group === "root") return "#94a3b8";
-                        return colorScale(d.source.id);
-                    });
-                
-                gradient.append("stop")
-                    .attr("offset", "100%")
-                    .attr("stop-color", () => {
-                        if (d.target.group === "root") return "#94a3b8";
-                        if (d.target.group === "category") return colorScale(d.target.id);
-                        return colorScale(d.target.category);
-                    });
-            });
-        
-        // Create the actual link paths
-        const link = linkGroups.append("path")
-            .attr("class", "link")
-            .attr("stroke", (d, i) => `url(#link-gradient-${i})`)
-            .attr("stroke-width", 1.5)
-            .attr("fill", "none");
-        
-        // Node groups - keeping the node and its labels together
-        const nodeGroups = g.append("g")
-            .attr("class", "node-groups")
-            .selectAll("g")
-            .data(data.nodes)
-            .enter().append("g")
-            .attr("class", d => `node-group ${d.group}`)
-            .call(d3.drag()
-                .on("start", dragstarted)
-                .on("drag", dragged)
-                .on("end", dragended));
-        
-        // Add circles to node groups with glowing effect
-        const node = nodeGroups.append("g")
-            .attr("class", "node-container");
-        
-        // Add glow filter
-        const defs = svg.append("defs");
-        
-        // Glow filter for nodes
-        const glowFilter = defs.append("filter")
-            .attr("id", "glow")
-            .attr("x", "-50%")
-            .attr("y", "-50%")
-            .attr("width", "200%")
-            .attr("height", "200%");
-            
-        glowFilter.append("feGaussianBlur")
-            .attr("stdDeviation", "2.5")
-            .attr("result", "coloredBlur");
-            
-        const glowMerge = glowFilter.append("feMerge");
-        glowMerge.append("feMergeNode")
-            .attr("in", "coloredBlur");
-        glowMerge.append("feMergeNode")
-            .attr("in", "SourceGraphic");
-        
-        // Add circle base
-        node.append("circle")
-            .attr("class", d => `node-base ${d.group}`)
-            .attr("r", d => {
-                if (d.group === "root") return 45;
-                if (d.group === "category") return 35;
-                return 22;
-            })
-            .attr("fill", d => {
-                if (d.group === "root") return "#0f172a";
-                if (d.group === "category") return "#0f172a";
-                return "#0f172a";
-            })
-            .attr("stroke", d => {
-                if (d.group === "root") return "#cbd5e1";
-                if (d.group === "category") return colorScale(d.id);
-                return colorScale(d.category);
-            })
-            .attr("stroke-width", d => {
-                if (d.group === "root") return 3;
-                if (d.group === "category") return 2.5;
-                return 2;
-            })
-            .attr("filter", "url(#glow)");
-        
-        // Add inner circle
-        node.append("circle")
-            .attr("class", d => `node-inner ${d.group}`)
-            .attr("r", d => {
-                if (d.group === "root") return 35;
-                if (d.group === "category") return 25;
-                return 15;
-            })
-            .attr("fill", d => {
-                if (d.group === "root") return "#1e293b";
-                if (d.group === "category") return colorScale(d.id);
-                return colorScale(d.category);
-            })
-            .attr("opacity", 0.5);
-        
-        // Node labels as groups (to handle multiline text)
-        const nodeLabelGroups = nodeGroups.append("g")
-            .attr("class", "node-label");
-        
-        // Root node label
-        nodeLabelGroups.filter(d => d.group === "root")
-            .append("text")
-            .text("Ship Data")
-            .attr("fill", "#f8fafc")
-            .attr("font-size", "16px")
+  <script>
+    // Data preparation
+    const data = {
+      nodes: [
+        // Root node
+        { id: "Ship Data", group: "root", level: 0 },
+        // Category nodes
+        { id: "General Characteristics", group: "category", level: 1 },
+        { id: "Operational Parameters", group: "category", level: 1 },
+        { id: "Fuel and Consumption", group: "category", level: 1 },
+        { id: "Environmental Performance", group: "category", level: 1 },
+        { id: "Economic Metrics", group: "category", level: 1 },
+        // General Characteristics metrics
+        { id: "Cargo Capacity", group: "metric", level: 2, value: "170,000 m³", category: "General Characteristics" },
+        { id: "Length Overall (LOA)", group: "metric", level: 2, value: "298 m", category: "General Characteristics" },
+        { id: "Beam", group: "metric", level: 2, value: "51 m", category: "General Characteristics" },
+        { id: "Depth", group: "metric", level: 2, value: "27 m", category: "General Characteristics" },
+        { id: "Design Draft", group: "metric", level: 2, value: "12 m", category: "General Characteristics" },
+        { id: "Maximum Draft", group: "metric", level: 2, value: "12.5 m", category: "General Characteristics" },
+        { id: "Displacement", group: "metric", level: 2, value: "121,427.65 tonnes", category: "General Characteristics" },
+        { id: "Crew Complement", group: "metric", level: 2, value: "44", category: "General Characteristics" },
+        { id: "Design Life", group: "metric", level: 2, value: "40 years", category: "General Characteristics" },
+        // Operational Parameters metrics
+        { id: "Design Speed", group: "metric", level: 2, value: "20 knots", category: "Operational Parameters" },
+        { id: "Route Distance (One Way)", group: "metric", level: 2, value: "5,061.12 nm (9,500 km)", category: "Operational Parameters" },
+        { id: "Journey Duration (One Way)", group: "metric", level: 2, value: "11 days", category: "Operational Parameters" },
+        { id: "Round Trip Duration", group: "metric", level: 2, value: "26 days", category: "Operational Parameters" },
+        { id: "Annual Trips", group: "metric", level: 2, value: "13", category: "Operational Parameters" },
+        { id: "Design Wave Height", group: "metric", level: 2, value: "10 feet", category: "Operational Parameters" },
+        // Fuel and Consumption metrics
+        { id: "Daily Fuel Consumption (Diesel)", group: "metric", level: 2, value: "188 tons/day", category: "Fuel and Consumption" },
+        { id: "Hourly Fuel Consumption (Diesel)", group: "metric", level: 2, value: "7.83 tons/hour", category: "Fuel and Consumption" },
+        { id: "Total Fuel per Trip (Diesel)", group: "metric", level: 2, value: "2,068 tons", category: "Fuel and Consumption" },
+        { id: "Hourly Fuel Consumption (LNG)", group: "metric", level: 2, value: "4.4 tons/hour", category: "Fuel and Consumption" },
+        { id: "Total Fuel per Trip (LNG)", group: "metric", level: 2, value: "1,161.6 tons", category: "Fuel and Consumption" },
+        { id: "Maximum Continuous Rating (MCR)", group: "metric", level: 2, value: "29,574.71 kW", category: "Fuel and Consumption" },
+        // Environmental Performance metrics
+        { id: "CII (Diesel)", group: "metric", level: 2, value: "9.73", category: "Environmental Performance" },
+        { id: "CII Rating (Diesel)", group: "metric", level: 2, value: "C", category: "Environmental Performance" },
+        { id: "CII (LNG)", group: "metric", level: 2, value: "4.87", category: "Environmental Performance" },
+        { id: "CII Rating (LNG)", group: "metric", level: 2, value: "A", category: "Environmental Performance" },
+        // Economic Metrics metrics
+        { id: "Revenue per Trip", group: "metric", level: 2, value: "12,334,170 CAD", category: "Economic Metrics" },
+        { id: "Annual Revenue", group: "metric", level: 2, value: "160,344,210 CAD", category: "Economic Metrics" },
+        { id: "Fuel Cost per Trip (Diesel)", group: "metric", level: 2, value: "1,114,259.49 CAD", category: "Economic Metrics" },
+        { id: "Annual Fuel Cost (Diesel)", group: "metric", level: 2, value: "14,485,373.37 CAD", category: "Economic Metrics" },
+        { id: "Fuel Cost per Trip (LNG)", group: "metric", level: 2, value: "677,190.40 CAD", category: "Economic Metrics" },
+        { id: "Annual Fuel Cost (LNG)", group: "metric", level: 2, value: "8,803,475.20 CAD", category: "Economic Metrics" }
+      ],
+      links: []
+    };
+
+    // Create links: from root to each category...
+    data.links.push(
+      { source: "Ship Data", target: "General Characteristics", value: 1 },
+      { source: "Ship Data", target: "Operational Parameters", value: 1 },
+      { source: "Ship Data", target: "Fuel and Consumption", value: 1 },
+      { source: "Ship Data", target: "Environmental Performance", value: 1 },
+      { source: "Ship Data", target: "Economic Metrics", value: 1 }
+    );
+    // ... and from each category to its metrics.
+    data.nodes.filter(node => node.group === "metric").forEach(node => {
+      data.links.push({ source: node.category, target: node.id, value: 1 });
+    });
+
+    // Set up D3 visualization dimensions
+    const width = window.innerWidth;
+    const height = window.innerHeight - 150;
+
+    // Create SVG and group elements
+    const svg = d3.select("#graph")
+      .append("svg")
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .attr("viewBox", [-width / 2, -height / 2, width, height]);
+
+    // Create the group that will be zoomed and panned.
+    const g = svg.append("g");
+
+    // Attach zoom behavior to the SVG.
+    svg.call(d3.zoom().on("zoom", (event) => {
+      g.attr("transform", event.transform);
+    }));
+
+    // Add subtle grid pattern to background
+    svg.append("defs")
+      .append("pattern")
+      .attr("id", "grid")
+      .attr("width", 40)
+      .attr("height", 40)
+      .attr("patternUnits", "userSpaceOnUse")
+      .append("path")
+      .attr("d", "M 40 0 L 0 0 0 40")
+      .attr("fill", "none")
+      .attr("stroke", "#e2e8f0")
+      .attr("stroke-width", 1);
+
+    svg.append("rect")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("x", -width / 2)
+      .attr("y", -height / 2)
+      .attr("fill", "url(#grid)")
+      .attr("opacity", 0.5);
+
+    // Color scale for categories
+    const colorScale = d3.scaleOrdinal()
+      .domain(["General Characteristics", "Operational Parameters", "Fuel and Consumption", "Environmental Performance", "Economic Metrics"])
+      .range(["#0ea5e9", "#22c55e", "#ef4444", "#8b5cf6", "#f59e0b"]);
+
+    // Create tooltip
+    const tooltip = d3.select(".tooltip");
+
+    // Create force simulation
+    const simulation = d3.forceSimulation(data.nodes)
+      .force("link", d3.forceLink(data.links).id(d => d.id).distance(d => d.source.group === "root" ? 150 : 120))
+      .force("charge", d3.forceManyBody().strength(d => {
+        if (d.group === "root") return -1500;
+        if (d.group === "category") return -1000;
+        return -500;
+      }))
+      .force("x", d3.forceX().strength(0.1))
+      .force("y", d3.forceY().strength(0.1))
+      .force("center", d3.forceCenter(0, 0))
+      .force("collide", d3.forceCollide(d => {
+        if (d.group === "root") return 80;
+        if (d.group === "category") return 60;
+        return 50;
+      }));
+
+    // Create links with gradient effect
+    const linkGroups = g.append("g")
+      .attr("class", "links")
+      .selectAll("g")
+      .data(data.links)
+      .enter().append("g");
+
+    // Create linear gradients for each link
+    linkGroups.append("linearGradient")
+      .attr("id", (d, i) => `link-gradient-${i}`)
+      .attr("gradientUnits", "userSpaceOnUse")
+      .each(function(d) {
+        const gradient = d3.select(this);
+        gradient.append("stop")
+          .attr("offset", "0%")
+          .attr("stop-color", () => d.source.group === "root" ? "#94a3b8" : colorScale(d.source.id))
+          .attr("stop-opacity", 0.7);
+        gradient.append("stop")
+          .attr("offset", "100%")
+          .attr("stop-color", () => {
+            if (d.target.group === "root") return "#94a3b8";
+            if (d.target.group === "category") return colorScale(d.target.id);
+            return colorScale(d.target.category);
+          })
+          .attr("stop-opacity", 0.7);
+      });
+
+    // Create the actual link paths
+    const link = linkGroups.append("path")
+      .attr("class", "link")
+      .attr("stroke", (d, i) => `url(#link-gradient-${i})`)
+      .attr("stroke-width", 1.5)
+      .attr("fill", "none");
+
+    // Create node groups
+    const nodeGroups = g.append("g")
+      .attr("class", "node-groups")
+      .selectAll("g")
+      .data(data.nodes)
+      .enter().append("g")
+      .attr("class", d => `node-group ${d.group}`)
+      .call(d3.drag()
+        .on("start", dragstarted)
+        .on("drag", dragged)
+        .on("end", dragended)
+      );
+
+    // Append node container
+    const node = nodeGroups.append("g")
+      .attr("class", "node-container");
+
+    // Add glow filter for nodes
+    const defs = svg.append("defs");
+    const glowFilter = defs.append("filter")
+      .attr("id", "glow")
+      .attr("x", "-50%")
+      .attr("y", "-50%")
+      .attr("width", "200%")
+      .attr("height", "200%");
+    glowFilter.append("feGaussianBlur")
+      .attr("stdDeviation", "2")
+      .attr("result", "coloredBlur");
+    const glowMerge = glowFilter.append("feMerge");
+    glowMerge.append("feMergeNode").attr("in", "coloredBlur");
+    glowMerge.append("feMergeNode").attr("in", "SourceGraphic");
+
+    // Add node circles (base)
+    node.append("circle")
+      .attr("class", d => `node-base ${d.group}`)
+      .attr("r", d => d.group === "root" ? 45 : d.group === "category" ? 35 : 22)
+      .attr("fill", "#ffffff")
+      .attr("stroke", d => d.group === "root" ? "#64748b" : d.group === "category" ? colorScale(d.id) : colorScale(d.category))
+      .attr("stroke-width", d => d.group === "root" ? 3 : d.group === "category" ? 2.5 : 2)
+      .attr("filter", "url(#glow)");
+
+    // Add inner circle
+    node.append("circle")
+      .attr("class", d => `node-inner ${d.group}`)
+      .attr("r", d => d.group === "root" ? 35 : d.group === "category" ? 25 : 15)
+      .attr("fill", d => d.group === "root" ? "#f8fafc" : d.group === "category" ? colorScale(d.id) : colorScale(d.category))
+      .attr("opacity", 0.3);
+
+    // Add node labels
+    const nodeLabelGroups = nodeGroups.append("g")
+      .attr("class", "node-label");
+
+    // Label for root node
+    nodeLabelGroups.filter(d => d.group === "root")
+      .append("text")
+      .text("Ship Data")
+      .attr("fill", "#334155")
+      .attr("font-size", "16px")
+      .attr("text-anchor", "middle")
+      .attr("dominant-baseline", "middle");
+
+    // Labels for category nodes (split into two lines if necessary)
+    nodeLabelGroups.filter(d => d.group === "category")
+      .each(function(d) {
+        const words = d.id.split(' ');
+        const el = d3.select(this);
+        if (words.length > 1) {
+          const midpoint = Math.ceil(words.length / 2);
+          const firstLine = words.slice(0, midpoint).join(' ');
+          const secondLine = words.slice(midpoint).join(' ');
+          el.append("text")
+            .text(firstLine)
+            .attr("dy", "-0.3em")
+            .attr("fill", "#334155")
+            .attr("font-size", "12px")
             .attr("text-anchor", "middle")
-            .attr("dominant-baseline", "middle");
-        
-        // Category node labels
-        nodeLabelGroups.filter(d => d.group === "category")
-            .each(function(d) {
-                const words = d.id.split(' ');
-                const el = d3.select(this);
-                
-                // Split into two lines if more than one word
-                if (words.length > 1) {
-                    const midpoint = Math.ceil(words.length / 2);
-                    const firstLine = words.slice(0, midpoint).join(' ');
-                    const secondLine = words.slice(midpoint).join(' ');
-                    
-                    el.append("text")
-                        .text(firstLine)
-                        .attr("dy", "-0.3em")
-                        .attr("fill", "#f8fafc")
-                        .attr("font-size", "12px")
-                        .attr("text-anchor", "middle")
-                        .attr("font-weight", "400");
-                    
-                    el.append("text")
-                        .text(secondLine)
-                        .attr("dy", "0.9em")
-                        .attr("fill", "#f8fafc")
-                        .attr("font-size", "12px")
-                        .attr("text-anchor", "middle")
-                        .attr("font-weight", "400");
-                } else {
-                    el.append("text")
-                        .text(d.id)
-                        .attr("fill", "#f8fafc")
-                        .attr("font-size", "12px")
-                        .attr("text-anchor", "middle")
-                        .attr("dominant-baseline", "middle")
-                        .attr("font-weight", "400");
-                }
-            });
-        
-        // Metric node labels (above the circle)
-        nodeLabelGroups.filter(d => d.group === "metric")
-            .each(function(d) {
-                const words = d.id.split(' ');
-                const el = d3.select(this);
-                
-                // Position above the node
-                el.attr("transform", "translate(0, -28)");
-                
-                // For longer labels, split into multiple lines
-                if (words.length > 2) {
-                    const lines = [];
-                    let currentLine = [];
-                    let currentLength = 0;
-                    
-                    // Split into lines of reasonable length
-                    words.forEach(word => {
-                        if (currentLength + word.length > 15 && currentLine.length > 0) {
-                            lines.push(currentLine.join(' '));
-                            currentLine = [word];
-                            currentLength = word.length;
-                        } else {
-                            currentLine.push(word);
-                            currentLength += word.length + 1;
-                        }
-                    });
-                    
-                    if (currentLine.length > 0) {
-                        lines.push(currentLine.join(' '));
-                    }
-                    
-                    // Add each line
-                    lines.forEach((line, i) => {
-                        const yOffset = (i - (lines.length - 1) / 2) * 1.2;
-                        el.append("text")
-                            .text(line)
-                            .attr("dy", `${yOffset}em`)
-                            .attr("fill", "#cbd5e1")
-                            .attr("font-size", "10px")
-                            .attr("text-anchor", "middle");
-                    });
-                } else {
-                    // Short labels can be on a single line
-                    el.append("text")
-                        .text(d.id)
-                        .attr("fill", "#cbd5e1")
-                        .attr("font-size", "10px")
-                        .attr("text-anchor", "middle");
-                }
-            });
-        
-        // Value labels (below the circle)
-        nodeGroups.filter(d => d.group === "metric")
-            .append("text")
-            .attr("class", "value-label")
-            .text(d => d.value)
-            .attr("y", 30);
-        
-        // Update simulation with curved links
-        simulation.on("tick", () => {
-            // Update links with curve
-            link.attr("d", d => {
-                const dx = d.target.x - d.source.x;
-                const dy = d.target.y - d.source.y;
-                const dr = Math.sqrt(dx * dx + dy * dy) * 1.2; // curve strength
-                
-                return `M${d.source.x},${d.source.y}A${dr},${dr} 0 0,1 ${d.target.x},${d.target.y}`;
-            });
-            
-            nodeGroups.attr("transform", d => `translate(${d.x}, ${d.y})`);
-        });
-        
-        // Interaction functions
-        function dragstarted(event, d) {
-            if (!event.active) simulation.alphaTarget(0.3).restart();
-            d.fx = d.x;
-            d.fy = d.y;
+            .attr("font-weight", "500");
+          el.append("text")
+            .text(secondLine)
+            .attr("dy", "0.9em")
+            .attr("fill", "#334155")
+            .attr("font-size", "12px")
+            .attr("text-anchor", "middle")
+            .attr("font-weight", "500");
+        } else {
+          el.append("text")
+            .text(d.id)
+            .attr("fill", "#334155")
+            .attr("font-size", "12px")
+            .attr("text-anchor", "middle")
+            .attr("dominant-baseline", "middle")
+            .attr("font-weight", "500");
         }
-        
-        function dragged(event, d) {
-            d.fx = event.x;
-            d.fy = event.y;
-        }
-        
-        function dragended(event, d) {
-            if (!event.active) simulation.alphaTarget(0);
-            d.fx = null;
-            d.fy = null;
-        }
-        
-        // Node hover effects
-        nodeGroups.on("mouseover", function(event, d) {
-            const relatedLinks = data.links.filter(link => 
-                link.source.id === d.id || link.target.id === d.id);
-            const relatedNodes = new Set();
-            
-            relatedLinks.forEach(link => {
-                relatedNodes.add(link.source.id);
-                relatedNodes.add(link.target.id);
-            });
-            
-            d3.selectAll(".link")
-                .style("stroke-opacity", link => 
-                    relatedLinks.includes(link) ? 0.8 : 0.1)
-                .style("stroke-width", link => 
-                    relatedLinks.includes(link) ? 3 : 1);
-            
-            d3.selectAll(".node-base")
-                .style("opacity", node => 
-                    relatedNodes.has(node.id) || node.id === d.id ? 1 : 0.2);
-            
-            d3.selectAll(".node-inner")
-                .style("opacity", node => 
-                    relatedNodes.has(node.id) || node.id === d.id ? 0.8 : 0.1);
-            
-            // Show tooltip
-            if (d.group === "metric") {
-                tooltip
-                    .style("opacity", 1)
-                    .html(`<h3>${d.id}</h3><p><strong>Value:</strong> ${d.value}</p><p><strong>Category:</strong> ${d.category}</p>`)
-                    .style("left", (event.pageX + 15) + "px")
-                    .style("top", (event.pageY - 28) + "px");
-                
-                // Show the value labels of neighboring nodes
-                d3.selectAll(".value-label")
-                    .style("opacity", node => 
-                        node.category === d.category ? 1 : 0);
-            } else if (d.group === "category") {
-                tooltip
-                    .style("opacity", 1)
-                    .html(`<h3>${d.id}</h3><p>Click to highlight all metrics in this category</p>`)
-                    .style("left", (event.pageX + 15) + "px")
-                    .style("top", (event.pageY - 28) + "px");
-                
-                // Show all value labels in this category
-                d3.selectAll(".value-label")
-                    .style("opacity", node => 
-                        node.category === d.id ? 1 : 0);
+      });
+
+    // Labels for metric nodes (positioned above)
+    nodeLabelGroups.filter(d => d.group === "metric")
+      .each(function(d) {
+        const words = d.id.split(' ');
+        const el = d3.select(this);
+        el.attr("transform", "translate(0, -28)");
+        if (words.length > 2) {
+          const lines = [];
+          let currentLine = [];
+          let currentLength = 0;
+          words.forEach(word => {
+            if (currentLength + word.length > 15 && currentLine.length > 0) {
+              lines.push(currentLine.join(' '));
+              currentLine = [word];
+              currentLength = word.length;
+            } else {
+              currentLine.push(word);
+              currentLength += word.length + 1;
             }
-        })
-        .on("mouseout", function() {
-            d3.selectAll(".link")
-                .style("stroke-opacity", 0.4)
-                .style("stroke-width", 1.5);
-            
-            d3.selectAll(".node-base")
-                .style("opacity", 1);
-            
-            d3.selectAll(".node-inner")
-                .style("opacity", 0.5);
-            
-            tooltip.style("opacity", 0);
-            
-            // Hide all value labels unless toggle is on
-            if (!showAllValues) {
-                d3.selectAll(".value-label").style("opacity", 0);
-            }
-        })
-        .on("click", function(event, d) {
-            if (d.group === "category") {
-                highlightCategory(d.id);
-            }
-        });
-        
-        // Button interactions
-        let showAllValues = false;
-        
-        d3.select("#resetZoom").on("click", function() {
-            svg.transition()
-                .duration(750)
-                .call(d3.zoom().transform, d3.zoomIdentity);
-            
-            // Reset all highlights
-            d3.selectAll(".node-base").style("opacity", 1);
-            d3.selectAll(".node-inner").style("opacity", 0.5);
-            d3.selectAll(".link").style("stroke-opacity", 0.4).style("stroke-width", 1.5);
-            d3.selectAll(".value-label").style("opacity", showAllValues ? 1 : 0);
-        });
-        
-        d3.select("#toggleLabels").on("click", function() {
-            showAllValues = !showAllValues;
-            d3.selectAll(".value-label")
-                .style("opacity", showAllValues ? 1 : 0);
-        });
-        
-        function highlightCategory(category) {
-            // Reset all nodes and links
-            d3.selectAll(".node-base")
-                .style("opacity", node => 
-                    node.group === "root" || node.id === category || 
-                    (node.group === "metric" && node.category === category) ? 1 : 0.1);
-            
-            d3.selectAll(".node-inner")
-                .style("opacity", node => 
-                    node.group === "root" || node.id === category || 
-                    (node.group === "metric" && node.category === category) ? 0.8 : 0.1);
-            
-            d3.selectAll(".link")
-                .style("stroke-opacity", link => 
-                    (link.source.id === "Ship Data" && link.target.id === category) ||
-                    (link.source.id === category) ? 0.8 : 0.1)
-                .style("stroke-width", link => 
-                    (link.source.id === "Ship Data" && link.target.id === category) ||
-                    (link.source.id === category) ? 3 : 1);
-            
-            // Show value labels for the category
-            d3.selectAll(".value-label")
-                .style("opacity", node => 
-                    node.category === category ? 1 : 0);
+          });
+          if (currentLine.length > 0) lines.push(currentLine.join(' '));
+          lines.forEach((line, i) => {
+            const yOffset = (i - (lines.length - 1) / 2) * 1.2;
+            el.append("text")
+              .text(line)
+              .attr("dy", `${yOffset}em`)
+              .attr("fill", "#334155")
+              .attr("font-size", "10px")
+              .attr("text-anchor", "middle");
+          });
+        } else {
+          el.append("text")
+            .text(d.id)
+            .attr("fill", "#334155")
+            .attr("font-size", "10px")
+            .attr("text-anchor", "middle");
         }
-        
-        d3.select("#showGeneral").on("click", function() {
-            highlightCategory("General Characteristics");
-        });
-        
-        d3.select("#showOperational").on("click", function() {
-            highlightCategory("Operational Parameters");
-        });
-        
-        d3.select("#showFuel").on("click", function() {
-            highlightCategory("Fuel and Consumption");
-        });
-        
-        d3.select("#showEnvironmental").on("click", function() {
-            highlightCategory("Environmental Performance");
-        });
-        
-        d3.select("#showEconomic").on("click", function() {
-            highlightCategory("Economic Metrics");
-        });
-        
-        // Initial force layout settings
-        simulation.alpha(1).restart();
-    </script>
+      });
+
+    // Value labels for metric nodes (positioned below)
+    nodeGroups.filter(d => d.group === "metric")
+      .append("text")
+      .attr("class", "value-label")
+      .text(d => d.value)
+      .attr("y", 30);
+
+    // Simulation tick: update link paths and node positions
+    simulation.on("tick", () => {
+      link.attr("d", d => {
+        const dx = d.target.x - d.source.x;
+        const dy = d.target.y - d.source.y;
+        const dr = Math.sqrt(dx * dx + dy * dy) * 1.2;
+        return `M${d.source.x},${d.source.y}A${dr},${dr} 0 0,1 ${d.target.x},${d.target.y}`;
+      });
+      nodeGroups.attr("transform", d => `translate(${d.x}, ${d.y})`);
+    });
+
+    // Drag functions
+    function dragstarted(event, d) {
+      if (!event.active) simulation.alphaTarget(0.3).restart();
+      d.fx = d.x;
+      d.fy = d.y;
+    }
+    
+    function dragged(event, d) {
+      d.fx = event.x;
+      d.fy = event.y;
+    }
+    
+    function dragended(event, d) {
+      if (!event.active) simulation.alphaTarget(0);
+      d.fx = null;
+      d.fy = null;
+    }
+
+    // Interaction: hover and click on nodes
+    nodeGroups.on("mouseover", function(event, d) {
+      const relatedLinks = data.links.filter(link => link.source.id === d.id || link.target.id === d.id);
+      const relatedNodes = new Set();
+      relatedLinks.forEach(link => {
+        relatedNodes.add(link.source.id);
+        relatedNodes.add(link.target.id);
+      });
+      d3.selectAll(".link")
+        .style("stroke-opacity", link => relatedLinks.includes(link) ? 0.8 : 0.1)
+        .style("stroke-width", link => relatedLinks.includes(link) ? 3 : 1);
+      d3.selectAll(".node-base")
+        .style("opacity", node => (relatedNodes.has(node.id) || node.id === d.id) ? 1 : 0.2);
+      d3.selectAll(".node-inner")
+        .style("opacity", node => (relatedNodes.has(node.id) || node.id === d.id) ? 0.8 : 0.1);
+      if (d.group === "metric") {
+        tooltip
+          .style("opacity", 1)
+          .html(`<h3>${d.id}</h3><p><strong>Value:</strong> ${d.value}</p><p><strong>Category:</strong> ${d.category}</p>`)
+          .style("left", (event.pageX + 15) + "px")
+          .style("top", (event.pageY - 28) + "px");
+        d3.selectAll(".value-label")
+          .style("opacity", node => node.category === d.category ? 1 : 0);
+      } else if (d.group === "category") {
+        tooltip
+          .style("opacity", 1)
+          .html(`<h3>${d.id}</h3><p>Click to highlight all metrics in this category</p>`)
+          .style("left", (event.pageX + 15) + "px")
+          .style("top", (event.pageY - 28) + "px");
+        d3.selectAll(".value-label")
+          .style("opacity", node => node.category === d.id ? 1 : 0);
+      }
+    })
+    .on("mouseout", function() {
+      d3.selectAll(".link").style("stroke-opacity", 0.4).style("stroke-width", 1.5);
+      d3.selectAll(".node-base").style("opacity", 1);
+      d3.selectAll(".node-inner").style("opacity", 0.5);
+      tooltip.style("opacity", 0);
+      if (!showAllValues) {
+        d3.selectAll(".value-label").style("opacity", 0);
+      }
+    })
+    .on("click", function(event, d) {
+      if (d.group === "category") {
+        highlightCategory(d.id);
+      }
+    });
+
+    // Button interactions
+    let showAllValues = false;
+    
+    d3.select("#resetZoom").on("click", function() {
+      svg.transition().duration(750).call(d3.zoom().transform, d3.zoomIdentity);
+      d3.selectAll(".node-base").style("opacity", 1);
+      d3.selectAll(".node-inner").style("opacity", 0.5);
+      d3.selectAll(".link").style("stroke-opacity", 0.4).style("stroke-width", 1.5);
+      d3.selectAll(".value-label").style("opacity", showAllValues ? 1 : 0);
+    });
+    
+    d3.select("#toggleLabels").on("click", function() {
+      showAllValues = !showAllValues;
+      d3.selectAll(".value-label").style("opacity", showAllValues ? 1 : 0);
+    });
+    
+    function highlightCategory(category) {
+      d3.selectAll(".node-base")
+        .style("opacity", node => node.group === "root" || node.id === category || (node.group === "metric" && node.category === category) ? 1 : 0.1);
+      d3.selectAll(".node-inner")
+        .style("opacity", node => node.group === "root" || node.id === category || (node.group === "metric" && node.category === category) ? 0.8 : 0.1);
+      d3.selectAll(".link")
+        .style("stroke-opacity", link => (link.source.id === "Ship Data" && link.target.id === category) || (link.source.id === category) ? 0.8 : 0.1)
+        .style("stroke-width", link => (link.source.id === "Ship Data" && link.target.id === category) || (link.source.id === category) ? 3 : 1);
+      d3.selectAll(".value-label")
+        .style("opacity", node => node.category === category ? 1 : 0);
+    }
+    
+    d3.select("#showGeneral").on("click", function() { highlightCategory("General Characteristics"); });
+    d3.select("#showOperational").on("click", function() { highlightCategory("Operational Parameters"); });
+    d3.select("#showFuel").on("click", function() { highlightCategory("Fuel and Consumption"); });
+    d3.select("#showEnvironmental").on("click", function() { highlightCategory("Environmental Performance"); });
+    d3.select("#showEconomic").on("click", function() { highlightCategory("Economic Metrics"); });
+    
+    simulation.alpha(1).restart();
+  </script>
 </body>
 </html>
