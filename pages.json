@@ -13,5 +13,15 @@
     "id": "ontario_vs_calgary",
     "title": "Ontario vs Calgary",
     "icon": "fa-map-marker-alt"
+  },
+  {
+    "id": "Ship_Technical_Data_Network_Light",
+    "title": "Ship Technical Data Network Light",
+    "icon": "fa-sun"
+  },
+  {
+    "id": "Ship_Technical_Data_Network_Dark",
+    "title": "Ship Technical Data Network Dark",
+    "icon": "fa-moon"
   }
 ]
