@@ -23,5 +23,11 @@
     "id": "Ship_Technical_Data_Network_Dark",
     "title": "Ship Technical Data Network Dark",
     "icon": "fa-moon"
+  },
+  {
+    "id": "newfoundland_realestate",
+    "title": "Newfoundland Real Estate",
+    "icon": "fa-building",
+    "url": "Newfoundland_RealEstate.html"
   }
 ]
