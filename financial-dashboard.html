@@ -43,7 +43,6 @@
       color: var(--text-primary);
       font-size: 16px;
       line-height: 1.5;
-      padding: 0;
       overflow-x: hidden;
     }
 
@@ -124,8 +123,7 @@
       border-radius: var(--border-radius);
       padding: 1.5rem;
       box-shadow: var(--card-shadow);
-      transition: transform var(--transition-speed),
-        box-shadow var(--transition-speed);
+      transition: transform var(--transition-speed), box-shadow var(--transition-speed);
       position: relative;
       overflow: hidden;
       border: 1px solid var(--border-color);
@@ -556,7 +554,7 @@
   <!-- Chart.js Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    window.onload = function () {
       // Data for dashboard transactions
       const transactions = [
         { date: "3/8/25", account: "RBC Online Banking (RBC Advantage Banking)", description: "Interac purchase", category: "chequing", type: "withdrawal", amount: -14.94 },
@@ -588,7 +586,6 @@
       initializeCharts();
 
       // --- Function Definitions ---
-
       function populateTransactionTable() {
         const tableBody = document.querySelector("#transactions-table tbody");
         if (!tableBody) {
@@ -659,7 +656,12 @@
       }
 
       function createCashFlowChart(transactions) {
-        const ctx = document.getElementById("cash-flow-chart").getContext("2d");
+        const cashFlowCanvas = document.getElementById("cash-flow-chart");
+        if (!cashFlowCanvas) {
+          console.error("Cash flow canvas not found!");
+          return;
+        }
+        const ctx = cashFlowCanvas.getContext("2d");
         const income = transactions
           .filter((t) => t.type === "deposit")
           .reduce((sum, t) => sum + Math.abs(t.amount), 0);
@@ -697,9 +699,7 @@
             plugins: {
               legend: {
                 position: "top",
-                labels: {
-                  padding: 15,
-                },
+                labels: { padding: 15 },
               },
               tooltip: {
                 callbacks: {
@@ -718,7 +718,12 @@
       }
 
       function createAccountsChart(accountsData) {
-        const ctx = document.getElementById("accounts-chart").getContext("2d");
+        const accountsCanvas = document.getElementById("accounts-chart");
+        if (!accountsCanvas) {
+          console.error("Accounts canvas not found!");
+          return;
+        }
+        const ctx = accountsCanvas.getContext("2d");
         new Chart(ctx, {
           type: "bar",
           data: {
@@ -744,9 +749,7 @@
             maintainAspectRatio: false,
             scales: {
               x: {
-                grid: {
-                  color: "rgba(226, 232, 240, 0.5)",
-                },
+                grid: { color: "rgba(226, 232, 240, 0.5)" },
                 ticks: {
                   callback: function (value) {
                     if (value === 0) return "$0";
@@ -754,16 +757,10 @@
                   },
                 },
               },
-              y: {
-                grid: {
-                  display: false,
-                },
-              },
+              y: { grid: { display: false } },
             },
             plugins: {
-              legend: {
-                display: false,
-              },
+              legend: { display: false },
               tooltip: {
                 callbacks: {
                   title: function (context) {
@@ -783,7 +780,7 @@
           },
         });
       }
-    });
+    };
   </script>
 </body>
 </html>
