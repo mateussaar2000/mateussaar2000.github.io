@@ -1,0 +1,17 @@
+[
+  {
+    "id": "home",
+    "title": "Home",
+    "icon": "fa-home"
+  },
+  {
+    "id": "financial-dashboard",
+    "title": "Financial Dashboard",
+    "icon": "fa-chart-line"
+  },
+  {
+    "id": "ontario_vs_calgary",
+    "title": "Ontario vs Calgary",
+    "icon": "fa-map-marker-alt"
+  }
+]

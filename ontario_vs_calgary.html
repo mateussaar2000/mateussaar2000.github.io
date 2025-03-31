@@ -1,0 +1,1646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ontario vs Calgary: Where Should Couples Live?</title>
+    <style>
+        :root {
+            --ontario-color: #0072CE;
+            --calgary-color: #C8102E;
+            --background-color: #f9f9f9;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --shadow: 0 4px 12px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #444;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .tab-button {
+            padding: 14px 28px;
+            margin: 5px;
+            border: none;
+            background-color: #444;
+            color: white;
+            cursor: pointer;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: var(--transition);
+            font-size: 16px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .tab-button:hover {
+            background-color: #333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .tab-button.active {
+            background-color: #222;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        .comparison-container {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+        
+        .comparison-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .comparison-section.active {
+            display: block;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .location-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .location-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+        
+        .ontario-card {
+            border-top: 5px solid var(--ontario-color);
+        }
+        
+        .calgary-card {
+            border-top: 5px solid var(--calgary-color);
+        }
+        
+        .location-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .location-title h2 {
+            font-size: 1.8rem;
+            margin-left: 15px;
+        }
+        
+        .location-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .ontario-icon {
+            background-color: var(--ontario-color);
+        }
+        
+        .calgary-icon {
+            background-color: var(--calgary-color);
+        }
+        
+        .data-point {
+            margin-bottom: 15px;
+        }
+        
+        .data-point h3 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .data-point h3 svg {
+            margin-right: 10px;
+        }
+        
+        .data-point p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        
+        .stat-bar-container {
+            background-color: #eee;
+            height: 8px;
+            border-radius: 4px;
+            margin: 10px 0;
+            position: relative;
+        }
+        
+        .stat-bar {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1s ease-in-out;
+        }
+        
+        .ontario-bar {
+            background-color: var(--ontario-color);
+        }
+        
+        .calgary-bar {
+            background-color: var(--calgary-color);
+        }
+        
+        .stat-value {
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        
+        .verdict-section {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 40px;
+            box-shadow: var(--shadow);
+        }
+        
+        .verdict-title {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            color: #444;
+        }
+        
+        .verdict-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .verdict-card {
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f2f2f2;
+        }
+        
+        .verdict-card h3 {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .verdict-card h3 svg {
+            margin-right: 10px;
+        }
+        
+        .verdict-card p {
+            color: #666;
+        }
+        
+        .calculator {
+            background-color: #f2f2f2;
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 40px;
+        }
+        
+        .calculator h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .calculator-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .form-group label {
+            font-weight: 600;
+        }
+        
+        .form-group input,
+        .form-group select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        button {
+            padding: 12px;
+            background-color: #444;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 10px;
+            transition: var(--transition);
+        }
+        
+        button:hover {
+            background-color: #333;
+        }
+        
+        .results {
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+        
+        .result-item {
+            margin-bottom: 15px;
+        }
+        
+        .result-item h3 {
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+        
+        .recommendation {
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+        
+        .ontario-recommendation {
+            background-color: rgba(0, 114, 206, 0.1);
+            border: 1px solid var(--ontario-color);
+            color: var(--ontario-color);
+        }
+        
+        .calgary-recommendation {
+            background-color: rgba(200, 16, 46, 0.1);
+            border: 1px solid var(--calgary-color);
+            color: var(--calgary-color);
+        }
+        
+        .tie-recommendation {
+            background-color: rgba(100, 100, 100, 0.1);
+            border: 1px solid #666;
+            color: #666;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .comparison-grid, .verdict-grid, .calculator-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .location-card, .verdict-card {
+                margin-bottom: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Ontario vs Calgary: Where Should Couples Live?</h1>
+            <p class="subtitle">Compare lifestyle factors and find the best location for your relationship to thrive</p>
+        </header>
+        
+        <div class="tabs">
+            <button class="tab-button active" data-tab="housing">Housing</button>
+            <button class="tab-button" data-tab="cost-of-living">Cost of Living</button>
+            <button class="tab-button" data-tab="jobs">Jobs & Economy</button>
+            <button class="tab-button" data-tab="family">Family & Health</button>
+            <button class="tab-button" data-tab="lifestyle">Lifestyle</button>
+            <button class="tab-button" data-tab="climate">Climate</button>
+            <button class="tab-button" data-tab="calculator">Calculator</button>
+        </div>
+        
+        <div class="comparison-container">
+            <!-- Housing Section -->
+            <div class="comparison-section active" id="housing">
+                <div class="comparison-grid">
+                    <div class="location-card ontario-card">
+                        <div class="location-title">
+                            <div class="location-icon ontario-icon">ON</div>
+                            <h2>Ontario</h2>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                </svg>
+                                Average Home Price
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar ontario-bar" style="width: 90%"></div>
+                            </div>
+                            <div class="stat-value">$910,000</div>
+                            <p>Housing prices vary significantly across Ontario, with Toronto and the GTA being the most expensive. Average detached home prices in Toronto exceed $1.5 million.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                                    <rect x="9" y="9" width="6" height="6"></rect>
+                                    <line x1="9" y1="1" x2="9" y2="4"></line>
+                                    <line x1="15" y1="1" x2="15" y2="4"></line>
+                                    <line x1="9" y1="20" x2="9" y2="23"></line>
+                                    <line x1="15" y1="20" x2="15" y2="23"></line>
+                                    <line x1="20" y1="9" x2="23" y2="9"></line>
+                                    <line x1="20" y1="14" x2="23" y2="14"></line>
+                                    <line x1="1" y1="9" x2="4" y2="9"></line>
+                                    <line x1="1" y1="14" x2="4" y2="14"></line>
+                                </svg>
+                                Average Rent (2BR)
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar ontario-bar" style="width: 95%"></div>
+                            </div>
+                            <div class="stat-value">$2,300/month</div>
+                            <p>Rental prices are highest in Toronto ($2,600+) and surrounding areas, with more affordable options in smaller cities like London, Kingston, and Windsor.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M17 11h.01"></path>
+                                    <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                                    <path d="M3 11h.01"></path>
+                                    <path d="M3 7h18"></path>
+                                </svg>
+                                Property Tax Rate
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar ontario-bar" style="width: 70%"></div>
+                            </div>
+                            <div class="stat-value">0.9% - 1.4%</div>
+                            <p>Property tax rates vary by municipality, with Toronto having relatively low rates compared to surrounding regions.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="location-card calgary-card">
+                        <div class="location-title">
+                            <div class="location-icon calgary-icon">CA</div>
+                            <h2>Calgary</h2>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                </svg>
+                                Average Home Price
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar calgary-bar" style="width: 55%"></div>
+                            </div>
+                            <div class="stat-value">$550,000</div>
+                            <p>Calgary offers significantly more affordable housing than many Ontario cities, especially compared to Toronto. Detached homes are much more accessible for couples on a budget.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                                    <rect x="9" y="9" width="6" height="6"></rect>
+                                    <line x1="9" y1="1" x2="9" y2="4"></line>
+                                    <line x1="15" y1="1" x2="15" y2="4"></line>
+                                    <line x1="9" y1="20" x2="9" y2="23"></line>
+                                    <line x1="15" y1="20" x2="15" y2="23"></line>
+                                    <line x1="20" y1="9" x2="23" y2="9"></line>
+                                    <line x1="20" y1="14" x2="23" y2="14"></line>
+                                    <line x1="1" y1="9" x2="4" y2="9"></line>
+                                    <line x1="1" y1="14" x2="4" y2="14"></line>
+                                </svg>
+                                Average Rent (2BR)
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar calgary-bar" style="width: 60%"></div>
+                            </div>
+                            <div class="stat-value">$1,450/month</div>
+                            <p>Rental costs in Calgary are considerably lower than in major Ontario cities. Couples can find spacious apartments in good neighborhoods at more reasonable prices.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M17 11h.01"></path>
+                                    <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                                    <path d="M3 11h.01"></path>
+                                    <path d="M3 7h18"></path>
+                                </svg>
+                                Property Tax Rate
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar calgary-bar" style="width: 65%"></div>
+                            </div>
+                            <div class="stat-value">0.7% - 0.9%</div>
+                            <p>Calgary typically has lower property tax rates than many Ontario municipalities, which compounds the housing affordability advantage.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Cost of Living Section -->
+            <div class="comparison-section" id="cost-of-living">
+                <div class="comparison-grid">
+                    <div class="location-card ontario-card">
+                        <div class="location-title">
+                            <div class="location-icon ontario-icon">ON</div>
+                            <h2>Ontario</h2>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 1v22"></path>
+                                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                </svg>
+                                Overall Cost Index
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar ontario-bar" style="width: 90%"></div>
+                            </div>
+                            <div class="stat-value">High (100/100)</div>
+                            <p>Ontario, especially Toronto and the GTA, has one of the highest costs of living in Canada. Smaller cities offer more affordable options.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 3h18v18H3z"></path>
+                                    <circle cx="12" cy="12" r="1"></circle>
+                                </svg>
+                                Utilities (Monthly)
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar ontario-bar" style="width: 85%"></div>
+                            </div>
+                            <div class="stat-value">$250-350</div>
+                            <p>High electricity rates in Ontario contribute to elevated utility costs, with additional costs for heating during winter months.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                                </svg>
+                                Healthcare
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar ontario-bar" style="width: 70%"></div>
+                            </div>
+                            <div class="stat-value">OHIP Covered</div>
+                            <p>Ontario's healthcare system provides comprehensive coverage, but wait times can be long in some areas.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M9 18l6-6-6-6"></path>
+                                </svg>
+                                Transportation
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar ontario-bar" style="width: 80%"></div>
+                            </div>
+                            <div class="stat-value">$150-250/month</div>
+                            <p>Public transit is available in major cities, but many households require two cars outside urban centers. Insurance rates are among the highest in Canada.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="location-card calgary-card">
+                        <div class="location-title">
+                            <div class="location-icon calgary-icon">CA</div>
+                            <h2>Calgary</h2>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 1v22"></path>
+                                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                </svg>
+                                Overall Cost Index
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar calgary-bar" style="width: 65%"></div>
+                            </div>
+                            <div class="stat-value">Moderate (75/100)</div>
+                            <p>Calgary offers a lower overall cost of living compared to most of Ontario, especially for housing and daily expenses.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 3h18v18H3z"></path>
+                                    <circle cx="12" cy="12" r="1"></circle>
+                                </svg>
+                                Utilities (Monthly)
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar calgary-bar" style="width: 70%"></div>
+                            </div>
+                            <div class="stat-value">$200-300</div>
+                            <p>Calgary has lower electricity rates than Ontario, though winter heating costs can be significant during cold months.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                                </svg>
+                                Healthcare
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar calgary-bar" style="width: 70%"></div>
+                            </div>
+                            <div class="stat-value">Alberta Health Services</div>
+                            <p>Similar provincial healthcare coverage to Ontario, with generally good access to primary care services.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M9 18l6-6-6-6"></path>
+                                </svg>
+                                Transportation
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar calgary-bar" style="width: 75%"></div>
+                            </div>
+                            <div class="stat-value">$125-200/month</div>
+                            <p>Calgary has a transit system, but the city's layout often necessitates car ownership. Auto insurance rates are typically lower than in Ontario.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Jobs & Economy Section -->
+            <div class="comparison-section" id="jobs">
+                <div class="comparison-grid">
+                    <div class="location-card ontario-card">
+                        <div class="location-title">
+                            <div class="location-icon ontario-icon">ON</div>
+                            <h2>Ontario</h2>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                                </svg>
+                                Job Market
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar ontario-bar" style="width: 85%"></div>
+                            </div>
+                            <div class="stat-value">Diverse</div>
+                            <p>Ontario has the most diverse job market in Canada, with opportunities in finance, tech, healthcare, manufacturing, and government sectors.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                </svg>
+                                Average Household Income
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar ontario-bar" style="width: 80%"></div>
+                            </div>
+                            <div class="stat-value">$93,000</div>
+                            <p>Salaries vary greatly across Ontario, with the highest wages in Toronto and Ottawa. Tech and financial sectors offer competitive compensation.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                </svg>
+                                Unemployment Rate
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar ontario-bar" style="width: 55%"></div>
+                            </div>
+                            <div class="stat-value">5.8%</div>
+                            <p>Ontario's unemployment rate is around the national average, with more stability in government and healthcare sectors.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                                </svg>
+                                Economic Growth
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar ontario-bar" style="width: 65%"></div>
+                            </div>
+                            <div class="stat-value">Steady</div>
+                            <p>Ontario's diverse economy provides relative stability, though growth rates vary by region and sector.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                                    <path d="M2 17l10 5 10-5"></path>
+                                    <path d="M2 12l10 5 10-5"></path>
+                                </svg>
+                                Starting a Business
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar ontario-bar" style="width: 85%"></div>
+                            </div>
+                            <div class="stat-value">Highly Supportive</div>
+                            <p>Ontario offers excellent resources for entrepreneurs, particularly for fintech startups with access to Toronto's financial center and innovation hubs. For psychology practices, a larger population and established healthcare networks provide a strong client base, though competition can be high.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="location-card calgary-card">
+                        <div class="location-title">
+                            <div class="location-icon calgary-icon">CA</div>
+                            <h2>Calgary</h2>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                                </svg>
+                                Job Market
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar calgary-bar" style="width: 70%"></div>
+                            </div>
+                            <div class="stat-value">Energy-Focused</div>
+                            <p>Calgary's job market has traditionally centered on the energy sector, though diversification efforts have increased opportunities in tech and other sectors.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                </svg>
+                                Average Household Income
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar calgary-bar" style="width: 85%"></div>
+                            </div>
+                            <div class="stat-value">$97,000</div>
+                            <p>Calgary boasts one of the highest average household incomes in Canada, particularly for professionals in the energy and engineering sectors.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                </svg>
+                                Unemployment Rate
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar calgary-bar" style="width: 65%"></div>
+                            </div>
+                            <div class="stat-value">7.2%</div>
+                            <p>Calgary's unemployment rate can fluctuate with oil prices and energy sector health, creating some economic volatility.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                                </svg>
+                                Economic Growth
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar calgary-bar" style="width: 60%"></div>
+                            </div>
+                            <div class="stat-value">Cyclical</div>
+                            <p>Calgary's economy can experience more pronounced boom-bust cycles due to its reliance on the energy sector, though diversification efforts aim to stabilize growth.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                                    <path d="M2 17l10 5 10-5"></path>
+                                    <path d="M2 12l10 5 10-5"></path>
+                                </svg>
+                                Starting a Business
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar calgary-bar" style="width: 75%"></div>
+                            </div>
+                            <div class="stat-value">Entrepreneur-Friendly</div>
+                            <p>Calgary offers lower overhead costs for new businesses, with affordable commercial space and competitive corporate tax rates. For psychology practices, there's growing demand with less competition than Ontario. Fintech startups benefit from Alberta's business-friendly regulations, though with less established financial industry connections than Toronto.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Lifestyle Section -->
+            <!-- Family & Health Section -->
+            <div class="comparison-section" id="family">
+                <div class="comparison-grid">
+                    <div class="location-card ontario-card">
+                        <div class="location-title">
+                            <div class="location-icon ontario-icon">ON</div>
+                            <h2>Ontario</h2>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                                Family Support Networks
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar ontario-bar" style="width: 90%"></div>
+                            </div>
+                            <div class="stat-value">Extensive</div>
+                            <p>Ontario has extensive family networks and established communities, offering couples stronger support systems, especially in multicultural areas. Extended families often settle in the same regions across generations.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                Child Services & Schools
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar ontario-bar" style="width: 85%"></div>
+                            </div>
+                            <div class="stat-value">High Quality</div>
+                            <p>Ontario offers excellent education with many top-ranked schools, extensive childcare options, though costs can be high in urban areas. The province provides strong early childhood programs and specialized services.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="12" y1="3" x2="12" y2="21"></line>
+                                </svg>
+                                Reproductive Healthcare
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar ontario-bar" style="width: 95%"></div>
+                            </div>
+                            <div class="stat-value">Comprehensive</div>
+                            <p>Abortion is fully accessible in Ontario with numerous providers across the province. Reproductive healthcare services are covered by OHIP, including access to fertility treatments (though some have limited coverage).</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                                Family-Friendly Policies
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar ontario-bar" style="width: 80%"></div>
+                            </div>
+                            <div class="stat-value">Supportive</div>
+                            <p>Ontario provides strong parental leave benefits, child tax benefits, and recently expanded childcare subsidies. The province offers progressive family policies and social services support.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="location-card calgary-card">
+                        <div class="location-title">
+                            <div class="location-icon calgary-icon">CA</div>
+                            <h2>Calgary</h2>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                                Family Support Networks
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar calgary-bar" style="width: 65%"></div>
+                            </div>
+                            <div class="stat-value">Growing</div>
+                            <p>Calgary has fewer established family networks as many residents are transplants from other provinces. However, community building is strong, with many family-oriented neighborhoods developing.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                Child Services & Schools
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar calgary-bar" style="width: 80%"></div>
+                            </div>
+                            <div class="stat-value">Very Good</div>
+                            <p>Calgary offers strong public education with newer school facilities in many neighborhoods. The city has good childcare availability with generally lower costs than Toronto, and excellent access to outdoor family activities.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="12" y1="3" x2="12" y2="21"></line>
+                                </svg>
+                                Reproductive Healthcare
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar calgary-bar" style="width: 80%"></div>
+                            </div>
+                            <div class="stat-value">Accessible</div>
+                            <p>Abortion is legal and accessible in Calgary, though with fewer providers than Ontario. Alberta Health Services covers reproductive healthcare services, but access can be more limited in surrounding rural areas.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                                Family-Friendly Policies
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar calgary-bar" style="width: 75%"></div>
+                            </div>
+                            <div class="stat-value">Good</div>
+                            <p>Alberta offers solid family support with the Alberta Child and Family Benefit and affordable childcare initiatives. Calgary features many family-oriented communities and activities, with excellent parks and recreation facilities.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="comparison-section" id="lifestyle">
+                <div class="comparison-grid">
+                    <div class="location-card ontario-card">
+                        <div class="location-title">
+                            <div class="location-icon ontario-icon">ON</div>
+                            <h2>Ontario</h2>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                                </svg>
+                                Cultural Diversity
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar ontario-bar" style="width: 95%"></div>
+                            </div>
+                            <div class="stat-value">Extremely Diverse</div>
+                            <p>Ontario, especially Toronto, is one of the most multicultural regions in the world, offering diverse cuisines, festivals, and communities.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                Entertainment & Nightlife
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar ontario-bar" style="width: 90%"></div>
+                            </div>
+                            <div class="stat-value">Abundant</div>
+                            <p>Major cities like Toronto and Ottawa offer world-class entertainment, dining, professional sports teams, and vibrant nightlife.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                </svg>
+                                Outdoor Activities
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar ontario-bar" style="width: 75%"></div>
+                            </div>
+                            <div class="stat-value">Great Lakes & Forests</div>
+                            <p>Ontario offers access to numerous provincial parks, the Great Lakes, cottage country, and moderate hiking opportunities.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                                Education
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar ontario-bar" style="width: 90%"></div>
+                            </div>
+                            <div class="stat-value">Excellent</div>
+                            <p>Ontario is home to top-ranked universities like University of Toronto and numerous excellent public and private schools.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="location-card calgary-card">
+                        <div class="location-title">
+                            <div class="location-icon calgary-icon">CA</div>
+                            <h2>Calgary</h2>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                                </svg>
+                                Cultural Diversity
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar calgary-bar" style="width: 75%"></div>
+                            </div>
+                            <div class="stat-value">Growing Diversity</div>
+                            <p>Calgary's diversity has increased significantly in recent years, though it's not as multicultural as Toronto.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                Entertainment & Nightlife
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar calgary-bar" style="width: 70%"></div>
+                            </div>
+                            <div class="stat-value">Good</div>
+                            <p>Calgary offers solid dining options, cultural events, and entertainment, including the famous Calgary Stampede, though not as diverse as Toronto's scene.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                </svg>
+                                Outdoor Activities
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar calgary-bar" style="width: 95%"></div>
+                            </div>
+                            <div class="stat-value">World-Class</div>
+                            <p>Calgary's proximity to the Rocky Mountains offers unparalleled access to hiking, skiing, and mountain activities, with Banff just 90 minutes away.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                                Education
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar calgary-bar" style="width: 80%"></div>
+                            </div>
+                            <div class="stat-value">Very Good</div>
+                            <p>Calgary has solid educational institutions including the University of Calgary and well-funded public schools.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Climate Section -->
+            <div class="comparison-section" id="climate">
+                <div class="comparison-grid">
+                    <div class="location-card ontario-card">
+                        <div class="location-title">
+                            <div class="location-icon ontario-icon">ON</div>
+                            <h2>Ontario</h2>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path>
+                                </svg>
+                                Average Winter Temp
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar ontario-bar" style="width: 40%"></div>
+                            </div>
+                            <div class="stat-value">-6°C (21°F)</div>
+                            <p>Ontario winters vary by region, with Toronto and southern Ontario experiencing milder winters than northern regions. Expect snow from December to March.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="5"></circle>
+                                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                                </svg>
+                                Average Summer Temp
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar ontario-bar" style="width: 75%"></div>
+                            </div>
+                            <div class="stat-value">25°C (77°F)</div>
+                            <p>Ontario summers are warm and often humid, especially in southern regions. July and August can see heat waves with temperatures above 30°C (86°F).</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M8 19v1"></path>
+                                    <path d="M8 14v1"></path>
+                                    <path d="M16 5v1"></path>
+                                    <path d="M16 10v1"></path>
+                                    <path d="M8 9h8"></path>
+                                    <path d="M16 15H8"></path>
+                                    <path d="M8 5c0 2 2 3 4 3s4-1 4-3"></path>
+                                    <path d="M16 19c0-2-2-3-4-3s-4 1-4 3"></path>
+                                </svg>
+                                Annual Precipitation
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar ontario-bar" style="width: 70%"></div>
+                            </div>
+                            <div class="stat-value">800-900 mm</div>
+                            <p>Ontario has moderate year-round precipitation with rainfall distributed throughout the year and snowfall in winter months.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                </svg>
+                                Climate Considerations
+                            </h3>
+                            <p>Ontario has four distinct seasons with hot, humid summers and cold winters. Spring and fall are mild and pleasant. The Great Lakes moderate temperatures in nearby regions.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="location-card calgary-card">
+                        <div class="location-title">
+                            <div class="location-icon calgary-icon">CA</div>
+                            <h2>Calgary</h2>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path>
+                                </svg>
+                                Average Winter Temp
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar calgary-bar" style="width: 30%"></div>
+                            </div>
+                            <div class="stat-value">-9°C (16°F)</div>
+                            <p>Calgary winters are cold but often interspersed with warm chinook winds that can raise temperatures dramatically for short periods.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="5"></circle>
+                                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                                </svg>
+                                Average Summer Temp
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar calgary-bar" style="width: 70%"></div>
+                            </div>
+                            <div class="stat-value">23°C (73°F)</div>
+                            <p>Calgary summers are warm but typically less humid than Ontario, with cool evenings due to the elevation. Summer temperatures can vary significantly day to day.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M8 19v1"></path>
+                                    <path d="M8 14v1"></path>
+                                    <path d="M16 5v1"></path>
+                                    <path d="M16 10v1"></path>
+                                    <path d="M8 9h8"></path>
+                                    <path d="M16 15H8"></path>
+                                    <path d="M8 5c0 2 2 3 4 3s4-1 4-3"></path>
+                                    <path d="M16 19c0-2-2-3-4-3s-4 1-4 3"></path>
+                                </svg>
+                                Annual Precipitation
+                            </h3>
+                            <div class="stat-bar-container">
+                                <div class="stat-bar calgary-bar" style="width: 40%"></div>
+                            </div>
+                            <div class="stat-value">400-450 mm</div>
+                            <p>Calgary has a semi-arid climate with significantly less precipitation than Ontario. Most rainfall occurs in late spring and summer.</p>
+                        </div>
+                        
+                        <div class="data-point">
+                            <h3>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                </svg>
+                                Climate Considerations
+                            </h3>
+                            <p>Calgary has the most sunshine hours of any major Canadian city. The dry climate means less humid summers and powdery snow in winter. Chinook winds provide winter relief but can cause headaches for some people.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Calculator Section -->
+            <div class="comparison-section" id="calculator">
+                <div class="calculator">
+                    <h2>Personalized Recommendation Calculator</h2>
+                    <div class="calculator-grid">
+                        <div class="calculator-form">
+                            <div class="form-group">
+                                <label for="income">Household Income</label>
+                                <input type="number" id="income" placeholder="Annual income in $" min="0">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="housing-preference">Housing Preference</label>
+                                <select id="housing-preference">
+                                    <option value="">Select preference</option>
+                                    <option value="own">Own a home</option>
+                                    <option value="rent">Rent</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="job-sector">Job Sector</label>
+                                <select id="job-sector">
+                                    <option value="">Select sector</option>
+                                    <option value="tech">Technology</option>
+                                    <option value="finance">Finance</option>
+                                    <option value="healthcare">Healthcare</option>
+                                    <option value="education">Education</option>
+                                    <option value="energy">Energy/Oil & Gas</option>
+                                    <option value="government">Government</option>
+                                    <option value="retail">Retail/Service</option>
+                                    <option value="manufacturing">Manufacturing</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="lifestyle-importance">Rate importance (1-10)</label>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span>Housing Affordability</span>
+                                    <input type="range" id="housing-importance" min="1" max="10" value="5" style="width: 120px;">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span>Job Opportunities</span>
+                                    <input type="range" id="job-importance" min="1" max="10" value="5" style="width: 120px;">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span>Cultural Diversity</span>
+                                    <input type="range" id="culture-importance" min="1" max="10" value="5" style="width: 120px;">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span>Outdoor Activities</span>
+                                    <input type="range" id="outdoor-importance" min="1" max="10" value="5" style="width: 120px;">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span>Climate Preference</span>
+                                    <select id="climate-preference" style="width: 120px;">
+                                        <option value="warm">Prefer Warmer</option>
+                                        <option value="cool">Prefer Cooler</option>
+                                        <option value="neutral">No Preference</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span>Family Importance</span>
+                                    <input type="range" id="family-importance" min="1" max="10" value="5" style="width: 120px;">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span>Starting Business</span>
+                                    <select id="business-type" style="width: 120px;">
+                                        <option value="none">Not Planning</option>
+                                        <option value="psychology">Psychology Practice</option>
+                                        <option value="fintech">Fintech</option>
+                                        <option value="other">Other Business</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <button id="calculate-btn">Calculate Recommendation</button>
+                        </div>
+                        
+                        <div class="results">
+                            <h3>Your Personalized Results</h3>
+                            <p id="intro-text">Fill out the form to get a customized recommendation based on your preferences and situation.</p>
+                            
+                            <div id="results-container" style="display: none;">
+                                <div class="result-item">
+                                    <h3>Ontario Score</h3>
+                                    <div class="stat-bar-container">
+                                        <div class="stat-bar ontario-bar" id="ontario-score-bar" style="width: 0%"></div>
+                                    </div>
+                                    <div class="stat-value" id="ontario-score-value">0/100</div>
+                                </div>
+                                
+                                <div class="result-item">
+                                    <h3>Calgary Score</h3>
+                                    <div class="stat-bar-container">
+                                        <div class="stat-bar calgary-bar" id="calgary-score-bar" style="width: 0%"></div>
+                                    </div>
+                                    <div class="stat-value" id="calgary-score-value">0/100</div>
+                                </div>
+                                
+                                <div id="recommendation" class="recommendation"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="verdict-section">
+            <h2 class="verdict-title">Key Takeaways for Couples</h2>
+            
+            <div class="verdict-grid">
+                <div class="verdict-card">
+                    <h3>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                        Choose Ontario If...
+                    </h3>
+                    <p>You value cultural diversity, want access to a broader job market across multiple industries, prefer urban amenities, and don't mind paying a premium for housing. Ontario is ideal for couples working in finance, tech, or healthcare, those starting a fintech business, or families seeking established support networks and diverse education options.</p>
+                </div>
+                
+                <div class="verdict-card">
+                    <h3>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                        Choose Calgary If...
+                    </h3>
+                    <p>You prioritize housing affordability, higher disposable income, proximity to the Rocky Mountains, and outdoor activities. Calgary is excellent for couples in the energy sector, engineering fields, entrepreneurs seeking lower business costs, or families who want to maximize housing space and access to nature while building wealth.</p>
+                </div>
+                
+                <div class="verdict-card">
+                    <h3>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        Family Considerations
+                    </h3>
+                    <p>Ontario offers more established family networks, diverse educational options, and comprehensive healthcare resources. Calgary provides excellent quality of life for families with more affordable housing, great schools, abundant outdoor recreational opportunities, and family-friendly neighborhoods with newer infrastructure.</p>
+                </div>
+                
+                <div class="verdict-card">
+                    <h3>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                            <path d="M2 17l10 5 10-5"></path>
+                            <path d="M2 12l10 5 10-5"></path>
+                        </svg>
+                        Business Opportunities
+                    </h3>
+                    <p>Ontario provides stronger networks for fintech and established industries with access to more clients and collaborators. Psychology practices benefit from Ontario's larger population but face more competition. Calgary offers lower startup costs, less competition for specialized services, and business-friendly tax structures, making it attractive for new enterprises.</p>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>This comparison is based on general data as of 2025. Individual experiences may vary based on specific municipalities, neighborhoods, and personal circumstances.</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Initialize the functionality
+        function initializeOntarioCalgaryPage() {
+            // Tab switching functionality
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const sections = document.querySelectorAll('.comparison-section');
+            
+            // Hide all sections except the first one
+            sections.forEach((section, index) => {
+                if (index !== 0) {
+                    section.style.display = 'none';
+                }
+            });
+            
+            tabButtons.forEach(button => {
+                button.style.cursor = 'pointer';
+                button.addEventListener('click', () => {
+                    const tabId = button.getAttribute('data-tab');
+                    
+                    // Update active tab
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    // Show corresponding section
+                    sections.forEach(section => {
+                        if (section.id === tabId) {
+                            section.style.display = 'block';
+                        } else {
+                            section.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // Calculator functionality
+            const calculateBtn = document.getElementById('calculate-btn');
+            const resultsContainer = document.getElementById('results-container');
+            const introText = document.getElementById('intro-text');
+            const ontarioScoreBar = document.getElementById('ontario-score-bar');
+            const calgaryScoreBar = document.getElementById('calgary-score-bar');
+            const ontarioScoreValue = document.getElementById('ontario-score-value');
+            const calgaryScoreValue = document.getElementById('calgary-score-value');
+            const recommendationBox = document.getElementById('recommendation');
+            
+            if (calculateBtn) {
+                calculateBtn.style.cursor = 'pointer';
+                calculateBtn.addEventListener('click', () => {
+                    // Get input values
+                    const income = parseFloat(document.getElementById('income').value) || 80000;
+                    const housingPreference = document.getElementById('housing-preference').value || 'rent';
+                    const jobSector = document.getElementById('job-sector').value || 'tech';
+                    const housingImportance = parseInt(document.getElementById('housing-importance').value) || 5;
+                    const jobImportance = parseInt(document.getElementById('job-importance').value) || 5;
+                    const cultureImportance = parseInt(document.getElementById('culture-importance').value) || 5;
+                    const outdoorImportance = parseInt(document.getElementById('outdoor-importance').value) || 5;
+                    const climatePreference = document.getElementById('climate-preference').value || 'neutral';
+                    const familyImportance = parseInt(document.getElementById('family-importance').value) || 5;
+                    const businessType = document.getElementById('business-type').value || 'none';
+                    
+                    // Calculate scores
+                    let ontarioScore = 50;
+                    let calgaryScore = 50;
+                    
+                    // Housing scoring
+                    if (housingPreference === 'own') {
+                        ontarioScore -= housingImportance * 2;
+                        calgaryScore += housingImportance * 2;
+                    } else {
+                        ontarioScore -= housingImportance;
+                        calgaryScore += housingImportance;
+                    }
+                    
+                    // Job sector scoring
+                    if (['tech', 'finance', 'healthcare', 'education', 'government'].includes(jobSector)) {
+                        ontarioScore += jobImportance;
+                    } 
+                    if (['energy', 'manufacturing'].includes(jobSector)) {
+                        calgaryScore += jobImportance;
+                    }
+                    
+                    // Culture scoring
+                    ontarioScore += cultureImportance;
+                    if (cultureImportance > 7) {
+                        calgaryScore -= 2;
+                    }
+                    
+                    // Outdoor scoring
+                    calgaryScore += outdoorImportance;
+                    if (outdoorImportance > 7) {
+                        ontarioScore -= 2;
+                    }
+                    
+                    // Climate preference
+                    if (climatePreference === 'warm') {
+                        ontarioScore += 5;
+                    } else if (climatePreference === 'cool') {
+                        calgaryScore += 5;
+                    }
+                    
+                    // Family importance
+                    if (familyImportance > 5) {
+                        ontarioScore += (familyImportance - 5) * 1.5;
+                    }
+                    
+                    // Business type scoring
+                    if (businessType === 'psychology') {
+                        ontarioScore += 5;
+                        calgaryScore += 3;
+                    } else if (businessType === 'fintech') {
+                        ontarioScore += 8;
+                        calgaryScore += 4;
+                    } else if (businessType === 'other') {
+                        calgaryScore += 5;
+                    }
+                    
+                    // Income consideration
+                    if (income < 80000) {
+                        calgaryScore += 10;
+                        ontarioScore -= 5;
+                    } else if (income > 150000) {
+                        calgaryScore += 5;
+                        ontarioScore += 5;
+                    }
+                    
+                    // Normalize scores
+                    ontarioScore = Math.max(0, Math.min(100, ontarioScore));
+                    calgaryScore = Math.max(0, Math.min(100, calgaryScore));
+                    
+                    // Update UI
+                    introText.style.display = 'none';
+                    resultsContainer.style.display = 'block';
+                    
+                    ontarioScoreBar.style.width = `${ontarioScore}%`;
+                    calgaryScoreBar.style.width = `${calgaryScore}%`;
+                    ontarioScoreValue.textContent = `${Math.round(ontarioScore)}/100`;
+                    calgaryScoreValue.textContent = `${Math.round(calgaryScore)}/100`;
+                    
+                    // Generate recommendation
+                    let recommendation;
+                    let recommendationClass;
+                    
+                    if (ontarioScore > calgaryScore + 10) {
+                        recommendation = "Based on your preferences, Ontario appears to be a significantly better fit for your lifestyle and needs.";
+                        recommendationClass = "ontario-recommendation";
+                    } else if (calgaryScore > ontarioScore + 10) {
+                        recommendation = "Based on your preferences, Calgary appears to be a significantly better fit for your lifestyle and needs.";
+                        recommendationClass = "calgary-recommendation";
+                    } else if (ontarioScore >= calgaryScore) {
+                        recommendation = "Both locations have advantages for you, but Ontario may have a slight edge based on your preferences.";
+                        recommendationClass = "ontario-recommendation";
+                    } else {
+                        recommendation = "Both locations have advantages for you, but Calgary may have a slight edge based on your preferences.";
+                        recommendationClass = "calgary-recommendation";
+                    }
+                    
+                    recommendationBox.textContent = recommendation;
+                    recommendationBox.className = "recommendation " + recommendationClass;
+                });
+            }
+        }
+
+        // Execute initialization when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeOntarioCalgaryPage);
+        } else {
+            initializeOntarioCalgaryPage();
+        }
+    </script>
+</body>
+</html>
