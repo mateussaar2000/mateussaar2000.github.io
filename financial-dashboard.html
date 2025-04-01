@@ -3,83 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Financial Dashboard</title> <!-- Specific Title -->
+    <title>Financial Dashboard</title>
 
-    <!-- CSS Dependencies: Font Awesome (for sidebar/icons) -->
+    <!-- Font Awesome needed for dashboard icons AND the home icon -->
     <link
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
         rel="stylesheet"
     />
 
     <style>
-        /* --- Base & Layout Styles (COPIED FROM index.html) --- */
+        /* --- Base Variables & Reset (Keep necessary ones) --- */
         :root {
-            --bg-primary: #f8fafc;
-            --bg-secondary: #ffffff;
-            --text-primary: #0f172a;
-            --text-secondary: #334155;
-            --accent-primary: #0284c7;
+            --bg-primary: #f8fafc;      /* Page background */
+            --bg-secondary: #ffffff;    /* Card/Header background */
+            --bg-tertiary: #f1f5f9;     /* Table header/hover */
+            --text-primary: #0f172a;    /* Main text */
+            --text-secondary: #334155;  /* Subdued text */
+            --text-tertiary: #64748b;   /* More subdued text */
+            --accent-primary: #0284c7;  /* Links, some highlights */
             --accent-secondary: #0ea5e9;
-            --border-color: #e2e8f0;
-            --sidebar-width: 250px;
-            --header-height: 60px;
-            --transition-speed: 0.3s;
-            --font-primary: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-            /* Add dashboard specific vars here */
-            --bg-tertiary: #f1f5f9;
-            --text-tertiary: #64748b;
-            --accent-tertiary: #38bdf8;
+            --accent-tertiary: #38bdf8; /* Scrollbar */
+            --border-color: #e2e8f0;    /* Borders */
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
             --border-radius: 12px;
             --card-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            --font-primary: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            --minimal-header-height: 50px; /* Define height for the new header */
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-primary); }
         body { background-color: var(--bg-primary); color: var(--text-primary); font-size: 16px; line-height: 1.5; }
-        .layout { display: flex; min-height: 100vh; }
 
-        /* --- Sidebar Styling (COPIED FROM index.html) --- */
-        .sidebar { width: var(--sidebar-width); background-color: var(--bg-secondary); border-right: 1px solid var(--border-color); height: 100vh; position: fixed; top: 0; left: 0; overflow-y: auto; z-index: 10; transition: transform var(--transition-speed); }
-        .sidebar-header { padding: 1.5rem; display: flex; align-items: center; border-bottom: 1px solid var(--border-color); height: var(--header-height); }
-        .sidebar-logo { font-size: 1.25rem; font-weight: 700; color: var(--accent-primary); text-decoration: none; }
-        .sidebar-nav { padding: 1rem 0; }
-        .nav-section { margin-bottom: 1rem; }
-        .nav-section-title { padding: 0.5rem 1.5rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); font-weight: 600; }
-        .nav-items { list-style: none; }
-        .nav-item { margin: 0.25rem 0; }
-        .nav-link { display: flex; align-items: center; padding: 0.75rem 1.5rem; color: var(--text-secondary); text-decoration: none; transition: background-color var(--transition-speed), color var(--transition-speed); border-left: 3px solid transparent; }
-        .nav-link:hover { background-color: rgba(0, 0, 0, 0.05); color: var(--accent-primary); }
-        .nav-link.active { color: var(--accent-primary); border-left-color: var(--accent-primary); background-color: rgba(2, 132, 199, 0.1); font-weight: 500; }
-        .nav-icon { margin-right: 0.75rem; width: 20px; text-align: center; }
-
-        /* --- Main Content Area Styling (COPIED FROM index.html) --- */
-         .main-content { flex: 1; margin-left: var(--sidebar-width); padding: 2rem; min-height: 100vh; }
-         .page-header { height: var(--header-height); background-color: var(--bg-secondary); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; padding: 0 2rem; margin: -2rem -2rem 2rem -2rem; }
-         .page-header-title { font-size: 1.25rem; font-weight: 600; }
-
-
-        /* --- Mobile Responsiveness (COPIED FROM index.html) --- */
-        .sidebar-toggle { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0.5rem; color: var(--text-secondary); position: fixed; top: 10px; left: 10px; z-index: 20; }
-        @media (max-width: 768px) {
-            .sidebar { transform: translateX(-100%); }
-            .sidebar.active { transform: translateX(0); }
-            .main-content { margin-left: 0; padding: 1rem; margin-top: 50px;}
-            .page-header { margin: -1rem -1rem 1rem -1rem; padding: 0 1rem; }
-            .sidebar-toggle { display: block; }
+        /* --- NEW Minimal Header Styles --- */
+        .minimal-header {
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 1.5rem; /* Horizontal padding */
+            height: var(--minimal-header-height);
+            display: flex;
+            align-items: center;
+            position: sticky; /* Make it stick to the top */
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100; /* Ensure it's above other content */
+        }
+        .home-link {
+            display: inline-flex; /* Align icon and text */
+            align-items: center;
+            gap: 0.5rem; /* Space between icon and text */
+            color: var(--accent-primary);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+        .home-link:hover {
+            color: var(--accent-secondary);
+        }
+        .home-link .fa-home {
+            font-size: 1.2rem; /* Slightly larger icon */
         }
 
-        /* --- Styles SPECIFIC to Financial Dashboard (Copied from original dashboard file) --- */
-        /* .dashboard { max-width: 1440px; margin: 0 auto; } */ /* No longer needed if .main-content handles layout */
-        .dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); }
-        .dashboard-title h1 { font-size: 1.5rem; /* Adjusted size to fit potentially smaller header */ font-weight: 700; margin-bottom: 0.25rem; color: var(--accent-primary); }
+        /* --- Main Content Area Styling (No Sidebar Margin) --- */
+         .content-area {
+             padding: 1.5rem; /* Padding around the dashboard content */
+             padding-top: calc(var(--minimal-header-height) + 1.5rem); /* Add top padding to avoid overlap with sticky header */
+             max-width: 1440px; /* Optional: Limit max width of content */
+             margin: 0 auto;    /* Center content if max-width is set */
+         }
+
+         /* --- Styles SPECIFIC to Financial Dashboard (Unchanged from previous) --- */
+         /* --- (All .dashboard-header, .card-grid, .card, .chart-row, etc. styles go here) --- */
+        .dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); flex-wrap: wrap; gap: 1rem; }
+        .dashboard-title h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem; color: var(--accent-primary); }
         .dashboard-title p { color: var(--text-secondary); font-size: 0.9rem; }
         .dashboard-meta { display: flex; align-items: center; gap: 1.5rem; }
         .dashboard-meta-item { text-align: right; }
         .dashboard-meta-value { font-size: 1.1rem; font-weight: 600; color: var(--text-primary); }
         .dashboard-meta-label { font-size: 0.7rem; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; }
-        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; } /* Responsive grid */
-        .card { background-color: var(--bg-secondary); border-radius: var(--border-radius); padding: 1.5rem; box-shadow: var(--card-shadow); transition: transform var(--transition-speed), box-shadow var(--transition-speed); position: relative; overflow: hidden; border: 1px solid var(--border-color); }
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .card { background-color: var(--bg-secondary); border-radius: var(--border-radius); padding: 1.5rem; box-shadow: var(--card-shadow); transition: transform 0.3s, box-shadow 0.3s; position: relative; overflow: hidden; border: 1px solid var(--border-color); }
         .card:hover { transform: translateY(-5px); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1); }
         .card::after { content: ""; position: absolute; top: 0; left: 0; width: 4px; height: 100%; }
         .card-income::after { background: linear-gradient(to bottom, var(--success), transparent); }
@@ -93,12 +98,12 @@
         .card-expense .card-icon { background-color: rgba(239, 68, 68, 0.1); color: var(--danger); }
         .card-transfer .card-icon { background-color: rgba(14, 165, 233, 0.1); color: var(--accent-primary); }
         .card-net .card-icon { background-color: rgba(6, 182, 212, 0.1); color: var(--accent-secondary); }
-        .card-value { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; line-height: 1.1; }
+        .card-value { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; line-height: 1.1; word-break: break-all; }
         .positive { color: var(--success); }
         .negative { color: var(--danger); }
         .neutral { color: var(--accent-primary); }
         .card-subtitle { font-size: 0.75rem; color: var(--text-tertiary); }
-        .chart-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; } /* Responsive grid */
+        .chart-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
         .chart-card { background-color: var(--bg-secondary); border-radius: var(--border-radius); padding: 1.5rem; box-shadow: var(--card-shadow); border: 1px solid var(--border-color); }
         .chart-header { margin-bottom: 1rem; }
         .chart-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.25rem; color: var(--text-primary); }
@@ -109,10 +114,10 @@
         .transactions-title { font-size: 1.25rem; font-weight: 600; color: var(--text-primary); }
         .table-container { overflow-x: auto; max-height: 500px; overflow-y: auto; }
         .transactions-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 700px; }
-        .transactions-table th { background-color: var(--bg-tertiary); padding: 1rem; text-align: left; font-weight: 600; color: var(--text-secondary); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 1; }
+        .transactions-table th { background-color: var(--bg-tertiary); padding: 0.8rem 1rem; text-align: left; font-weight: 600; color: var(--text-secondary); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 1; white-space: nowrap;}
         .transactions-table th:first-child { border-top-left-radius: 8px; }
         .transactions-table th:last-child { border-top-right-radius: 8px; }
-        .transactions-table td { padding: 1rem; font-size: 0.875rem; color: var(--text-primary); border-bottom: 1px solid var(--border-color); white-space: nowrap; }
+        .transactions-table td { padding: 0.8rem 1rem; font-size: 0.875rem; color: var(--text-primary); border-bottom: 1px solid var(--border-color); white-space: nowrap; vertical-align: middle; }
         .transactions-table td:nth-child(3) { white-space: normal; }
         .transactions-table tr:last-child td { border-bottom: none; }
         .transactions-table tr:hover td { background-color: var(--bg-tertiary); }
@@ -123,162 +128,61 @@
         .badge-withdrawal { background-color: rgba(239, 68, 68, 0.1); color: var(--danger); }
         .badge-transfer { background-color: rgba(14, 165, 233, 0.1); color: var(--accent-primary); }
         .badge-fee { background-color: rgba(245, 158, 11, 0.1); color: var(--warning); }
-        .dashboard-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid var(--border-color); font-size: 0.875rem; color: var(--text-tertiary); margin-top: 2rem; }
+        .dashboard-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid var(--border-color); font-size: 0.875rem; color: var(--text-tertiary); margin-top: 2rem; flex-wrap: wrap; gap: 0.5rem;}
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg-tertiary); }
         ::-webkit-scrollbar-thumb { background: var(--accent-tertiary); border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--accent-primary); }
 
+         /* --- REMOVE ALL SIDEBAR/MOBILE TOGGLE STYLES --- */
+         /* --- (No .sidebar, .sidebar-*, .nav-*, .sidebar-toggle, or @media query for sidebar) --- */
+
     </style>
 </head>
 <body>
-    <!-- Button to toggle sidebar on mobile -->
-    <button class="sidebar-toggle" id="sidebar-toggle">
-        <i class="fas fa-bars"></i>
-    </button>
+    <!-- NEW Minimal Header -->
+    <header class="minimal-header">
+        <a href="index.html" class="home-link" title="Go back to Homepage">
+            <i class="fas fa-home"></i>
+            <span>My Website</span>
+        </a>
+    </header>
 
-    <div class="layout">
-        <!-- Sidebar Navigation (DUPLICATED STRUCTURE) -->
-        <aside class="sidebar" id="sidebar">
-             <div class="sidebar-header">
-                 <a href="index.html" class="sidebar-logo">My Website</a> <!-- Link back to home -->
-            </div>
-            <nav class="sidebar-nav">
-                <div class="nav-section">
-                    <div class="nav-section-title">Pages</div>
-                    <ul class="nav-items" id="page-nav">
-                        <li class="nav-item">
-                            <a href="index.html" class="nav-link"> <!-- Not active on this page -->
-                                <span class="nav-icon"><i class="fas fa-home"></i></span>
-                                <span>Home</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                             <!-- Add 'active' class MANUALLY for the current page -->
-                            <a href="financial-dashboard.html" class="nav-link active">
-                                <span class="nav-icon"><i class="fas fa-chart-line"></i></span>
-                                <span>Financial Dashboard</span>
-                            </a>
-                        </li>
-                         <li class="nav-item">
-                            <a href="ontario_vs_calgary.html" class="nav-link">
-                                <span class="nav-icon"><i class="fas fa-map-marked-alt"></i></span>
-                                <span>Ontario vs Calgary</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="Ship_Technical_Data_Network_Light.html" class="nav-link">
-                                <span class="nav-icon"><i class="fas fa-ship"></i></span>
-                                <span>Ship Network Light</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="Ship_Technical_Data_Network_Dark.html" class="nav-link">
-                                <span class="nav-icon"><i class="fas fa-moon"></i></span>
-                                <span>Ship Network Dark</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="newfoundland_realestate.html" class="nav-link">
-                                <span class="nav-icon"><i class="fas fa-building"></i></span>
-                                <span>Newfoundland Real Estate</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </aside>
+    <!-- Main Content Area (Takes full width now) -->
+    <main class="content-area">
+        <!-- Dashboard Specific Content (Exactly as before) -->
+        <div class="dashboard">
+            <!-- ... (header, cards, charts, table, footer for dashboard) ... -->
+            <div class="dashboard-header"> <div class="dashboard-title"> <h1>Financial Analysis</h1> <p>November 2024 Transactions</p> </div> <div class="dashboard-meta"> <div class="dashboard-meta-item"> <div class="dashboard-meta-value">21</div> <div class="dashboard-meta-label">Transactions</div> </div> <div class="dashboard-meta-item"> <div class="dashboard-meta-value">5</div> <div class="dashboard-meta-label">Accounts</div> </div> </div> </div>
+            <div class="card-grid"> <div class="card card-income"> <div class="card-header"> <div> <div class="card-title">TOTAL INCOME</div> </div> <div class="card-icon"> <i class="fas fa-arrow-down"></i> </div> </div> <div class="card-value positive">$2,664.91</div> <div class="card-subtitle">November deposits</div> </div> <div class="card card-expense"> <div class="card-header"> <div> <div class="card-title">TOTAL EXPENSES</div> </div> <div class="card-icon"> <i class="fas fa-arrow-up"></i> </div> </div> <div class="card-value negative">$3,933.12</div> <div class="card-subtitle">November withdrawals</div> </div> <div class="card card-transfer"> <div class="card-header"> <div> <div class="card-title">TRANSFERS</div> </div> <div class="card-icon"> <i class="fas fa-exchange-alt"></i> </div> </div> <div class="card-value neutral">$1,384.08</div> <div class="card-subtitle">November transfers</div> </div> <div class="card card-net"> <div class="card-header"> <div> <div class="card-title">NET CASH FLOW</div> </div> <div class="card-icon"> <i class="fas fa-chart-line"></i> </div> </div> <div class="card-value positive">$115.87</div> <div class="card-subtitle">November net flow</div> </div> </div>
+            <div class="chart-row"> <div class="chart-card"> <div class="chart-header"> <div class="chart-title">Cash Flow</div> <div class="chart-subtitle">Income vs Expenses by Type</div> </div> <div class="chart-container"> <canvas id="cash-flow-chart"></canvas> </div> </div> <div class="chart-card"> <div class="chart-header"> <div class="chart-title">Account Balances</div> <div class="chart-subtitle">Current Balance Across Accounts</div> </div> <div class="chart-container"> <canvas id="accounts-chart"></canvas> </div> </div> </div>
+            <div class="transactions-card"> <div class="transactions-header"> <div class="transactions-title">Recent Transactions</div> </div> <div class="table-container"> <table class="transactions-table" id="transactions-table"> <thead> <tr> <th>Date</th> <th>Account</th> <th>Description</th> <th>Category</th> <th>Type</th> <th>Amount</th> </tr> </thead> <tbody></tbody> </table> </div> </div>
+            <div class="dashboard-footer"> <div>Financial Dashboard © 2024</div> <div>Data powered by Wealthica</div> </div>
+        </div>
+    </main>
 
-        <!-- Main Content Area -->
-        <main class="main-content">
-            <!-- Optional Header for the page -->
-             <header class="page-header">
-                <h1 class="page-header-title">Financial Dashboard</h1>
-            </header>
-
-            <!-- Dashboard Specific Content (Copied from original dashboard file's body) -->
-            <div class="dashboard"> <!-- Removed extra outer div -->
-                <div class="dashboard-header">
-                    <div class="dashboard-title">
-                        <h1>Financial Analysis</h1> <!-- Example slightly different title -->
-                        <p>November 2024 Transactions</p>
-                    </div>
-                    <div class="dashboard-meta">
-                         <div class="dashboard-meta-item">
-                            <div class="dashboard-meta-value">21</div>
-                            <div class="dashboard-meta-label">Transactions</div>
-                        </div>
-                        <div class="dashboard-meta-item">
-                            <div class="dashboard-meta-value">5</div>
-                            <div class="dashboard-meta-label">Accounts</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-grid">
-                     <div class="card card-income"> <div class="card-header"> <div> <div class="card-title">TOTAL INCOME</div> </div> <div class="card-icon"> <i class="fas fa-arrow-down"></i> </div> </div> <div class="card-value positive">$2,664.91</div> <div class="card-subtitle">November deposits</div> </div>
-                     <div class="card card-expense"> <div class="card-header"> <div> <div class="card-title">TOTAL EXPENSES</div> </div> <div class="card-icon"> <i class="fas fa-arrow-up"></i> </div> </div> <div class="card-value negative">$3,933.12</div> <div class="card-subtitle">November withdrawals</div> </div>
-                     <div class="card card-transfer"> <div class="card-header"> <div> <div class="card-title">TRANSFERS</div> </div> <div class="card-icon"> <i class="fas fa-exchange-alt"></i> </div> </div> <div class="card-value neutral">$1,384.08</div> <div class="card-subtitle">November transfers</div> </div>
-                     <div class="card card-net"> <div class="card-header"> <div> <div class="card-title">NET CASH FLOW</div> </div> <div class="card-icon"> <i class="fas fa-chart-line"></i> </div> </div> <div class="card-value positive">$115.87</div> <div class="card-subtitle">November net flow</div> </div>
-                </div>
-
-                <div class="chart-row">
-                     <div class="chart-card"> <div class="chart-header"> <div class="chart-title">Cash Flow</div> <div class="chart-subtitle">Income vs Expenses by Type</div> </div> <div class="chart-container"> <canvas id="cash-flow-chart"></canvas> </div> </div>
-                     <div class="chart-card"> <div class="chart-header"> <div class="chart-title">Account Balances</div> <div class="chart-subtitle">Current Balance Across Accounts</div> </div> <div class="chart-container"> <canvas id="accounts-chart"></canvas> </div> </div>
-                </div>
-
-                 <div class="transactions-card"> <div class="transactions-header"> <div class="transactions-title">Recent Transactions</div> </div> <div class="table-container"> <table class="transactions-table" id="transactions-table"> <thead> <tr> <th>Date</th> <th>Account</th> <th>Description</th> <th>Category</th> <th>Type</th> <th>Amount</th> </tr> </thead> <tbody> <!-- Populated by JS --> </tbody> </table> </div> </div>
-
-                 <div class="dashboard-footer"> <div>Financial Dashboard © 2024</div> <div>Data powered by Wealthica</div> </div>
-            </div>
-            <!-- End Dashboard Specific Content -->
-
-        </main>
-    </div>
-
-    <!-- JavaScript Dependencies: Chart.js (Load AFTER content) -->
+    <!-- JavaScript Dependencies: Chart.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 
-    <!-- Dashboard Specific JavaScript (Copied & adapted) -->
+    <!-- Dashboard Specific JavaScript -->
     <script>
-        // Ensure this script runs AFTER the Chart.js library is loaded and DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
+            // Chart/Table Initialization Functions (Same as before, minified)
+            function initializeCashFlowChart() { const ctx=document.getElementById('cash-flow-chart')?.getContext('2d'); if(!ctx)return; const income=novemberTransactions.filter(t=>t.type==='deposit').reduce((s,t)=>s+t.amount,0); const expenses=Math.abs(novemberTransactions.filter(t=>t.type==='withdrawal').reduce((s,t)=>s+t.amount,0)); const netTransfers=novemberTransactions.filter(t=>t.type==='transfer').reduce((s,t)=>s+t.amount,0); const fees=Math.abs(novemberTransactions.filter(t=>t.type==='fee').reduce((s,t)=>s+t.amount,0)); const chartLabels=['Income','Expenses','Net Transfers','Fees']; const chartDataPoints=[income,expenses,netTransfers,fees]; const bgColors=['rgba(16,185,129,0.7)','rgba(239,68,68,0.7)',netTransfers>=0?'rgba(14,165,233,0.7)':'rgba(245,158,11,0.7)','rgba(245,158,11,0.7)']; const borderColors=['rgb(16,185,129)','rgb(239,68,68)',netTransfers>=0?'rgb(14,165,233)':'rgb(245,158,11)','rgb(245,158,11)']; new Chart(ctx,{type:'pie',data:{labels:chartLabels,datasets:[{data:chartDataPoints,backgroundColor:bgColors,borderColor:borderColors,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{padding:15,usePointStyle:true,pointStyle:'circle'}},tooltip:{callbacks:{label:function(c){let l=c.label||'';if(l){l+=': '}const v=c.raw;const t=c.dataset.data.reduce((a,b)=>a+Math.abs(b),0);const p=t!==0?Math.round(Math.abs(v)/t*100):0;l+=`$${v.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}`;if(t!==0){l+=` (${p}%)`}return l}}}}}}); }
+            function initializeAccountsChart() { const ctx=document.getElementById('accounts-chart')?.getContext('2d'); if(!ctx)return; new Chart(ctx,{type:'bar',data:{labels:accountsData.labels,datasets:[{label:'Account Balance',data:accountsData.balances,backgroundColor:accountsData.balances.map(b=>b>=0?'rgba(16,185,129,0.7)':'rgba(239,68,68,0.7)'),borderColor:accountsData.balances.map(b=>b>=0?'rgb(16,185,129)':'rgb(239,68,68)'),borderWidth:2,borderRadius:6}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,scales:{x:{ticks:{callback:function(v){return '$'+v.toLocaleString()}}},y:{grid:{display:false}}},plugins:{legend:{display:false},tooltip:{callbacks:{title:(ti)=>ti[0].label+' Account',label:function(c){return `Balance: $${c.raw.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}`}}}}}}); }
+            function populateTransactionsTable() { const tb=document.querySelector('#transactions-table tbody'); if(!tb)return; tb.innerHTML=''; const st=[...novemberTransactions].sort((a,b)=>new Date(b.date)-new Date(a.date)); const cf=new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:2}); st.forEach(t=>{const r=tb.insertRow();const an=t.account.split(' (')[0];const ai=an.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();let ac='#64748b';if(an.includes('RBC Advantage'))ac='#ef4444';else if(an.includes('CIBC Chequing'))ac='#10b981';else if(an.includes('RBC Cash Back'))ac='#f59e0b';else if(an.includes('CIBC VISA'))ac='#8b5cf6';else if(an.includes('CIBC Savings'))ac='#0ea5e9';r.innerHTML=`<td>${t.date}</td><td><div class="account-cell"><div class="account-icon" style="background-color:${ac};">${ai}</div><div>${an}</div></div></td><td>${t.description}</td><td>${t.category||'Uncategorized'}</td><td><span class="tx-badge badge-${t.type}">${t.type}</span></td><td class="${t.amount>=0?'positive':'negative'}">${cf.format(t.amount)}</td>`});}
 
-            // --- Chart.js Global Config (Optional: Can be set per chart) ---
-             Chart.defaults.font.family = "'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif";
-             Chart.defaults.color = '#64748b';
-             Chart.defaults.plugins.legend.labels.usePointStyle = true;
-             Chart.defaults.plugins.legend.labels.pointStyle = 'circle';
+             // Data Definitions (Keep this part)
+             const novemberTransactions = [ { date: '11/8/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'Contactless Interac purchase - 8827 COSTCO WHOLESAL', category: 'General Merchandise', type: 'withdrawal', amount: -13.64 }, { date: '11/8/24', account: 'CIBC Online Banking (Recommended) (Chequing)', description: 'Electronic Funds Transfer PREAUTHORIZED DEBIT BELL ALIANT', category: 'Transfers', type: 'transfer', amount: -115.92 }, { date: '11/7/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'Loan payment', category: null, type: 'withdrawal', amount: -1045.8 }, { date: '11/7/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'ATM Withdrawal', category: null, type: 'withdrawal', amount: -16.5 }, { date: '11/7/24', account: 'RBC Online Banking (RBC Cash Back Mastercard)', description: 'Credit Card Payment', category: 'Credit Card Payments', type: 'transfer', amount: 1000.00 }, { date: '11/6/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Restaurant Purchase', category: 'Restaurants/Dining', type: 'withdrawal', amount: -52.36 }, { date: '11/6/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Service Fee', category: 'Service Charges/Fees', type: 'fee', amount: -5.00 }, { date: '11/6/24', account: 'RBC Online Banking (RBC Cash Back Mastercard)', description: 'Gasoline Purchase', category: 'Gasoline/Fuel', type: 'withdrawal', amount: -46.79 }, { date: '11/5/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'ATM Withdrawal', category: null, type: 'withdrawal', amount: -200.00 }, { date: '11/5/24', account: 'CIBC Online Banking (Recommended) (Chequing)', description: 'Mobile Deposit', category: null, type: 'deposit', amount: 856.23 }, { date: '11/5/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Shopping - Clothing', category: 'Clothing/Shoes', type: 'withdrawal', amount: -89.32 }, { date: '11/4/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Gas Station Purchase', category: 'Automotive Expenses', type: 'withdrawal', amount: -67.85 }, { date: '11/4/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'Utility Bill Payment', category: 'Utilities', type: 'withdrawal', amount: -145.32 }, { date: '11/4/24', account: 'CIBC Online Banking (Recommended) (Savings)', description: 'Transfer from Savings', category: 'Transfers', type: 'transfer', amount: 500.00 }, { date: '11/3/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Credit Card Payment', category: 'Credit Card Payments', type: 'transfer', amount: 200.00 }, { date: '11/3/24', account: 'CIBC Online Banking (Recommended) (Chequing)', description: 'Grocery Shopping', category: 'Groceries', type: 'withdrawal', amount: -142.76 }, { date: '11/2/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'Restaurant Dining', category: 'Restaurants/Dining', type: 'withdrawal', amount: -56.78 }, { date: '11/2/24', account: 'RBC Online Banking (RBC Cash Back Mastercard)', description: 'Online Subscription', category: 'Online Services', type: 'withdrawal', amount: -14.99 }, { date: '11/1/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'Payroll Deposit', category: null, type: 'deposit', amount: 1808.68 }, { date: '11/1/24', account: 'CIBC Online Banking (Recommended) (Chequing)', description: 'Mortgage Payment', category: 'Transfers', type: 'transfer', amount: -1050.00 }, { date: '11/1/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Home Improvement Store', category: 'Home Improvement', type: 'withdrawal', amount: -264.39 } ];
+             const accountsData = { labels: ['RBC Advantage', 'CIBC Chequing', 'RBC Mastercard', 'CIBC VISA', 'CIBC Savings'], balances: [-1718.09, 1118.11, -304.35, -1083.24, -1674.63] };
 
-            // --- Data Definitions ---
-            const novemberTransactions = [ { date: '11/8/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'Contactless Interac purchase - 8827 COSTCO WHOLESAL', category: 'General Merchandise', type: 'withdrawal', amount: -13.64 }, { date: '11/8/24', account: 'CIBC Online Banking (Recommended) (Chequing)', description: 'Electronic Funds Transfer PREAUTHORIZED DEBIT BELL ALIANT', category: 'Transfers', type: 'transfer', amount: -115.92 }, { date: '11/7/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'Loan payment', category: null, type: 'withdrawal', amount: -1045.8 }, { date: '11/7/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'ATM Withdrawal', category: null, type: 'withdrawal', amount: -16.5 }, { date: '11/7/24', account: 'RBC Online Banking (RBC Cash Back Mastercard)', description: 'Credit Card Payment', category: 'Credit Card Payments', type: 'transfer', amount: 1000.00 }, { date: '11/6/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Restaurant Purchase', category: 'Restaurants/Dining', type: 'withdrawal', amount: -52.36 }, { date: '11/6/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Service Fee', category: 'Service Charges/Fees', type: 'fee', amount: -5.00 }, { date: '11/6/24', account: 'RBC Online Banking (RBC Cash Back Mastercard)', description: 'Gasoline Purchase', category: 'Gasoline/Fuel', type: 'withdrawal', amount: -46.79 }, { date: '11/5/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'ATM Withdrawal', category: null, type: 'withdrawal', amount: -200.00 }, { date: '11/5/24', account: 'CIBC Online Banking (Recommended) (Chequing)', description: 'Mobile Deposit', category: null, type: 'deposit', amount: 856.23 }, { date: '11/5/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Shopping - Clothing', category: 'Clothing/Shoes', type: 'withdrawal', amount: -89.32 }, { date: '11/4/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Gas Station Purchase', category: 'Automotive Expenses', type: 'withdrawal', amount: -67.85 }, { date: '11/4/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'Utility Bill Payment', category: 'Utilities', type: 'withdrawal', amount: -145.32 }, { date: '11/4/24', account: 'CIBC Online Banking (Recommended) (Savings)', description: 'Transfer from Savings', category: 'Transfers', type: 'transfer', amount: 500.00 }, { date: '11/3/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Credit Card Payment', category: 'Credit Card Payments', type: 'transfer', amount: 200.00 }, { date: '11/3/24', account: 'CIBC Online Banking (Recommended) (Chequing)', description: 'Grocery Shopping', category: 'Groceries', type: 'withdrawal', amount: -142.76 }, { date: '11/2/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'Restaurant Dining', category: 'Restaurants/Dining', type: 'withdrawal', amount: -56.78 }, { date: '11/2/24', account: 'RBC Online Banking (RBC Cash Back Mastercard)', description: 'Online Subscription', category: 'Online Services', type: 'withdrawal', amount: -14.99 }, { date: '11/1/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'Payroll Deposit', category: null, type: 'deposit', amount: 1808.68 }, { date: '11/1/24', account: 'CIBC Online Banking (Recommended) (Chequing)', description: 'Mortgage Payment', category: 'Transfers', type: 'transfer', amount: -1050.00 }, { date: '11/1/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Home Improvement Store', category: 'Home Improvement', type: 'withdrawal', amount: -264.39 } ];
-            const accountsData = { labels: ['RBC Advantage', 'CIBC Chequing', 'RBC Mastercard', 'CIBC VISA', 'CIBC Savings'], balances: [-1718.09, 1118.11, -304.35, -1083.24, -1674.63] };
-
-            // --- Chart/Table Initialization Functions (Same as before) ---
-            function initializeCashFlowChart() { const ctx = document.getElementById('cash-flow-chart')?.getContext('2d'); if (!ctx) return; const income = novemberTransactions .filter(t => t.type === 'deposit') .reduce((sum, t) => sum + t.amount, 0); const expenses = Math.abs(novemberTransactions .filter(t => t.type === 'withdrawal') .reduce((sum, t) => sum + t.amount, 0)); const netTransfers = novemberTransactions .filter(t => t.type === 'transfer') .reduce((sum, t) => sum + t.amount, 0); const fees = Math.abs(novemberTransactions .filter(t => t.type === 'fee') .reduce((sum, t) => sum + t.amount, 0)); const chartLabels = ['Income', 'Expenses', 'Net Transfers', 'Fees']; const chartDataPoints = [income, expenses, netTransfers, fees]; const backgroundColors = [ 'rgba(16, 185, 129, 0.7)', 'rgba(239, 68, 68, 0.7)', netTransfers >= 0 ? 'rgba(14, 165, 233, 0.7)' : 'rgba(245, 158, 11, 0.7)', 'rgba(245, 158, 11, 0.7)' ]; const borderColors = [ 'rgb(16, 185, 129)', 'rgb(239, 68, 68)', netTransfers >= 0 ? 'rgb(14, 165, 233)' : 'rgb(245, 158, 11)', 'rgb(245, 158, 11)' ]; new Chart(ctx, { type: 'pie', data: { labels: chartLabels, datasets: [{ data: chartDataPoints, backgroundColor: backgroundColors, borderColor: borderColors, borderWidth: 2 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top', labels: { padding: 15 } }, tooltip: { backgroundColor: 'rgba(255, 255, 255, 0.95)', titleColor: '#0f172a', bodyColor: '#334155', bodyFont: { size: 14 }, borderColor: '#e2e8f0', borderWidth: 1, padding: 12, callbacks: { label: function(context) { let label = context.label || ''; if (label) { label += ': '; } const value = context.raw; const total = context.dataset.data.reduce((a, b) => a + Math.abs(b), 0); const percentage = total !== 0 ? Math.round(Math.abs(value) / total * 100) : 0; label += `$${value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`; if (total !== 0) { label += ` (${percentage}%)`; } return label; } } } } } }); }
-            function initializeAccountsChart() { const ctx = document.getElementById('accounts-chart')?.getContext('2d'); if (!ctx) return; new Chart(ctx, { type: 'bar', data: { labels: accountsData.labels, datasets: [{ label: 'Account Balance', data: accountsData.balances, backgroundColor: accountsData.balances.map(b => b >= 0 ? 'rgba(16, 185, 129, 0.7)' : 'rgba(239, 68, 68, 0.7)'), borderColor: accountsData.balances.map(b => b >= 0 ? 'rgb(16, 185, 129)' : 'rgb(239, 68, 68)'), borderWidth: 2, borderRadius: 6 }] }, options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { grid: { color: 'rgba(226, 232, 240, 0.5)' }, ticks: { callback: function(value) { return '$' + value.toLocaleString(); } } }, y: { grid: { display: false } } }, plugins: { legend: { display: false }, tooltip: { backgroundColor: 'rgba(255, 255, 255, 0.95)', titleColor: '#0f172a', bodyColor: '#334155', bodyFont: { size: 14 }, borderColor: '#e2e8f0', borderWidth: 1, padding: 12, callbacks: { title: (ti) => ti[0].label + ' Account', label: function(context) { return `Balance: $${context.raw.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`; } } } } } }); }
-            function populateTransactionsTable() { const tableBody = document.querySelector('#transactions-table tbody'); if (!tableBody) return; tableBody.innerHTML = ''; const sortedTransactions = [...novemberTransactions].sort((a, b) => new Date(b.date) - new Date(a.date)); const currencyFormatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 }); sortedTransactions.forEach(transaction => { const row = tableBody.insertRow(); const accountName = transaction.account.split(' (')[0]; const accountInitials = accountName.split(' ').map(word => word[0]).join('').substring(0, 2).toUpperCase(); let accountColor = '#64748b'; if (accountName.includes('RBC Advantage')) accountColor = '#ef4444'; else if (accountName.includes('CIBC Chequing')) accountColor = '#10b981'; else if (accountName.includes('RBC Cash Back')) accountColor = '#f59e0b'; else if (accountName.includes('CIBC VISA')) accountColor = '#8b5cf6'; else if (accountName.includes('CIBC Savings')) accountColor = '#0ea5e9'; row.innerHTML = ` <td>${transaction.date}</td> <td> <div class="account-cell"> <div class="account-icon" style="background-color: ${accountColor};">${accountInitials}</div> <div>${accountName}</div> </div> </td> <td>${transaction.description}</td> <td>${transaction.category || 'Uncategorized'}</td> <td> <span class="tx-badge badge-${transaction.type}"> ${transaction.type} </span> </td> <td class="${transaction.amount >= 0 ? 'positive' : 'negative'}"> ${currencyFormatter.format(transaction.amount)} </td> `; }); }
-
-            // --- Call Initializers ---
+            // Call Initializers
             initializeCashFlowChart();
             initializeAccountsChart();
             populateTransactionsTable();
+        }); // End DOMContentLoaded
 
-        }); // End DOMContentLoaded listener
-
-        // --- Sidebar Toggle JS (COPIED FROM index.html) ---
-         const sidebar = document.getElementById('sidebar');
-         const toggleButton = document.getElementById('sidebar-toggle');
-         if (toggleButton && sidebar) {
-             toggleButton.addEventListener('click', () => { sidebar.classList.toggle('active'); });
-             document.addEventListener('click', function(event) {
-                 const isClickInsideSidebar = sidebar.contains(event.target);
-                 const isClickOnToggle = toggleButton.contains(event.target);
-                 if (window.innerWidth <= 768 && !isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains('active')) {
-                     sidebar.classList.remove('active');
-                 }
-             });
-         }
+        // --- REMOVE Sidebar Toggle JS ---
     </script>
 </body>
 </html>
