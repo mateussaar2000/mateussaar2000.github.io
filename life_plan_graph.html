@@ -40,8 +40,7 @@
             color: var(--text-primary);
             margin: 0;
             padding: 0;
-            /* Allow vertical scrolling if content exceeds viewport */
-            overflow-y: auto;
+            overflow-y: auto; /* Allow vertical scrolling */
             font-weight: 400;
             text-rendering: optimizeLegibility;
             -webkit-font-smoothing: antialiased;
@@ -50,13 +49,13 @@
 
         .container {
             width: 100%;
-            max-width: 1400px; /* Limit max width for very large screens */
-            margin: 0 auto; /* Center container */
-            padding: 0 20px; /* Add some side padding */
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh; /* Ensure container tries to fill height */
+            min-height: 100vh;
         }
 
         h1 {
@@ -74,71 +73,55 @@
             gap: 10px;
             flex-wrap: wrap;
             justify-content: center;
-            z-index: 10; /* Keep controls above graph if overlapping */
+            z-index: 10;
             width: 100%;
             max-width: 950px;
         }
 
         button {
-            background-color: #f1f5f9; /* Slate 100 */
-            color: #334155; /* Slate 700 */
-            border: 1px solid #cbd5e1; /* Slate 300 */
-            padding: 9px 18px;
-            border-radius: 6px; /* Slightly more rounded */
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: all 0.2s ease;
-            font-family: 'Inter', sans-serif;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            background-color: #f1f5f9; color: #334155; border: 1px solid #cbd5e1;
+            padding: 9px 18px; border-radius: 6px; cursor: pointer;
+            font-weight: 500; font-size: 0.9rem; transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif; box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
-        button:hover {
-            background-color: #e2e8f0; /* Slate 200 */
-            color: #1e293b; /* Slate 800 */
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
+        button:hover { background-color: #e2e8f0; color: #1e293b; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
 
-        #graph-wrapper { /* New wrapper for graph and its overlays */
+        #graph-wrapper {
              width: 100%;
-             position: relative; /* Needed for absolute positioning of legend/tooltip */
-             /* Set a max height for the graph area to allow space below */
-             height: 70vh; /* Adjust as needed */
-             max-height: 700px; /* Optional max pixel height */
-             margin-bottom: 40px; /* Space between graph and timeline */
+             position: relative;
+             height: 70vh;
+             max-height: 700px;
+             margin-bottom: 40px;
          }
 
-        #graph {
-            width: 100%;
-            height: 100%; /* Fill the wrapper */
-            position: relative; /* Ensure SVG takes space */
-        }
+        #graph { width: 100%; height: 100%; position: relative; }
 
-        /* Node and Link styling (same as before) */
+        /* Node and Link styling */
         .node { cursor: pointer; }
         .link { stroke-opacity: 0.6; }
         .node-label text { pointer-events: none; text-anchor: middle; dominant-baseline: middle; font-weight: 400; fill: #1e293b; }
         .decision .node-label { transform: translateY(-38px); }
         .decision .node-label text { font-size: 9.5px; line-height: 1.2; dominant-baseline: auto; text-anchor: middle; }
 
-        /* Tooltip styling (same as before) */
+        /* Tooltip */
         .tooltip { position: absolute; padding: 12px 16px; background-color: rgba(255, 255, 255, 0.95); color: #334155; border-radius: 4px; pointer-events: none; opacity: 0; transition: opacity 0.2s ease; max-width: 280px; z-index: 1000; border: 1px solid #e2e8f0; font-size: 0.875rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); backdrop-filter: blur(2px); }
         .tooltip h3 { margin: 0 0 8px 0; font-weight: 600; font-size: 1rem; }
         .tooltip p { margin: 0 0 6px 0; line-height: 1.5; color: #475569; font-weight: 400; }
         .tooltip p strong { color: #1e293b; font-weight: 500; }
 
-        /* Legend styling (positioned relative to graph-wrapper) */
+        /* Legend */
         .legend { position: absolute; top: 15px; right: 15px; background-color: rgba(255, 255, 255, 0.9); padding: 16px; border-radius: 6px; border: 1px solid var(--border-color); z-index: 10; font-size: 0.875rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); backdrop-filter: blur(2px); }
         .legend h3 { margin: 0 0 12px 0; font-weight: 500; font-size: 1rem; color: var(--text-primary); }
         .legend-item { display: flex; align-items: center; margin-bottom: 8px; color: var(--text-secondary); }
         .legend-color { width: 12px; height: 12px; border-radius: 3px; margin-right: 10px; flex-shrink: 0; }
 
-        .node-group { /* Opacity changes instantly on hover now */ }
+        .node-group {} /* No transitions on hover */
 
         /* --- Timeline Section Styling --- */
         #timeline-section {
             width: 100%;
-            max-width: 900px; /* Limit timeline width */
-            margin: 0 auto 50px auto; /* Center and add bottom margin */
+            max-width: 900px;
+            margin: 0 auto 50px auto;
             background-color: var(--bg-secondary);
             padding: 25px 30px;
             border-radius: 8px;
@@ -147,95 +130,61 @@
         }
 
         #timeline-section h2 {
-            text-align: center;
-            color: var(--text-primary);
-            font-weight: 500;
-            font-size: 1.5rem;
-            margin-bottom: 30px;
-            letter-spacing: -0.01em;
+            text-align: center; color: var(--text-primary); font-weight: 500;
+            font-size: 1.5rem; margin-bottom: 30px; letter-spacing: -0.01em;
         }
 
         .timeline-year {
-            margin-bottom: 35px;
-            padding-left: 25px; /* Space for the line */
-            position: relative;
-            border-left: 2px solid var(--timeline-line-color); /* The main timeline bar */
+            margin-bottom: 35px; padding-left: 25px; position: relative;
+            border-left: 2px solid var(--timeline-line-color);
         }
-         .timeline-year:last-child {
-             margin-bottom: 10px; /* Less margin on the last year */
-         }
+        .timeline-year:last-child { margin-bottom: 10px; }
 
         .timeline-year-header {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--accent-primary);
-            margin-bottom: 15px;
-            position: relative;
-             left: -38px; /* Align with the left of the circle */
-             top: -5px; /* Adjust vertical alignment */
-             display: inline-block; /* Needed for positioning */
-             background-color: var(--bg-secondary); /* Cover the line */
-             padding: 0 10px 0 0; /* Space around text */
+            font-size: 1.2rem; font-weight: 600; color: var(--accent-primary);
+            margin-bottom: 15px; position: relative; left: -38px; top: -5px;
+            display: inline-block; background-color: var(--bg-secondary); padding: 0 10px 0 0;
         }
 
          /* Year marker on the timeline */
          .timeline-year-header::before {
             content: '';
             position: absolute;
-            left: -5px; /* Position relative to the header text */
+            left: -18px; /* ADJUSTED for better spacing */
             top: 50%;
             transform: translateY(-50%);
             width: 12px;
             height: 12px;
             border-radius: 50%;
             background-color: var(--accent-primary);
-            border: 2px solid var(--bg-secondary); /* Match background */
+            border: 2px solid var(--bg-secondary);
             z-index: 1;
         }
 
-
-        .timeline-events {
-            list-style: none;
-            padding-left: 10px; /* Indent events slightly */
-        }
+        .timeline-events { list-style: none; padding-left: 10px; }
 
         .timeline-event {
-            margin-bottom: 12px;
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            line-height: 1.6;
-            position: relative;
-            padding-left: 20px; /* Space for icon */
+            margin-bottom: 12px; font-size: 0.95rem; color: var(--text-secondary);
+            line-height: 1.6; position: relative; padding-left: 20px;
         }
 
          /* Event marker/icon */
          .timeline-event::before {
-            font-family: "Font Awesome 6 Free"; /* Font Awesome */
-            font-weight: 900; /* Solid icons */
-            content: "\f111"; /* Default solid circle */
-            position: absolute;
-            left: 0;
-            top: 5px; /* Adjust vertical alignment */
-            font-size: 0.6em;
-            color: var(--text-muted);
+            font-family: "Font Awesome 6 Free"; font-weight: 900; content: "\f111";
+            position: absolute; left: 0; top: 5px; font-size: 0.6em; color: var(--text-muted);
          }
 
-         /* Specific icons (examples) */
+         /* Specific icons */
          .timeline-event.icon-graduation-cap::before { content: "\f19d"; color: var(--accent-primary); }
-         .timeline-event.icon-briefcase::before { content: "\f0b1"; color: #14b8a6; } /* Teal */
-         .timeline-event.icon-home::before { content: "\f015"; color: #22c55e; } /* Green */
-         .timeline-event.icon-plane-departure::before { content: "\f5b0"; color: #a855f7; } /* Purple */
-         .timeline-event.icon-heart::before { content: "\f004"; color: #ec4899; } /* Pink */
-         .timeline-event.icon-calendar-check::before { content: "\f274"; color: #f59e0b; } /* Amber */
-         .timeline-event.icon-comments-dollar::before { content: "\f653"; color: #f59e0b; } /* Amber */
-         .timeline-event.icon-user-graduate::before { content: "\f501"; color: #14b8a6; } /* Teal */
+         .timeline-event.icon-briefcase::before { content: "\f0b1"; color: #14b8a6; }
+         .timeline-event.icon-home::before { content: "\f015"; color: #22c55e; }
+         .timeline-event.icon-plane-departure::before { content: "\f5b0"; color: #a855f7; }
+         .timeline-event.icon-heart::before { content: "\f004"; color: #ec4899; }
+         .timeline-event.icon-calendar-check::before { content: "\f274"; color: #f59e0b; }
+         .timeline-event.icon-comments-dollar::before { content: "\f653"; color: #f59e0b; }
+         .timeline-event.icon-user-graduate::before { content: "\f501"; color: #14b8a6; }
 
-
-        .timeline-event strong {
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-
+        .timeline-event strong { font-weight: 500; color: var(--text-primary); }
 
     </style>
 </head>
@@ -243,6 +192,7 @@
     <div class="container">
         <h1>Our Future: Career & Life Planning</h1>
         <div class="controls">
+            <!-- Buttons remain the same -->
             <button id="resetZoom">Reset View</button>
             <button id="showCareerYou">Career (You)</button>
             <button id="showCareerPartner">Career (Partner)</button>
@@ -257,6 +207,7 @@
             <div id="graph"></div>
             <div class="tooltip"></div>
             <div class="legend">
+                <!-- Legend content remains the same -->
                 <h3>Life Areas</h3>
                  <div class="legend-item"><div class="legend-color" style="background-color: #3b82f6;"></div><div>Career (You)</div></div>
                  <div class="legend-item"><div class="legend-color" style="background-color: #14b8a6;"></div><div>Career (Partner)</div></div>
@@ -267,10 +218,9 @@
             </div>
         </div>
 
-        <!-- Timeline Section -->
+        <!-- Timeline Section (HTML content remains the same) -->
         <section id="timeline-section">
             <h2>Our 5-Year Outlook</h2>
-
             <div class="timeline-year">
                 <div class="timeline-year-header">2025</div>
                 <ul class="timeline-events">
@@ -282,7 +232,6 @@
                      <li class="timeline-event icon-heart"><strong>Relationship:</strong> Settle into new routine with focus on quality time.</li>
                 </ul>
             </div>
-
             <div class="timeline-year">
                 <div class="timeline-year-header">2026</div>
                 <ul class="timeline-events">
@@ -293,7 +242,6 @@
                     <li class="timeline-event icon-plane-departure"><strong>Personal:</strong> Plan a significant trip or vacation?</li>
                 </ul>
             </div>
-
             <div class="timeline-year">
                 <div class="timeline-year-header">2027</div>
                 <ul class="timeline-events">
@@ -304,7 +252,6 @@
                      <li class="timeline-event icon-heart"><strong>Relationship:</strong> Revisit marriage discussion (Natasha prefers post-grad).</li>
                 </ul>
             </div>
-
             <div class="timeline-year">
                 <div class="timeline-year-header">2028</div>
                 <ul class="timeline-events">
@@ -315,7 +262,6 @@
                     <li class="timeline-event icon-home"><strong>Location:</strong> Consider longer-term location goals (proximity to family).</li>
                 </ul>
             </div>
-
              <div class="timeline-year">
                 <div class="timeline-year-header">2029</div>
                 <ul class="timeline-events">
@@ -325,176 +271,62 @@
                      <li class="timeline-event"><strong>Future:</strong> Review 5-year plan and set goals for the next phase.</li>
                  </ul>
             </div>
-
         </section>
 
     </div><!-- End .container -->
 
     <script>
-        // --- Data (Same as previous version) ---
-        const data = {
-            nodes: [
-                { id: "Our Future Together", group: "root", level: 0 },
-                { id: "Career (You)", group: "category", level: 1 },
-                { id: "Career (Partner)", group: "category", level: 1 },
-                { id: "Location & Home", group: "category", level: 1 },
-                { id: "Financial Goals", group: "category", level: 1 },
-                { id: "Personal Growth", group: "category", level: 1 },
-                { id: "Relationship & Family", group: "category", level: 1 },
-                { id: "Your Target Industry", group: "decision", level: 2, category: "Career (You)", details: "Explore options like Tech, Healthcare, Education, Creative..." },
-                { id: "Your Desired Role", group: "decision", level: 2, category: "Career (You)", details: "Management, Specialist, Entrepreneur? What skills are needed?" },
-                { id: "Your Work-Life Balance", group: "decision", level: 2, category: "Career (You)", details: "Priorities? Remote work? Flexible hours?" },
-                { id: "Your Salary Goals", group: "decision", level: 2, category: "Career (You)", details: "Short-term and long-term targets based on role and location." },
-                { id: "Partner's Education", group: "decision", level: 2, category: "Career (Partner)", details: "Masters program. Key Terms: Mar 17, Jun 9, Jul 14 ('25). Practicum Spring/Fall '26 (400hrs). Expected Graduation: Feb/March 2027." },
-                { id: "Partner's Practicum", group: "decision", level: 2, category: "Career (Partner)", details: "Secured placement at Jasmines (Markham). Exploring virtual options. Occurs Spring & Fall 2026." },
-                { id: "Partner's Licensure", group: "decision", level: 2, category: "Career (Partner)", details: "Aiming for Psychotherapist license shortly after Feb/March 2027 graduation." },
-                { id: "Partner's Future Practice", group: "decision", level: 2, category: "Career (Partner)", details: "Goal: Launch virtual private practice after graduation/licensure (post-March 2027)." },
-                { id: "Partner's Work During School", group: "decision", level: 2, category: "Career (Partner)", details: "Needs part-time job or side project while in school (2025/26)." },
-                { id: "Move to Calgary", group: "decision", level: 2, category: "Location & Home", details: "Target: End of June 2025, after finishing Ontario commitments (e.g., post-June 21 party)." },
-                { id: "Ideal Future Region", group: "decision", level: 2, category: "Location & Home", details: "Calgary short/mid-term (from June '25). Long-term: Prefers 1-2hr drive from family, NOT Markham permanently." },
-                { id: "Living Arrangement", group: "decision", level: 2, category: "Location & Home", details: "Requires own space - no roommates." },
-                { id: "Rent vs Buy", group: "decision", level: 2, category: "Location & Home", details: "Decision needed based on Calgary move & finances. Initial likely rent." },
-                { id: "Savings Strategy", group: "decision", level: 2, category: "Financial Goals", details: "Emergency fund, retirement (RRSP/401k), down payment. Percentage goals?" },
-                { id: "Investment Approach", group: "decision", level: 2, category: "Financial Goals", details: "Risk tolerance? Joint or separate investments? Robo-advisor?" },
-                { id: "Debt Management", group: "decision", level: 2, category: "Financial Goals", details: "Student loans, credit cards. Payoff plan?" },
-                { id: "Budgeting Together", group: "decision", level: 2, category: "Financial Goals", details: "Shared expenses? Joint accounts? Budgeting tools? Factor in budget-friendly wedding preference." },
-                { id: "Your Skill Development", group: "decision", level: 2, category: "Personal Growth", details: "Your individual goals (e.g., coding, languages)." },
-                { id: "Partner's Lifestyle Needs", group: "decision", level: 2, category: "Personal Growth", details: "Requires access to Gym, safe living space, good food/coffee options nearby." },
-                { id: "Travel Aspirations", group: "decision", level: 2, category: "Personal Growth", details: "Dream destinations? Travel style (budget/luxury)? Frequency?" },
-                { id: "Health & Wellness", group: "decision", level: 2, category: "Personal Growth", details: "Fitness goals, mental health practices, healthy eating habits." },
-                { id: "Marriage Timeline & Style", group: "decision", level: 2, category: "Relationship & Family", details: "Timing flexible, Natasha prefers after graduation (post-Feb '27). Budget-friendly wedding desired." },
-                { id: "In-Person Time", group: "decision", level: 2, category: "Relationship & Family", details: "Natasha requires regular quality in-person time together." },
-                { id: "Starting a Family?", group: "decision", level: 2, category: "Relationship & Family", details: "Kids? How many? Timeline considerations?" },
-                { id: "Pet Ownership", group: "decision", level: 2, category: "Relationship & Family", details: "Ready for a pet? Type? Responsibilities?" }
-             ],
-            links: []
-        };
-        data.nodes.filter(n => n.group === "category").forEach(cat => data.links.push({ source: "Our Future Together", target: cat.id, value: 1 }));
-        data.nodes.filter(n => n.group === "decision").forEach(dec => { if (data.nodes.some(c => c.id === dec.category && c.group === 'category')) { data.links.push({ source: dec.category, target: dec.id, value: 1 }); } else { console.warn(`Category ${dec.category} not found for ${dec.id}`); } });
+        // --- Data (Same) ---
+        const data = { nodes: [ { id: "Our Future Together", group: "root", level: 0 }, { id: "Career (You)", group: "category", level: 1 }, { id: "Career (Partner)", group: "category", level: 1 }, { id: "Location & Home", group: "category", level: 1 }, { id: "Financial Goals", group: "category", level: 1 }, { id: "Personal Growth", group: "category", level: 1 }, { id: "Relationship & Family", group: "category", level: 1 }, { id: "Your Target Industry", group: "decision", level: 2, category: "Career (You)", details: "Explore options like Tech, Healthcare, Education, Creative..." }, { id: "Your Desired Role", group: "decision", level: 2, category: "Career (You)", details: "Management, Specialist, Entrepreneur? What skills are needed?" }, { id: "Your Work-Life Balance", group: "decision", level: 2, category: "Career (You)", details: "Priorities? Remote work? Flexible hours?" }, { id: "Your Salary Goals", group: "decision", level: 2, category: "Career (You)", details: "Short-term and long-term targets based on role and location." }, { id: "Partner's Education", group: "decision", level: 2, category: "Career (Partner)", details: "Masters program. Key Terms: Mar 17, Jun 9, Jul 14 ('25). Practicum Spring/Fall '26 (400hrs). Expected Graduation: Feb/March 2027." }, { id: "Partner's Practicum", group: "decision", level: 2, category: "Career (Partner)", details: "Secured placement at Jasmines (Markham). Exploring virtual options. Occurs Spring & Fall 2026." }, { id: "Partner's Licensure", group: "decision", level: 2, category: "Career (Partner)", details: "Aiming for Psychotherapist license shortly after Feb/March 2027 graduation." }, { id: "Partner's Future Practice", group: "decision", level: 2, category: "Career (Partner)", details: "Goal: Launch virtual private practice after graduation/licensure (post-March 2027)." }, { id: "Partner's Work During School", group: "decision", level: 2, category: "Career (Partner)", details: "Needs part-time job or side project while in school (2025/26)." }, { id: "Move to Calgary", group: "decision", level: 2, category: "Location & Home", details: "Target: End of June 2025, after finishing Ontario commitments (e.g., post-June 21 party)." }, { id: "Ideal Future Region", group: "decision", level: 2, category: "Location & Home", details: "Calgary short/mid-term (from June '25). Long-term: Prefers 1-2hr drive from family, NOT Markham permanently." }, { id: "Living Arrangement", group: "decision", level: 2, category: "Location & Home", details: "Requires own space - no roommates." }, { id: "Rent vs Buy", group: "decision", level: 2, category: "Location & Home", details: "Decision needed based on Calgary move & finances. Initial likely rent." }, { id: "Savings Strategy", group: "decision", level: 2, category: "Financial Goals", details: "Emergency fund, retirement (RRSP/401k), down payment. Percentage goals?" }, { id: "Investment Approach", group: "decision", level: 2, category: "Financial Goals", details: "Risk tolerance? Joint or separate investments? Robo-advisor?" }, { id: "Debt Management", group: "decision", level: 2, category: "Financial Goals", details: "Student loans, credit cards. Payoff plan?" }, { id: "Budgeting Together", group: "decision", level: 2, category: "Financial Goals", details: "Shared expenses? Joint accounts? Budgeting tools? Factor in budget-friendly wedding preference." }, { id: "Your Skill Development", group: "decision", level: 2, category: "Personal Growth", details: "Your individual goals (e.g., coding, languages)." }, { id: "Partner's Lifestyle Needs", group: "decision", level: 2, category: "Personal Growth", details: "Requires access to Gym, safe living space, good food/coffee options nearby." }, { id: "Travel Aspirations", group: "decision", level: 2, category: "Personal Growth", details: "Dream destinations? Travel style (budget/luxury)? Frequency?" }, { id: "Health & Wellness", group: "decision", level: 2, category: "Personal Growth", details: "Fitness goals, mental health practices, healthy eating habits." }, { id: "Marriage Timeline & Style", group: "decision", level: 2, category: "Relationship & Family", details: "Timing flexible, Natasha prefers after graduation (post-Feb '27). Budget-friendly wedding desired." }, { id: "In-Person Time", group: "decision", level: 2, category: "Relationship & Family", details: "Natasha requires regular quality in-person time together." }, { id: "Starting a Family?", group: "decision", level: 2, category: "Relationship & Family", details: "Kids? How many? Timeline considerations?" }, { id: "Pet Ownership", group: "decision", level: 2, category: "Relationship & Family", details: "Ready for a pet? Type? Responsibilities?" } ], links: [] };
+        data.nodes.filter(n=>n.group==="category").forEach(cat=>data.links.push({source:"Our Future Together",target:cat.id,value:1})); data.nodes.filter(n=>n.group==="decision").forEach(dec=>{if(data.nodes.some(c=>c.id===dec.category&&c.group==='category')){data.links.push({source:dec.category,target:dec.id,value:1})}else{console.warn(`Category ${dec.category} not found for ${dec.id}`)}});
 
-        // --- D3 Visualization Setup ---
-        const graphContainer = document.getElementById('graph');
-        // Note: Width/Height for SVG ViewBox are now taken from the wrapper
-        const graphWrapper = document.getElementById('graph-wrapper');
-        const viewboxWidth = graphWrapper.clientWidth || 1000; // Fallback width
-        const viewboxHeight = graphWrapper.clientHeight || 600; // Fallback height
+        // --- D3 Visualization Setup (Same) ---
+        const graphWrapper = document.getElementById('graph-wrapper'); const viewboxWidth = graphWrapper.clientWidth||1000; const viewboxHeight = graphWrapper.clientHeight||600; const svg = d3.select("#graph").append("svg").attr("width", "100%").attr("height", "100%").attr("viewBox", [-viewboxWidth/2, -viewboxHeight/2, viewboxWidth, viewboxHeight]);
+        svg.append("defs").append("pattern").attr("id","grid").attr("width",50).attr("height",50).attr("patternUnits","userSpaceOnUse").append("path").attr("d","M 50 0 L 0 0 0 50").attr("fill","none").attr("stroke","#e5e7eb").attr("stroke-width",0.8); svg.append("rect").attr("width",viewboxWidth*3).attr("height",viewboxHeight*3).attr("x",-viewboxWidth*1.5).attr("y",-viewboxHeight*1.5).attr("fill","url(#grid)").attr("opacity",0.6);
+        const g = svg.append("g"); const colorScale = d3.scaleOrdinal().domain(["Career (You)","Career (Partner)","Location & Home","Financial Goals","Personal Growth","Relationship & Family"]).range(["#3b82f6","#14b8a6","#22c55e","#f59e0b","#a855f7","#ec4899"]); const tooltip = d3.select(".tooltip");
 
-        const svg = d3.select("#graph")
-            .append("svg")
-            .attr("width", "100%")
-            .attr("height", "100%")
-            .attr("viewBox", [-viewboxWidth / 2, -viewboxHeight / 2, viewboxWidth, viewboxHeight]); // Use wrapper dimensions for viewBox
+        // --- Force Simulation (Same) ---
+        const simulation = d3.forceSimulation(data.nodes).force("link",d3.forceLink(data.links).id(d=>d.id).distance(d=>d.source.group==="root"?220:160).strength(0.8)).force("charge",d3.forceManyBody().strength(d=>d.group==="root"?-3000:(d.group==="category"?-1800:-900))).force("x",d3.forceX().strength(0.06)).force("y",d3.forceY().strength(0.06)).force("center",d3.forceCenter(0,0)).force("collide",d3.forceCollide(d=>d.group==="root"?80:(d.group==="category"?70:65)));
 
-        // Background Grid
-        svg.append("defs").append("pattern").attr("id", "grid").attr("width", 50).attr("height", 50).attr("patternUnits", "userSpaceOnUse").append("path").attr("d", "M 50 0 L 0 0 0 50").attr("fill", "none").attr("stroke", "#e5e7eb").attr("stroke-width", 0.8);
-        svg.append("rect").attr("width", viewboxWidth * 3).attr("height", viewboxHeight * 3).attr("x", -viewboxWidth * 1.5).attr("y", -viewboxHeight * 1.5).attr("fill", "url(#grid)").attr("opacity", 0.6); // Use viewbox dimensions for grid size
+        // --- Link Rendering (Same) ---
+        const linkGroups = g.append("g").attr("class","links").selectAll("g").data(data.links).enter().append("g"); linkGroups.append("linearGradient").attr("id",(d,i)=>`link-gradient-${i}`).attr("gradientUnits","userSpaceOnUse").each(function(d){const gr=d3.select(this);gr.append("stop").attr("offset","0%").attr("stop-color",()=>d.source.group==="root"?"#94a3b8":colorScale(d.source.id)).attr("stop-opacity",0.7);gr.append("stop").attr("offset","100%").attr("stop-color",()=>d.target.group==="category"?colorScale(d.target.id):colorScale(d.target.category)).attr("stop-opacity",0.7)}); const link = linkGroups.append("path").attr("class","link").attr("stroke",(d,i)=>`url(#link-gradient-${i})`).attr("stroke-width",1.8).attr("fill","none");
 
-        const g = svg.append("g");
-        const colorScale = d3.scaleOrdinal().domain(["Career (You)", "Career (Partner)", "Location & Home", "Financial Goals", "Personal Growth", "Relationship & Family"]).range(["#3b82f6", "#14b8a6", "#22c55e", "#f59e0b", "#a855f7", "#ec4899"]);
-        const tooltip = d3.select(".tooltip");
-
-        // --- Force Simulation ---
-        const simulation = d3.forceSimulation(data.nodes)
-            .force("link", d3.forceLink(data.links).id(d => d.id).distance(d => d.source.group === "root" ? 220 : 160).strength(0.8))
-            .force("charge", d3.forceManyBody().strength(d => d.group === "root" ? -3000 : (d.group === "category" ? -1800 : -900)))
-            .force("x", d3.forceX().strength(0.06))
-            .force("y", d3.forceY().strength(0.06))
-             // Adjust center force to be based on the potentially smaller graph area
-            .force("center", d3.forceCenter(0, 0))
-            .force("collide", d3.forceCollide(d => d.group === "root" ? 80 : (d.group === "category" ? 70 : 65)));
-
-        // --- Link Rendering ---
-        const linkGroups = g.append("g").attr("class", "links").selectAll("g").data(data.links).enter().append("g");
-        linkGroups.append("linearGradient").attr("id", (d, i) => `link-gradient-${i}`).attr("gradientUnits", "userSpaceOnUse")
-            .each(function(d) { const gr = d3.select(this); gr.append("stop").attr("offset", "0%").attr("stop-color", () => d.source.group === "root" ? "#94a3b8" : colorScale(d.source.id)).attr("stop-opacity", 0.7); gr.append("stop").attr("offset", "100%").attr("stop-color", () => d.target.group === "category" ? colorScale(d.target.id) : colorScale(d.target.category)).attr("stop-opacity", 0.7); });
-        const link = linkGroups.append("path").attr("class", "link").attr("stroke", (d, i) => `url(#link-gradient-${i})`).attr("stroke-width", 1.8).attr("fill", "none");
-
-        // --- Node Rendering ---
-        const nodeGroups = g.append("g").attr("class", "node-groups").selectAll("g").data(data.nodes).enter().append("g").attr("class", d => `node-group ${d.group}`);
-        const defs = svg.append("defs");
-        const glowFilter = defs.append("filter").attr("id", "glow").attr("x", "-50%").attr("y", "-50%").attr("width", "200%").attr("height", "200%");
-        glowFilter.append("feGaussianBlur").attr("stdDeviation", "2.5").attr("result", "coloredBlur"); const glowMerge = glowFilter.append("feMerge"); glowMerge.append("feMergeNode").attr("in", "coloredBlur"); glowMerge.append("feMergeNode").attr("in", "SourceGraphic");
-        const node = nodeGroups.append("g").attr("class", "node-container").style("transform-origin", "center center");
-        node.append("circle").attr("class", d => `node-base ${d.group}`).attr("r", d => d.group === "root" ? 50 : (d.group === "category" ? 40 : 25)).attr("fill", "#ffffff").attr("stroke", d => d.group === "root" ? "#475569" : (d.group === "category" ? colorScale(d.id) : colorScale(d.category))).attr("stroke-width", d => (d.group === 'root' ? 3.5 : (d.group === 'category' ? 3 : 2.5))).attr("filter", "url(#glow)");
-        node.append("circle").attr("class", d => `node-inner ${d.group}`).attr("r", d => d.group === "root" ? 40 : (d.group === "category" ? 30 : 18)).attr("fill", d => d.group === "root" ? "#f1f5f9" : (d.group === "category" ? colorScale(d.id) : colorScale(d.category))).attr("opacity", 0.4);
+        // --- Node Rendering (Same) ---
+        const nodeGroups = g.append("g").attr("class","node-groups").selectAll("g").data(data.nodes).enter().append("g").attr("class",d=>`node-group ${d.group}`); const defs = svg.append("defs"); const glowFilter = defs.append("filter").attr("id","glow").attr("x","-50%").attr("y","-50%").attr("width","200%").attr("height","200%"); glowFilter.append("feGaussianBlur").attr("stdDeviation","2.5").attr("result","coloredBlur"); const glowMerge = glowFilter.append("feMerge"); glowMerge.append("feMergeNode").attr("in","coloredBlur"); glowMerge.append("feMergeNode").attr("in","SourceGraphic");
+        const node = nodeGroups.append("g").attr("class","node-container").style("transform-origin","center center"); node.append("circle").attr("class",d=>`node-base ${d.group}`).attr("r",d=>d.group==="root"?50:(d.group==="category"?40:25)).attr("fill","#ffffff").attr("stroke",d=>d.group==="root"?"#475569":(d.group==="category"?colorScale(d.id):colorScale(d.category))).attr("stroke-width",d=>(d.group==='root'?3.5:(d.group==='category'?3:2.5))).attr("filter","url(#glow)"); node.append("circle").attr("class",d=>`node-inner ${d.group}`).attr("r",d=>d.group==="root"?40:(d.group==="category"?30:18)).attr("fill",d=>d.group==="root"?"#f1f5f9":(d.group==="category"?colorScale(d.id):colorScale(d.category))).attr("opacity",0.4);
 
         // --- Node Labels (Root Label Fixed) ---
-        const nodeLabelGroups = nodeGroups.append("g").attr("class", d => `node-label ${d.group}`);
-        nodeLabelGroups.filter(".root").each(function(d) { const el = d3.select(this); const l1 = "Our Future", l2 = "Together", fs = "14px", fw = "600"; el.append("text").text(l1).attr("dy", "-0.35em").attr("fill", "#1e293b").attr("font-size", fs).attr("text-anchor", "middle").attr("font-weight", fw); el.append("text").text(l2).attr("dy", "0.95em").attr("fill", "#1e293b").attr("font-size", fs).attr("text-anchor", "middle").attr("font-weight", fw); });
-        nodeLabelGroups.filter(".category").each(function(d) { const w = d.id.split(/[\s&]+/); const el = d3.select(this); if (w.length > 1) { const l1 = w[0], l2 = w.slice(1).join(' '); el.append("text").text(l1).attr("dy", "-0.35em").attr("font-size", "12px").attr("text-anchor", "middle").attr("font-weight", "500"); el.append("text").text(l2).attr("dy", "0.95em").attr("font-size", "12px").attr("text-anchor", "middle").attr("font-weight", "500"); } else { el.append("text").text(d.id).attr("font-size", "12px").attr("text-anchor", "middle").attr("dominant-baseline", "middle").attr("font-weight", "500"); } });
-        nodeLabelGroups.filter(".decision").each(function(d) { const w = d.id.split(' '); const el = d3.select(this); const maxC = 15; let lines = [], curr = ""; w.forEach(word => { if (curr.length === 0) { curr = word; } else if (curr.length + word.length + 1 <= maxC) { curr += " " + word; } else { lines.push(curr); curr = word; } }); lines.push(curr); const lh = 1.2, sy = -(lines.length - 1) * 0.5 * lh; lines.forEach((line, i) => { el.append("text").text(line).attr("dy", `${sy + i * lh}em`).attr("text-anchor", "middle"); }); });
+        const nodeLabelGroups = nodeGroups.append("g").attr("class",d=>`node-label ${d.group}`); nodeLabelGroups.filter(".root").each(function(d){const el=d3.select(this);const l1="Our Future",l2="Together",fs="14px",fw="600";el.append("text").text(l1).attr("dy","-0.35em").attr("fill","#1e293b").attr("font-size",fs).attr("text-anchor","middle").attr("font-weight",fw);el.append("text").text(l2).attr("dy","0.95em").attr("fill","#1e293b").attr("font-size",fs).attr("text-anchor","middle").attr("font-weight",fw)}); nodeLabelGroups.filter(".category").each(function(d){const w=d.id.split(/[\s&]+/);const el=d3.select(this);if(w.length>1){const l1=w[0],l2=w.slice(1).join(' ');el.append("text").text(l1).attr("dy","-0.35em").attr("font-size","12px").attr("text-anchor","middle").attr("font-weight","500");el.append("text").text(l2).attr("dy","0.95em").attr("font-size","12px").attr("text-anchor","middle").attr("font-weight","500")}else{el.append("text").text(d.id).attr("font-size","12px").attr("text-anchor","middle").attr("dominant-baseline","middle").attr("font-weight","500")}}); nodeLabelGroups.filter(".decision").each(function(d){const w=d.id.split(' ');const el=d3.select(this);const maxC=15;let lines=[],curr="";w.forEach(word=>{if(curr.length===0){curr=word}else if(curr.length+word.length+1<=maxC){curr+=" "+word}else{lines.push(curr);curr=word}});lines.push(curr);const lh=1.2,sy=-(lines.length-1)*0.5*lh;lines.forEach((line,i)=>{el.append("text").text(line).attr("dy",`${sy+i*lh}em`).attr("text-anchor","middle")})});
 
-        // --- Simulation Tick ---
-        simulation.on("tick", () => {
-            link.attr("d", d => { if (d.source.x === undefined || d.target.x === undefined) { return null; } const dx = d.target.x - d.source.x, dy = d.target.y - d.source.y; const dr = Math.sqrt(dx * dx + dy * dy) * 1.8; return `M${d.source.x},${d.source.y}A${dr},${dr} 0 0,1 ${d.target.x},${d.target.y}`; });
-            // Update gradient endpoints based on simulation
-             d3.selectAll(".links linearGradient")
-                .attr("x1", d => d.source.x).attr("y1", d => d.source.y)
-                .attr("x2", d => d.target.x).attr("y2", d => d.target.y);
-            nodeGroups.attr("transform", d => `translate(${d.x || 0}, ${d.y || 0})`);
-        });
+        // --- Simulation Tick (Same) ---
+        simulation.on("tick",()=>{link.attr("d",d=>{if(d.source.x===undefined||d.target.x===undefined){return null}const dx=d.target.x-d.source.x,dy=d.target.y-d.source.y;const dr=Math.sqrt(dx*dx+dy*dy)*1.8;return `M${d.source.x},${d.source.y}A${dr},${dr} 0 0,1 ${d.target.x},${d.target.y}`});d3.selectAll(".links linearGradient").attr("x1",d=>d.source.x).attr("y1",d=>d.source.y).attr("x2",d=>d.target.x).attr("y2",d=>d.target.y);nodeGroups.attr("transform",d=>`translate(${d.x||0}, ${d.y||0})`)});
 
-        // --- Interaction Functions ---
+        // --- Interaction Functions (Drag is same) ---
          function dragstarted(event, d) { if (!event.active) simulation.alphaTarget(0.3).restart(); d.fx = event.x; d.fy = event.y; d3.select(this).raise(); }
          function dragged(event, d) { d.fx = event.x; d.fy = event.y; }
          function dragended(event, d) { if (!event.active) simulation.alphaTarget(0); }
 
         // --- Hover Effects (NO Transitions, NO scaling) ---
-        nodeGroups.on("mouseover", function(event, d) {
-            const thisNodeGroup = d3.select(this);
-            const relatedLinks = data.links.filter(link => { const sId = typeof link.source === 'object' ? link.source.id : link.source; const tId = typeof link.target === 'object' ? link.target.id : link.target; return sId === d.id || tId === d.id; });
-            const relatedNodeIds = new Set(); relatedLinks.forEach(link => { const sId = typeof link.source === 'object' ? link.source.id : link.source; const tId = typeof link.target === 'object' ? link.target.id : link.target; relatedNodeIds.add(sId); relatedNodeIds.add(tId); }); relatedNodeIds.add(d.id);
-            // Apply styles INSTANTLY
-             g.selectAll(".link").style("stroke-opacity", link => relatedLinks.includes(link) ? 0.9 : 0.05).style("stroke-width", link => relatedLinks.includes(link) ? 3 : 1);
-             g.selectAll(".node-group").style("opacity", node => relatedNodeIds.has(node.id) ? 1 : 0.1);
-            // Show tooltip
-            let ttC = ''; let nC = '#64748b'; if (d.group === "category") { ttC = `<h3>${d.id}</h3><p>Area of focus. Click to highlight.</p>`; nC = colorScale(d.id); } else if (d.group === "decision") { ttC = `<h3>${d.id}</h3><p><strong>Category:</strong> ${d.category}</p><p><strong>Details:</strong> ${d.details || 'Discuss details...'}</p>`; nC = colorScale(d.category); } else if (d.group === "root") { ttC = `<h3>${d.id}</h3><p>Central hub.</p>`; } if (ttC) { tooltip.style("opacity", 1).html(ttC).style("left", (event.pageX + 15) + "px").style("top", (event.pageY - 28) + "px").style("border", `1px solid ${nC}`).select("h3").style("color", nC); }
-        })
-        .on("mouseout", function() {
-            // Restore styles INSTANTLY
-            g.selectAll(".link").style("stroke-opacity", 0.6).style("stroke-width", 1.8);
-            g.selectAll(".node-group").style("opacity", 1);
-            tooltip.style("opacity", 0);
-        });
+        nodeGroups.on("mouseover",function(event, d){const thisNodeGroup=d3.select(this);const relatedLinks=data.links.filter(link=>{const sId=typeof link.source==='object'?link.source.id:link.source;const tId=typeof link.target==='object'?link.target.id:link.target;return sId===d.id||tId===d.id});const relatedNodeIds=new Set();relatedLinks.forEach(link=>{const sId=typeof link.source==='object'?link.source.id:link.source;const tId=typeof link.target==='object'?link.target.id:link.target;relatedNodeIds.add(sId);relatedNodeIds.add(tId)});relatedNodeIds.add(d.id);g.selectAll(".link").style("stroke-opacity",link=>relatedLinks.includes(link)?0.9:0.05).style("stroke-width",link=>relatedLinks.includes(link)?3:1);g.selectAll(".node-group").style("opacity",node=>relatedNodeIds.has(node.id)?1:0.1);let ttC='';let nC='#64748b';if(d.group==="category"){ttC=`<h3>${d.id}</h3><p>Area of focus. Click to highlight.</p>`;nC=colorScale(d.id)}else if(d.group==="decision"){ttC=`<h3>${d.id}</h3><p><strong>Category:</strong> ${d.category}</p><p><strong>Details:</strong> ${d.details||'Discuss details...'}</p>`;nC=colorScale(d.category)}else if(d.group==="root"){ttC=`<h3>${d.id}</h3><p>Central hub.</p>`}if(ttC){tooltip.style("opacity",1).html(ttC).style("left",(event.pageX+15)+"px").style("top",(event.pageY-28)+"px").style("border",`1px solid ${nC}`).select("h3").style("color",nC)}})
+        .on("mouseout",function(){g.selectAll(".link").style("stroke-opacity",0.6).style("stroke-width",1.8);g.selectAll(".node-group").style("opacity",1);tooltip.style("opacity",0)});
 
         // Add drag behavior AFTER hover/mouseout
         nodeGroups.call(d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended));
 
         // Click Handler
-        nodeGroups.on("click", function(event, d) {
-            if (d.group === "category") { highlightCategory(d.id); event.stopPropagation(); }
-            else if (d.group === 'root') { resetHighlightsAndZoom(); event.stopPropagation(); }
-        });
+        nodeGroups.on("click", function(event, d){ if(d.group==="category"){highlightCategory(d.id);event.stopPropagation()} else if(d.group==='root'){resetHighlightsAndZoom();event.stopPropagation()} });
 
         // --- Button Interactions ---
         const zoom = d3.zoom().scaleExtent([0.3, 3]).on("zoom", (event) => { g.attr("transform", event.transform); });
         svg.call(zoom);
-        function resetHighlightsAndZoom() {
-             svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity);
-             // Add transitions back for reset button smoothness
-             g.selectAll(".node-group").transition().duration(300).style("opacity", 1);
-             g.selectAll(".link").transition().duration(300).style("stroke-opacity", 0.6).style("stroke-width", 1.8);
-             data.nodes.forEach(n => { n.fx = null; n.fy = null; });
-             simulation.alphaTarget(0.1).restart();
-         }
+        function resetHighlightsAndZoom() { svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity); g.selectAll(".node-group").transition().duration(300).style("opacity", 1); g.selectAll(".link").transition().duration(300).style("stroke-opacity", 0.6).style("stroke-width", 1.8); data.nodes.forEach(n => { n.fx = null; n.fy = null; }); simulation.alphaTarget(0.1).restart(); }
         d3.select("#resetZoom").on("click", resetHighlightsAndZoom);
 
         // Highlight Category (NO Transitions, NO scaling)
-        function highlightCategory(category) {
-            const categoryColor = colorScale(category);
-            const relatedNodeIds = new Set([ "Our Future Together", category ]); data.nodes.filter(n => n.category === category).forEach(n => relatedNodeIds.add(n.id));
-             // Apply styles instantly
-             g.selectAll(".node-group").style("opacity", node => relatedNodeIds.has(node.id) ? 1 : 0.1);
-             g.selectAll(".link").style("stroke-opacity", link => { const sId=typeof link.source==='object'?link.source.id:link.source; const tId=typeof link.target==='object'?link.target.id:link.target; return (sId==="Our Future Together"&&tId===category)||(sId===category)?0.9:0.05; }).style("stroke-width", link => { const sId=typeof link.source==='object'?link.source.id:link.source; const tId=typeof link.target==='object'?link.target.id:link.target; return (sId==="Our Future Together"&&tId===category)||(sId===category)?3:1; });
-         }
+        function highlightCategory(category) { const relatedNodeIds=new Set(["Our Future Together",category]);data.nodes.filter(n=>n.category===category).forEach(n=>relatedNodeIds.add(n.id));g.selectAll(".node-group").style("opacity",node=>relatedNodeIds.has(node.id)?1:0.1);g.selectAll(".link").style("stroke-opacity",link=>{const sId=typeof link.source==='object'?link.source.id:link.source;const tId=typeof link.target==='object'?link.target.id:link.target;return (sId==="Our Future Together"&&tId===category)||(sId===category)?0.9:0.05}).style("stroke-width",link=>{const sId=typeof link.source==='object'?link.source.id:link.source;const tId=typeof link.target==='object'?link.target.id:link.target;return (sId==="Our Future Together"&&tId===category)||(sId===category)?3:1}) }
 
         // Connect buttons
-        d3.select("#showCareerYou").on("click", () => highlightCategory("Career (You)"));
-        d3.select("#showCareerPartner").on("click", () => highlightCategory("Career (Partner)"));
-        d3.select("#showLocation").on("click", () => highlightCategory("Location & Home"));
-        d3.select("#showFinancial").on("click", () => highlightCategory("Financial Goals"));
-        d3.select("#showPersonal").on("click", () => highlightCategory("Personal Growth"));
-        d3.select("#showRelationship").on("click", () => highlightCategory("Relationship & Family"));
+        d3.select("#showCareerYou").on("click",()=>highlightCategory("Career (You)"));d3.select("#showCareerPartner").on("click",()=>highlightCategory("Career (Partner)"));d3.select("#showLocation").on("click",()=>highlightCategory("Location & Home"));d3.select("#showFinancial").on("click",()=>highlightCategory("Financial Goals"));d3.select("#showPersonal").on("click",()=>highlightCategory("Personal Growth"));d3.select("#showRelationship").on("click",()=>highlightCategory("Relationship & Family"));
 
         // Initial simulation start
         simulation.alpha(1.2).restart();
