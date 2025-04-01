@@ -241,7 +241,6 @@
             'Fees': ['fee']
         };
 
-        // **Define monthNames globally**
         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
         // --- Utility Functions ---
@@ -284,13 +283,20 @@
                  throw new Error("CSV file is missing required columns (Date, Account, Description, Type, Amount).");
             }
             for (let i = 1; i < lines.length; i++) {
-                 const values = lines[i].match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)?.map(field => field.startsWith('"') && field.endsWith('"') ? field.slice(1, -1).replace(/""/g, '"') : field.trim()) || [];
+                 // *** Use simpler split(',') for this specific CSV structure ***
+                 const values = lines[i].split(',');
+
+                 // Check if the row has enough columns (basic validation)
                  if (values.length >= headers.length) {
                     const amountCAD = parseFloat(values[idx.amount]?.trim());
-                    if (isNaN(amountCAD)) continue;
+                    if (isNaN(amountCAD)) {
+                        // console.warn(`Skipping row ${i + 1} due to invalid amount:`, lines[i]);
+                        continue; // Skip rows with invalid amount
+                    }
                     let transactionType = values[idx.type]?.trim().toLowerCase() || '';
                     if (transactionType === 'interest') transactionType = 'deposit';
                     else if (!['withdrawal', 'deposit', 'transfer', 'fee'].includes(transactionType)) transactionType = amountCAD >= 0 ? 'deposit' : 'withdrawal';
+
                     data.push({
                         date: values[idx.date]?.trim() || '',
                         account: values[idx.account]?.trim() || 'Unknown Account',
@@ -300,11 +306,12 @@
                         amount: amountCAD
                     });
                 } else {
-                    console.warn(`Skipping potentially malformed CSV row ${i + 1}:`, lines[i]);
+                    console.warn(`Skipping row ${i + 1} due to insufficient columns:`, lines[i]);
                 }
             }
             return data;
         }
+
 
         // --- Filtering Function ---
         function filterTransactionsByMonth(transactions, month, yearShort) {
@@ -313,16 +320,16 @@
                 const parts = t.date.split('/');
                 if (parts.length === 3) {
                     const m = parseInt(parts[0], 10);
-                    const y = parts[2];
+                    const y = parts[2]; // YY format
                     return m === month && y === yearShort;
                 }
+                // console.warn("Invalid date format found:", t.date); // Optional logging
                 return false;
             });
         }
 
         // --- Update UI Elements ---
         function updateDashboardHeader(transactions) {
-            // monthNames is now global
             document.getElementById('dashboard-month-year').textContent = `${monthNames[TARGET_MONTH - 1]} ${TARGET_YEAR} Transactions`;
             document.getElementById('transaction-count').textContent = transactions.length;
         }
@@ -335,7 +342,7 @@
                  else if (t.type === 'transfer') netTransfers += t.amount;
              });
             const netCashFlow = totalIncome - totalExpenses + netTransfers;
-            const currentMonthName = monthNames[TARGET_MONTH - 1]; // Use global monthNames
+            const currentMonthName = monthNames[TARGET_MONTH - 1];
 
             document.getElementById('total-income').textContent = currencyFormatter.format(totalIncome);
             document.getElementById('income-subtitle').textContent = `${currentMonthName} deposits`;
@@ -436,9 +443,18 @@
             if (!tableBody) return;
             tableBody.innerHTML = '';
              const sortedTransactions = [...transactions].sort((a, b) => {
-                 const dateA = new Date(`20${a.date.split('/')[2]}`, a.date.split('/')[0] - 1, a.date.split('/')[1]);
-                 const dateB = new Date(`20${b.date.split('/')[2]}`, b.date.split('/')[0] - 1, b.date.split('/')[1]);
-                 return dateB - dateA;
+                 // Robust date parsing and comparison
+                 const parseDate = (dateStr) => {
+                     const parts = dateStr.split('/');
+                     if (parts.length === 3) {
+                         // Assumes MM/DD/YY -> new Date(Year, MonthIndex, Day)
+                         return new Date(parseInt(`20${parts[2]}`, 10), parseInt(parts[0], 10) - 1, parseInt(parts[1], 10));
+                     }
+                     return new Date(0); // Invalid date, sort to beginning/end
+                 };
+                 const dateA = parseDate(a.date);
+                 const dateB = parseDate(b.date);
+                 return dateB - dateA; // Descending order
              });
 
             if (sortedTransactions.length === 0) {
@@ -480,14 +496,20 @@
                 .then(csvText => {
                     try {
                         const allTransactions = parseCSV(csvText);
+                        console.log(`Parsed ${allTransactions.length} total transactions.`); // Debugging
                         allNovemberTransactions = filterTransactionsByMonth(allTransactions, TARGET_MONTH, TARGET_YEAR_SHORT);
-                        if (allNovemberTransactions.length === 0) showMessage('warning', `No transactions found for ${monthNames[TARGET_MONTH - 1]} ${TARGET_YEAR}.`);
-                        else clearMessage();
+                        console.log(`Filtered to ${allNovemberTransactions.length} November transactions.`); // Debugging
+
+                        if (allNovemberTransactions.length === 0) {
+                            showMessage('warning', `No transactions found for ${monthNames[TARGET_MONTH - 1]} ${TARGET_YEAR}. Check CSV data and filter logic.`);
+                        } else {
+                            clearMessage();
+                        }
                         updateDashboardHeader(allNovemberTransactions);
                         updateSummaryCards(allNovemberTransactions);
                         initializeCashFlowChart(allNovemberTransactions);
                         initializeAccountsChart();
-                        populateTransactionsTable(allNovemberTransactions);
+                        populateTransactionsTable(allNovemberTransactions); // Populate with full Nov data initially
                     } catch (parseError) {
                         console.error("Error parsing CSV:", parseError);
                         showMessage('error', `Error processing CSV data: ${parseError.message}`);
@@ -496,13 +518,8 @@
                 })
                 .catch(error => {
                     console.error('Error fetching or processing CSV:', error);
-                    // Check if the error is the specific one we identified
-                    if (error.message.includes("monthNames is not defined")) {
-                         showMessage('error', `Developer Error: monthNames definition needs to be moved to global scope.`);
-                    } else {
-                        showMessage('error', `Failed to load or process transaction data: ${error.message}. Check file path and server setup.`);
-                    }
-                     updateDashboardHeader([]); updateSummaryCards([]); initializeCashFlowChart([]); initializeAccountsChart(); populateTransactionsTable([]);
+                    showMessage('error', `Failed to load or process transaction data: ${error.message}. Check file path and server setup.`);
+                    updateDashboardHeader([]); updateSummaryCards([]); initializeCashFlowChart([]); initializeAccountsChart(); populateTransactionsTable([]);
                 });
         }); // End DOMContentLoaded
 
