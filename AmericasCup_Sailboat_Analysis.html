@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>America's Cup AC75 Sailboat Engineering Analysis</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/numeric/1.2.6/numeric.min.js"></script>
+    <style>
+        :root {
+            --primary: #0057b7;
+            --secondary: #2a9df4;
+            --accent: #ff5a5f;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #28a745;
+            --warning: #ffc107;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f0f5f9;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.1)" fill-opacity="1" d="M0,160L48,144C96,128,192,96,288,90.7C384,85,480,107,576,133.3C672,160,768,192,864,186.7C960,181,1056,139,1152,122.7C1248,107,1344,117,1392,122.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+            background-size: cover;
+            background-position: bottom;
+            opacity: 0.6;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .intro {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        @media (max-width: 900px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin: 1rem 0;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border: 1px solid #e9ecef;
+        }
+        
+        .result-display {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px dashed #dee2e6;
+        }
+        
+        .result-row:last-child {
+            border-bottom: none;
+        }
+        
+        .control-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            cursor: pointer;
+        }
+        
+        input[type="number"] {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+        }
+        
+        .button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .button:hover {
+            background-color: var(--secondary);
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #dee2e6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .tab {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            border-bottom: 3px solid var(--primary);
+            color: var(--primary);
+            font-weight: 500;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .sailboat-visualization {
+            position: relative;
+            height: 300px;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+        
+        .water {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 60%;
+            background: linear-gradient(180deg, #2a9df4 0%, #0057b7 100%);
+        }
+        
+        .sailboat {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            left: 50%;
+            bottom: 60%;
+            transform-origin: bottom center;
+            transition: transform 0.5s ease-out;
+        }
+        
+        .hull {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 20px;
+            background-color: white;
+            border-radius: 40% 40% 0 0;
+        }
+        
+        .mast {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 100px;
+            background-color: #6c757d;
+        }
+        
+        .sail {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            width: 60px;
+            height: 90px;
+            background-color: white;
+            clip-path: polygon(0 0, 100% 30%, 0 100%);
+        }
+        
+        .info-card {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+        }
+        
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        /* Loading animation */
+        .loader {
+            display: none;
+            margin: 2rem auto;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .polar-chart-container {
+            position: relative;
+            height: 400px;
+            margin: 1rem 0;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>America's Cup AC75 Sailboat Engineering Analysis</h1>
+        <p class="subtitle">Interactive tools for ocean engineering, hydrodynamics, and performance analysis of AC75 Class high-performance foiling monohulls</p>
+    </header>
+    
+    <main>
+        <div class="container intro">
+            <h2>AC75 Class High-Performance Foiling Monohull Analysis</h2>
+            <p>This interactive tool allows you to analyze the engineering aspects of America's Cup AC75 Class sailboats, including hull resistance, stability, and performance prediction using standard ocean engineering formulas based on the AC75 Class Rule v2.0.</p>
+            <p>The AC75 is a 75-foot foiling monohull with twin canting T-foils that can reach speeds over 50 knots. This tool provides insight into the hydrodynamic and aerodynamic forces at play in these remarkable racing machines.</p>
+        </div>
+        
+        <div class="container">
+            <div class="tabs">
+                <div class="tab active" data-tab="hull-resistance">Hull Resistance</div>
+                <div class="tab" data-tab="stability">Stability Analysis</div>
+                <div class="tab" data-tab="performance">Performance Prediction</div>
+            </div>
+            
+            <div class="tab-content active" id="hull-resistance">
+                <h2>Hull Resistance Analysis</h2>
+                <p>Calculate and visualize hull resistance components using the ITTC-57 formula, including frictional resistance, residuary resistance, and form factor corrections.</p>
+                
+                <div class="control-panel">
+                    <div class="form-group">
+                        <label for="length">Hull Length (m)</label>
+                        <input type="number" id="length" value="20.7" min="20.6" max="20.7" step="0.01">
+                        <input type="range" id="length-slider" min="20.6" max="20.7" value="20.7" step="0.01">
+                        <small>Class Rule: 20.600m - 20.700m (Rule 8.7)</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="beam">Beam (m)</label>
+                        <input type="number" id="beam" value="5.0" min="4.8" max="5.0" step="0.1">
+                        <input type="range" id="beam-slider" min="4.8" max="5.0" value="5.0" step="0.1">
+                        <small>Class Rule: Max 5.0m (2 × 2.5m from centerline)</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="draft">Draft (m)</label>
+                        <input type="number" id="draft" value="5.0" min="2.5" max="5.2" step="0.1">
+                        <input type="range" id="draft-slider" min="2.5" max="5.2" value="5.0" step="0.1">
+                        <small>Hull draft + foil</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="displacement">Displacement (kg)</label>
+                        <input type="number" id="displacement" value="6200" min="6160" max="6200" step="10">
+                        <input type="range" id="displacement-slider" min="6160" max="6200" value="6200" step="10">
+                        <small>Class Rule: 6160-6200 kg (Rule 6.1)</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="wetted-surface">Wetted Surface (m²)</label>
+                        <input type="number" id="wetted-surface" value="150" min="120" max="180" step="5">
+                        <input type="range" id="wetted-surface-slider" min="120" max="180" value="150" step="5">
+                        <small>Approximation for AC75</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="speed">Analysis Speed (knots)</label>
+                        <input type="number" id="speed" value="10" min="1" max="60" step="1">
+                        <input type="range" id="speed-slider" min="1" max="60" value="10" step="1">
+                    </div>
+                </div>
+                
+                <button id="calculate-resistance" class="button">Calculate Resistance</button>
+                
+                <div class="loader" id="resistance-loader"></div>
+                
+                <div class="result-display" id="resistance-results">
+                    <h3>Resistance Analysis Results</h3>
+                    <div class="result-row">
+                        <span>Frictional Resistance:</span>
+                        <span id="friction-resistance">-</span>
+                    </div>
+                    <div class="result-row">
+                        <span>Residuary Resistance:</span>
+                        <span id="residuary-resistance">-</span>
+                    </div>
+                    <div class="result-row">
+                        <span>Total Resistance:</span>
+                        <span id="total-resistance">-</span>
+                    </div>
+                    <div class="result-row">
+                        <span>Reynolds Number:</span>
+                        <span id="reynolds-number">-</span>
+                    </div>
+                    <div class="result-row">
+                        <span>Froude Number:</span>
+                        <span id="froude-number">-</span>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <canvas id="resistance-chart"></canvas>
+                </div>
+                
+                                    <div class="info-card">
+                    <h3>About Hull Resistance (AC75 Class)</h3>
+                    <p>Hull resistance is composed of several components:</p>
+                    <ul>
+                        <li><strong>Frictional Resistance</strong>: Caused by viscous effects of water flowing past the hull surface</li>
+                        <li><strong>Residuary Resistance</strong>: Primarily wave-making resistance that increases with Froude number</li>
+                        <li><strong>Form Factor</strong>: Accounts for 3D effects of the hull shape</li>
+                    </ul>
+                    <p>In AC75 Class yachts, hull resistance primarily matters during pre-foiling mode. Once foiling, resistance shifts to the foils and rudder, drastically reducing overall drag and allowing speeds over 50 knots.</p>
+                    <p>According to Rule 8.11, the hull surface must enclose a volume of at least 60 m³ and include watertight bulkheads.</p>
+                    <p>The ITTC-57 formula is the standard method for calculating frictional resistance coefficient based on Reynolds number.</p>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="stability">
+                <h2>Stability Analysis</h2>
+                <p>Analyze the righting moment, heel angle, and stability characteristics of the sailboat.</p>
+                
+                <div class="control-panel">
+                    <div class="form-group">
+                        <label for="metacentric-height">Metacentric Height (m)</label>
+                        <input type="number" id="metacentric-height" value="2.0" min="0.1" max="5" step="0.1">
+                        <input type="range" id="metacentric-height-slider" min="0.1" max="5" value="2.0" step="0.1">
+                        <small>Typical value for AC75</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="heel-angle">Heel Angle (degrees)</label>
+                        <input type="number" id="heel-angle" value="15" min="0" max="60" step="1">
+                        <input type="range" id="heel-angle-slider" min="0" max="60" value="15" step="1">
+                        <small>Adjustable for analysis</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="mast-height">Mast Height (m)</label>
+                        <input type="number" id="mast-height" value="26.5" min="26.5" max="26.5" step="0.5">
+                        <input type="range" id="mast-height-slider" min="26.5" max="26.5" value="26.5" step="0.5">
+                        <small>Class Rule: Mast upper plane at 26.5m (Fig 15.1)</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="sail-area">Sail Area (m²)</label>
+                        <input type="number" id="sail-area" value="145" min="130" max="145" step="1">
+                        <input type="range" id="sail-area-slider" min="130" max="145" value="145" step="1">
+                        <small>Class Rule: 130-145 m² (Rule 17.6)</small>
+                    </div>
+                </div>
+                
+                <button id="calculate-stability" class="button">Calculate Stability</button>
+                
+                <div class="loader" id="stability-loader"></div>
+                
+                <div class="grid">
+                    <div>
+                        <div class="result-display" id="stability-results">
+                            <h3>Stability Analysis Results</h3>
+                            <div class="result-row">
+                                <span>Righting Moment:</span>
+                                <span id="righting-moment">-</span>
+                            </div>
+                            <div class="result-row">
+                                <span>Maximum Righting Arm:</span>
+                                <span id="max-righting-arm">-</span>
+                            </div>
+                            <div class="result-row">
+                                <span>Angle of Vanishing Stability:</span>
+                                <span id="vanishing-stability">-</span>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-container">
+                            <canvas id="stability-chart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="sailboat-visualization">
+                            <div class="water"></div>
+                            <div class="sailboat" id="sailboat-model">
+                                <div class="hull"></div>
+                                <div class="mast"></div>
+                                <div class="sail"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="info-card">
+                            <h3>About AC75 Stability</h3>
+                            <p>Stability in AC75 Class boats is a complex interplay between hull design and active foil control.</p>
+                            <ul>
+                                <li><strong>Righting Moment</strong>: Generated primarily by the canting foils when foiling</li>
+                                <li><strong>Metacentric Height (GM)</strong>: Important in pre-foiling mode</li>
+                                <li><strong>Heeling Moment</strong>: Created by wind forces on the sails, balanced by actively canting foils</li>
+                                <li><strong>Foil Cant System (FCS)</strong>: Class Rule specifies a standard system to control foil cant angles</li>
+                                <li><strong>Cant Range</strong>: Foils must be capable of cant angles from 7.6° to 119.5° (Rule 10.7)</li>
+                            </ul>
+                            <p>According to Rule 8.14-8.15, the hull must maintain specific stability characteristics at various heel angles.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="performance">
+                <h2>Performance Prediction</h2>
+                <p>Generate polar diagrams and predict performance across various wind conditions.</p>
+                
+                <div class="control-panel">
+                    <div class="form-group">
+                        <label for="wind-speed">True Wind Speed (knots)</label>
+                        <input type="number" id="wind-speed" value="15" min="5" max="30" step="1">
+                        <input type="range" id="wind-speed-slider" min="5" max="30" value="15" step="1">
+                        <small>Typical racing conditions</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="foil-cant">Foil Cant Angle (degrees)</label>
+                        <input type="number" id="foil-cant" value="41" min="7.6" max="119.5" step="1">
+                        <input type="range" id="foil-cant-slider" min="7.6" max="119.5" value="41" step="1">
+                        <small>Class Rule: 7.6° to 119.5° (Rule 10.7)</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="wind-angles">Wind Angle Range (degrees)</label>
+                        <select id="wind-angles">
+                            <option value="upwind">Upwind (30-60°)</option>
+                            <option value="beam-reach" selected>Beam Reach (60-120°)</option>
+                            <option value="downwind">Downwind (120-180°)</option>
+                            <option value="full">Full Range (30-180°)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button id="calculate-performance" class="button">Generate Polar</button>
+                
+                <div class="loader" id="performance-loader"></div>
+                
+                <div class="result-display" id="performance-results">
+                    <h3>Performance Prediction Results</h3>
+                    <div class="result-row">
+                        <span>Maximum Speed:</span>
+                        <span id="max-speed">-</span>
+                    </div>
+                    <div class="result-row">
+                        <span>Optimal Wind Angle:</span>
+                        <span id="optimal-angle">-</span>
+                    </div>
+                    <div class="result-row">
+                        <span>Upwind VMG:</span>
+                        <span id="upwind-vmg">-</span>
+                    </div>
+                    <div class="result-row">
+                        <span>Downwind VMG:</span>
+                        <span id="downwind-vmg">-</span>
+                    </div>
+                </div>
+                
+                <div class="polar-chart-container">
+                    <canvas id="polar-chart"></canvas>
+                </div>
+                
+                <div class="info-card">
+                    <h3>About AC75 Performance Prediction</h3>
+                    <p>A polar diagram shows boat speed as a function of true wind angle for different wind speeds.</p>
+                    <ul>
+                        <li><strong>VMG (Velocity Made Good)</strong>: The component of boat speed in the direction of the wind (upwind) or opposite to the wind (downwind)</li>
+                        <li><strong>Optimal Wind Angle</strong>: The wind angle that produces the maximum speed or VMG</li>
+                        <li><strong>Foiling Performance</strong>: AC75s transition to foiling at approximately 15-18 knots of boat speed</li>
+                        <li><strong>Performance Factors</strong>: Affected by hull shape, sail design, foil effectiveness, and crew skill</li>
+                        <li><strong>Crew Power Input</strong>: According to Rule 21.13, power is provided through human-powered primary force input devices with power meters</li>
+                        <li><strong>Crew Mass</strong>: Total crew mass must be between 680-700 kg with 8 crew members (Rules 29.1 and 6.1)</li>
+                    </ul>
+                    <p>The AC75 Class Rule specifies a foil weight between 1265-1270 kg per foil (Rule 6.1), which significantly affects performance characteristics.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>America's Cup AC75 Sailboat Engineering Analysis Tool</p>
+        <p>Based on AC75 Class Rule v2.0 (March 17, 2022)</p>
+        <p>&copy; 2025 Marine Engineering Interactive</p>
+    </footer>
+    
+    <script>
+        // Constants
+        const RHO_WATER = 1025; // kg/m³
+        const RHO_AIR = 1.225; // kg/m³
+        const G = 9.81; // m/s²
+        const KINEMATIC_VISCOSITY = 1.19e-6; // m²/s
+        
+        // Utility functions
+        function knotsToMs(knots) {
+            return knots * 0.51444;
+        }
+        
+        function msToKnots(ms) {
+            return ms / 0.51444;
+        }
+        
+        function degreesToRadians(degrees) {
+            return degrees * Math.PI / 180;
+        }
+        
+        function radiansToDegrees(radians) {
+            return radians * 180 / Math.PI;
+        }
+        
+        // ITTC-57 formula
+        function calculateFrictionCoefficient(reynolds) {
+            if (reynolds <= 0) return 0;
+            return 0.075 / Math.pow(Math.log10(reynolds) - 2, 2);
+        }
+        
+        function calculateReynoldsNumber(speed, length) {
+            return speed * length / KINEMATIC_VISCOSITY;
+        }
+        
+        function calculateFroudeNumber(speed, length) {
+            return speed / Math.sqrt(G * length);
+        }
+        
+        // Form factor calculation
+        function calculateFormFactor(length, beam, draft, displacement) {
+            // Calculate key ratios
+            const volume = displacement / RHO_WATER;
+            const slendernessRatio = length / Math.pow(volume, 1/3);
+            const lengthToBeamRatio = length / beam;
+            
+            // Base form factor
+            let k = 0.11 + 0.05 * (1 / slendernessRatio) * 20;
+            
+            // Adjustments for AC75 type hulls
+            if (slendernessRatio > 6.5) {
+                k *= 0.9;
+            }
+            
+            // For high L/B ratios, the form is usually better
+            if (lengthToBeamRatio > 5) {
+                k *= 0.95;
+            }
+            
+            return 1 + k;
+        }
+        
+        // Residuary resistance calculation
+        function calculateResiduaryCoefficient(froude, slendernessRatio) {
+            let cr;
+            
+            // Basic pattern: Cr increases with Froude number
+            if (froude < 0.3) {
+                // Low speed - minimal wave-making
+                cr = 0.0004 * Math.pow(froude, 3);
+            } else if (froude < 0.45) {
+                // Medium speed - increasing wave-making
+                cr = 0.0025 * Math.pow(froude, 3.5);
+            } else {
+                // High speed - high wave-making
+                cr = 0.0045 * Math.pow(froude, 3.8);
+            }
+            
+            // Adjust for slenderness
+            cr = cr * (6.0 / slendernessRatio);
+            
+            // America's Cup boats have highly optimized hull forms
+            cr = cr * 0.85;
+            
+            return cr;
+        }
+        
+        // Roughness allowance
+        function calculateRoughnessAllowance() {
+            return 0.0001; // For modern racing yachts with very smooth surfaces
+        }
+        
+        // Calculate hull resistance
+        function calculateHullResistance(length, beam, draft, displacement, wettedSurface, speed) {
+            const volume = displacement / RHO_WATER;
+            const slendernessRatio = length / Math.pow(volume, 1/3);
+            
+            // Calculate non-dimensional parameters
+            const reynolds = calculateReynoldsNumber(speed, length);
+            const froude = calculateFroudeNumber(speed, length);
+            
+            // Calculate resistance coefficients
+            const formFactor = calculateFormFactor(length, beam, draft, displacement);
+            const cf = calculateFrictionCoefficient(reynolds);
+            const cr = calculateResiduaryCoefficient(froude, slendernessRatio);
+            const ca = calculateRoughnessAllowance();
+            
+            // Calculate total resistance coefficient
+            const ct = (formFactor * cf) + cr + ca;
+            
+            // Calculate resistance forces (Newtons)
+            const dynamicPressure = 0.5 * RHO_WATER * Math.pow(speed, 2);
+            const frictionResistance = dynamicPressure * wettedSurface * cf * formFactor;
+            const residuaryResistance = dynamicPressure * wettedSurface * cr;
+            const roughnessResistance = dynamicPressure * wettedSurface * ca;
+            const totalResistance = frictionResistance + residuaryResistance + roughnessResistance;
+            
+            return {
+                speed: speed,
+                reynolds: reynolds,
+                froude: froude,
+                formFactor: formFactor,
+                cf: cf,
+                cr: cr,
+                ca: ca,
+                ct: ct,
+                frictionResistance: frictionResistance,
+                residuaryResistance: residuaryResistance,
+                roughnessResistance: roughnessResistance,
+                totalResistance: totalResistance
+            };
+        }
+        
+        // Calculate resistance curve
+        function calculateResistanceCurve(length, beam, draft, displacement, wettedSurface, minSpeed, maxSpeed, steps) {
+            const results = [];
+            const speedStep = (maxSpeed - minSpeed) / steps;
+            
+            for (let i = 0; i <= steps; i++) {
+                const speed = minSpeed + (i * speedStep);
+                const result = calculateHullResistance(length, beam, draft, displacement, wettedSurface, speed);
+                results.push(result);
+            }
+            
+            return results;
+        }
+        
+        // Calculate righting moment
+        function calculateRightingMoment(displacement, metacentricHeight, heelAngle) {
+            const heelRad = degreesToRadians(heelAngle);
+            
+            // Small angle approximation for righting arm
+            let rightingArm;
+            if (Math.abs(heelAngle) < 10) {
+                rightingArm = metacentricHeight * Math.sin(heelRad);
+            } else {
+                // For larger angles, use a more complex model
+                const maxRightingArm = 0.8; // Maximum righting arm in meters
+                rightingArm = maxRightingArm * Math.sin(2 * heelRad);
+            }
+            
+            // Righting moment
+            const rightingMoment = displacement * G * rightingArm;
+            
+            return {
+                rightingArm: rightingArm,
+                rightingMoment: rightingMoment
+            };
+        }
+        
+        // Calculate stability curve
+        function calculateStabilityCurve(displacement, metacentricHeight, maxAngle, steps) {
+            const results = [];
+            const angleStep = maxAngle / steps;
+            
+            for (let i = 0; i <= steps; i++) {
+                const angle = i * angleStep;
+                const stability = calculateRightingMoment(displacement, metacentricHeight, angle);
+                results.push({
+                    angle: angle,
+                    rightingArm: stability.rightingArm,
+                    rightingMoment: stability.rightingMoment
+                });
+            }
+            
+            return results;
+        }
+        
+        // Calculate sail forces
+        function calculateSailForces(sailArea, windSpeed, windAngle, boatSpeed) {
+            // Convert angles to radians
+            const windAngleRad = degreesToRadians(windAngle);
+            
+            // Simplified coefficients for America's Cup boats
+            const clMax = 1.5; // Maximum lift coefficient
+            const cdMin = 0.02; // Minimum drag coefficient
+            
+            // Effective coefficients based on wind angle
+            let cl, cd;
+            if (windAngle < 45) {
+                // Close-hauled
+                cl = clMax * Math.sin(2 * windAngleRad);
+                cd = cdMin + Math.pow(cl, 2) / (Math.PI * 7); // Assuming aspect ratio of 7
+            } else if (windAngle < 90) {
+                // Reaching
+                cl = clMax * 0.9;
+                cd = cdMin + Math.pow(cl, 2) / (Math.PI * 7);
+            } else {
+                // Running
+                cl = 0.2;
+                cd = 1.0; // Mostly drag when running
+            }
+            
+            // Calculate apparent wind
+            const apparentWindX = windSpeed * Math.cos(windAngleRad) - boatSpeed;
+            const apparentWindY = windSpeed * Math.sin(windAngleRad);
+            const apparentWindSpeed = Math.sqrt(Math.pow(apparentWindX, 2) + Math.pow(apparentWindY, 2));
+            const apparentWindAngle = Math.atan2(apparentWindY, apparentWindX);
+            
+            // Aerodynamic forces in the sail's coordinate system
+            const lift = 0.5 * RHO_AIR * Math.pow(apparentWindSpeed, 2) * sailArea * cl;
+            const drag = 0.5 * RHO_AIR * Math.pow(apparentWindSpeed, 2) * sailArea * cd;
+            
+            // Convert to boat's coordinate system
+            const driveForce = lift * Math.sin(apparentWindAngle) - drag * Math.cos(apparentWindAngle);
+            const heelForce = lift * Math.cos(apparentWindAngle) + drag * Math.sin(apparentWindAngle);
+            
+            return {
+                driveForce: driveForce,
+                heelForce: heelForce,
+                apparentWindSpeed: apparentWindSpeed,
+                apparentWindAngle: radiansToDegrees(apparentWindAngle)
+            };
+        }
+        
+        // Solve for equilibrium speed
+        function solveEquilibrium(length, beam, draft, displacement, wettedSurface, sailArea, windSpeed, windAngle, initialSpeed) {
+            // Simple iterative solver
+            const maxIterations = 50;
+            const convergenceTolerance = 0.01;
+            
+            let speed = initialSpeed;
+            
+            for (let i = 0; i < maxIterations; i++) {
+                // Calculate resistance at current speed
+                const resistance = calculateHullResistance(length, beam, draft, displacement, wettedSurface, speed);
+                
+                // Calculate sail forces at current speed
+                const sailForces = calculateSailForces(sailArea, windSpeed, windAngle, speed);
+                
+                // Check force balance
+                const netForce = sailForces.driveForce - resistance.totalResistance;
+                
+                // If forces are balanced within tolerance, we've found equilibrium
+                if (Math.abs(netForce) < convergenceTolerance) {
+                    return {
+                        speed: speed,
+                        resistance: resistance.totalResistance,
+                        driveForce: sailForces.driveForce,
+                        heelForce: sailForces.heelForce
+                    };
+                }
+                
+                // Adjust speed based on net force (simplified)
+                const speedDelta = netForce / (2 * resistance.totalResistance) * speed;
+                speed += speedDelta * 0.5; // Apply damping factor for stability
+                
+                // Ensure speed stays positive
+                if (speed < 0.1) speed = 0.1;
+                
+                // Prevent runaway speeds
+                if (speed > 50) {
+                    speed = 50;
+                    break;
+                }
+            }
+            
+            // Return best estimate even if not fully converged
+            const finalResistance = calculateHullResistance(length, beam, draft, displacement, wettedSurface, speed);
+            const finalSailForces = calculateSailForces(sailArea, windSpeed, windAngle, speed);
+            
+            return {
+                speed: speed,
+                resistance: finalResistance.totalResistance,
+                driveForce: finalSailForces.driveForce,
+                heelForce: finalSailForces.heelForce
+            };
+        }
+        
+        // Generate polar data
+        function generatePolarData(length, beam, draft, displacement, wettedSurface, sailArea, windSpeed, minAngle, maxAngle, angleStep) {
+            const results = [];
+            
+            for (let angle = minAngle; angle <= maxAngle; angle += angleStep) {
+                const equilibrium = solveEquilibrium(length, beam, draft, displacement, wettedSurface, sailArea, windSpeed, angle, 5);
+                
+                results.push({
+                    angle: angle,
+                    speed: equilibrium.speed,
+                    vmg: equilibrium.speed * Math.cos(degreesToRadians(angle))
+                });
+            }
+            
+            return results;
+        }
+        
+        // Initialize UI components
+        document.addEventListener("DOMContentLoaded", function() {
+            // Set default AC75 class rule values
+            document.getElementById("length").value = 20.7;
+            document.getElementById("length-slider").value = 20.7;
+            
+            document.getElementById("beam").value = 5.0;
+            document.getElementById("beam-slider").value = 5.0;
+            
+            document.getElementById("draft").value = 5.0;
+            document.getElementById("draft-slider").value = 5.0;
+            
+            document.getElementById("displacement").value = 6200;
+            document.getElementById("displacement-slider").value = 6200;
+            
+            document.getElementById("wetted-surface").value = 150;
+            document.getElementById("wetted-surface-slider").value = 150;
+            
+            document.getElementById("metacentric-height").value = 2.0;
+            document.getElementById("metacentric-height-slider").value = 2.0;
+            
+            document.getElementById("mast-height").value = 26.5;
+            document.getElementById("mast-height-slider").value = 26.5;
+            
+            document.getElementById("sail-area").value = 145;
+            document.getElementById("sail-area-slider").value = 145;
+            
+            // Tab switching
+            const tabs = document.querySelectorAll(".tab");
+            tabs.forEach(tab => {
+                tab.addEventListener("click", function() {
+                    // Remove active class from all tabs
+                    tabs.forEach(t => t.classList.remove("active"));
+                    
+                    // Add active class to clicked tab
+                    this.classList.add("active");
+                    
+                    // Hide all tab content
+                    const tabContents = document.querySelectorAll(".tab-content");
+                    tabContents.forEach(content => content.classList.remove("active"));
+                    
+                    // Show corresponding tab content
+                    const tabId = this.getAttribute("data-tab");
+                    document.getElementById(tabId).classList.add("active");
+                });
+            });
+            
+            // Initialize range sliders
+            const sliders = document.querySelectorAll("input[type='range']");
+            sliders.forEach(slider => {
+                const inputId = slider.id.replace("-slider", "");
+                const input = document.getElementById(inputId);
+                
+                // Sync slider with input
+                slider.addEventListener("input", function() {
+                    input.value = this.value;
+                });
+                
+                // Sync input with slider
+                input.addEventListener("input", function() {
+                    slider.value = this.value;
+                });
+            });
+            
+            // Initialize resistance chart
+            const resistanceCtx = document.getElementById("resistance-chart").getContext("2d");
+            const resistanceChart = new Chart(resistanceCtx, {
+                type: "line",
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: "Total Resistance",
+                            data: [],
+                            borderColor: "#0057b7",
+                            backgroundColor: "rgba(0, 87, 183, 0.1)",
+                            borderWidth: 2,
+                            fill: true
+                        },
+                        {
+                            label: "Frictional Resistance",
+                            data: [],
+                            borderColor: "#28a745",
+                            borderWidth: 2,
+                            fill: false,
+                            borderDash: [5, 5]
+                        },
+                        {
+                            label: "Residuary Resistance",
+                            data: [],
+                            borderColor: "#ff5a5f",
+                            borderWidth: 2,
+                            fill: false,
+                            borderDash: [5, 5]
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: "Speed (knots)"
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: "Resistance (N)"
+                            },
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            
+            // Initialize stability chart
+            const stabilityCtx = document.getElementById("stability-chart").getContext("2d");
+            const stabilityChart = new Chart(stabilityCtx, {
+                type: "line",
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: "Righting Moment",
+                            data: [],
+                            borderColor: "#0057b7",
+                            backgroundColor: "rgba(0, 87, 183, 0.1)",
+                            borderWidth: 2,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: "Heel Angle (degrees)"
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: "Righting Moment (Nm)"
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Initialize polar chart
+            const polarCtx = document.getElementById("polar-chart").getContext("2d");
+            const polarChart = new Chart(polarCtx, {
+                type: "radar",
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: "Boat Speed (knots)",
+                            data: [],
+                            borderColor: "#0057b7",
+                            backgroundColor: "rgba(0, 87, 183, 0.2)",
+                            borderWidth: 2,
+                            pointBackgroundColor: "#0057b7"
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: true
+                            },
+                            suggestedMin: 0
+                        }
+                    }
+                }
+            });
+            
+            // Calculate hull resistance button
+            document.getElementById("calculate-resistance").addEventListener("click", function() {
+                // Show loader
+                document.getElementById("resistance-loader").style.display = "block";
+                
+                // Get input values
+                const length = parseFloat(document.getElementById("length").value);
+                const beam = parseFloat(document.getElementById("beam").value);
+                const draft = parseFloat(document.getElementById("draft").value);
+                const displacement = parseFloat(document.getElementById("displacement").value);
+                const wettedSurface = parseFloat(document.getElementById("wetted-surface").value);
+                const speedKnots = parseFloat(document.getElementById("speed").value);
+                const speed = knotsToMs(speedKnots);
+                
+                // Calculate resistance at specified speed
+                setTimeout(() => {
+                    const resistance = calculateHullResistance(length, beam, draft, displacement, wettedSurface, speed);
+                    
+                    // Update results display
+                    document.getElementById("friction-resistance").textContent = `${resistance.frictionResistance.toFixed(0)} N`;
+                    document.getElementById("residuary-resistance").textContent = `${resistance.residuaryResistance.toFixed(0)} N`;
+                    document.getElementById("total-resistance").textContent = `${resistance.totalResistance.toFixed(0)} N`;
+                    document.getElementById("reynolds-number").textContent = `${resistance.reynolds.toExponential(2)}`;
+                    document.getElementById("froude-number").textContent = `${resistance.froude.toFixed(3)}`;
+                    
+                    // Calculate resistance curve
+                    const minSpeed = knotsToMs(1);
+                    const maxSpeed = knotsToMs(30);
+                    const resistanceCurve = calculateResistanceCurve(length, beam, draft, displacement, wettedSurface, minSpeed, maxSpeed, 20);
+                    
+                    // Update chart
+                    const labels = resistanceCurve.map(r => msToKnots(r.speed).toFixed(1));
+                    const totalResistanceData = resistanceCurve.map(r => r.totalResistance);
+                    const frictionResistanceData = resistanceCurve.map(r => r.frictionResistance);
+                    const residuaryResistanceData = resistanceCurve.map(r => r.residuaryResistance);
+                    
+                    resistanceChart.data.labels = labels;
+                    resistanceChart.data.datasets[0].data = totalResistanceData;
+                    resistanceChart.data.datasets[1].data = frictionResistanceData;
+                    resistanceChart.data.datasets[2].data = residuaryResistanceData;
+                    resistanceChart.update();
+                    
+                    // Hide loader
+                    document.getElementById("resistance-loader").style.display = "none";
+                }, 500);
+            });
+            
+            // Calculate stability button
+            document.getElementById("calculate-stability").addEventListener("click", function() {
+                // Show loader
+                document.getElementById("stability-loader").style.display = "block";
+                
+                // Get input values
+                const displacement = parseFloat(document.getElementById("displacement").value);
+                const metacentricHeight = parseFloat(document.getElementById("metacentric-height").value);
+                const heelAngle = parseFloat(document.getElementById("heel-angle").value);
+                
+                setTimeout(() => {
+                    // Calculate stability at specified heel angle
+                    const stability = calculateRightingMoment(displacement, metacentricHeight, heelAngle);
+                    
+                    // Update 3D model
+                    document.getElementById("sailboat-model").style.transform = `rotate(${heelAngle}deg)`;
+                    
+                    // Update results display
+                    document.getElementById("righting-moment").textContent = `${stability.rightingMoment.toFixed(0)} Nm`;
+                    
+                    // Estimate maximum righting arm and angle of vanishing stability
+                    const maxRightingArm = metacentricHeight * 0.8;
+                    document.getElementById("max-righting-arm").textContent = `${maxRightingArm.toFixed(2)} m at ~30°`;
+                    
+                    // Simplified estimate of vanishing stability
+                    const vanishingStability = Math.min(120, 70 + metacentricHeight * 10);
+                    document.getElementById("vanishing-stability").textContent = `~${vanishingStability.toFixed(0)}°`;
+                    
+                    // Calculate stability curve
+                    const maxAngle = 60;
+                    const stabilityCurve = calculateStabilityCurve(displacement, metacentricHeight, maxAngle, 20);
+                    
+                    // Update chart
+                    const labels = stabilityCurve.map(s => s.angle.toFixed(0));
+                    const rightingMomentData = stabilityCurve.map(s => s.rightingMoment);
+                    
+                    stabilityChart.data.labels = labels;
+                    stabilityChart.data.datasets[0].data = rightingMomentData;
+                    stabilityChart.update();
+                    
+                    // Hide loader
+                    document.getElementById("stability-loader").style.display = "none";
+                }, 500);
+            });
+            
+            // Calculate performance button
+            document.getElementById("calculate-performance").addEventListener("click", function() {
+                // Show loader
+                document.getElementById("performance-loader").style.display = "block";
+                
+                // Get input values
+                const length = parseFloat(document.getElementById("length").value);
+                const beam = parseFloat(document.getElementById("beam").value);
+                const draft = parseFloat(document.getElementById("draft").value);
+                const displacement = parseFloat(document.getElementById("displacement").value);
+                const wettedSurface = parseFloat(document.getElementById("wetted-surface").value);
+                const sailArea = parseFloat(document.getElementById("sail-area").value);
+                const windSpeedKnots = parseFloat(document.getElementById("wind-speed").value);
+                const windSpeed = knotsToMs(windSpeedKnots);
+                const windAngleRange = document.getElementById("wind-angles").value;
+                
+                setTimeout(() => {
+                    // Set angle range based on selection
+                    let minAngle, maxAngle;
+                    switch (windAngleRange) {
+                        case "upwind":
+                            minAngle = 30;
+                            maxAngle = 60;
+                            break;
+                        case "beam-reach":
+                            minAngle = 60;
+                            maxAngle = 120;
+                            break;
+                        case "downwind":
+                            minAngle = 120;
+                            maxAngle = 180;
+                            break;
+                        case "full":
+                            minAngle = 30;
+                            maxAngle = 180;
+                            break;
+                    }
+                    
+                    // Generate polar data
+                    const polarData = generatePolarData(length, beam, draft, displacement, wettedSurface, sailArea, windSpeed, minAngle, maxAngle, 15);
+                    
+                    // Find maximum speed and optimal angles
+                    let maxSpeed = 0;
+                    let optimalAngle = 0;
+                    let maxUpwindVMG = -Infinity;
+                    let optimalUpwindAngle = 0;
+                    let maxDownwindVMG = -Infinity;
+                    let optimalDownwindAngle = 0;
+                    
+                    polarData.forEach(data => {
+                        if (data.speed > maxSpeed) {
+                            maxSpeed = data.speed;
+                            optimalAngle = data.angle;
+                        }
+                        
+                        // Upwind VMG (consider only upwind angles)
+                        if (data.angle < 90 && data.vmg > maxUpwindVMG) {
+                            maxUpwindVMG = data.vmg;
+                            optimalUpwindAngle = data.angle;
+                        }
+                        
+                        // Downwind VMG (consider only downwind angles, negate for correct comparison)
+                        if (data.angle > 90 && -data.vmg > maxDownwindVMG) {
+                            maxDownwindVMG = -data.vmg;
+                            optimalDownwindAngle = data.angle;
+                        }
+                    });
+                    
+                    // Update results display
+                    document.getElementById("max-speed").textContent = `${msToKnots(maxSpeed).toFixed(1)} knots at ${optimalAngle}°`;
+                    document.getElementById("optimal-angle").textContent = `${optimalAngle}°`;
+                    
+                    // Only display VMG if we have the relevant data
+                    if (maxUpwindVMG > -Infinity) {
+                        document.getElementById("upwind-vmg").textContent = `${msToKnots(maxUpwindVMG).toFixed(1)} knots at ${optimalUpwindAngle}°`;
+                    } else {
+                        document.getElementById("upwind-vmg").textContent = "Not calculated";
+                    }
+                    
+                    if (maxDownwindVMG > -Infinity) {
+                        document.getElementById("downwind-vmg").textContent = `${msToKnots(maxDownwindVMG).toFixed(1)} knots at ${optimalDownwindAngle}°`;
+                    } else {
+                        document.getElementById("downwind-vmg").textContent = "Not calculated";
+                    }
+                    
+                    // Update polar chart
+                    const labels = polarData.map(p => `${p.angle}°`);
+                    const speedData = polarData.map(p => msToKnots(p.speed));
+                    
+                    polarChart.data.labels = labels;
+                    polarChart.data.datasets[0].data = speedData;
+                    polarChart.update();
+                    
+                    // Hide loader
+                    document.getElementById("performance-loader").style.display = "none";
+                }, 1000);
+            });
+            
+            // Initialize with default calculations
+            document.getElementById("calculate-resistance").click();
+            document.getElementById("calculate-stability").click();
+        });
+    </script>
+</body>
+</html>
