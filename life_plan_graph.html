@@ -1,318 +1,668 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Website - Home</title>
-    <!-- Font Awesome - Needed for Sidebar Icons -->
-    <link
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-        rel="stylesheet"
-    />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Future: Career & Life Planning</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
     <style>
-        /* --- Base & Layout Styles (Copied from original index (1).html) --- */
-        :root {
-            --bg-primary: #f8fafc;
-            --bg-secondary: #ffffff;
-            --text-primary: #0f172a;
-            --text-secondary: #334155;
-            --accent-primary: #0284c7;
-            --accent-secondary: #0ea5e9;
-            --border-color: #e2e8f0;
-            --sidebar-width: 250px;
-            --header-height: 60px; /* Optional: Use if you add a header */
-            --transition-speed: 0.3s;
-            --font-primary: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-        }
-
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: var(--font-primary);
         }
-
+        
         body {
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-            font-size: 16px;
-            line-height: 1.5;
-            /* overflow-x: hidden; Remove this if not needed globally */
-        }
-
-        .layout {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: #ffffff; /* Light background */
+            color: #334155; /* Slate 700 for text */
+            margin: 0;
+            padding: 0;
             display: flex;
-            min-height: 100vh;
-        }
-
-        /* --- Sidebar Styling (Copied) --- */
-        .sidebar {
-            width: var(--sidebar-width);
-            background-color: var(--bg-secondary);
-            border-right: 1px solid var(--border-color);
+            flex-direction: column;
+            align-items: center;
             height: 100vh;
-            position: fixed; /* Or 'sticky' if preferred */
-            top: 0;
-            left: 0;
-            overflow-y: auto;
+            overflow: hidden;
+            font-weight: 400;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        h1 {
+            color: #1e293b; /* Slate 800 */
+            margin: 20px 0;
+            text-align: center;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            font-size: 1.75rem;
+        }
+        
+        .controls {
+            margin: 10px 0 20px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
             z-index: 10;
-            transition: transform var(--transition-speed); /* For mobile */
+            width: 90%;
+            max-width: 900px;
         }
-
-        .sidebar-header {
-            padding: 1.5rem;
-            display: flex;
-            align-items: center;
-            border-bottom: 1px solid var(--border-color);
-            height: var(--header-height); /* Match header height */
+        
+        button {
+            background-color: #f1f5f9; /* Slate 100 */
+            color: #334155; /* Slate 700 */
+            border: 1px solid #cbd5e1; /* Slate 300 */
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
-
-        .sidebar-logo {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--accent-primary);
-            text-decoration: none; /* Ensure logo isn't underlined if it's a link */
+        
+        button:hover {
+            background-color: #e2e8f0; /* Slate 200 */
+            color: #1e293b; /* Slate 800 */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-
-        .sidebar-nav {
-            padding: 1rem 0;
+        
+        #graph {
+            width: 100%;
+            height: calc(100% - 120px); /* Adjust based on header/controls height */
+            position: relative;
         }
-
-        .nav-section {
-            margin-bottom: 1rem;
+        
+        /* Node and Link styling */
+        .node {
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
-
-        .nav-section-title {
-            padding: 0.5rem 1.5rem;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-secondary);
-            font-weight: 600;
+        
+        .link {
+            /* Stroke managed by JS gradient */
+            stroke-opacity: 0.6;
+            transition: all 0.2s ease;
         }
-
-        .nav-items {
-            list-style: none;
+        
+        .node-label text {
+            pointer-events: none;
+            text-anchor: middle;
+            dominant-baseline: middle;
+            font-weight: 400;
+            fill: #1e293b; /* Slate 800 */
         }
-
-        .nav-item {
-            margin: 0.25rem 0;
+        
+        /* Tooltip styling */
+        .tooltip {
+            position: absolute;
+            padding: 12px 16px;
+            background-color: #ffffff;
+            color: #334155;
+            border-radius: 4px;
+            pointer-events: none;
+            opacity: 0;
+            transition: all 0.2s ease;
+            max-width: 280px;
+            z-index: 1000;
+            border: 1px solid #e2e8f0; /* Slate 200 */
+            font-size: 0.875rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
-
-        .nav-link {
-            display: flex;
-            align-items: center;
-            padding: 0.75rem 1.5rem;
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: background-color var(--transition-speed),
-                color var(--transition-speed);
-            border-left: 3px solid transparent;
+        
+        .tooltip h3 {
+            margin: 0 0 8px 0;
+            /* Color will be set dynamically based on node category */
+            font-weight: 500;
+            font-size: 1rem;
         }
-
-        .nav-link:hover {
-            background-color: rgba(0, 0, 0, 0.05);
-            color: var(--accent-primary);
+        
+        .tooltip p {
+            margin: 0 0 6px 0;
+            line-height: 1.5;
+            color: #64748b; /* Slate 500 */
+            font-weight: 400;
         }
-
-        /* Style for the ACTIVE page link */
-        .nav-link.active { /* Manually add 'active' class to the current page's link */
-            color: var(--accent-primary);
-            border-left-color: var(--accent-primary);
-            background-color: rgba(2, 132, 199, 0.1);
+        
+        .tooltip p strong {
+            color: #334155; /* Slate 700 */
             font-weight: 500;
         }
 
-
-        .nav-icon {
-            margin-right: 0.75rem;
-            width: 20px;
-            text-align: center;
+        /* Legend styling */
+        .legend {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #ffffff;
+            padding: 16px;
+            border-radius: 4px;
+            border: 1px solid #e2e8f0; /* Slate 200 */
+            z-index: 10;
+            font-size: 0.875rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
-
-        /* --- Main Content Area Styling --- */
-        .main-content {
-            flex: 1;
-            margin-left: var(--sidebar-width); /* Make space for the fixed sidebar */
-            padding: 2rem; /* Add padding to the content area */
-             min-height: 100vh; /* Ensure it takes full height */
+        
+        .legend h3 {
+            margin: 0 0 12px 0;
+            font-weight: 500;
+            font-size: 1rem;
+            color: #334155; /* Slate 700 */
         }
-
-         /* Optional Header inside main content */
-         .page-header {
-            height: var(--header-height);
-            background-color: var(--bg-secondary);
-            border-bottom: 1px solid var(--border-color);
+        
+        .legend-item {
             display: flex;
             align-items: center;
-            padding: 0 2rem;
-            margin: -2rem -2rem 2rem -2rem; /* Adjust padding negation */
-         }
-         .page-header-title {
-             font-size: 1.25rem;
-            font-weight: 600;
-         }
-
-
-        /* --- Mobile Responsiveness (Copied & Adapted) --- */
-        .sidebar-toggle {
-            display: none; /* Hide toggle by default on desktop */
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 0.5rem;
-            color: var(--text-secondary);
-            position: fixed; /* Position it */
-            top: 10px;
-            left: 10px;
-            z-index: 20; /* Above sidebar */
+            margin-bottom: 8px;
+            color: #64748b; /* Slate 500 */
         }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%); /* Hide sidebar off-screen */
-            }
-            .sidebar.active { /* Show sidebar when active class is added */
-                transform: translateX(0);
-            }
-            .main-content {
-                margin-left: 0; /* Main content takes full width */
-                 padding: 1rem;
-                 margin-top: 50px; /* Add space for the toggle button if needed */
-            }
-             .page-header {
-                margin: -1rem -1rem 1rem -1rem; /* Adjust padding negation for mobile */
-                padding: 0 1rem;
-             }
-
-            .sidebar-toggle {
-                display: block; /* Show toggle button on mobile */
-            }
+        
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            margin-right: 12px;
         }
-
-        /* --- Page Specific Styles for index.html --- */
-        .welcome-section {
-             background-color: var(--bg-secondary);
-             padding: 2rem;
-             border-radius: 8px;
-             box-shadow: 0 2px 10px rgba(0,0,0, 0.05);
-        }
-         .welcome-section h1 {
-             color: var(--accent-primary);
-             margin-bottom: 1rem;
-         }
 
     </style>
 </head>
 <body>
-    <!-- Button to toggle sidebar on mobile -->
-    <button class="sidebar-toggle" id="sidebar-toggle">
-        <i class="fas fa-bars"></i>
-    </button>
-
-    <div class="layout">
-        <!-- Sidebar Navigation -->
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                 <!-- Link logo to homepage -->
-                <a href="index.html" class="sidebar-logo">My Website</a>
+    <div class="container">
+        <h1>Our Future: Career & Life Planning</h1>
+        <div class="controls">
+            <button id="resetZoom">Reset View</button>
+            <button id="showCareerYou">Career (You)</button>
+            <button id="showCareerPartner">Career (Partner)</button>
+            <button id="showLocation">Location & Home</button>
+            <button id="showFinancial">Financial Goals</button>
+            <button id="showPersonal">Personal Growth</button>
+            <button id="showRelationship">Relationship & Family</button>
+        </div>
+        <div id="graph"></div>
+        <div class="tooltip"></div>
+        <div class="legend">
+            <h3>Life Areas</h3>
+            <!-- Legend items will be populated by JS if needed, or hardcoded -->
+             <div class="legend-item">
+                <div class="legend-color" style="background-color: #3b82f6;"></div> <!-- Blue 500 -->
+                <div>Career (You)</div>
             </div>
-            <nav class="sidebar-nav">
-                <div class="nav-section">
-                    <div class="nav-section-title">Pages</div>
-                    <ul class="nav-items" id="page-nav">
-                        <li class="nav-item">
-                            <!-- Add 'active' class MANUALLY for the current page -->
-                            <a href="index.html" class="nav-link active">
-                                <span class="nav-icon"><i class="fas fa-home"></i></span>
-                                <span>Home</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="financial-dashboard.html" class="nav-link">
-                                <span class="nav-icon"><i class="fas fa-chart-line"></i></span>
-                                <span>Financial Dashboard</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="ontario_vs_calgary.html" class="nav-link">
-                                <span class="nav-icon"><i class="fas fa-map-marked-alt"></i></span>
-                                <span>Ontario vs Calgary</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="Ship_Technical_Data_Network_Light.html" class="nav-link">
-                                <span class="nav-icon"><i class="fas fa-ship"></i></span>
-                                <span>Ship Network Light</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="Ship_Technical_Data_Network_Dark.html" class="nav-link">
-                                <span class="nav-icon"><i class="fas fa-moon"></i></span>
-                                <span>Ship Network Dark</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="newfoundland_realestate.html" class="nav-link">
-                                <span class="nav-icon"><i class="fas fa-building"></i></span>
-                                <span>Newfoundland Real Estate</span>
-                            </a>
-                        </li>
-                        <!-- == NEW LINK ADDED BELOW == -->
-                        <li class="nav-item">
-                            <a href="life_plan_graph.html" class="nav-link">
-                                <span class="nav-icon"><i class="fas fa-network-wired"></i></span>
-                                <span>Life Plan Graph</span>
-                            </a>
-                        </li>
-                         <!-- == END OF NEW LINK == -->
-                    </ul>
-                </div>
-            </nav>
-        </aside>
-
-        <!-- Main Content Area -->
-        <main class="main-content">
-            <!-- Optional Header for the page -->
-             <header class="page-header">
-                <h1 class="page-header-title">Home</h1>
-            </header>
-
-            <!-- Homepage Specific Content -->
-            <div class="welcome-section">
-                <h1>Welcome to My Website!</h1>
-                <p>This is the homepage. Use the navigation on the left to explore other pages.</p>
-                <p>Each page is a separate HTML file loaded directly by your browser.</p>
-                 <p>Added the <a href="life_plan_graph.html">Life Plan Graph</a> to the navigation.</p>
+             <div class="legend-item">
+                <div class="legend-color" style="background-color: #14b8a6;"></div> <!-- Teal 500 -->
+                <div>Career (Partner)</div>
             </div>
-
-            <!-- Add more homepage content here if needed -->
-
-        </main>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #22c55e;"></div> <!-- Green 500 -->
+                <div>Location & Home</div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #f59e0b;"></div> <!-- Amber 500 -->
+                <div>Financial Goals</div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #a855f7;"></div> <!-- Purple 500 -->
+                <div>Personal Growth</div>
+            </div>
+             <div class="legend-item">
+                <div class="legend-color" style="background-color: #ec4899;"></div> <!-- Pink 500 -->
+                <div>Relationship & Family</div>
+            </div>
+        </div>
     </div>
 
-    <!-- JavaScript for Mobile Sidebar Toggle -->
     <script>
-        const sidebar = document.getElementById('sidebar');
-        const toggleButton = document.getElementById('sidebar-toggle');
+        // Data preparation for Career & Life Planning
+        const data = {
+            nodes: [
+                // Root node
+                { id: "Our Future Together", group: "root", level: 0 },
+                
+                // Category nodes (Life Areas)
+                { id: "Career (You)", group: "category", level: 1 },
+                { id: "Career (Partner)", group: "category", level: 1 },
+                { id: "Location & Home", group: "category", level: 1 },
+                { id: "Financial Goals", group: "category", level: 1 },
+                { id: "Personal Growth", group: "category", level: 1 },
+                { id: "Relationship & Family", group: "category", level: 1 },
+                
+                // Decision/Topic Nodes - Examples (Customize these!)
+                // Career (You)
+                { id: "Your Target Industry", group: "decision", level: 2, category: "Career (You)", details: "Explore options like Tech, Healthcare, Education, Creative..." },
+                { id: "Your Desired Role", group: "decision", level: 2, category: "Career (You)", details: "Management, Specialist, Entrepreneur? What skills are needed?" },
+                { id: "Your Work-Life Balance", group: "decision", level: 2, category: "Career (You)", details: "Priorities? Remote work? Flexible hours?" },
+                { id: "Your Salary Goals", group: "decision", level: 2, category: "Career (You)", details: "Short-term and long-term targets based on role and location." },
 
-        if (toggleButton && sidebar) {
-            toggleButton.addEventListener('click', () => {
-                sidebar.classList.toggle('active');
+                // Career (Partner)
+                { id: "Partner's Target Industry", group: "decision", level: 2, category: "Career (Partner)", details: "Discuss Partner's preferred fields and opportunities." },
+                { id: "Partner's Desired Role", group: "decision", level: 2, category: "Career (Partner)", details: "Partner's ambitions: Leadership, technical track, etc." },
+                { id: "Partner's Work-Life Balance", group: "decision", level: 2, category: "Career (Partner)", details: "What does Partner value? How does it align with yours?" },
+                { id: "Partner's Salary Goals", group: "decision", level: 2, category: "Career (Partner)", details: "Partner's financial expectations and career path." },
+
+                // Location & Home
+                { id: "Ideal City/Region", group: "decision", level: 2, category: "Location & Home", details: "Factors: Job markets, cost of living, proximity to family, lifestyle." },
+                { id: "Rent vs Buy", group: "decision", level: 2, category: "Location & Home", details: "Timeline? Financial readiness? Market conditions?" },
+                { id: "Type of Home", group: "decision", level: 2, category: "Location & Home", details: "Apartment, house, condo? Size? Future needs?" },
+                { id: "Commute Considerations", group: "decision", level: 2, category: "Location & Home", details: "Acceptable commute times? Public transport? Car dependency?" },
+
+                // Financial Goals
+                { id: "Savings Strategy", group: "decision", level: 2, category: "Financial Goals", details: "Emergency fund, retirement (RRSP/401k), down payment. Percentage goals?" },
+                { id: "Investment Approach", group: "decision", level: 2, category: "Financial Goals", details: "Risk tolerance? Joint or separate investments? Robo-advisor?" },
+                { id: "Debt Management", group: "decision", level: 2, category: "Financial Goals", details: "Student loans, credit cards. Payoff plan?" },
+                { id: "Budgeting Together", group: "decision", level: 2, category: "Financial Goals", details: "Shared expenses? Joint accounts? Budgeting tools?" },
+
+                // Personal Growth
+                { id: "Skill Development", group: "decision", level: 2, category: "Personal Growth", details: "Individual or shared skills/hobbies to learn (language, coding, cooking)." },
+                { id: "Travel Aspirations", group: "decision", level: 2, category: "Personal Growth", details: "Dream destinations? Travel style (budget/luxury)? Frequency?" },
+                { id: "Health & Wellness", group: "decision", level: 2, category: "Personal Growth", details: "Fitness goals, mental health practices, healthy eating habits." },
+                { id: "Further Education", group: "decision", level: 2, category: "Personal Growth", details: "Degrees, certifications, workshops for personal enrichment." },
+
+                // Relationship & Family
+                { id: "Marriage Timeline", group: "decision", level: 2, category: "Relationship & Family", details: "Expectations and desired timeframe, if applicable." },
+                { id: "Starting a Family?", group: "decision", level: 2, category: "Relationship & Family", details: "Kids? How many? Timeline considerations?" },
+                { id: "Shared Quality Time", group: "decision", level: 2, category: "Relationship & Family", details: "Date nights, shared hobbies, traditions." },
+                { id: "Pet Ownership", group: "decision", level: 2, category: "Relationship & Family", details: "Ready for a pet? Type? Responsibilities?" }
+            ],
+            links: []
+        };
+        
+        // Create links automatically
+        // Root to categories
+        data.nodes.filter(node => node.group === "category").forEach(categoryNode => {
+            data.links.push({ source: "Our Future Together", target: categoryNode.id, value: 1 });
+        });
+        
+        // Categories to decisions/topics
+        data.nodes.filter(node => node.group === "decision").forEach(decisionNode => {
+            data.links.push({ source: decisionNode.category, target: decisionNode.id, value: 1 });
+        });
+        
+        // --- D3 Visualization Setup --- (Largely similar to the original graph)
+        const width = window.innerWidth;
+        const height = window.innerHeight - 150; // Adjust as needed
+        
+        const svg = d3.select("#graph")
+            .append("svg")
+            .attr("width", "100%")
+            .attr("height", "100%")
+            .attr("viewBox", [-width / 2, -height / 2, width, height])
+            .call(d3.zoom().on("zoom", (event) => {
+                g.attr("transform", event.transform);
+            }));
+
+        // Add subtle grid pattern
+        svg.append("defs")
+            .append("pattern")
+            .attr("id", "grid")
+            .attr("width", 40)
+            .attr("height", 40)
+            .attr("patternUnits", "userSpaceOnUse")
+            .append("path")
+            .attr("d", "M 40 0 L 0 0 0 40")
+            .attr("fill", "none")
+            .attr("stroke", "#e2e8f0") // Slate 200
+            .attr("stroke-width", 1);
+        
+        svg.append("rect")
+            .attr("width", width * 2) // Make grid larger to cover zoomed-out view
+            .attr("height", height * 2)
+            .attr("x", -width)
+            .attr("y", -height)
+            .attr("fill", "url(#grid)")
+            .attr("opacity", 0.5);
+
+        const g = svg.append("g");
+        
+        // New color scheme for life planning categories
+        const colorScale = d3.scaleOrdinal()
+            .domain([
+                "Career (You)", 
+                "Career (Partner)", 
+                "Location & Home", 
+                "Financial Goals", 
+                "Personal Growth", 
+                "Relationship & Family"
+            ])
+            .range([
+                "#3b82f6", // Blue 500
+                "#14b8a6", // Teal 500
+                "#22c55e", // Green 500
+                "#f59e0b", // Amber 500
+                "#a855f7", // Purple 500
+                "#ec4899"  // Pink 500
+            ]);
+        
+        const tooltip = d3.select(".tooltip");
+        
+        const simulation = d3.forceSimulation(data.nodes)
+            .force("link", d3.forceLink(data.links).id(d => d.id).distance(d => {
+                if (d.source.group === "root") return 180; // Slightly more space from root
+                return 130; // More space between category and decisions
+            }))
+            .force("charge", d3.forceManyBody().strength(d => {
+                if (d.group === "root") return -2000;
+                if (d.group === "category") return -1200;
+                return -600; // More repulsion for decision nodes
+            }))
+            .force("x", d3.forceX().strength(0.08)) // Weaker centering force
+            .force("y", d3.forceY().strength(0.08))
+            .force("center", d3.forceCenter(0, 0))
+            .force("collide", d3.forceCollide(d => {
+                 if (d.group === "root") return 70; // Larger collision radius for root
+                 if (d.group === "category") return 60; // Category collision
+                 return 55; // Decision node collision (ensure labels have space)
+            }));
+
+        // --- Link Rendering (with Gradients) ---
+        const linkGroups = g.append("g")
+            .attr("class", "links")
+            .selectAll("g")
+            .data(data.links)
+            .enter().append("g");
+            
+        linkGroups.append("linearGradient")
+            .attr("id", (d, i) => `link-gradient-${i}`)
+            .attr("gradientUnits", "userSpaceOnUse")
+            .attr("x1", d => d.source.x) // Set gradient direction based on initial positions
+            .attr("y1", d => d.source.y)
+            .attr("x2", d => d.target.x)
+            .attr("y2", d => d.target.y)
+            .each(function(d) {
+                const gradient = d3.select(this);
+                gradient.append("stop")
+                    .attr("offset", "0%")
+                    .attr("stop-color", () => {
+                        if (d.source.group === "root") return "#94a3b8"; // Slate 400
+                        return colorScale(d.source.id); // Category color
+                    })
+                    .attr("stop-opacity", 0.7);
+                gradient.append("stop")
+                    .attr("offset", "100%")
+                    .attr("stop-color", () => {
+                        if (d.target.group === "category") return colorScale(d.target.id);
+                        return colorScale(d.target.category); // Decision node gets its category color
+                    })
+                    .attr("stop-opacity", 0.7);
             });
 
-            // Optional: Close sidebar when clicking outside on mobile
-             document.addEventListener('click', function(event) {
-                const isClickInsideSidebar = sidebar.contains(event.target);
-                const isClickOnToggle = toggleButton.contains(event.target);
+        const link = linkGroups.append("path")
+            .attr("class", "link")
+            .attr("stroke", (d, i) => `url(#link-gradient-${i})`)
+            .attr("stroke-width", 1.5)
+            .attr("fill", "none");
+            
+        // --- Node Rendering ---
+        const nodeGroups = g.append("g")
+            .attr("class", "node-groups")
+            .selectAll("g")
+            .data(data.nodes)
+            .enter().append("g")
+            .attr("class", d => `node-group ${d.group}`)
+            .call(d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended));
 
-                // Check if screen is mobile width and click is outside sidebar/toggle
-                if (window.innerWidth <= 768 && !isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains('active')) {
-                    sidebar.classList.remove('active');
+        // Add glow filter (same as original)
+        const defs = svg.append("defs");
+        const glowFilter = defs.append("filter")
+            .attr("id", "glow")
+            .attr("x", "-50%").attr("y", "-50%")
+            .attr("width", "200%").attr("height", "200%");
+        glowFilter.append("feGaussianBlur").attr("stdDeviation", "2").attr("result", "coloredBlur");
+        const glowMerge = glowFilter.append("feMerge");
+        glowMerge.append("feMergeNode").attr("in", "coloredBlur");
+        glowMerge.append("feMergeNode").attr("in", "SourceGraphic");
+
+        // Node circles (base + inner)
+        const node = nodeGroups.append("g").attr("class", "node-container");
+
+        node.append("circle") // Outer circle (border)
+            .attr("class", d => `node-base ${d.group}`)
+            .attr("r", d => {
+                if (d.group === "root") return 45;
+                if (d.group === "category") return 35;
+                return 22; // Decision nodes
+            })
+            .attr("fill", "#ffffff")
+            .attr("stroke", d => {
+                if (d.group === "root") return "#64748b"; // Slate 500
+                if (d.group === "category") return colorScale(d.id);
+                return colorScale(d.category); // Decision nodes use category color
+            })
+            .attr("stroke-width", d => (d.group === 'root' ? 3 : (d.group === 'category' ? 2.5 : 2)))
+            .attr("filter", "url(#glow)");
+
+        node.append("circle") // Inner circle (fill)
+            .attr("class", d => `node-inner ${d.group}`)
+            .attr("r", d => {
+                if (d.group === "root") return 35;
+                if (d.group === "category") return 25;
+                return 15; // Decision nodes
+            })
+            .attr("fill", d => {
+                if (d.group === "root") return "#f8fafc"; // Slate 50
+                if (d.group === "category") return colorScale(d.id);
+                return colorScale(d.category); // Decision nodes use category color
+            })
+            .attr("opacity", 0.3);
+
+        // --- Node Labels ---
+        const nodeLabelGroups = nodeGroups.append("g")
+            .attr("class", "node-label");
+
+        // Root node label
+        nodeLabelGroups.filter(d => d.group === "root")
+            .append("text")
+            .text(d => d.id)
+            .attr("fill", "#334155") // Slate 700
+            .attr("font-size", "14px") // Slightly smaller for longer text
+            .attr("text-anchor", "middle")
+            .attr("dominant-baseline", "middle")
+            .attr("font-weight", "500");
+
+        // Category node labels (multi-line adapted)
+        nodeLabelGroups.filter(d => d.group === "category")
+            .each(function(d) {
+                const words = d.id.split(' ');
+                const el = d3.select(this);
+                if (words.length > 1 && d.id !== "Location & Home") { // Special case or adjust logic as needed
+                    const firstLine = words[0];
+                    const secondLine = words.slice(1).join(' ');
+                     el.append("text").text(firstLine).attr("dy", "-0.3em").attr("font-size", "11px").attr("text-anchor", "middle").attr("font-weight", "500");
+                     el.append("text").text(secondLine).attr("dy", "0.9em").attr("font-size", "11px").attr("text-anchor", "middle").attr("font-weight", "500");
+                } else { // Handle single word or specific cases like "Location & Home"
+                     el.append("text").text(d.id).attr("font-size", "11px").attr("text-anchor", "middle").attr("dominant-baseline", "middle").attr("font-weight", "500");
                 }
             });
+
+        // Decision node labels (above the circle)
+        nodeLabelGroups.filter(d => d.group === "decision")
+            .each(function(d) {
+                const words = d.id.split(' ');
+                const el = d3.select(this);
+                el.attr("transform", "translate(0, -28)"); // Position above node
+                
+                 // Simple splitting logic for demonstration
+                if (words.length > 2) {
+                    const midpoint = Math.ceil(words.length / 2);
+                    const line1 = words.slice(0, midpoint).join(' ');
+                    const line2 = words.slice(midpoint).join(' ');
+                     el.append("text").text(line1).attr("dy", "-0.4em").attr("font-size", "9px").attr("text-anchor", "middle");
+                     el.append("text").text(line2).attr("dy", "0.8em").attr("font-size", "9px").attr("text-anchor", "middle");
+                } else {
+                     el.append("text").text(d.id).attr("font-size", "10px").attr("text-anchor", "middle");
+                }
+            });
+
+        // --- Simulation Tick ---
+        simulation.on("tick", () => {
+            // Update link paths with curve
+             link.attr("d", d => {
+                 const dx = d.target.x - d.source.x;
+                 const dy = d.target.y - d.source.y;
+                 const dr = Math.sqrt(dx * dx + dy * dy) * 1.5; // Adjust curve strength if needed
+                 return `M${d.source.x},${d.source.y}A${dr},${dr} 0 0,1 ${d.target.x},${d.target.y}`;
+             });
+            
+            // Update link gradient endpoints for accuracy during simulation
+             d3.selectAll(".links linearGradient")
+                 .attr("x1", d => d.source.x)
+                 .attr("y1", d => d.source.y)
+                 .attr("x2", d => d.target.x)
+                 .attr("y2", d => d.target.y);
+
+            nodeGroups.attr("transform", d => `translate(${d.x}, ${d.y})`);
+        });
+
+        // --- Interaction Functions ---
+        function dragstarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
         }
+
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+
+        function dragended(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null; // Release the node position
+            d.fy = null;
+        }
+
+        // Node hover effects
+        nodeGroups.on("mouseover", function(event, d) {
+            const relatedLinks = data.links.filter(link => link.source.id === d.id || link.target.id === d.id);
+            const relatedNodes = new Set();
+            relatedLinks.forEach(link => {
+                relatedNodes.add(link.source.id);
+                relatedNodes.add(link.target.id);
+            });
+            relatedNodes.add(d.id); // Ensure the hovered node is included
+
+            d3.selectAll(".link")
+                .style("stroke-opacity", link => relatedLinks.includes(link) ? 0.9 : 0.1)
+                .style("stroke-width", link => relatedLinks.includes(link) ? 2.5 : 1);
+
+            d3.selectAll(".node-base, .node-inner")
+                .transition().duration(150)
+                .style("opacity", node => relatedNodes.has(node.id) ? 1 : 0.1);
+            
+            // Show tooltip
+            let tooltipContent = '';
+            let nodeColor = '#64748b'; // Default color (Slate 500)
+            
+            if (d.group === "category") {
+                 tooltipContent = `<h3>${d.id}</h3><p>Area of focus. Click to highlight related decisions.</p>`;
+                 nodeColor = colorScale(d.id);
+            } else if (d.group === "decision") {
+                 tooltipContent = `<h3>${d.id}</h3><p><strong>Category:</strong> ${d.category}</p><p><strong>Considerations:</strong> ${d.details || 'Discuss details...'}</p>`;
+                 nodeColor = colorScale(d.category);
+            } else if (d.group === "root") {
+                tooltipContent = `<h3>${d.id}</h3><p>Central hub for our joint planning.</p>`;
+            }
+
+            if (tooltipContent) {
+                tooltip
+                    .style("opacity", 0.95)
+                    .html(tooltipContent)
+                    .style("left", (event.pageX + 15) + "px")
+                    .style("top", (event.pageY - 28) + "px")
+                    .style("border", `1px solid ${nodeColor}`) // Add border color hint
+                    .select("h3").style("color", nodeColor); // Color the heading
+            }
+        })
+        .on("mouseout", function() {
+            // Restore default opacity and stroke width
+            d3.selectAll(".link")
+                .transition().duration(200)
+                .style("stroke-opacity", 0.6)
+                .style("stroke-width", 1.5);
+            
+            d3.selectAll(".node-base, .node-inner")
+                .transition().duration(200)
+                .style("opacity", d => d.group === 'node-inner' ? 0.3 : 1); // Reset based on original opacity
+                
+            tooltip.style("opacity", 0);
+        })
+        .on("click", function(event, d) {
+            if (d.group === "category") {
+                highlightCategory(d.id);
+            }
+            // Optional: Add click behavior for decision nodes if needed
+        });
+
+        // --- Button Interactions ---
+        d3.select("#resetZoom").on("click", function() {
+            svg.transition()
+                .duration(750)
+                .call(d3.zoom().transform, d3.zoomIdentity); // Resets zoom and pan
+            
+            // Reset highlights
+            d3.selectAll(".node-base, .node-inner").style("opacity", d => d.group === 'node-inner' ? 0.3 : 1);
+            d3.selectAll(".link").style("stroke-opacity", 0.6).style("stroke-width", 1.5);
+        });
+
+        function highlightCategory(category) {
+            const categoryColor = colorScale(category);
+
+            // Highlight relevant nodes (root, category, related decisions)
+             d3.selectAll(".node-base, .node-inner")
+                 .transition().duration(300)
+                 .style("opacity", node => 
+                     node.group === "root" || node.id === category || (node.group === "decision" && node.category === category) 
+                     ? (node.group === 'node-inner' ? 0.8 : 1) // Brighter inner on highlight
+                     : 0.1);
+
+            // Highlight relevant links
+             d3.selectAll(".link")
+                 .transition().duration(300)
+                 .style("stroke-opacity", link => 
+                     (link.source.id === "Our Future Together" && link.target.id === category) || (link.source.id === category) 
+                     ? 0.9 : 0.05)
+                 .style("stroke-width", link => 
+                     (link.source.id === "Our Future Together" && link.target.id === category) || (link.source.id === category) 
+                     ? 2.5 : 1);
+                     
+             // Optional: Slightly enlarge the category node on highlight
+             d3.selectAll(`.node-group.category`)
+                 .filter(d => d.id === category)
+                 .select('.node-container')
+                 .transition().duration(300)
+                 .attr('transform', 'scale(1.1)');
+             // Reset scale for other category nodes
+             d3.selectAll(`.node-group.category`)
+                 .filter(d => d.id !== category)
+                 .select('.node-container')
+                 .transition().duration(300)
+                 .attr('transform', 'scale(1)');
+        }
+
+        // Connect buttons to highlight function
+        d3.select("#showCareerYou").on("click", () => highlightCategory("Career (You)"));
+        d3.select("#showCareerPartner").on("click", () => highlightCategory("Career (Partner)"));
+        d3.select("#showLocation").on("click", () => highlightCategory("Location & Home"));
+        d3.select("#showFinancial").on("click", () => highlightCategory("Financial Goals"));
+        d3.select("#showPersonal").on("click", () => highlightCategory("Personal Growth"));
+        d3.select("#showRelationship").on("click", () => highlightCategory("Relationship & Family"));
+        
+        // Initial simulation start
+        simulation.alpha(1).restart();
+
     </script>
 </body>
 </html>
