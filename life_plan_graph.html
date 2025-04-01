@@ -5,9 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Future: Career & Life Planning</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <!-- Font Awesome needed for timeline icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
     <style>
-        /* Styles from the improved version (layout, labels, etc.) */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+        :root {
+            /* Existing color variables */
+            --bg-primary: #ffffff; /* White background */
+            --bg-secondary: #f8fafc; /* Slate 50 - for cards/sections */
+            --text-primary: #1e293b; /* Slate 800 */
+            --text-secondary: #475569; /* Slate 600 */
+            --text-muted: #94a3b8;    /* Slate 400 */
+            --accent-primary: #0ea5e9; /* Sky 500 */
+            --accent-secondary: #38bdf8; /* Sky 400 */
+            --border-color: #e2e8f0; /* Slate 200 */
+            --font-primary: 'Inter', -apple-system, sans-serif;
+            --timeline-line-color: var(--border-color);
+        }
 
         * {
             margin: 0;
@@ -15,17 +30,18 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background-color: #ffffff; /* Light background */
-            color: #334155; /* Slate 700 for text */
+            font-family: var(--font-primary);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
+            /* Allow vertical scrolling if content exceeds viewport */
+            overflow-y: auto;
             font-weight: 400;
             text-rendering: optimizeLegibility;
             -webkit-font-smoothing: antialiased;
@@ -34,124 +50,193 @@
 
         .container {
             width: 100%;
-            height: 100%;
+            max-width: 1400px; /* Limit max width for very large screens */
+            margin: 0 auto; /* Center container */
+            padding: 0 20px; /* Add some side padding */
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-height: 100vh; /* Ensure container tries to fill height */
         }
 
         h1 {
-            color: #1e293b; /* Slate 800 */
-            margin: 20px 0;
+            color: var(--text-primary);
+            margin: 25px 0;
             text-align: center;
             font-weight: 500;
             letter-spacing: -0.02em;
-            font-size: 1.75rem;
+            font-size: 1.85rem;
         }
 
         .controls {
-            margin: 10px 0 20px;
+            margin: 0 0 25px;
             display: flex;
-            gap: 8px;
+            gap: 10px;
             flex-wrap: wrap;
             justify-content: center;
-            z-index: 10;
-            width: 90%;
-            max-width: 900px;
+            z-index: 10; /* Keep controls above graph if overlapping */
+            width: 100%;
+            max-width: 950px;
         }
 
         button {
             background-color: #f1f5f9; /* Slate 100 */
             color: #334155; /* Slate 700 */
             border: 1px solid #cbd5e1; /* Slate 300 */
-            padding: 8px 16px;
-            border-radius: 4px;
+            padding: 9px 18px;
+            border-radius: 6px; /* Slightly more rounded */
             cursor: pointer;
             font-weight: 500;
-            font-size: 0.875rem;
+            font-size: 0.9rem;
             transition: all 0.2s ease;
             font-family: 'Inter', sans-serif;
             box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
-
         button:hover {
             background-color: #e2e8f0; /* Slate 200 */
             color: #1e293b; /* Slate 800 */
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
+        #graph-wrapper { /* New wrapper for graph and its overlays */
+             width: 100%;
+             position: relative; /* Needed for absolute positioning of legend/tooltip */
+             /* Set a max height for the graph area to allow space below */
+             height: 70vh; /* Adjust as needed */
+             max-height: 700px; /* Optional max pixel height */
+             margin-bottom: 40px; /* Space between graph and timeline */
+         }
+
         #graph {
             width: 100%;
-            height: calc(100% - 120px); /* Adjust based on header/controls height */
-            position: relative;
+            height: 100%; /* Fill the wrapper */
+            position: relative; /* Ensure SVG takes space */
         }
 
-        /* Node and Link styling */
-        .node {
-            cursor: pointer;
-        }
+        /* Node and Link styling (same as before) */
+        .node { cursor: pointer; }
+        .link { stroke-opacity: 0.6; }
+        .node-label text { pointer-events: none; text-anchor: middle; dominant-baseline: middle; font-weight: 400; fill: #1e293b; }
+        .decision .node-label { transform: translateY(-38px); }
+        .decision .node-label text { font-size: 9.5px; line-height: 1.2; dominant-baseline: auto; text-anchor: middle; }
 
-        .link {
-            stroke-opacity: 0.6;
-             /* Removed transition from link opacity/width for hover testing */
-             /* transition: stroke-opacity 0.3s ease, stroke-width 0.3s ease; */
-        }
-
-        .node-label text {
-            pointer-events: none;
-            text-anchor: middle;
-            dominant-baseline: middle;
-            font-weight: 400;
-            fill: #1e293b; /* Slate 800 */
-        }
-
-        .decision .node-label {
-             transform: translateY(-38px);
-        }
-         .decision .node-label text {
-            font-size: 9.5px;
-            line-height: 1.2;
-            dominant-baseline: auto;
-            text-anchor: middle;
-         }
-
-        /* Tooltip styling */
-        .tooltip {
-            position: absolute;
-            padding: 12px 16px;
-            background-color: rgba(255, 255, 255, 0.95);
-            color: #334155;
-            border-radius: 4px;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.2s ease; /* Keep opacity transition for tooltip */
-            max-width: 280px;
-            z-index: 1000;
-            border: 1px solid #e2e8f0;
-            font-size: 0.875rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            backdrop-filter: blur(2px);
-        }
+        /* Tooltip styling (same as before) */
+        .tooltip { position: absolute; padding: 12px 16px; background-color: rgba(255, 255, 255, 0.95); color: #334155; border-radius: 4px; pointer-events: none; opacity: 0; transition: opacity 0.2s ease; max-width: 280px; z-index: 1000; border: 1px solid #e2e8f0; font-size: 0.875rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); backdrop-filter: blur(2px); }
         .tooltip h3 { margin: 0 0 8px 0; font-weight: 600; font-size: 1rem; }
-        .tooltip p { margin: 0 0 6px 0; line-height: 1.5; color: #64748b; font-weight: 400; }
-        .tooltip p strong { color: #334155; font-weight: 500; }
+        .tooltip p { margin: 0 0 6px 0; line-height: 1.5; color: #475569; font-weight: 400; }
+        .tooltip p strong { color: #1e293b; font-weight: 500; }
 
-        /* Legend styling */
-        .legend {
-            position: absolute; top: 20px; right: 20px; background-color: rgba(255, 255, 255, 0.9);
-            padding: 16px; border-radius: 4px; border: 1px solid #e2e8f0; z-index: 10;
-            font-size: 0.875rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            backdrop-filter: blur(2px);
+        /* Legend styling (positioned relative to graph-wrapper) */
+        .legend { position: absolute; top: 15px; right: 15px; background-color: rgba(255, 255, 255, 0.9); padding: 16px; border-radius: 6px; border: 1px solid var(--border-color); z-index: 10; font-size: 0.875rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); backdrop-filter: blur(2px); }
+        .legend h3 { margin: 0 0 12px 0; font-weight: 500; font-size: 1rem; color: var(--text-primary); }
+        .legend-item { display: flex; align-items: center; margin-bottom: 8px; color: var(--text-secondary); }
+        .legend-color { width: 12px; height: 12px; border-radius: 3px; margin-right: 10px; flex-shrink: 0; }
+
+        .node-group { /* Opacity changes instantly on hover now */ }
+
+        /* --- Timeline Section Styling --- */
+        #timeline-section {
+            width: 100%;
+            max-width: 900px; /* Limit timeline width */
+            margin: 0 auto 50px auto; /* Center and add bottom margin */
+            background-color: var(--bg-secondary);
+            padding: 25px 30px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 12px rgba(0,0,0, 0.05);
         }
-        .legend h3 { margin: 0 0 12px 0; font-weight: 500; font-size: 1rem; color: #334155; }
-        .legend-item { display: flex; align-items: center; margin-bottom: 8px; color: #64748b; }
-        .legend-color { width: 12px; height: 12px; border-radius: 3px; margin-right: 12px; flex-shrink: 0; }
 
-        /* Style node groups for opacity transitions */
-         .node-group {
-            /* Removed transition from node group opacity for hover testing */
-            /* transition: opacity 0.3s ease; */
+        #timeline-section h2 {
+            text-align: center;
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            letter-spacing: -0.01em;
+        }
+
+        .timeline-year {
+            margin-bottom: 35px;
+            padding-left: 25px; /* Space for the line */
+            position: relative;
+            border-left: 2px solid var(--timeline-line-color); /* The main timeline bar */
+        }
+         .timeline-year:last-child {
+             margin-bottom: 10px; /* Less margin on the last year */
          }
+
+        .timeline-year-header {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--accent-primary);
+            margin-bottom: 15px;
+            position: relative;
+             left: -38px; /* Align with the left of the circle */
+             top: -5px; /* Adjust vertical alignment */
+             display: inline-block; /* Needed for positioning */
+             background-color: var(--bg-secondary); /* Cover the line */
+             padding: 0 10px 0 0; /* Space around text */
+        }
+
+         /* Year marker on the timeline */
+         .timeline-year-header::before {
+            content: '';
+            position: absolute;
+            left: -5px; /* Position relative to the header text */
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--accent-primary);
+            border: 2px solid var(--bg-secondary); /* Match background */
+            z-index: 1;
+        }
+
+
+        .timeline-events {
+            list-style: none;
+            padding-left: 10px; /* Indent events slightly */
+        }
+
+        .timeline-event {
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            position: relative;
+            padding-left: 20px; /* Space for icon */
+        }
+
+         /* Event marker/icon */
+         .timeline-event::before {
+            font-family: "Font Awesome 6 Free"; /* Font Awesome */
+            font-weight: 900; /* Solid icons */
+            content: "\f111"; /* Default solid circle */
+            position: absolute;
+            left: 0;
+            top: 5px; /* Adjust vertical alignment */
+            font-size: 0.6em;
+            color: var(--text-muted);
+         }
+
+         /* Specific icons (examples) */
+         .timeline-event.icon-graduation-cap::before { content: "\f19d"; color: var(--accent-primary); }
+         .timeline-event.icon-briefcase::before { content: "\f0b1"; color: #14b8a6; } /* Teal */
+         .timeline-event.icon-home::before { content: "\f015"; color: #22c55e; } /* Green */
+         .timeline-event.icon-plane-departure::before { content: "\f5b0"; color: #a855f7; } /* Purple */
+         .timeline-event.icon-heart::before { content: "\f004"; color: #ec4899; } /* Pink */
+         .timeline-event.icon-calendar-check::before { content: "\f274"; color: #f59e0b; } /* Amber */
+         .timeline-event.icon-comments-dollar::before { content: "\f653"; color: #f59e0b; } /* Amber */
+         .timeline-event.icon-user-graduate::before { content: "\f501"; color: #14b8a6; } /* Teal */
+
+
+        .timeline-event strong {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+
     </style>
 </head>
 <body>
@@ -166,18 +251,84 @@
             <button id="showPersonal">Personal Growth</button>
             <button id="showRelationship">Relationship & Family</button>
         </div>
-        <div id="graph"></div>
-        <div class="tooltip"></div>
-        <div class="legend">
-            <h3>Life Areas</h3>
-             <div class="legend-item"><div class="legend-color" style="background-color: #3b82f6;"></div><div>Career (You)</div></div>
-             <div class="legend-item"><div class="legend-color" style="background-color: #14b8a6;"></div><div>Career (Partner)</div></div>
-             <div class="legend-item"><div class="legend-color" style="background-color: #22c55e;"></div><div>Location & Home</div></div>
-             <div class="legend-item"><div class="legend-color" style="background-color: #f59e0b;"></div><div>Financial Goals</div></div>
-             <div class="legend-item"><div class="legend-color" style="background-color: #a855f7;"></div><div>Personal Growth</div></div>
-             <div class="legend-item"><div class="legend-color" style="background-color: #ec4899;"></div><div>Relationship & Family</div></div>
+
+        <!-- Wrapper for Graph and Overlays -->
+        <div id="graph-wrapper">
+            <div id="graph"></div>
+            <div class="tooltip"></div>
+            <div class="legend">
+                <h3>Life Areas</h3>
+                 <div class="legend-item"><div class="legend-color" style="background-color: #3b82f6;"></div><div>Career (You)</div></div>
+                 <div class="legend-item"><div class="legend-color" style="background-color: #14b8a6;"></div><div>Career (Partner)</div></div>
+                 <div class="legend-item"><div class="legend-color" style="background-color: #22c55e;"></div><div>Location & Home</div></div>
+                 <div class="legend-item"><div class="legend-color" style="background-color: #f59e0b;"></div><div>Financial Goals</div></div>
+                 <div class="legend-item"><div class="legend-color" style="background-color: #a855f7;"></div><div>Personal Growth</div></div>
+                 <div class="legend-item"><div class="legend-color" style="background-color: #ec4899;"></div><div>Relationship & Family</div></div>
+            </div>
         </div>
-    </div>
+
+        <!-- Timeline Section -->
+        <section id="timeline-section">
+            <h2>Our 5-Year Outlook</h2>
+
+            <div class="timeline-year">
+                <div class="timeline-year-header">2025</div>
+                <ul class="timeline-events">
+                    <li class="timeline-event icon-calendar-check"><strong>Natasha:</strong> Key School Terms (Mar 17, Jun 9, Jul 14)</li>
+                    <li class="timeline-event icon-briefcase"><strong>Natasha:</strong> Work part-time while in school.</li>
+                    <li class="timeline-event icon-graduation-cap"><strong>Natasha:</strong> Friend's Grad Events (June 13 & 21).</li>
+                    <li class="timeline-event icon-home"><strong>Move:</strong> Relocate to Calgary together (Target: End of June).</li>
+                    <li class="timeline-event icon-comments-dollar"><strong>Finance:</strong> Establish joint budget/savings plan in Calgary.</li>
+                     <li class="timeline-event icon-heart"><strong>Relationship:</strong> Settle into new routine with focus on quality time.</li>
+                </ul>
+            </div>
+
+            <div class="timeline-year">
+                <div class="timeline-year-header">2026</div>
+                <ul class="timeline-events">
+                    <li class="timeline-event icon-user-graduate"><strong>Natasha:</strong> Masters Practicum (Spring & Fall terms - 400 hrs).</li>
+                    <li class="timeline-event icon-briefcase"><strong>Natasha:</strong> Continue part-time work/side project.</li>
+                    <li class="timeline-event icon-briefcase"><strong>You:</strong> [Add Your Key Goal/Milestone for 2026]</li>
+                    <li class="timeline-event icon-home"><strong>Location:</strong> Evaluate Rent vs. Buy decision in Calgary.</li>
+                    <li class="timeline-event icon-plane-departure"><strong>Personal:</strong> Plan a significant trip or vacation?</li>
+                </ul>
+            </div>
+
+            <div class="timeline-year">
+                <div class="timeline-year-header">2027</div>
+                <ul class="timeline-events">
+                    <li class="timeline-event icon-graduation-cap"><strong>Natasha:</strong> Graduate Masters Program (Target: Feb/March).</li>
+                    <li class="timeline-event icon-user-graduate"><strong>Natasha:</strong> Obtain Psychotherapist License (Target: Post-Grad).</li>
+                    <li class="timeline-event icon-briefcase"><strong>Natasha:</strong> Launch virtual private practice (Target: Mid-Late 2027).</li>
+                    <li class="timeline-event icon-briefcase"><strong>You:</strong> [Add Your Key Goal/Milestone for 2027]</li>
+                     <li class="timeline-event icon-heart"><strong>Relationship:</strong> Revisit marriage discussion (Natasha prefers post-grad).</li>
+                </ul>
+            </div>
+
+            <div class="timeline-year">
+                <div class="timeline-year-header">2028</div>
+                <ul class="timeline-events">
+                    <li class="timeline-event icon-briefcase"><strong>Natasha:</strong> Grow private practice.</li>
+                    <li class="timeline-event icon-briefcase"><strong>You:</strong> [Add Your Key Goal/Milestone for 2028]</li>
+                    <li class="timeline-event icon-comments-dollar"><strong>Finance:</strong> Major savings goal check-in (House down payment? Investments?).</li>
+                    <li class="timeline-event icon-heart"><strong>Relationship:</strong> Potential Wedding Planning / Marriage?</li>
+                    <li class="timeline-event icon-home"><strong>Location:</strong> Consider longer-term location goals (proximity to family).</li>
+                </ul>
+            </div>
+
+             <div class="timeline-year">
+                <div class="timeline-year-header">2029</div>
+                <ul class="timeline-events">
+                     <li class="timeline-event icon-briefcase"><strong>Joint Career:</strong> Evaluate work-life balance and career satisfaction for both.</li>
+                     <li class="timeline-event icon-heart"><strong>Relationship:</strong> Discuss starting a family timeline?</li>
+                     <li class="timeline-event icon-plane-departure"><strong>Personal:</strong> Another major travel goal or personal development pursuit?</li>
+                     <li class="timeline-event"><strong>Future:</strong> Review 5-year plan and set goals for the next phase.</li>
+                 </ul>
+            </div>
+
+        </section>
+
+    </div><!-- End .container -->
 
     <script>
         // --- Data (Same as previous version) ---
@@ -221,33 +372,45 @@
         data.nodes.filter(n => n.group === "category").forEach(cat => data.links.push({ source: "Our Future Together", target: cat.id, value: 1 }));
         data.nodes.filter(n => n.group === "decision").forEach(dec => { if (data.nodes.some(c => c.id === dec.category && c.group === 'category')) { data.links.push({ source: dec.category, target: dec.id, value: 1 }); } else { console.warn(`Category ${dec.category} not found for ${dec.id}`); } });
 
-        // --- D3 Visualization Setup (Same) ---
+        // --- D3 Visualization Setup ---
         const graphContainer = document.getElementById('graph');
-        const width = graphContainer.clientWidth;
-        const height = graphContainer.clientHeight;
-        const svg = d3.select("#graph").append("svg").attr("width", "100%").attr("height", "100%").attr("viewBox", [-width / 2, -height / 2, width, height]);
+        // Note: Width/Height for SVG ViewBox are now taken from the wrapper
+        const graphWrapper = document.getElementById('graph-wrapper');
+        const viewboxWidth = graphWrapper.clientWidth || 1000; // Fallback width
+        const viewboxHeight = graphWrapper.clientHeight || 600; // Fallback height
+
+        const svg = d3.select("#graph")
+            .append("svg")
+            .attr("width", "100%")
+            .attr("height", "100%")
+            .attr("viewBox", [-viewboxWidth / 2, -viewboxHeight / 2, viewboxWidth, viewboxHeight]); // Use wrapper dimensions for viewBox
+
+        // Background Grid
         svg.append("defs").append("pattern").attr("id", "grid").attr("width", 50).attr("height", 50).attr("patternUnits", "userSpaceOnUse").append("path").attr("d", "M 50 0 L 0 0 0 50").attr("fill", "none").attr("stroke", "#e5e7eb").attr("stroke-width", 0.8);
-        svg.append("rect").attr("width", width * 3).attr("height", height * 3).attr("x", -width * 1.5).attr("y", -height * 1.5).attr("fill", "url(#grid)").attr("opacity", 0.6);
+        svg.append("rect").attr("width", viewboxWidth * 3).attr("height", viewboxHeight * 3).attr("x", -viewboxWidth * 1.5).attr("y", -viewboxHeight * 1.5).attr("fill", "url(#grid)").attr("opacity", 0.6); // Use viewbox dimensions for grid size
+
         const g = svg.append("g");
         const colorScale = d3.scaleOrdinal().domain(["Career (You)", "Career (Partner)", "Location & Home", "Financial Goals", "Personal Growth", "Relationship & Family"]).range(["#3b82f6", "#14b8a6", "#22c55e", "#f59e0b", "#a855f7", "#ec4899"]);
         const tooltip = d3.select(".tooltip");
 
-        // --- Force Simulation (Same) ---
+        // --- Force Simulation ---
         const simulation = d3.forceSimulation(data.nodes)
             .force("link", d3.forceLink(data.links).id(d => d.id).distance(d => d.source.group === "root" ? 220 : 160).strength(0.8))
             .force("charge", d3.forceManyBody().strength(d => d.group === "root" ? -3000 : (d.group === "category" ? -1800 : -900)))
-            .force("x", d3.forceX().strength(0.06)).force("y", d3.forceY().strength(0.06))
+            .force("x", d3.forceX().strength(0.06))
+            .force("y", d3.forceY().strength(0.06))
+             // Adjust center force to be based on the potentially smaller graph area
             .force("center", d3.forceCenter(0, 0))
             .force("collide", d3.forceCollide(d => d.group === "root" ? 80 : (d.group === "category" ? 70 : 65)));
 
-        // --- Link Rendering (Same) ---
+        // --- Link Rendering ---
         const linkGroups = g.append("g").attr("class", "links").selectAll("g").data(data.links).enter().append("g");
-        linkGroups.append("linearGradient").attr("id", (d, i) => `link-gradient-${i}`).attr("gradientUnits", "userSpaceOnUse").attr("x1", d => d.source.x || 0).attr("y1", d => d.source.y || 0).attr("x2", d => d.target.x || 0).attr("y2", d => d.target.y || 0)
+        linkGroups.append("linearGradient").attr("id", (d, i) => `link-gradient-${i}`).attr("gradientUnits", "userSpaceOnUse")
             .each(function(d) { const gr = d3.select(this); gr.append("stop").attr("offset", "0%").attr("stop-color", () => d.source.group === "root" ? "#94a3b8" : colorScale(d.source.id)).attr("stop-opacity", 0.7); gr.append("stop").attr("offset", "100%").attr("stop-color", () => d.target.group === "category" ? colorScale(d.target.id) : colorScale(d.target.category)).attr("stop-opacity", 0.7); });
         const link = linkGroups.append("path").attr("class", "link").attr("stroke", (d, i) => `url(#link-gradient-${i})`).attr("stroke-width", 1.8).attr("fill", "none");
 
-        // --- Node Rendering (Same Structure) ---
-        const nodeGroups = g.append("g").attr("class", "node-groups").selectAll("g").data(data.nodes).enter().append("g").attr("class", d => `node-group ${d.group}`); // Added drag later
+        // --- Node Rendering ---
+        const nodeGroups = g.append("g").attr("class", "node-groups").selectAll("g").data(data.nodes).enter().append("g").attr("class", d => `node-group ${d.group}`);
         const defs = svg.append("defs");
         const glowFilter = defs.append("filter").attr("id", "glow").attr("x", "-50%").attr("y", "-50%").attr("width", "200%").attr("height", "200%");
         glowFilter.append("feGaussianBlur").attr("stdDeviation", "2.5").attr("result", "coloredBlur"); const glowMerge = glowFilter.append("feMerge"); glowMerge.append("feMergeNode").attr("in", "coloredBlur"); glowMerge.append("feMergeNode").attr("in", "SourceGraphic");
@@ -257,143 +420,75 @@
 
         // --- Node Labels (Root Label Fixed) ---
         const nodeLabelGroups = nodeGroups.append("g").attr("class", d => `node-label ${d.group}`);
-
-        // Root node label (split into two lines)
-        nodeLabelGroups.filter(".root")
-            .each(function(d) {
-                const el = d3.select(this);
-                const line1 = "Our Future";
-                const line2 = "Together";
-                const fontSize = "14px"; // Slightly reduced font size for two lines
-                const fontWeight = "600";
-
-                 el.append("text")
-                    .text(line1)
-                    .attr("dy", "-0.35em") // Adjust vertical position for first line
-                    .attr("fill", "#1e293b")
-                    .attr("font-size", fontSize)
-                    .attr("text-anchor", "middle")
-                    .attr("font-weight", fontWeight);
-
-                 el.append("text")
-                    .text(line2)
-                    .attr("dy", "0.95em") // Adjust vertical position for second line
-                    .attr("fill", "#1e293b")
-                    .attr("font-size", fontSize)
-                    .attr("text-anchor", "middle")
-                    .attr("font-weight", fontWeight);
-            });
-
-        // Category node labels
+        nodeLabelGroups.filter(".root").each(function(d) { const el = d3.select(this); const l1 = "Our Future", l2 = "Together", fs = "14px", fw = "600"; el.append("text").text(l1).attr("dy", "-0.35em").attr("fill", "#1e293b").attr("font-size", fs).attr("text-anchor", "middle").attr("font-weight", fw); el.append("text").text(l2).attr("dy", "0.95em").attr("fill", "#1e293b").attr("font-size", fs).attr("text-anchor", "middle").attr("font-weight", fw); });
         nodeLabelGroups.filter(".category").each(function(d) { const w = d.id.split(/[\s&]+/); const el = d3.select(this); if (w.length > 1) { const l1 = w[0], l2 = w.slice(1).join(' '); el.append("text").text(l1).attr("dy", "-0.35em").attr("font-size", "12px").attr("text-anchor", "middle").attr("font-weight", "500"); el.append("text").text(l2).attr("dy", "0.95em").attr("font-size", "12px").attr("text-anchor", "middle").attr("font-weight", "500"); } else { el.append("text").text(d.id).attr("font-size", "12px").attr("text-anchor", "middle").attr("dominant-baseline", "middle").attr("font-weight", "500"); } });
-
-        // Decision Node Labels (Multi-line)
         nodeLabelGroups.filter(".decision").each(function(d) { const w = d.id.split(' '); const el = d3.select(this); const maxC = 15; let lines = [], curr = ""; w.forEach(word => { if (curr.length === 0) { curr = word; } else if (curr.length + word.length + 1 <= maxC) { curr += " " + word; } else { lines.push(curr); curr = word; } }); lines.push(curr); const lh = 1.2, sy = -(lines.length - 1) * 0.5 * lh; lines.forEach((line, i) => { el.append("text").text(line).attr("dy", `${sy + i * lh}em`).attr("text-anchor", "middle"); }); });
 
-        // --- Simulation Tick (Same) ---
+        // --- Simulation Tick ---
         simulation.on("tick", () => {
             link.attr("d", d => { if (d.source.x === undefined || d.target.x === undefined) { return null; } const dx = d.target.x - d.source.x, dy = d.target.y - d.source.y; const dr = Math.sqrt(dx * dx + dy * dy) * 1.8; return `M${d.source.x},${d.source.y}A${dr},${dr} 0 0,1 ${d.target.x},${d.target.y}`; });
-            d3.selectAll(".links linearGradient").attr("x1", d => d.source.x).attr("y1", d => d.source.y).attr("x2", d => d.target.x).attr("y2", d => d.target.y);
+            // Update gradient endpoints based on simulation
+             d3.selectAll(".links linearGradient")
+                .attr("x1", d => d.source.x).attr("y1", d => d.source.y)
+                .attr("x2", d => d.target.x).attr("y2", d => d.target.y);
             nodeGroups.attr("transform", d => `translate(${d.x || 0}, ${d.y || 0})`);
         });
 
-        // --- Interaction Functions (Drag is same) ---
+        // --- Interaction Functions ---
          function dragstarted(event, d) { if (!event.active) simulation.alphaTarget(0.3).restart(); d.fx = event.x; d.fy = event.y; d3.select(this).raise(); }
          function dragged(event, d) { d.fx = event.x; d.fy = event.y; }
          function dragended(event, d) { if (!event.active) simulation.alphaTarget(0); }
 
-        // --- Hover Effects (NO Transitions on opacity/stroke, NO scaling) ---
+        // --- Hover Effects (NO Transitions, NO scaling) ---
         nodeGroups.on("mouseover", function(event, d) {
             const thisNodeGroup = d3.select(this);
-
-            const relatedLinks = data.links.filter(link => {
-                 const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
-                 const targetId = typeof link.target === 'object' ? link.target.id : link.target;
-                 return sourceId === d.id || targetId === d.id;
-             });
-            const relatedNodeIds = new Set();
-            relatedLinks.forEach(link => {
-                const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
-                const targetId = typeof link.target === 'object' ? link.target.id : link.target;
-                relatedNodeIds.add(sourceId);
-                relatedNodeIds.add(targetId);
-            });
-            relatedNodeIds.add(d.id);
-
-            // Apply styles INSTANTLY (no transition)
-             g.selectAll(".link")
-                .style("stroke-opacity", link => relatedLinks.includes(link) ? 0.9 : 0.05)
-                .style("stroke-width", link => relatedLinks.includes(link) ? 3 : 1);
-
-             g.selectAll(".node-group")
-                .style("opacity", node => relatedNodeIds.has(node.id) ? 1 : 0.1);
-
-            // Show tooltip (same logic)
-            let tooltipContent = ''; let nodeColor = '#64748b';
-            if (d.group === "category") { tooltipContent = `<h3>${d.id}</h3><p>Area of focus. Click to highlight.</p>`; nodeColor = colorScale(d.id); }
-            else if (d.group === "decision") { tooltipContent = `<h3>${d.id}</h3><p><strong>Category:</strong> ${d.category}</p><p><strong>Details:</strong> ${d.details || 'Discuss details...'}</p>`; nodeColor = colorScale(d.category); }
-            else if (d.group === "root") { tooltipContent = `<h3>${d.id}</h3><p>Central hub for our joint planning.</p>`; }
-            if (tooltipContent) { tooltip.style("opacity", 1).html(tooltipContent).style("left", (event.pageX + 15) + "px").style("top", (event.pageY - 28) + "px").style("border", `1px solid ${nodeColor}`).select("h3").style("color", nodeColor); }
+            const relatedLinks = data.links.filter(link => { const sId = typeof link.source === 'object' ? link.source.id : link.source; const tId = typeof link.target === 'object' ? link.target.id : link.target; return sId === d.id || tId === d.id; });
+            const relatedNodeIds = new Set(); relatedLinks.forEach(link => { const sId = typeof link.source === 'object' ? link.source.id : link.source; const tId = typeof link.target === 'object' ? link.target.id : link.target; relatedNodeIds.add(sId); relatedNodeIds.add(tId); }); relatedNodeIds.add(d.id);
+            // Apply styles INSTANTLY
+             g.selectAll(".link").style("stroke-opacity", link => relatedLinks.includes(link) ? 0.9 : 0.05).style("stroke-width", link => relatedLinks.includes(link) ? 3 : 1);
+             g.selectAll(".node-group").style("opacity", node => relatedNodeIds.has(node.id) ? 1 : 0.1);
+            // Show tooltip
+            let ttC = ''; let nC = '#64748b'; if (d.group === "category") { ttC = `<h3>${d.id}</h3><p>Area of focus. Click to highlight.</p>`; nC = colorScale(d.id); } else if (d.group === "decision") { ttC = `<h3>${d.id}</h3><p><strong>Category:</strong> ${d.category}</p><p><strong>Details:</strong> ${d.details || 'Discuss details...'}</p>`; nC = colorScale(d.category); } else if (d.group === "root") { ttC = `<h3>${d.id}</h3><p>Central hub.</p>`; } if (ttC) { tooltip.style("opacity", 1).html(ttC).style("left", (event.pageX + 15) + "px").style("top", (event.pageY - 28) + "px").style("border", `1px solid ${nC}`).select("h3").style("color", nC); }
         })
         .on("mouseout", function() {
-            // Restore styles INSTANTLY (no transition)
-            g.selectAll(".link")
-                .style("stroke-opacity", 0.6)
-                .style("stroke-width", 1.8);
-
-            g.selectAll(".node-group")
-                .style("opacity", 1);
-
+            // Restore styles INSTANTLY
+            g.selectAll(".link").style("stroke-opacity", 0.6).style("stroke-width", 1.8);
+            g.selectAll(".node-group").style("opacity", 1);
             tooltip.style("opacity", 0);
         });
 
-        // Add drag behavior AFTER setting up hover/mouseout listeners
-        nodeGroups.call(d3.drag()
-                .on("start", dragstarted)
-                .on("drag", dragged)
-                .on("end", dragended));
+        // Add drag behavior AFTER hover/mouseout
+        nodeGroups.call(d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended));
 
-
-        // --- Click Handler (Remains same) ---
-        nodeGroups.on("click", function(event, d) { // Added back click listener separately
-            if (d.group === "category") {
-                highlightCategory(d.id);
-                 event.stopPropagation(); // Prevent drag start on click
-            } else if (d.group === 'root') {
-                 resetHighlightsAndZoom();
-                 event.stopPropagation();
-            }
+        // Click Handler
+        nodeGroups.on("click", function(event, d) {
+            if (d.group === "category") { highlightCategory(d.id); event.stopPropagation(); }
+            else if (d.group === 'root') { resetHighlightsAndZoom(); event.stopPropagation(); }
         });
 
-
-        // --- Button Interactions (Same) ---
+        // --- Button Interactions ---
         const zoom = d3.zoom().scaleExtent([0.3, 3]).on("zoom", (event) => { g.attr("transform", event.transform); });
         svg.call(zoom);
         function resetHighlightsAndZoom() {
              svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity);
+             // Add transitions back for reset button smoothness
              g.selectAll(".node-group").transition().duration(300).style("opacity", 1);
              g.selectAll(".link").transition().duration(300).style("stroke-opacity", 0.6).style("stroke-width", 1.8);
              data.nodes.forEach(n => { n.fx = null; n.fy = null; });
-             simulation.alphaTarget(0.1).restart(); // Give a slight nudge after reset
+             simulation.alphaTarget(0.1).restart();
          }
         d3.select("#resetZoom").on("click", resetHighlightsAndZoom);
 
-        // Highlight Category (NO Transitions for opacity/stroke, NO scaling)
+        // Highlight Category (NO Transitions, NO scaling)
         function highlightCategory(category) {
             const categoryColor = colorScale(category);
-            const relatedNodeIds = new Set([ "Our Future Together", category ]);
-            data.nodes.filter(n => n.category === category).forEach(n => relatedNodeIds.add(n.id));
-
+            const relatedNodeIds = new Set([ "Our Future Together", category ]); data.nodes.filter(n => n.category === category).forEach(n => relatedNodeIds.add(n.id));
              // Apply styles instantly
-             g.selectAll(".node-group")
-                 .style("opacity", node => relatedNodeIds.has(node.id) ? 1 : 0.1);
-
-             g.selectAll(".link")
-                 .style("stroke-opacity", link => { const sId = typeof link.source === 'object' ? link.source.id : link.source; const tId = typeof link.target === 'object' ? link.target.id : link.target; return (sId === "Our Future Together" && tId === category) || (sId === category) ? 0.9 : 0.05; })
-                 .style("stroke-width", link => { const sId = typeof link.source === 'object' ? link.source.id : link.source; const tId = typeof link.target === 'object' ? link.target.id : link.target; return (sId === "Our Future Together" && tId === category) || (sId === category) ? 3 : 1; });
+             g.selectAll(".node-group").style("opacity", node => relatedNodeIds.has(node.id) ? 1 : 0.1);
+             g.selectAll(".link").style("stroke-opacity", link => { const sId=typeof link.source==='object'?link.source.id:link.source; const tId=typeof link.target==='object'?link.target.id:link.target; return (sId==="Our Future Together"&&tId===category)||(sId===category)?0.9:0.05; }).style("stroke-width", link => { const sId=typeof link.source==='object'?link.source.id:link.source; const tId=typeof link.target==='object'?link.target.id:link.target; return (sId==="Our Future Together"&&tId===category)||(sId===category)?3:1; });
          }
 
-        // Connect buttons (Same)
+        // Connect buttons
         d3.select("#showCareerYou").on("click", () => highlightCategory("Career (You)"));
         d3.select("#showCareerPartner").on("click", () => highlightCategory("Career (Partner)"));
         d3.select("#showLocation").on("click", () => highlightCategory("Location & Home"));
@@ -401,7 +496,7 @@
         d3.select("#showPersonal").on("click", () => highlightCategory("Personal Growth"));
         d3.select("#showRelationship").on("click", () => highlightCategory("Relationship & Family"));
 
-        // Initial simulation start (Same)
+        // Initial simulation start
         simulation.alpha(1.2).restart();
 
     </script>
