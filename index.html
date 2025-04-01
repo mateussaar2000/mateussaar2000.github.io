@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Website - Home</title>
+    <title>My GitHub Pages Website</title>
+    <!-- Global Stylesheets (Load Here) -->
     <link
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
         rel="stylesheet"
     />
     <style>
-        /* --- Base, Layout, Sidebar, Main Content, Mobile Styles --- */
-        /* --- (Keep ALL styles from the previous MPA version of index.html) --- */
-         :root { /* Ensure all needed vars are here */
+        /* Base layout styles from index (1).html */
+        :root {
             --bg-primary: #f8fafc;
             --bg-secondary: #ffffff;
             --text-primary: #0f172a;
@@ -23,6 +23,7 @@
             --header-height: 60px;
             --transition-speed: 0.3s;
             --font-primary: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            /* Add dashboard vars here IF they should be global, otherwise keep them page-specific */
             --bg-tertiary: #f1f5f9;
             --text-tertiary: #64748b;
             --accent-tertiary: #38bdf8;
@@ -32,99 +33,453 @@
             --border-radius: 12px;
             --card-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-primary); }
-        body { background-color: var(--bg-primary); color: var(--text-primary); font-size: 16px; line-height: 1.5; }
-        .layout { display: flex; min-height: 100vh; }
-        .sidebar { width: var(--sidebar-width); background-color: var(--bg-secondary); border-right: 1px solid var(--border-color); height: 100vh; position: fixed; top: 0; left: 0; overflow-y: auto; z-index: 10; transition: transform var(--transition-speed); }
-        .sidebar-header { padding: 1.5rem; display: flex; align-items: center; border-bottom: 1px solid var(--border-color); height: var(--header-height); }
-        .sidebar-logo { font-size: 1.25rem; font-weight: 700; color: var(--accent-primary); text-decoration: none; }
-        .sidebar-nav { padding: 1rem 0; }
-        .nav-section { margin-bottom: 1rem; }
-        .nav-section-title { padding: 0.5rem 1.5rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); font-weight: 600; }
-        .nav-items { list-style: none; }
-        .nav-item { margin: 0.25rem 0; }
-        .nav-link { display: flex; align-items: center; padding: 0.75rem 1.5rem; color: var(--text-secondary); text-decoration: none; transition: background-color var(--transition-speed), color var(--transition-speed); border-left: 3px solid transparent; }
-        .nav-link:hover { background-color: rgba(0, 0, 0, 0.05); color: var(--accent-primary); }
-        .nav-link.active { color: var(--accent-primary); border-left-color: var(--accent-primary); background-color: rgba(2, 132, 199, 0.1); font-weight: 500; }
-        .nav-icon { margin-right: 0.75rem; width: 20px; text-align: center; }
-        .main-content { flex: 1; margin-left: var(--sidebar-width); padding: 2rem; min-height: 100vh; }
-        .page-header { height: var(--header-height); background-color: var(--bg-secondary); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; padding: 0 2rem; margin: -2rem -2rem 2rem -2rem; }
-        .page-header-title { font-size: 1.25rem; font-weight: 600; }
-        .sidebar-toggle { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0.5rem; color: var(--text-secondary); position: fixed; top: 10px; left: 10px; z-index: 20; }
-        @media (max-width: 768px) {
-            .sidebar { transform: translateX(-100%); }
-            .sidebar.active { transform: translateX(0); }
-            .main-content { margin-left: 0; padding: 1rem; margin-top: 50px; }
-            .page-header { margin: -1rem -1rem 1rem -1rem; padding: 0 1rem; }
-            .sidebar-toggle { display: block; }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-primary);
         }
-        .welcome-section { background-color: var(--bg-secondary); padding: 2rem; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0, 0.05); }
-        .welcome-section h1 { color: var(--accent-primary); margin-bottom: 1rem; }
-        /* Add specific scrollbar styles if needed */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg-tertiary); }
-        ::-webkit-scrollbar-thumb { background: var(--accent-tertiary); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--accent-primary); }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 16px;
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            overflow-y: auto;
+            transition: transform var(--transition-speed);
+            z-index: 10;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar-logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+
+        .sidebar-nav {
+            padding: 1rem 0;
+        }
+
+        .nav-section {
+            margin-bottom: 1rem;
+        }
+
+        .nav-section-title {
+            padding: 0.5rem 1.5rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .nav-items {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin: 0.25rem 0;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: background-color var(--transition-speed),
+                color var(--transition-speed);
+            border-left: 3px solid transparent;
+            cursor: pointer; /* Ensure pointer cursor */
+        }
+
+        .nav-link:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+            color: var(--accent-primary);
+        }
+
+        .nav-link.active {
+            color: var(--accent-primary);
+            border-left-color: var(--accent-primary);
+            background-color: rgba(2, 132, 199, 0.1);
+        }
+
+        .nav-icon {
+            margin-right: 0.75rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            position: relative;
+        }
+
+        .header {
+            height: var(--header-height);
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 5;
+        }
+
+        .header-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .content-container {
+            padding: 2rem;
+            /* Let content determine height; remove fixed height calculation */
+            overflow-y: auto; /* Allows scrolling if content exceeds viewport */
+            min-height: calc(100vh - var(--header-height)); /* Ensure it takes at least remaining height */
+        }
+
+        /* Page-specific styles will be injected dynamically below */
+
+        /* Mobile Sidebar Toggle */
+        .sidebar-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+            cursor: pointer;
+        }
+
+        /* Responsive Layout */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .sidebar-toggle {
+                display: block;
+                margin-right: 1rem; /* Add some spacing */
+            }
+
+            .content-container {
+                padding: 1rem;
+            }
+             .header {
+                padding: 0 1rem;
+             }
+        }
     </style>
+    <!-- Placeholder for dynamically injected page styles -->
+    <style id="page-specific-styles"></style>
 </head>
 <body>
-    <button class="sidebar-toggle" id="sidebar-toggle">
-        <i class="fas fa-bars"></i>
-    </button>
-
     <div class="layout">
-        <!-- Full Sidebar for Homepage -->
+        <!-- Sidebar Navigation -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <a href="index.html" class="sidebar-logo" title="Go to Homepage">My Website</a>
+                <div class="sidebar-logo">My Website</div>
             </div>
             <nav class="sidebar-nav">
                 <div class="nav-section">
                     <div class="nav-section-title">Pages</div>
                     <ul class="nav-items" id="page-nav">
                         <li class="nav-item">
-                            <a href="index.html" class="nav-link active"> <span class="nav-icon"><i class="fas fa-home"></i></span> <span>Home</span> </a>
+                            <a class="nav-link active" data-page="home">
+                                <span class="nav-icon"><i class="fas fa-home"></i></span>
+                                <span>Home</span>
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a href="financial-dashboard.html" class="nav-link"> <span class="nav-icon"><i class="fas fa-chart-line"></i></span> <span>Financial Dashboard</span> </a>
+                            <a class="nav-link" data-page="financial-dashboard">
+                                <span class="nav-icon"><i class="fas fa-chart-line"></i></span>
+                                <span>Financial Dashboard</span>
+                            </a>
+                        </li>
+                        <!-- Hard-coded static pages -->
+                        <li class="nav-item">
+                            <a class="nav-link" data-page="ontario_vs_calgary">
+                                <span class="nav-icon"><i class="fas fa-map-marked-alt"></i></span>
+                                <span>Ontario vs Calgary</span>
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a href="ontario_vs_calgary.html" class="nav-link"> <span class="nav-icon"><i class="fas fa-map-marked-alt"></i></span> <span>Ontario vs Calgary</span> </a>
+                            <a class="nav-link" data-page="Ship_Technical_Data_Network_Light">
+                                <span class="nav-icon"><i class="fas fa-ship"></i></span>
+                                <span>Ship Network Light</span>
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a href="Ship_Technical_Data_Network_Light.html" class="nav-link"> <span class="nav-icon"><i class="fas fa-ship"></i></span> <span>Ship Network Light</span> </a>
+                            <a class="nav-link" data-page="Ship_Technical_Data_Network_Dark">
+                                <span class="nav-icon"><i class="fas fa-moon"></i></span>
+                                <span>Ship Network Dark</span>
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a href="Ship_Technical_Data_Network_Dark.html" class="nav-link"> <span class="nav-icon"><i class="fas fa-moon"></i></span> <span>Ship Network Dark</span> </a>
+                            <a class="nav-link" data-page="newfoundland_realestate">
+                                <span class="nav-icon"><i class="fas fa-building"></i></span>
+                                <span>Newfoundland Real Estate</span>
+                            </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="newfoundland_realestate.html" class="nav-link"> <span class="nav-icon"><i class="fas fa-building"></i></span> <span>Newfoundland Real Estate</span> </a>
-                        </li>
+                        <!-- Additional pages will be appended below if not already present -->
                     </ul>
                 </div>
             </nav>
         </aside>
 
-        <!-- Main Content Area for Homepage -->
+        <!-- Main Content Area -->
         <main class="main-content">
-             <header class="page-header">
-                <h1 class="page-header-title">Home</h1>
+            <header class="header">
+                <button class="sidebar-toggle" id="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="header-title" id="page-title">Home</h1>
+                <div></div> <!-- Spacer -->
             </header>
-            <div class="welcome-section">
-                <h1>Welcome to My Website!</h1>
-                <p>Use the navigation on the left to explore other pages.</p>
+
+            <div class="content-container" id="content">
+                <!-- Content will be loaded here -->
             </div>
+
+            <!-- Template for home content -->
+            <template id="home-template">
+                <div>
+                    <h2>Welcome to My GitHub Pages Website</h2>
+                    <p>Select a page from the sidebar to view its content.</p>
+                </div>
+            </template>
         </main>
     </div>
 
-    <!-- Sidebar Toggle JS for Homepage -->
+    <!-- Load Chart.js Library HERE, once for all pages -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+
+    <!-- Main Application Script -->
     <script>
-        const sidebar = document.getElementById('sidebar');
-        const toggleButton = document.getElementById('sidebar-toggle');
-        if (toggleButton && sidebar) {
-            toggleButton.addEventListener('click', () => { sidebar.classList.toggle('active'); });
-            document.addEventListener('click', function(event) { /* ... (rest of toggle JS) ... */ const isClickInsideSidebar=sidebar.contains(event.target); const isClickOnToggle=toggleButton.contains(event.target); if(window.innerWidth<=768&&!isClickInsideSidebar&&!isClickOnToggle&&sidebar.classList.contains('active')){ sidebar.classList.remove('active'); } });
-        }
+        document.addEventListener("DOMContentLoaded", function () {
+            // DOM Elements
+            const sidebar = document.getElementById("sidebar");
+            const sidebarToggle = document.getElementById("sidebar-toggle");
+            const pageTitle = document.getElementById("page-title");
+            const contentContainer = document.getElementById("content");
+            const pageNav = document.getElementById("page-nav");
+            const pageSpecificStyles = document.getElementById("page-specific-styles");
+            const homeTemplate = document.getElementById("home-template");
+
+            // Toggle sidebar on mobile
+            sidebarToggle.addEventListener("click", function () {
+                sidebar.classList.toggle("active");
+            });
+
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener("click", function (event) {
+                const isClickInsideSidebar = sidebar.contains(event.target);
+                const isClickOnToggle = sidebarToggle.contains(event.target); // Check if click is on toggle or its children (like the icon)
+
+                if (
+                    window.innerWidth <= 768 &&
+                    !isClickInsideSidebar &&
+                    !isClickOnToggle && // Don't close if clicking the toggle itself
+                    sidebar.classList.contains("active")
+                ) {
+                    sidebar.classList.remove("active");
+                }
+            });
+
+            // Function to load page content
+            async function loadPageContent(pageName) {
+                // Clear previous page-specific styles and content
+                pageSpecificStyles.textContent = '';
+                contentContainer.innerHTML = ''; // Clear previous content immediately
+
+                // Reset page title (useful if loading fails)
+                pageTitle.textContent = pageName.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+
+                 // Clean up any previous page's initialization function if needed
+                if (window.currentPageCleanup) {
+                    window.currentPageCleanup();
+                    window.currentPageCleanup = null; // Remove reference
+                }
+
+                if (!pageName || pageName === "home") {
+                    contentContainer.innerHTML = homeTemplate.innerHTML;
+                    pageTitle.textContent = "Home";
+                    updateActiveNavLink("home");
+                    return; // Exit early for home page
+                }
+
+                try {
+                    const response = await fetch(`${pageName}.html`);
+                    if (!response.ok) {
+                         throw new Error(`Page not found (${response.status})`);
+                    }
+                    const html = await response.text();
+
+                    // Use DOMParser to safely parse the fetched HTML
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+
+                    // Extract Title (optional, can use data-page name)
+                    const titleElement = doc.querySelector('title');
+                    if (titleElement && titleElement.textContent) {
+                         pageTitle.textContent = titleElement.textContent;
+                    } else {
+                         // Fallback title generation
+                         pageTitle.textContent = pageName.split(/[_\-]/) // Split by underscore or dash
+                                                        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                                                        .join(' ');
+                    }
+
+
+                    // Extract Styles
+                    const styleElement = doc.querySelector('style');
+                    if (styleElement) {
+                        pageSpecificStyles.textContent = styleElement.textContent;
+                    }
+
+                    // Extract Content (assuming content is wrapped in a single top-level div)
+                    // Find the first direct child div of body, or body itself if no div
+                    const bodyContent = doc.body.firstElementChild?.tagName === 'DIV'
+                                        ? doc.body.firstElementChild
+                                        : doc.body; // Adjust if your content isn't wrapped in a div
+
+                    if (bodyContent) {
+                        contentContainer.innerHTML = bodyContent.innerHTML;
+                    } else {
+                        throw new Error("Could not find main content in fetched page.");
+                    }
+
+                    // Find and Execute Initialization Script
+                    // Look for a script with a specific ID or a naming convention
+                    const initScriptElement = doc.querySelector('script#page-init-script'); // Recommend adding id="page-init-script" to your page scripts
+
+                    if (initScriptElement && initScriptElement.textContent) {
+                       try {
+                           // IMPORTANT: Evaluate script in a way that allows it to define functions globally
+                           // or attach them to window. We'll execute it directly here.
+                           // A function constructor is safer than eval
+                           const initFn = new Function(initScriptElement.textContent + "\n return typeof initializePage === 'function' ? initializePage : null;");
+                           const initializePage = initFn();
+
+                           if (initializePage) {
+                               initializePage(); // Call the initialization function
+
+                               // Optional: Store a cleanup function if the page script defines one
+                               if (typeof cleanupPage === 'function') {
+                                  window.currentPageCleanup = cleanupPage;
+                               }
+                           } else {
+                               console.warn(`No initializePage function found or returned from script in ${pageName}.html`);
+                           }
+                       } catch (scriptError) {
+                           console.error(`Error executing initialization script for ${pageName}:`, scriptError);
+                           contentContainer.innerHTML = `<p>Error initializing page content.</p><pre>${scriptError}</pre>`;
+                       }
+                    } else {
+                         console.log(`No initialization script found (script#page-init-script) for ${pageName}.`);
+                    }
+
+                } catch (error) {
+                    console.error(`Error loading page ${pageName}:`, error);
+                    contentContainer.innerHTML = `
+                        <div style="text-align: center; padding: 2rem; color: var(--danger);">
+                            <h2>Error Loading Page</h2>
+                            <p>Sorry, the page '${pageName}.html' could not be loaded.</p>
+                            <p><small>${error.message}</small></p>
+                        </div>`;
+                    pageTitle.textContent = "Error";
+                } finally {
+                   updateActiveNavLink(pageName); // Ensure nav link is updated even if loading fails
+                }
+            }
+
+            // Update the active navigation link
+            function updateActiveNavLink(pageName) {
+                const links = pageNav.querySelectorAll(".nav-link");
+                links.forEach(link => {
+                    if (link.getAttribute("data-page") === pageName) {
+                        link.classList.add("active");
+                    } else {
+                        link.classList.remove("active");
+                    }
+                });
+            }
+
+            // Handle navigation clicks (using event delegation)
+            pageNav.addEventListener("click", function (event) {
+                const link = event.target.closest(".nav-link");
+                if (link && link.dataset.page) { // Check if it's a nav link with a data-page attribute
+                    event.preventDefault();
+                    const pageName = link.dataset.page;
+                    // Update hash only if it's different to avoid redundant loads/history entries
+                    if (window.location.hash !== `#${pageName}`) {
+                       window.location.hash = pageName;
+                    } else {
+                       // If hash is the same, maybe force reload content? Or do nothing.
+                       // For simplicity, we'll reload if clicked again on the same link
+                       loadPageContent(pageName);
+                    }
+                    if (window.innerWidth <= 768) sidebar.classList.remove("active");
+                }
+            });
+
+            // Handle URL hash changes (for back/forward buttons and direct links)
+            window.addEventListener("hashchange", function () {
+                const pageName = window.location.hash.substring(1) || "home";
+                loadPageContent(pageName);
+                // No need to call updateActiveNavLink here, loadPageContent does it
+            });
+
+            // --- No need for pages.json fetching in this simplified version ---
+            // async function fetchAvailablePages() { ... }
+            // function updateNavigation(pages = []) { ... }
+
+
+            // Initialize the site
+            function initSite() {
+                const pageName = window.location.hash.substring(1) || "home";
+                loadPageContent(pageName);
+                 // fetchAvailablePages(); // Only if using pages.json
+            }
+
+            initSite();
+        });
     </script>
 </body>
 </html>
