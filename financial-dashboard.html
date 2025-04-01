@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Financial Dashboard</title> <!-- Specific Title -->
+    <title>Financial Dashboard - All Transactions</title> <!-- Updated Title -->
 
-    <!-- CSS Dependencies: Font Awesome (for icons) -->
+    <!-- CSS Dependencies: Font Awesome -->
     <link
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
         rel="stylesheet"
@@ -37,12 +37,12 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-primary); }
         body { background-color: var(--bg-primary); color: var(--text-primary); font-size: 16px; line-height: 1.5; }
 
-        /* --- Main Content Area Styling (Adapted for Standalone) --- */
+        /* --- Main Content Area Styling --- */
          .main-content {
              padding: 2rem;
              min-height: 100vh;
-             max-width: 1600px; /* Optional: Max width */
-             margin: 0 auto; /* Center content */
+             max-width: 1600px;
+             margin: 0 auto;
          }
          .page-header {
              height: var(--header-height);
@@ -51,30 +51,19 @@
              display: flex;
              align-items: center;
              padding: 0 2rem;
-             margin: -2rem -2rem 2rem -2rem; /* Align with main content padding */
+             margin: -2rem -2rem 2rem -2rem;
          }
          .page-header-title { font-size: 1.25rem; font-weight: 600; }
 
-        /* --- Mobile Responsiveness (Simplified) --- */
+        /* --- Mobile Responsiveness --- */
         @media (max-width: 768px) {
-            .main-content {
-                padding: 1rem;
-            }
-            .page-header {
-                margin: -1rem -1rem 1rem -1rem;
-                padding: 0 1rem;
-            }
-            .card-grid {
-                 grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                 gap: 1rem;
-            }
-             .chart-row {
-                 grid-template-columns: 1fr; /* Stack charts */
-                 gap: 1rem;
-            }
+            .main-content { padding: 1rem; }
+            .page-header { margin: -1rem -1rem 1rem -1rem; padding: 0 1rem; }
+            .card-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+             .chart-row { grid-template-columns: 1fr; gap: 1rem; }
             .card-value { font-size: 1.5rem; }
             .chart-title { font-size: 1.1rem; }
-            .dashboard-header { flex-direction: column; align-items: flex-start;} /* Stack header items */
+            .dashboard-header { flex-direction: column; align-items: flex-start;}
         }
 
         /* --- Styles SPECIFIC to Financial Dashboard --- */
@@ -170,7 +159,8 @@
             <div class="dashboard-header">
                 <div class="dashboard-title">
                     <h1>Financial Analysis</h1>
-                    <p id="dashboard-month-year">Loading...</p>
+                    <!-- Updated subtitle -->
+                    <p id="dashboard-summary">Loading transaction summary...</p>
                 </div>
                 <div class="dashboard-meta">
                      <div class="dashboard-meta-item">
@@ -178,17 +168,18 @@
                         <div class="dashboard-meta-label">Transactions</div>
                     </div>
                     <div class="dashboard-meta-item">
-                        <div class="dashboard-meta-value" id="account-count">5</div>
+                        <div class="dashboard-meta-value" id="account-count">5</div> <!-- Keep static or derive -->
                         <div class="dashboard-meta-label">Accounts</div>
                     </div>
                 </div>
             </div>
 
             <div class="card-grid">
-                 <div class="card card-income"> <div class="card-header"> <div> <div class="card-title">TOTAL INCOME</div> </div> <div class="card-icon"> <i class="fas fa-arrow-down"></i> </div> </div> <div class="card-value positive" id="total-income">$0.00</div> <div class="card-subtitle" id="income-subtitle">Loading...</div> </div>
-                 <div class="card card-expense"> <div class="card-header"> <div> <div class="card-title">TOTAL EXPENSES</div> </div> <div class="card-icon"> <i class="fas fa-arrow-up"></i> </div> </div> <div class="card-value negative" id="total-expenses">$0.00</div> <div class="card-subtitle" id="expense-subtitle">Loading...</div> </div>
-                 <div class="card card-transfer"> <div class="card-header"> <div> <div class="card-title">NET TRANSFERS</div> </div> <div class="card-icon"> <i class="fas fa-exchange-alt"></i> </div> </div> <div class="card-value neutral" id="total-transfers">$0.00</div> <div class="card-subtitle" id="transfer-subtitle">Loading...</div> </div>
-                 <div class="card card-net"> <div class="card-header"> <div> <div class="card-title">NET CASH FLOW</div> </div> <div class="card-icon"> <i class="fas fa-chart-line"></i> </div> </div> <div class="card-value" id="net-cash-flow">$0.00</div> <div class="card-subtitle" id="net-subtitle">Loading...</div> </div>
+                 <!-- Updated card subtitles -->
+                 <div class="card card-income"> <div class="card-header"> <div> <div class="card-title">TOTAL INCOME</div> </div> <div class="card-icon"> <i class="fas fa-arrow-down"></i> </div> </div> <div class="card-value positive" id="total-income">$0.00</div> <div class="card-subtitle" id="income-subtitle">Total deposits</div> </div>
+                 <div class="card card-expense"> <div class="card-header"> <div> <div class="card-title">TOTAL EXPENSES</div> </div> <div class="card-icon"> <i class="fas fa-arrow-up"></i> </div> </div> <div class="card-value negative" id="total-expenses">$0.00</div> <div class="card-subtitle" id="expense-subtitle">Total withdrawals & fees</div> </div>
+                 <div class="card card-transfer"> <div class="card-header"> <div> <div class="card-title">NET TRANSFERS</div> </div> <div class="card-icon"> <i class="fas fa-exchange-alt"></i> </div> </div> <div class="card-value neutral" id="total-transfers">$0.00</div> <div class="card-subtitle" id="transfer-subtitle">Total net transfers</div> </div>
+                 <div class="card card-net"> <div class="card-header"> <div> <div class="card-title">NET CASH FLOW</div> </div> <div class="card-icon"> <i class="fas fa-chart-line"></i> </div> </div> <div class="card-value" id="net-cash-flow">$0.00</div> <div class="card-subtitle" id="net-subtitle">Overall net flow</div> </div>
             </div>
 
             <div class="chart-row">
@@ -203,7 +194,7 @@
             </div>
 
              <div class="transactions-card">
-                <div class="transactions-header"> <div class="transactions-title" id="transactions-table-title">Recent Transactions</div> </div>
+                <div class="transactions-header"> <div class="transactions-title" id="transactions-table-title">All Transactions</div> </div>
                 <div class="table-container"> <table class="transactions-table" id="transactions-table"> <thead> <tr> <th>Date</th> <th>Account</th> <th>Description</th> <th>Category</th> <th>Type</th> <th>Amount</th> </tr> </thead> <tbody> <!-- Populated by JS --> </tbody> </table> </div>
              </div>
 
@@ -218,14 +209,11 @@
 
     <!-- Dashboard Specific JavaScript -->
     <script>
-        // Config
-        const TARGET_MONTH = 11; // November
-        const TARGET_YEAR = 2024;
-        const TARGET_YEAR_SHORT = '24';
+        // Config - Removed Target Month/Year
         const CSV_FILE_PATH = 'wealthica-transactions-2024-11-19.csv';
 
         // Global state variables
-        let allNovemberTransactions = [];
+        let allTransactionsData = []; // Holds ALL parsed transactions
         let cashFlowChartInstance = null;
         let accountsChartInstance = null;
         let visibleChartCategories = new Set(['Income', 'Expenses', 'Net Transfers', 'Fees']);
@@ -264,7 +252,7 @@
             if (messageArea) messageArea.innerHTML = '';
         }
 
-        // --- CSV Parsing Function ---
+        // --- CSV Parsing Function (Using simpler split) ---
         function parseCSV(csvText) {
             const lines = csvText.trim().split('\n');
             if (lines.length < 2) throw new Error("CSV file is empty or has no data rows.");
@@ -283,20 +271,13 @@
                  throw new Error("CSV file is missing required columns (Date, Account, Description, Type, Amount).");
             }
             for (let i = 1; i < lines.length; i++) {
-                 // *** Use simpler split(',') for this specific CSV structure ***
-                 const values = lines[i].split(',');
-
-                 // Check if the row has enough columns (basic validation)
+                 const values = lines[i].split(','); // Simpler split
                  if (values.length >= headers.length) {
                     const amountCAD = parseFloat(values[idx.amount]?.trim());
-                    if (isNaN(amountCAD)) {
-                        // console.warn(`Skipping row ${i + 1} due to invalid amount:`, lines[i]);
-                        continue; // Skip rows with invalid amount
-                    }
+                    if (isNaN(amountCAD)) continue;
                     let transactionType = values[idx.type]?.trim().toLowerCase() || '';
                     if (transactionType === 'interest') transactionType = 'deposit';
                     else if (!['withdrawal', 'deposit', 'transfer', 'fee'].includes(transactionType)) transactionType = amountCAD >= 0 ? 'deposit' : 'withdrawal';
-
                     data.push({
                         date: values[idx.date]?.trim() || '',
                         account: values[idx.account]?.trim() || 'Unknown Account',
@@ -312,25 +293,37 @@
             return data;
         }
 
-
-        // --- Filtering Function ---
-        function filterTransactionsByMonth(transactions, month, yearShort) {
-            return transactions.filter(t => {
-                if (!t.date) return false;
-                const parts = t.date.split('/');
-                if (parts.length === 3) {
-                    const m = parseInt(parts[0], 10);
-                    const y = parts[2]; // YY format
-                    return m === month && y === yearShort;
-                }
-                // console.warn("Invalid date format found:", t.date); // Optional logging
-                return false;
-            });
-        }
+        // --- Filtering Function (REMOVED) ---
+        // function filterTransactionsByMonth(transactions, month, yearShort) { ... }
 
         // --- Update UI Elements ---
         function updateDashboardHeader(transactions) {
-            document.getElementById('dashboard-month-year').textContent = `${monthNames[TARGET_MONTH - 1]} ${TARGET_YEAR} Transactions`;
+            // Determine date range
+            let minDate = new Date(8640000000000000); // Max possible date
+            let maxDate = new Date(-8640000000000000); // Min possible date
+            let hasValidDates = false;
+
+            transactions.forEach(t => {
+                const parts = t.date.split('/');
+                if (parts.length === 3) {
+                     try {
+                        const currentDate = new Date(parseInt(`20${parts[2]}`, 10), parseInt(parts[0], 10) - 1, parseInt(parts[1], 10));
+                        if (!isNaN(currentDate)) { // Check if date is valid
+                             if (currentDate < minDate) minDate = currentDate;
+                             if (currentDate > maxDate) maxDate = currentDate;
+                             hasValidDates = true;
+                        }
+                     } catch(e) { console.warn("Could not parse date:", t.date); }
+                }
+            });
+
+            let summaryText = "All Loaded Transactions";
+            if (hasValidDates) {
+                const options = { year: 'numeric', month: 'short', day: 'numeric' };
+                summaryText = `Transactions from ${minDate.toLocaleDateString('en-US', options)} to ${maxDate.toLocaleDateString('en-US', options)}`;
+            }
+
+            document.getElementById('dashboard-summary').textContent = summaryText;
             document.getElementById('transaction-count').textContent = transactions.length;
         }
 
@@ -342,18 +335,18 @@
                  else if (t.type === 'transfer') netTransfers += t.amount;
              });
             const netCashFlow = totalIncome - totalExpenses + netTransfers;
-            const currentMonthName = monthNames[TARGET_MONTH - 1];
 
+            // Update card subtitles to be generic
             document.getElementById('total-income').textContent = currencyFormatter.format(totalIncome);
-            document.getElementById('income-subtitle').textContent = `${currentMonthName} deposits`;
+            document.getElementById('income-subtitle').textContent = `Total deposits`;
             document.getElementById('total-expenses').textContent = currencyFormatter.format(totalExpenses * -1);
-            document.getElementById('expense-subtitle').textContent = `${currentMonthName} withdrawals & fees`;
+            document.getElementById('expense-subtitle').textContent = `Total withdrawals & fees`;
             document.getElementById('total-transfers').textContent = currencyFormatter.format(netTransfers);
             document.getElementById('total-transfers').className = `card-value ${netTransfers >= 0 ? 'positive' : 'negative'}`;
-            document.getElementById('transfer-subtitle').textContent = `${currentMonthName} net transfers`;
+            document.getElementById('transfer-subtitle').textContent = `Total net transfers`;
             document.getElementById('net-cash-flow').textContent = currencyFormatter.format(netCashFlow);
             document.getElementById('net-cash-flow').className = `card-value ${netCashFlow >= 0 ? 'positive' : 'negative'}`;
-            document.getElementById('net-subtitle').textContent = `${currentMonthName} net flow`;
+            document.getElementById('net-subtitle').textContent = `Overall net flow`;
         }
 
         // --- Chart/Table Functions ---
@@ -363,14 +356,15 @@
                 const types = legendLabelToTypesMap[label];
                 if (types) types.forEach(type => visibleTypes.add(type));
             });
-            const filteredTransactions = allNovemberTransactions.filter(t => visibleTypes.has(t.type));
+            // Filter the *entire* dataset now
+            const filteredTransactions = allTransactionsData.filter(t => visibleTypes.has(t.type));
             const tableTitle = document.getElementById('transactions-table-title');
-            if (visibleChartCategories.size === Object.keys(legendLabelToTypesMap).length) tableTitle.textContent = `Recent Transactions (All)`;
-            else tableTitle.textContent = `Recent Transactions (${Array.from(visibleChartCategories).join(', ')})`;
+            if (visibleChartCategories.size === Object.keys(legendLabelToTypesMap).length) tableTitle.textContent = `All Transactions`;
+            else tableTitle.textContent = `Transactions (${Array.from(visibleChartCategories).join(', ')})`;
             populateTransactionsTable(filteredTransactions);
         }
 
-        function initializeCashFlowChart(transactions) {
+        function initializeCashFlowChart(transactions) { // Now uses the full dataset passed in
             const ctx = document.getElementById('cash-flow-chart')?.getContext('2d');
             if (!ctx) return;
             if (cashFlowChartInstance) cashFlowChartInstance.destroy();
@@ -394,17 +388,16 @@
                         legend: {
                              position: 'top', labels: { padding: 15 },
                              onClick: (e, legendItem, legend) => {
-                                 const ci = legend.chart;
-                                 const label = legendItem.text;
+                                 const ci = legend.chart; const label = legendItem.text;
                                  if (visibleChartCategories.has(label)) {
                                      visibleChartCategories.delete(label); ci.hide(legendItem.index); legendItem.hidden = true;
                                  } else {
                                      visibleChartCategories.add(label); ci.show(legendItem.index); legendItem.hidden = false;
                                  }
-                                 filterTransactionsForTable();
+                                 filterTransactionsForTable(); // Trigger table update
                              }
                          },
-                         tooltip: {
+                         tooltip: { /* Tooltip logic remains same */
                              backgroundColor: 'rgba(255, 255, 255, 0.95)', titleColor: '#0f172a', bodyColor: '#334155', bodyFont: { size: 14 }, borderColor: '#e2e8f0', borderWidth: 1, padding: 12,
                              callbacks: {
                                  label: function(context) {
@@ -426,7 +419,7 @@
              });
          }
 
-        function initializeAccountsChart() {
+        function initializeAccountsChart() { // Unchanged, still uses static data
             const ctx = document.getElementById('accounts-chart')?.getContext('2d');
             if (!ctx) return;
             if (accountsChartInstance) accountsChartInstance.destroy();
@@ -438,23 +431,18 @@
             });
         }
 
-        function populateTransactionsTable(transactions) {
+        function populateTransactionsTable(transactions) { // Accepts filtered data
             const tableBody = document.querySelector('#transactions-table tbody');
             if (!tableBody) return;
             tableBody.innerHTML = '';
              const sortedTransactions = [...transactions].sort((a, b) => {
-                 // Robust date parsing and comparison
                  const parseDate = (dateStr) => {
                      const parts = dateStr.split('/');
-                     if (parts.length === 3) {
-                         // Assumes MM/DD/YY -> new Date(Year, MonthIndex, Day)
-                         return new Date(parseInt(`20${parts[2]}`, 10), parseInt(parts[0], 10) - 1, parseInt(parts[1], 10));
-                     }
-                     return new Date(0); // Invalid date, sort to beginning/end
+                     if (parts.length === 3) return new Date(parseInt(`20${parts[2]}`, 10), parseInt(parts[0], 10) - 1, parseInt(parts[1], 10));
+                     return new Date(0);
                  };
-                 const dateA = parseDate(a.date);
-                 const dateB = parseDate(b.date);
-                 return dateB - dateA; // Descending order
+                 const dateA = parseDate(a.date); const dateB = parseDate(b.date);
+                 return dateB - dateA; // Descending
              });
 
             if (sortedTransactions.length === 0) {
@@ -495,21 +483,22 @@
                 })
                 .then(csvText => {
                     try {
-                        const allTransactions = parseCSV(csvText);
-                        console.log(`Parsed ${allTransactions.length} total transactions.`); // Debugging
-                        allNovemberTransactions = filterTransactionsByMonth(allTransactions, TARGET_MONTH, TARGET_YEAR_SHORT);
-                        console.log(`Filtered to ${allNovemberTransactions.length} November transactions.`); // Debugging
+                        // Store *all* parsed transactions globally
+                        allTransactionsData = parseCSV(csvText);
+                        console.log(`Parsed ${allTransactionsData.length} total transactions.`);
 
-                        if (allNovemberTransactions.length === 0) {
-                            showMessage('warning', `No transactions found for ${monthNames[TARGET_MONTH - 1]} ${TARGET_YEAR}. Check CSV data and filter logic.`);
+                        if (allTransactionsData.length === 0) {
+                            showMessage('warning', `No transactions found in the CSV file.`);
                         } else {
                             clearMessage();
                         }
-                        updateDashboardHeader(allNovemberTransactions);
-                        updateSummaryCards(allNovemberTransactions);
-                        initializeCashFlowChart(allNovemberTransactions);
+                        // Initial update using the full dataset
+                        updateDashboardHeader(allTransactionsData);
+                        updateSummaryCards(allTransactionsData);
+                        initializeCashFlowChart(allTransactionsData);
                         initializeAccountsChart();
-                        populateTransactionsTable(allNovemberTransactions); // Populate with full Nov data initially
+                        // Populate table initially with the full dataset, respecting current legend visibility (which starts as all visible)
+                        filterTransactionsForTable(); // This will initially show all data
                     } catch (parseError) {
                         console.error("Error parsing CSV:", parseError);
                         showMessage('error', `Error processing CSV data: ${parseError.message}`);
