@@ -116,9 +116,7 @@
         }
 
         /* Style for the ACTIVE page link */
-        /* You might need a small script to add/remove 'active' class based on current URL, */
-        /* or manually set it in each file (less ideal) */
-        .nav-link.active { /* Example: Add class 'active' to the current page's link */
+        .nav-link.active { /* Manually add 'active' class to the current page's link */
             color: var(--accent-primary);
             border-left-color: var(--accent-primary);
             background-color: rgba(2, 132, 199, 0.1);
@@ -214,7 +212,7 @@
     </button>
 
     <div class="layout">
-        <!-- Sidebar Navigation (DUPLICATED STRUCTURE) -->
+        <!-- Sidebar Navigation -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
                  <!-- Link logo to homepage -->
@@ -232,7 +230,6 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <!-- Direct link to the HTML file -->
                             <a href="financial-dashboard.html" class="nav-link">
                                 <span class="nav-icon"><i class="fas fa-chart-line"></i></span>
                                 <span>Financial Dashboard</span>
@@ -262,6 +259,14 @@
                                 <span>Newfoundland Real Estate</span>
                             </a>
                         </li>
+                        <!-- == NEW LINK ADDED BELOW == -->
+                        <li class="nav-item">
+                            <a href="life_plan_graph.html" class="nav-link">
+                                <span class="nav-icon"><i class="fas fa-network-wired"></i></span>
+                                <span>Life Plan Graph</span>
+                            </a>
+                        </li>
+                         <!-- == END OF NEW LINK == -->
                     </ul>
                 </div>
             </nav>
@@ -279,6 +284,7 @@
                 <h1>Welcome to My Website!</h1>
                 <p>This is the homepage. Use the navigation on the left to explore other pages.</p>
                 <p>Each page is a separate HTML file loaded directly by your browser.</p>
+                 <p>Added the <a href="life_plan_graph.html">Life Plan Graph</a> to the navigation.</p>
             </div>
 
             <!-- Add more homepage content here if needed -->
@@ -301,6 +307,7 @@
                 const isClickInsideSidebar = sidebar.contains(event.target);
                 const isClickOnToggle = toggleButton.contains(event.target);
 
+                // Check if screen is mobile width and click is outside sidebar/toggle
                 if (window.innerWidth <= 768 && !isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains('active')) {
                     sidebar.classList.remove('active');
                 }
