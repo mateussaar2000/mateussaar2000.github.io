@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Financial Dashboard</title> <!-- Specific Title -->
 
-    <!-- CSS Dependencies: Font Awesome (for icons, still used in cards/table) -->
+    <!-- CSS Dependencies: Font Awesome (for icons) -->
     <link
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
         rel="stylesheet"
@@ -21,7 +21,6 @@
             --accent-primary: #0284c7;
             --accent-secondary: #0ea5e9;
             --border-color: #e2e8f0;
-            /* --sidebar-width: 250px; /* No longer needed */
             --header-height: 60px;
             --transition-speed: 0.3s;
             --font-primary: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -38,17 +37,12 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-primary); }
         body { background-color: var(--bg-primary); color: var(--text-primary); font-size: 16px; line-height: 1.5; }
 
-        /* Remove layout flex as sidebar is gone */
-        /* .layout { display: flex; min-height: 100vh; } */
-
         /* --- Main Content Area Styling (Adapted for Standalone) --- */
          .main-content {
-             /* flex: 1; /* No longer needed */
-             /* margin-left: var(--sidebar-width); /* REMOVED */
              padding: 2rem;
              min-height: 100vh;
-             max-width: 1600px; /* Optional: Set a max-width for very wide screens */
-             margin: 0 auto; /* Center content if max-width is set */
+             max-width: 1600px; /* Optional: Max width */
+             margin: 0 auto; /* Center content */
          }
          .page-header {
              height: var(--header-height);
@@ -57,14 +51,11 @@
              display: flex;
              align-items: center;
              padding: 0 2rem;
-             /* Adjust margins to align with main content padding */
-             margin: -2rem -2rem 2rem -2rem;
+             margin: -2rem -2rem 2rem -2rem; /* Align with main content padding */
          }
          .page-header-title { font-size: 1.25rem; font-weight: 600; }
 
-
         /* --- Mobile Responsiveness (Simplified) --- */
-        /* Removed sidebar-specific mobile styles */
         @media (max-width: 768px) {
             .main-content {
                 padding: 1rem;
@@ -73,24 +64,22 @@
                 margin: -1rem -1rem 1rem -1rem;
                 padding: 0 1rem;
             }
-            /* Adjust card/chart grids for smaller screens if needed */
             .card-grid {
-                 grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Smaller min size */
+                 grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
                  gap: 1rem;
             }
              .chart-row {
-                 grid-template-columns: 1fr; /* Stack charts on mobile */
+                 grid-template-columns: 1fr; /* Stack charts */
                  gap: 1rem;
             }
-            .card-value { font-size: 1.5rem; } /* Smaller text on mobile */
+            .card-value { font-size: 1.5rem; }
             .chart-title { font-size: 1.1rem; }
+            .dashboard-header { flex-direction: column; align-items: flex-start;} /* Stack header items */
         }
 
-        /* --- Styles SPECIFIC to Financial Dashboard (Largely Unchanged) --- */
-        .dashboard { /* Add position relative for overlay */
-            position: relative;
-        }
-        .dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); flex-wrap: wrap; gap: 1rem; } /* Added wrap and gap */
+        /* --- Styles SPECIFIC to Financial Dashboard --- */
+        .dashboard { position: relative; }
+        .dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); flex-wrap: wrap; gap: 1rem; }
         .dashboard-title h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem; color: var(--accent-primary); }
         .dashboard-title p { color: var(--text-secondary); font-size: 0.9rem; }
         .dashboard-meta { display: flex; align-items: center; gap: 1.5rem; }
@@ -152,23 +141,12 @@
 
         /* Loading/Error Message Style */
         .message-overlay {
-            /* Position absolutely within the .dashboard container */
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(248, 250, 252, 0.9); /* Slightly more opaque */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 50; /* Ensure it's above other content */
-            padding: 2rem;
-            text-align: center;
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            border-radius: var(--border-radius);
-             backdrop-filter: blur(2px); /* Optional nice effect */
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(248, 250, 252, 0.9);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 50; padding: 2rem; text-align: center;
+            font-size: 1.1rem; color: var(--text-secondary);
+            border-radius: var(--border-radius); backdrop-filter: blur(2px);
         }
         .message-overlay p.negative { color: var(--danger); font-weight: 500; }
         .message-overlay p.neutral { color: var(--text-secondary); }
@@ -177,9 +155,7 @@
     </style>
 </head>
 <body>
-    <!-- Sidebar and Toggle Button Removed -->
-
-    <!-- Main Content Area Takes Full Width -->
+    <!-- Main Content Area -->
     <main class="main-content">
         <!-- Page Header -->
          <header class="page-header">
@@ -202,14 +178,13 @@
                         <div class="dashboard-meta-label">Transactions</div>
                     </div>
                     <div class="dashboard-meta-item">
-                        <div class="dashboard-meta-value" id="account-count">5</div> <!-- Still Static -->
+                        <div class="dashboard-meta-value" id="account-count">5</div>
                         <div class="dashboard-meta-label">Accounts</div>
                     </div>
                 </div>
             </div>
 
             <div class="card-grid">
-                 <!-- Card content updated by JS -->
                  <div class="card card-income"> <div class="card-header"> <div> <div class="card-title">TOTAL INCOME</div> </div> <div class="card-icon"> <i class="fas fa-arrow-down"></i> </div> </div> <div class="card-value positive" id="total-income">$0.00</div> <div class="card-subtitle" id="income-subtitle">Loading...</div> </div>
                  <div class="card card-expense"> <div class="card-header"> <div> <div class="card-title">TOTAL EXPENSES</div> </div> <div class="card-icon"> <i class="fas fa-arrow-up"></i> </div> </div> <div class="card-value negative" id="total-expenses">$0.00</div> <div class="card-subtitle" id="expense-subtitle">Loading...</div> </div>
                  <div class="card card-transfer"> <div class="card-header"> <div> <div class="card-title">NET TRANSFERS</div> </div> <div class="card-icon"> <i class="fas fa-exchange-alt"></i> </div> </div> <div class="card-value neutral" id="total-transfers">$0.00</div> <div class="card-subtitle" id="transfer-subtitle">Loading...</div> </div>
@@ -250,21 +225,24 @@
         const CSV_FILE_PATH = 'wealthica-transactions-2024-11-19.csv';
 
         // Global state variables
-        let allNovemberTransactions = []; // Holds the initially loaded & filtered data
+        let allNovemberTransactions = [];
         let cashFlowChartInstance = null;
         let accountsChartInstance = null;
-        let visibleChartCategories = new Set(['Income', 'Expenses', 'Net Transfers', 'Fees']); // Initially all visible
+        let visibleChartCategories = new Set(['Income', 'Expenses', 'Net Transfers', 'Fees']);
 
-        // Static account data (or could be derived)
+        // Static account data
         const accountsData = { labels: ['RBC Advantage', 'CIBC Chequing', 'RBC Mastercard', 'CIBC VISA', 'CIBC Savings'], balances: [-1718.09, 1118.11, -304.35, -1083.24, -1674.63] };
 
-        // Mapping from Legend Label to Transaction Type(s) for filtering
+        // Mapping from Legend Label to Transaction Type(s)
         const legendLabelToTypesMap = {
             'Income': ['deposit'],
-            'Expenses': ['withdrawal'], // Note: 'fee' is separate in legend/filtering
+            'Expenses': ['withdrawal'],
             'Net Transfers': ['transfer'],
             'Fees': ['fee']
         };
+
+        // **Define monthNames globally**
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
         // --- Utility Functions ---
         const currencyFormatter = new Intl.NumberFormat('en-US', {
@@ -287,12 +265,10 @@
             if (messageArea) messageArea.innerHTML = '';
         }
 
-        // --- CSV Parsing Function --- (Unchanged from previous version)
+        // --- CSV Parsing Function ---
         function parseCSV(csvText) {
             const lines = csvText.trim().split('\n');
-            if (lines.length < 2) {
-                throw new Error("CSV file is empty or has no data rows.");
-            }
+            if (lines.length < 2) throw new Error("CSV file is empty or has no data rows.");
             const headers = lines[0].split(',').map(h => h.trim());
             const data = [];
             const idx = {
@@ -304,31 +280,25 @@
                 amount: headers.indexOf('Amount (CAD)')
             };
             if (idx.date === -1 || idx.account === -1 || idx.description === -1 || idx.type === -1 || idx.amount === -1) {
-                console.error("Missing essential columns in CSV:", headers);
-                throw new Error("CSV file is missing required columns (Date, Account, Description, Type, Amount).");
+                 console.error("Missing essential columns in CSV:", headers);
+                 throw new Error("CSV file is missing required columns (Date, Account, Description, Type, Amount).");
             }
             for (let i = 1; i < lines.length; i++) {
-                 // Improved splitting to handle potential commas within quoted fields
                  const values = lines[i].match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)?.map(field => field.startsWith('"') && field.endsWith('"') ? field.slice(1, -1).replace(/""/g, '"') : field.trim()) || [];
-
                  if (values.length >= headers.length) {
                     const amountCAD = parseFloat(values[idx.amount]?.trim());
                     if (isNaN(amountCAD)) continue;
                     let transactionType = values[idx.type]?.trim().toLowerCase() || '';
-                    if (transactionType === 'interest') {
-                        transactionType = 'deposit';
-                    } else if (!['withdrawal', 'deposit', 'transfer', 'fee'].includes(transactionType)) {
-                        transactionType = amountCAD >= 0 ? 'deposit' : 'withdrawal';
-                    }
-                    const transaction = {
+                    if (transactionType === 'interest') transactionType = 'deposit';
+                    else if (!['withdrawal', 'deposit', 'transfer', 'fee'].includes(transactionType)) transactionType = amountCAD >= 0 ? 'deposit' : 'withdrawal';
+                    data.push({
                         date: values[idx.date]?.trim() || '',
                         account: values[idx.account]?.trim() || 'Unknown Account',
                         description: values[idx.description]?.trim() || 'No Description',
                         category: values[idx.category]?.trim() || null,
                         type: transactionType,
                         amount: amountCAD
-                    };
-                    data.push(transaction);
+                    });
                 } else {
                     console.warn(`Skipping potentially malformed CSV row ${i + 1}:`, lines[i]);
                 }
@@ -336,8 +306,7 @@
             return data;
         }
 
-
-        // --- Filtering Function --- (Unchanged)
+        // --- Filtering Function ---
         function filterTransactionsByMonth(transactions, month, yearShort) {
             return transactions.filter(t => {
                 if (!t.date) return false;
@@ -351,65 +320,48 @@
             });
         }
 
-
-        // --- Update UI Elements --- (Unchanged except transactions table title)
+        // --- Update UI Elements ---
         function updateDashboardHeader(transactions) {
-            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            // monthNames is now global
             document.getElementById('dashboard-month-year').textContent = `${monthNames[TARGET_MONTH - 1]} ${TARGET_YEAR} Transactions`;
             document.getElementById('transaction-count').textContent = transactions.length;
-            // document.getElementById('account-count').textContent = new Set(transactions.map(t => t.account)).size; // If dynamic account count needed
         }
 
         function updateSummaryCards(transactions) {
-            let totalIncome = 0;
-            let totalExpenses = 0;
-            let netTransfers = 0;
+            let totalIncome = 0, totalExpenses = 0, netTransfers = 0;
              transactions.forEach(t => {
                  if (t.type === 'deposit') totalIncome += t.amount;
                  else if (t.type === 'withdrawal' || t.type === 'fee') totalExpenses += Math.abs(t.amount);
                  else if (t.type === 'transfer') netTransfers += t.amount;
              });
             const netCashFlow = totalIncome - totalExpenses + netTransfers;
+            const currentMonthName = monthNames[TARGET_MONTH - 1]; // Use global monthNames
 
             document.getElementById('total-income').textContent = currencyFormatter.format(totalIncome);
-            document.getElementById('income-subtitle').textContent = `${monthNames[TARGET_MONTH - 1]} deposits`;
+            document.getElementById('income-subtitle').textContent = `${currentMonthName} deposits`;
             document.getElementById('total-expenses').textContent = currencyFormatter.format(totalExpenses * -1);
-            document.getElementById('expense-subtitle').textContent = `${monthNames[TARGET_MONTH - 1]} withdrawals & fees`;
+            document.getElementById('expense-subtitle').textContent = `${currentMonthName} withdrawals & fees`;
             document.getElementById('total-transfers').textContent = currencyFormatter.format(netTransfers);
             document.getElementById('total-transfers').className = `card-value ${netTransfers >= 0 ? 'positive' : 'negative'}`;
-            document.getElementById('transfer-subtitle').textContent = `${monthNames[TARGET_MONTH - 1]} net transfers`;
+            document.getElementById('transfer-subtitle').textContent = `${currentMonthName} net transfers`;
             document.getElementById('net-cash-flow').textContent = currencyFormatter.format(netCashFlow);
             document.getElementById('net-cash-flow').className = `card-value ${netCashFlow >= 0 ? 'positive' : 'negative'}`;
-            document.getElementById('net-subtitle').textContent = `${monthNames[TARGET_MONTH - 1]} net flow`;
+            document.getElementById('net-subtitle').textContent = `${currentMonthName} net flow`;
         }
 
         // --- Chart/Table Functions ---
-
         function filterTransactionsForTable() {
-            // Get the types corresponding to the currently visible legend items
             const visibleTypes = new Set();
             visibleChartCategories.forEach(label => {
                 const types = legendLabelToTypesMap[label];
-                if (types) {
-                    types.forEach(type => visibleTypes.add(type));
-                }
+                if (types) types.forEach(type => visibleTypes.add(type));
             });
-
-            // Filter the main transaction list
             const filteredTransactions = allNovemberTransactions.filter(t => visibleTypes.has(t.type));
-
-            // Update table title
             const tableTitle = document.getElementById('transactions-table-title');
-            if (visibleChartCategories.size === Object.keys(legendLabelToTypesMap).length) {
-                 tableTitle.textContent = `Recent Transactions (All)`;
-            } else {
-                 tableTitle.textContent = `Recent Transactions (${Array.from(visibleChartCategories).join(', ')})`;
-            }
-
-
+            if (visibleChartCategories.size === Object.keys(legendLabelToTypesMap).length) tableTitle.textContent = `Recent Transactions (All)`;
+            else tableTitle.textContent = `Recent Transactions (${Array.from(visibleChartCategories).join(', ')})`;
             populateTransactionsTable(filteredTransactions);
         }
-
 
         function initializeCashFlowChart(transactions) {
             const ctx = document.getElementById('cash-flow-chart')?.getContext('2d');
@@ -428,53 +380,36 @@
 
              cashFlowChartInstance = new Chart(ctx, {
                 type: 'pie',
-                data: {
-                    labels: chartLabels,
-                    datasets: [{ data: chartDataPoints, backgroundColor: backgroundColors, borderColor: borderColors, borderWidth: 2 }]
-                },
+                data: { labels: chartLabels, datasets: [{ data: chartDataPoints, backgroundColor: backgroundColors, borderColor: borderColors, borderWidth: 2 }] },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
+                    responsive: true, maintainAspectRatio: false,
                     plugins: {
                         legend: {
                              position: 'top', labels: { padding: 15 },
-                             // --- ADD onClick Handler ---
                              onClick: (e, legendItem, legend) => {
-                                 const index = legendItem.datasetIndex;
                                  const ci = legend.chart;
                                  const label = legendItem.text;
-
-                                 // Toggle visibility state in our Set
                                  if (visibleChartCategories.has(label)) {
-                                     visibleChartCategories.delete(label);
-                                     ci.hide(legendItem.index); // Use index directly
-                                     legendItem.hidden = true; // Update the item state
+                                     visibleChartCategories.delete(label); ci.hide(legendItem.index); legendItem.hidden = true;
                                  } else {
-                                     visibleChartCategories.add(label);
-                                     ci.show(legendItem.index); // Use index directly
-                                     legendItem.hidden = false; // Update the item state
+                                     visibleChartCategories.add(label); ci.show(legendItem.index); legendItem.hidden = false;
                                  }
-
-                                 // Filter the table data based on the new visibility state
                                  filterTransactionsForTable();
                              }
                          },
-                         tooltip: { /* Unchanged */
+                         tooltip: {
                              backgroundColor: 'rgba(255, 255, 255, 0.95)', titleColor: '#0f172a', bodyColor: '#334155', bodyFont: { size: 14 }, borderColor: '#e2e8f0', borderWidth: 1, padding: 12,
                              callbacks: {
                                  label: function(context) {
-                                     let label = context.label || '';
-                                     if (label) { label += ': '; }
-                                     const rawValue = context.raw;
-                                     let actualValue = rawValue;
+                                     let label = context.label || ''; if (label) label += ': ';
+                                     const rawValue = context.raw; let actualValue = rawValue;
                                       if (context.label === 'Income') actualValue = income;
                                       else if (context.label === 'Expenses') actualValue = expenses * -1;
                                       else if (context.label === 'Net Transfers') actualValue = netTransfers;
                                       else if (context.label === 'Fees') actualValue = fees * -1;
                                      const total = context.dataset.data.reduce((a, b) => a + Math.abs(b), 0);
                                      const percentage = total !== 0 ? Math.round(Math.abs(actualValue) / total * 100) : 0;
-                                     label += currencyFormatter.format(actualValue);
-                                     if (total !== 0) { label += ` (${percentage}%)`; }
+                                     label += currencyFormatter.format(actualValue); if (total !== 0) label += ` (${percentage}%)`;
                                      return label;
                                  }
                              }
@@ -484,29 +419,22 @@
              });
          }
 
-        function initializeAccountsChart() { // Unchanged
+        function initializeAccountsChart() {
             const ctx = document.getElementById('accounts-chart')?.getContext('2d');
             if (!ctx) return;
             if (accountsChartInstance) accountsChartInstance.destroy();
-            if (!accountsData || !accountsData.labels || !accountsData.balances || accountsData.labels.length !== accountsData.balances.length) {
-                console.error("Invalid accountsData for chart."); return;
-            }
+            if (!accountsData || !accountsData.labels || !accountsData.balances || accountsData.labels.length !== accountsData.balances.length) { console.error("Invalid accountsData for chart."); return; }
             accountsChartInstance = new Chart(ctx, {
                 type: 'bar',
-                data: {
-                    labels: accountsData.labels,
-                    datasets: [{ label: 'Account Balance', data: accountsData.balances, backgroundColor: accountsData.balances.map(b => b >= 0 ? 'rgba(16, 185, 129, 0.7)' : 'rgba(239, 68, 68, 0.7)'), borderColor: accountsData.balances.map(b => b >= 0 ? 'rgb(16, 185, 129)' : 'rgb(239, 68, 68)'), borderWidth: 2, borderRadius: 6 }]
-                },
+                data: { labels: accountsData.labels, datasets: [{ label: 'Account Balance', data: accountsData.balances, backgroundColor: accountsData.balances.map(b => b >= 0 ? 'rgba(16, 185, 129, 0.7)' : 'rgba(239, 68, 68, 0.7)'), borderColor: accountsData.balances.map(b => b >= 0 ? 'rgb(16, 185, 129)' : 'rgb(239, 68, 68)'), borderWidth: 2, borderRadius: 6 }] },
                 options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { grid: { color: 'rgba(226, 232, 240, 0.5)' }, ticks: { callback: function(value) { return '$' + value.toLocaleString(); } } }, y: { grid: { display: false } } }, plugins: { legend: { display: false }, tooltip: { backgroundColor: 'rgba(255, 255, 255, 0.95)', titleColor: '#0f172a', bodyColor: '#334155', bodyFont: { size: 14 }, borderColor: '#e2e8f0', borderWidth: 1, padding: 12, callbacks: { title: (ti) => ti[0].label + ' Account', label: function(context) { return `Balance: ${currencyFormatter.format(context.raw)}`; } } } } }
             });
         }
 
-        function populateTransactionsTable(transactions) { // Accepts filtered data
+        function populateTransactionsTable(transactions) {
             const tableBody = document.querySelector('#transactions-table tbody');
             if (!tableBody) return;
-            tableBody.innerHTML = ''; // Clear previous
-
-             const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            tableBody.innerHTML = '';
              const sortedTransactions = [...transactions].sort((a, b) => {
                  const dateA = new Date(`20${a.date.split('/')[2]}`, a.date.split('/')[0] - 1, a.date.split('/')[1]);
                  const dateB = new Date(`20${b.date.split('/')[2]}`, b.date.split('/')[0] - 1, b.date.split('/')[1]);
@@ -514,13 +442,9 @@
              });
 
             if (sortedTransactions.length === 0) {
-                const row = tableBody.insertRow();
-                const cell = row.insertCell();
-                cell.colSpan = 6;
-                cell.textContent = visibleChartCategories.size === 0 ? 'No categories selected.' : 'No transactions found matching filter.';
-                cell.style.textAlign = 'center';
-                cell.style.padding = '2rem';
-                cell.style.color = 'var(--text-tertiary)';
+                const row = tableBody.insertRow(); const cell = row.insertCell();
+                cell.colSpan = 6; cell.textContent = visibleChartCategories.size === 0 ? 'No categories selected.' : 'No transactions found matching filter.';
+                cell.style.textAlign = 'center'; cell.style.padding = '2rem'; cell.style.color = 'var(--text-tertiary)';
                 return;
             }
 
@@ -535,13 +459,7 @@
                  else if (accountName.includes('CIBC VISA')) accountColor = '#8b5cf6';
                  else if (accountName.includes('CIBC Savings')) accountColor = '#0ea5e9';
                 const badgeClass = `badge-${transaction.type}`;
-
-                row.innerHTML = `
-                    <td>${transaction.date}</td>
-                    <td> <div class="account-cell"> <div class="account-icon" style="background-color: ${accountColor};">${accountInitials}</div> <div>${accountName}</div> </div> </td>
-                    <td>${transaction.description}</td> <td>${transaction.category || 'Uncategorized'}</td>
-                    <td> <span class="tx-badge ${badgeClass}"> ${transaction.type} </span> </td>
-                    <td class="${transaction.amount >= 0 ? 'positive' : 'negative'}"> ${currencyFormatter.format(transaction.amount)} </td> `;
+                row.innerHTML = `<td>${transaction.date}</td><td> <div class="account-cell"> <div class="account-icon" style="background-color: ${accountColor};">${accountInitials}</div> <div>${accountName}</div> </div> </td><td>${transaction.description}</td> <td>${transaction.category || 'Uncategorized'}</td><td> <span class="tx-badge ${badgeClass}"> ${transaction.type} </span> </td><td class="${transaction.amount >= 0 ? 'positive' : 'negative'}"> ${currencyFormatter.format(transaction.amount)} </td> `;
             });
         }
 
@@ -562,36 +480,31 @@
                 .then(csvText => {
                     try {
                         const allTransactions = parseCSV(csvText);
-                        // Store the full list for November globally
                         allNovemberTransactions = filterTransactionsByMonth(allTransactions, TARGET_MONTH, TARGET_YEAR_SHORT);
-
-                        if (allNovemberTransactions.length === 0) {
-                            showMessage('warning', `No transactions found for November ${TARGET_YEAR}. Displaying empty dashboard.`);
-                        } else {
-                            clearMessage();
-                        }
-
-                        // Initial UI update with *all* November transactions
+                        if (allNovemberTransactions.length === 0) showMessage('warning', `No transactions found for ${monthNames[TARGET_MONTH - 1]} ${TARGET_YEAR}.`);
+                        else clearMessage();
                         updateDashboardHeader(allNovemberTransactions);
                         updateSummaryCards(allNovemberTransactions);
-                        initializeCashFlowChart(allNovemberTransactions); // Init chart with full data
-                        initializeAccountsChart(); // Init static chart
-                        populateTransactionsTable(allNovemberTransactions); // Init table with full data
-
+                        initializeCashFlowChart(allNovemberTransactions);
+                        initializeAccountsChart();
+                        populateTransactionsTable(allNovemberTransactions);
                     } catch (parseError) {
                         console.error("Error parsing CSV:", parseError);
                         showMessage('error', `Error processing CSV data: ${parseError.message}`);
-                        updateDashboardHeader([]); updateSummaryCards([]); initializeCashFlowChart([]); initializeAccountsChart(); populateTransactionsTable([]); // Init empty
+                        updateDashboardHeader([]); updateSummaryCards([]); initializeCashFlowChart([]); initializeAccountsChart(); populateTransactionsTable([]);
                     }
                 })
                 .catch(error => {
                     console.error('Error fetching or processing CSV:', error);
-                    showMessage('error', `Failed to load or process transaction data: ${error.message}. Check file path and server setup.`);
-                     updateDashboardHeader([]); updateSummaryCards([]); initializeCashFlowChart([]); initializeAccountsChart(); populateTransactionsTable([]); // Init empty
+                    // Check if the error is the specific one we identified
+                    if (error.message.includes("monthNames is not defined")) {
+                         showMessage('error', `Developer Error: monthNames definition needs to be moved to global scope.`);
+                    } else {
+                        showMessage('error', `Failed to load or process transaction data: ${error.message}. Check file path and server setup.`);
+                    }
+                     updateDashboardHeader([]); updateSummaryCards([]); initializeCashFlowChart([]); initializeAccountsChart(); populateTransactionsTable([]);
                 });
         }); // End DOMContentLoaded
-
-        // Sidebar Toggle JS Removed
 
     </script>
 </body>
