@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Financial Dashboard - Combined Transactions</title> <!-- Updated Title -->
+    <title>Financial Dashboard - Combined Transactions</title>
 
     <!-- CSS Dependencies: Font Awesome -->
     <link
@@ -12,7 +12,7 @@
     />
 
     <style>
-        /* --- Base & Layout Styles (Adapted for Standalone) --- */
+        /* --- Base & Layout Styles --- */
         :root {
             --bg-primary: #f8fafc;
             --bg-secondary: #ffffff;
@@ -24,7 +24,6 @@
             --header-height: 60px;
             --transition-speed: 0.3s;
             --font-primary: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-            /* Dashboard specific vars */
             --bg-tertiary: #f1f5f9;
             --text-tertiary: #64748b;
             --accent-tertiary: #38bdf8;
@@ -38,21 +37,8 @@
         body { background-color: var(--bg-primary); color: var(--text-primary); font-size: 16px; line-height: 1.5; }
 
         /* --- Main Content Area Styling --- */
-         .main-content {
-             padding: 2rem;
-             min-height: 100vh;
-             max-width: 1600px; /* Optional: Max width */
-             margin: 0 auto; /* Center content */
-         }
-         .page-header {
-             height: var(--header-height);
-             background-color: var(--bg-secondary);
-             border-bottom: 1px solid var(--border-color);
-             display: flex;
-             align-items: center;
-             padding: 0 2rem;
-             margin: -2rem -2rem 2rem -2rem; /* Align with main content padding */
-         }
+         .main-content { padding: 2rem; min-height: 100vh; max-width: 1600px; margin: 0 auto; }
+         .page-header { height: var(--header-height); background-color: var(--bg-secondary); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; padding: 0 2rem; margin: -2rem -2rem 2rem -2rem; }
          .page-header-title { font-size: 1.25rem; font-weight: 600; }
 
         /* --- Mobile Responsiveness --- */
@@ -60,14 +46,13 @@
             .main-content { padding: 1rem; }
             .page-header { margin: -1rem -1rem 1rem -1rem; padding: 0 1rem; }
             .card-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
-             /* Chart row now only has one chart */
-             .chart-row { grid-template-columns: 1fr; gap: 1rem; }
+            .chart-row { grid-template-columns: 1fr; gap: 1rem; }
             .card-value { font-size: 1.5rem; }
             .chart-title { font-size: 1.1rem; }
             .dashboard-header { flex-direction: column; align-items: flex-start;}
         }
 
-        /* --- Styles SPECIFIC to Financial Dashboard --- */
+        /* --- Dashboard Specific Styles --- */
         .dashboard { position: relative; }
         .dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); flex-wrap: wrap; gap: 1rem; }
         .dashboard-title h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem; color: var(--accent-primary); }
@@ -96,11 +81,8 @@
         .negative { color: var(--danger); }
         .neutral { color: var(--accent-primary); }
         .card-subtitle { font-size: 0.75rem; color: var(--text-tertiary); }
-        /* Updated: Only one chart now */
         .chart-row { display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-bottom: 2rem; }
-        @media (min-width: 992px) { /* Example breakpoint for wider screens */
-             .chart-row { grid-template-columns: minmax(400px, 1.5fr); } /* Allow chart to take more space if needed */
-        }
+        @media (min-width: 992px) { .chart-row { grid-template-columns: minmax(400px, 1.5fr); } }
         .chart-card { background-color: var(--bg-secondary); border-radius: var(--border-radius); padding: 1.5rem; box-shadow: var(--card-shadow); border: 1px solid var(--border-color); }
         .chart-header { margin-bottom: 1rem; }
         .chart-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.25rem; color: var(--text-primary); }
@@ -109,18 +91,17 @@
         .transactions-card { background-color: var(--bg-secondary); border-radius: var(--border-radius); padding: 1.5rem; box-shadow: var(--card-shadow); margin-bottom: 2rem; border: 1px solid var(--border-color); }
         .transactions-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); }
         .transactions-title { font-size: 1.25rem; font-weight: 600; color: var(--text-primary); }
-        .table-container { overflow-x: auto; max-height: 600px; /* Increased height */ overflow-y: auto; }
+        .table-container { overflow-x: auto; max-height: 600px; overflow-y: auto; }
         .transactions-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 700px; }
         .transactions-table th { background-color: var(--bg-tertiary); padding: 1rem; text-align: left; font-weight: 600; color: var(--text-secondary); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 1; }
         .transactions-table th:first-child { border-top-left-radius: 8px; }
         .transactions-table th:last-child { border-top-right-radius: 8px; }
         .transactions-table td { padding: 1rem; font-size: 0.875rem; color: var(--text-primary); border-bottom: 1px solid var(--border-color); white-space: nowrap; }
-        .transactions-table td:nth-child(3) { white-space: normal; min-width: 250px; max-width: 400px; } /* Allow description wrap */
+        .transactions-table td:nth-child(3) { white-space: normal; min-width: 250px; max-width: 400px; }
         .transactions-table tr:last-child td { border-bottom: none; }
         .transactions-table tr:hover td { background-color: var(--bg-tertiary); }
         .account-cell { display: flex; align-items: center; gap: 0.75rem; }
         .account-icon { width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 600; color: white; background-color: var(--text-tertiary); flex-shrink: 0; }
-        /* Updated Badge Styles for Standardized Types */
         .tx-badge { display: inline-flex; align-items: center; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.75rem; font-weight: 500; text-transform: capitalize; }
         .badge-Income { background-color: rgba(16, 185, 129, 0.1); color: var(--success); }
         .badge-Expense { background-color: rgba(239, 68, 68, 0.1); color: var(--danger); }
@@ -133,18 +114,36 @@
         ::-webkit-scrollbar-thumb { background: var(--accent-tertiary); border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--accent-primary); }
 
-        /* Loading/Error Message Style */
+        /* --- Loading/Error Message Styles --- */
         .message-overlay {
             position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: rgba(248, 250, 252, 0.9);
-            display: flex; justify-content: center; align-items: center;
-            z-index: 50; padding: 2rem; text-align: center;
-            font-size: 1.1rem; color: var(--text-secondary);
-            border-radius: var(--border-radius); backdrop-filter: blur(2px);
+            background-color: rgba(248, 250, 252, 0.9); display: flex;
+            justify-content: center; align-items: center; z-index: 50;
+            padding: 2rem; text-align: center; font-size: 1.1rem;
+            color: var(--text-secondary); border-radius: var(--border-radius);
+            backdrop-filter: blur(2px);
         }
         .message-overlay p.negative { color: var(--danger); font-weight: 500; }
         .message-overlay p.neutral { color: var(--text-secondary); }
         .message-overlay p.warning { color: var(--warning); font-weight: 500; }
+
+        /* --- NEW: Placeholder Styles --- */
+        .loading-placeholder {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%; /* Fill container */
+            min-height: 150px; /* Minimum height */
+            color: var(--text-tertiary);
+            font-style: italic;
+        }
+        /* Specific style for table row placeholder */
+        .transactions-table .loading-placeholder td {
+            text-align: center;
+            font-style: italic;
+            color: var(--text-tertiary);
+            padding: 3rem 1rem; /* More padding */
+        }
 
     </style>
 </head>
@@ -158,7 +157,7 @@
 
         <!-- Dashboard Specific Content -->
         <div class="dashboard">
-             <!-- Loading/Error Message Area -->
+             <!-- Loading/Error Message Area (Overlay) -->
              <div id="message-area"></div>
 
             <div class="dashboard-header">
@@ -171,11 +170,7 @@
                         <div class="dashboard-meta-value" id="transaction-count">--</div>
                         <div class="dashboard-meta-label">Transactions</div>
                     </div>
-                    <!-- Removed Account Count as it's not accurate from this data -->
-                    <!-- <div class="dashboard-meta-item">
-                        <div class="dashboard-meta-value" id="account-count">--</div>
-                        <div class="dashboard-meta-label">Accounts</div>
-                    </div> -->
+                     <!-- Account count removed -->
                 </div>
             </div>
 
@@ -186,19 +181,28 @@
                  <div class="card card-net"> <div class="card-header"> <div> <div class="card-title">NET CASH FLOW</div> </div> <div class="card-icon"> <i class="fas fa-chart-line"></i> </div> </div> <div class="card-value" id="net-cash-flow">$0.00</div> <div class="card-subtitle" id="net-subtitle">Overall Net Flow</div> </div>
             </div>
 
-             <!-- Updated: Only one chart card now -->
-            <div class="chart-row">
+             <div class="chart-row">
                  <div class="chart-card">
                     <div class="chart-header"> <div class="chart-title">Cash Flow Breakdown</div> <div class="chart-subtitle">Total Income vs Expenses by Type (Click Legend to Filter Table)</div> </div>
-                    <div class="chart-container"> <canvas id="cash-flow-chart"></canvas> </div>
+                    <div class="chart-container" id="cash-flow-container">
+                         <!-- NEW: Chart Loading Placeholder -->
+                         <div class="loading-placeholder">Loading Chart...</div>
+                         <canvas id="cash-flow-chart"></canvas>
+                     </div>
                 </div>
                  <!-- Account Balances Chart Removed -->
-                 <!-- <div class="chart-card"> ... </div> -->
             </div>
 
              <div class="transactions-card">
                 <div class="transactions-header"> <div class="transactions-title" id="transactions-table-title">All Transactions</div> </div>
-                <div class="table-container"> <table class="transactions-table" id="transactions-table"> <thead> <tr> <th>Date</th> <th>Account</th> <th>Description</th> <th>Category</th> <th>Type</th> <th>Amount</th> </tr> </thead> <tbody> <!-- Populated by JS --> </tbody> </table> </div>
+                <div class="table-container"> <table class="transactions-table" id="transactions-table"> <thead> <tr> <th>Date</th> <th>Account</th> <th>Description</th> <th>Category</th> <th>Type</th> <th>Amount</th> </tr> </thead>
+                     <tbody id="transactions-table-body">
+                         <!-- NEW: Table Loading Placeholder -->
+                         <tr class="loading-placeholder">
+                             <td colspan="6">Loading Transactions...</td>
+                         </tr>
+                     </tbody>
+                 </table> </div>
              </div>
 
              <div class="dashboard-footer"> <div>Financial Dashboard © 2024</div> <div>Data sourced from CSV</div> </div>
@@ -217,15 +221,14 @@
         const WISE_CSV_PATH = 'wise_transactions_20250330_161309.csv';
 
         // Global state variables
-        let allTransactionsData = []; // Holds ALL combined & standardized transactions
+        let allTransactionsData = [];
         let cashFlowChartInstance = null;
-        // let accountsChartInstance = null; // Removed
-        let visibleChartCategories = new Set(['Income', 'Expenses', 'Transfers', 'Fees']); // Updated standard categories
+        let visibleChartCategories = new Set(['Income', 'Expenses', 'Transfers', 'Fees']);
 
         // Mapping from Legend Label to Standardized Transaction Type(s)
         const legendLabelToTypesMap = {
             'Income': ['Income'],
-            'Expenses': ['Expense'], // Map legend 'Expenses' to type 'Expense'
+            'Expenses': ['Expense'],
             'Transfers': ['Transfer'],
             'Fees': ['Fee']
         };
@@ -234,9 +237,7 @@
 
         // --- Utility Functions ---
         const currencyFormatter = new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'CAD',
-            minimumFractionDigits: 2
+            style: 'currency', currency: 'CAD', minimumFractionDigits: 2
         });
 
         function showMessage(type, text) {
@@ -256,193 +257,122 @@
         // --- Date Standardization ---
         function standardizeDate(dateString, sourceFormat) {
             try {
-                if (sourceFormat === 'wealthica' && dateString) { // MM/DD/YY
+                if (sourceFormat === 'wealthica' && dateString) {
                     const parts = dateString.split('/');
                     if (parts.length === 3) {
                         const year = parseInt(`20${parts[2]}`, 10);
-                        const month = parseInt(parts[0], 10) - 1; // JS months are 0-indexed
+                        const month = parseInt(parts[0], 10) - 1;
                         const day = parseInt(parts[1], 10);
-                        const dateObj = new Date(Date.UTC(year, month, day)); // Use UTC to avoid timezone issues
-                        if (!isNaN(dateObj)) {
-                            return dateObj.toISOString().split('T')[0]; // YYYY-MM-DD
-                        }
+                        const dateObj = new Date(Date.UTC(year, month, day));
+                        if (!isNaN(dateObj)) return dateObj.toISOString().split('T')[0];
                     }
-                } else if (sourceFormat === 'wise' && dateString) { // YYYY-MM-DDTHH:mm:ss.sssZ
+                } else if (sourceFormat === 'wise' && dateString) {
                     const dateObj = new Date(dateString);
-                     if (!isNaN(dateObj)) {
-                            return dateObj.toISOString().split('T')[0]; // YYYY-MM-DD
-                     }
+                    if (!isNaN(dateObj)) return dateObj.toISOString().split('T')[0];
                 }
-            } catch (e) {
-                console.warn(`Could not parse date: ${dateString} from ${sourceFormat}`, e);
-            }
-            return null; // Return null if parsing fails
+            } catch (e) { console.warn(`Date parse error: ${dateString} from ${sourceFormat}`, e); }
+            return null;
         }
 
-
         // --- CSV Parsing Functions ---
-
         function parseWealthicaCSV(csvText) {
+            // ... (parsing logic remains the same as previous version)
             const lines = csvText.trim().split('\n');
-            if (lines.length < 2) throw new Error("Wealthica CSV file is empty or has no data rows.");
+            if (lines.length < 2) return []; // Return empty array if no data
             const headers = lines[0].split(',').map(h => h.trim());
             const data = [];
-            const idx = {
-                date: headers.indexOf('Trade Date'),
-                account: headers.indexOf('Asset/Account'),
-                description: headers.indexOf('Description'),
-                type: headers.indexOf('Type'),
-                category: headers.indexOf('Category'),
-                amount: headers.indexOf('Amount (CAD)')
-            };
-            if (idx.date === -1 || idx.account === -1 || idx.description === -1 || idx.type === -1 || idx.amount === -1) {
-                 throw new Error("Wealthica CSV is missing required columns.");
-            }
+            const idx = { date: headers.indexOf('Trade Date'), account: headers.indexOf('Asset/Account'), description: headers.indexOf('Description'), type: headers.indexOf('Type'), category: headers.indexOf('Category'), amount: headers.indexOf('Amount (CAD)') };
+            if (idx.date === -1 || idx.account === -1 || idx.description === -1 || idx.type === -1 || idx.amount === -1) { throw new Error("Wealthica CSV missing required columns."); }
+
             for (let i = 1; i < lines.length; i++) {
                  const values = lines[i].split(',');
                  if (values.length >= headers.length) {
-                    const rawAmount = values[idx.amount]?.trim();
-                    const amountCAD = parseFloat(rawAmount);
+                    const amountCAD = parseFloat(values[idx.amount]?.trim());
                     if (isNaN(amountCAD)) continue;
-
                     const rawType = values[idx.type]?.trim().toLowerCase() || '';
-                    let standardizedType = 'Unknown';
-
-                    // Standardize Type
-                    if (rawType === 'deposit' || rawType === 'interest') {
-                        standardizedType = 'Income';
-                    } else if (rawType === 'withdrawal') {
-                        standardizedType = 'Expense';
-                    } else if (rawType === 'transfer') {
-                         standardizedType = 'Transfer';
-                    } else if (rawType === 'fee') {
-                        standardizedType = 'Fee';
-                    } else { // Fallback if type is missing or unrecognized
-                         standardizedType = amountCAD >= 0 ? 'Income' : 'Expense';
-                    }
+                    let standardizedType = amountCAD >= 0 ? 'Income' : 'Expense'; // Default based on amount
+                    if (rawType === 'deposit' || rawType === 'interest') standardizedType = 'Income';
+                    else if (rawType === 'withdrawal') standardizedType = 'Expense';
+                    else if (rawType === 'transfer') standardizedType = 'Transfer';
+                    else if (rawType === 'fee') standardizedType = 'Fee';
 
                     const standardizedDate = standardizeDate(values[idx.date]?.trim(), 'wealthica');
-                    if (!standardizedDate) continue; // Skip if date is invalid
+                    if (!standardizedDate) continue;
 
                     data.push({
-                        date: standardizedDate, // YYYY-MM-DD
-                        account: values[idx.account]?.trim() || 'Unknown Wealthica Account',
-                        description: values[idx.description]?.trim() || 'No Description',
-                        category: values[idx.category]?.trim() || null,
-                        type: standardizedType, // Standardized
-                        amount: amountCAD,
-                        sourceFile: 'Wealthica'
+                        date: standardizedDate, account: values[idx.account]?.trim() || 'Unknown Wealthica', description: values[idx.description]?.trim() || 'No Description',
+                        category: values[idx.category]?.trim() || null, type: standardizedType, amount: amountCAD, sourceFile: 'Wealthica'
                     });
-                } else {
-                    console.warn(`Wealthica Skipping row ${i + 1} due to insufficient columns:`, lines[i]);
-                }
+                } else { console.warn(`Wealthica Skipping row ${i + 1} due to insufficient columns:`, lines[i]); }
             }
             return data;
         }
 
         function parseWiseCSV(csvText) {
+             // ... (parsing logic remains the same as previous version)
             const lines = csvText.trim().split('\n');
-            if (lines.length < 2) throw new Error("Wise CSV file is empty or has no data rows.");
-             // Wise CSV uses commas within quoted fields, need more robust parsing
+            if (lines.length < 2) return []; // Return empty array if no data
              const headers = lines[0].match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)?.map(h => h.startsWith('"') && h.endsWith('"') ? h.slice(1, -1) : h.trim()) || [];
             const data = [];
-            const idx = {
-                date: headers.indexOf('Date'),
-                type: headers.indexOf('Type'), // CREDIT, DEBIT, TRANSFER
-                amount: headers.indexOf('Amount'),
-                currency: headers.indexOf('Currency'),
-                description: headers.indexOf('Description'),
-                merchant: headers.indexOf('Merchant Name'), // Potentially useful
-            };
-
-            // Basic check for essential columns
-             if (idx.date === -1 || idx.type === -1 || idx.amount === -1 || idx.currency === -1 || idx.description === -1) {
-                 throw new Error("Wise CSV is missing required columns (Date, Type, Amount, Currency, Description).");
-            }
+            const idx = { date: headers.indexOf('Date'), type: headers.indexOf('Type'), amount: headers.indexOf('Amount'), currency: headers.indexOf('Currency'), description: headers.indexOf('Description'), merchant: headers.indexOf('Merchant Name') };
+            if (idx.date === -1 || idx.type === -1 || idx.amount === -1 || idx.currency === -1 || idx.description === -1) { throw new Error("Wise CSV missing required columns."); }
 
             for (let i = 1; i < lines.length; i++) {
-                 // Regex to handle commas within quotes
                 const values = lines[i].match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)?.map(field => field.startsWith('"') && field.endsWith('"') ? field.slice(1, -1).replace(/""/g, '"') : field.trim()) || [];
-
                  if (values.length >= headers.length) {
                      const currency = values[idx.currency]?.trim().toUpperCase();
-                     // Only process CAD transactions for now, as amounts might not be CAD otherwise
-                     if (currency !== 'CAD') continue;
-
-                    const rawAmount = values[idx.amount]?.trim();
-                    const amountCAD = parseFloat(rawAmount);
+                     if (currency !== 'CAD') continue; // Only CAD for now
+                    const amountCAD = parseFloat(values[idx.amount]?.trim());
                      if (isNaN(amountCAD)) continue;
-
                     const rawType = values[idx.type]?.trim().toUpperCase() || '';
                     const description = values[idx.description]?.trim() || '';
                      const merchant = values[idx.merchant]?.trim() || '';
-                    let standardizedType = 'Unknown';
+                    let standardizedType = amountCAD >= 0 ? 'Income' : 'Expense'; // Default
 
-                    // Standardize Type based on Wise Type and Description/Amount
-                    if (rawType === 'TRANSFER') {
-                        standardizedType = 'Transfer';
-                    } else if (description.toLowerCase().includes('fee') || description.toLowerCase().includes('wise card acquisition')) {
-                         standardizedType = 'Fee';
-                     } else if (rawType === 'CREDIT') {
-                         standardizedType = 'Income'; // Assume CREDIT is Income (top-up, received money, refund)
-                     } else if (rawType === 'DEBIT') {
-                         standardizedType = 'Expense'; // Assume DEBIT is Expense unless identified as Fee/Transfer
-                     } else { // Fallback
-                         standardizedType = amountCAD >= 0 ? 'Income' : 'Expense';
-                    }
+                    if (rawType === 'TRANSFER') standardizedType = 'Transfer';
+                    else if (description.toLowerCase().includes('fee') || description.toLowerCase().includes('wise card acquisition')) standardizedType = 'Fee';
+                    else if (rawType === 'CREDIT') standardizedType = 'Income';
+                    else if (rawType === 'DEBIT') standardizedType = 'Expense';
 
                      const standardizedDate = standardizeDate(values[idx.date]?.trim(), 'wise');
-                     if (!standardizedDate) continue; // Skip if date is invalid
+                     if (!standardizedDate) continue;
 
                     data.push({
-                        date: standardizedDate, // YYYY-MM-DD
-                        account: 'Wise Account', // Assign a generic name
-                        description: description || merchant || 'Wise Transaction', // Use merchant if description empty
-                        category: null, // Wise CSV doesn't provide category directly
-                        type: standardizedType, // Standardized
-                        amount: amountCAD,
-                        sourceFile: 'Wise'
+                        date: standardizedDate, account: 'Wise Account', description: description || merchant || 'Wise Transaction',
+                        category: null, type: standardizedType, amount: amountCAD, sourceFile: 'Wise'
                     });
-                 } else {
-                      console.warn(`Wise Skipping row ${i + 1} due to insufficient columns/parsing issue:`, lines[i]);
-                 }
+                 } else { console.warn(`Wise Skipping row ${i + 1} due to parsing issue:`, lines[i]); }
             }
             return data;
         }
 
-
         // --- Update UI Elements ---
         function updateDashboardHeader(transactions) {
-            let minDate = null;
-            let maxDate = null;
-            let hasValidDates = false;
-
+             // ... (logic remains the same as previous version)
+            let minDate = null, maxDate = null, hasValidDates = false;
             transactions.forEach(t => {
                 if (t.date) {
                     try {
-                        const currentDate = new Date(t.date + 'T00:00:00Z'); // Treat as UTC date
+                        const currentDate = new Date(t.date + 'T00:00:00Z');
                         if (!isNaN(currentDate)) {
                             if (!minDate || currentDate < minDate) minDate = currentDate;
                             if (!maxDate || currentDate > maxDate) maxDate = currentDate;
                             hasValidDates = true;
                         }
-                    } catch(e) { console.warn("Could not parse date from standardized string:", t.date); }
+                    } catch(e) {}
                 }
             });
-
             let summaryText = "Analysis of All Loaded Transactions";
             if (hasValidDates) {
                 const options = { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' };
                 summaryText = `Transactions from ${minDate.toLocaleDateString('en-US', options)} to ${maxDate.toLocaleDateString('en-US', options)}`;
             }
-
             document.getElementById('dashboard-summary').textContent = summaryText;
             document.getElementById('transaction-count').textContent = transactions.length;
         }
 
         function updateSummaryCards(transactions) {
             let totalIncome = 0, totalExpenses = 0, netTransfers = 0;
-            // Note: Fees are now included in Expenses for the card total
              transactions.forEach(t => {
                  if (t.type === 'Income') totalIncome += t.amount;
                  else if (t.type === 'Expense' || t.type === 'Fee') totalExpenses += Math.abs(t.amount);
@@ -450,10 +380,13 @@
              });
             const netCashFlow = totalIncome - totalExpenses + netTransfers;
 
+            // Log totals for verification
+             console.log(`Calculated Totals - Income: ${totalIncome}, Expenses (incl Fees): ${totalExpenses}, Net Transfers: ${netTransfers}, Net Flow: ${netCashFlow}`);
+
             document.getElementById('total-income').textContent = currencyFormatter.format(totalIncome);
             document.getElementById('income-subtitle').textContent = `Total Income`;
             document.getElementById('total-expenses').textContent = currencyFormatter.format(totalExpenses * -1);
-            document.getElementById('expense-subtitle').textContent = `Total Expenses & Fees`; // Updated subtitle
+            document.getElementById('expense-subtitle').textContent = `Total Expenses & Fees`;
             document.getElementById('total-transfers').textContent = currencyFormatter.format(netTransfers);
             document.getElementById('total-transfers').className = `card-value ${netTransfers >= 0 ? 'positive' : 'negative'}`;
             document.getElementById('transfer-subtitle').textContent = `Total Net Transfers`;
@@ -466,30 +399,35 @@
         function filterTransactionsForTable() {
             const visibleTypes = new Set();
             visibleChartCategories.forEach(label => {
-                const types = legendLabelToTypesMap[label];
+                const types = legendLabelToTypesMap[label]; // Use map based on legend label
                 if (types) types.forEach(type => visibleTypes.add(type));
             });
+             // Filter the global combined dataset
             const filteredTransactions = allTransactionsData.filter(t => visibleTypes.has(t.type));
             const tableTitle = document.getElementById('transactions-table-title');
             if (visibleChartCategories.size === Object.keys(legendLabelToTypesMap).length) tableTitle.textContent = `All Transactions`;
             else tableTitle.textContent = `Transactions (${Array.from(visibleChartCategories).join(', ')})`;
-            populateTransactionsTable(filteredTransactions);
+            populateTransactionsTable(filteredTransactions); // Call populate with filtered data
         }
 
         function initializeCashFlowChart(transactions) {
+            const container = document.getElementById('cash-flow-container');
             const ctx = document.getElementById('cash-flow-chart')?.getContext('2d');
-            if (!ctx) return;
+            if (!ctx || !container) return;
+
+            // Remove placeholder before drawing
+            container.querySelector('.loading-placeholder')?.remove();
+            ctx.canvas.style.display = 'block'; // Ensure canvas is visible
+
             if (cashFlowChartInstance) cashFlowChartInstance.destroy();
 
-            // Calculate totals based on *standardized* types
              const income = transactions.filter(t => t.type === 'Income').reduce((sum, t) => sum + t.amount, 0);
              const expenses = Math.abs(transactions.filter(t => t.type === 'Expense').reduce((sum, t) => sum + t.amount, 0));
-             const transfers = transactions.filter(t => t.type === 'Transfer').reduce((sum, t) => sum + t.amount, 0); // Keep sign for net calculation
+             const transfers = transactions.filter(t => t.type === 'Transfer').reduce((sum, t) => sum + t.amount, 0);
              const fees = Math.abs(transactions.filter(t => t.type === 'Fee').reduce((sum, t) => sum + t.amount, 0));
 
-             // Use standardized types for labels/data points in the chart
-             const chartLabels = ['Income', 'Expenses', 'Transfers', 'Fees']; // Match legend labels
-             const chartDataPoints = [income, expenses, Math.abs(transfers), fees]; // Use absolute for pie segments
+             const chartLabels = ['Income', 'Expenses', 'Transfers', 'Fees']; // Use consistent labels
+             const chartDataPoints = [income, expenses, Math.abs(transfers), fees];
              const backgroundColors = [ 'rgba(16, 185, 129, 0.7)', 'rgba(239, 68, 68, 0.7)', transfers >= 0 ? 'rgba(14, 165, 233, 0.7)' : 'rgba(245, 158, 11, 0.7)', 'rgba(245, 158, 11, 0.7)' ];
              const borderColors = [ 'rgb(16, 185, 129)', 'rgb(239, 68, 68)', transfers >= 0 ? 'rgb(14, 165, 233)' : 'rgb(245, 158, 11)', 'rgb(245, 158, 11)' ];
 
@@ -501,27 +439,38 @@
                     plugins: {
                         legend: {
                              position: 'top', labels: { padding: 15 },
-                             onClick: (e, legendItem, legend) => { // Filter logic remains the same
+                             onClick: (e, legendItem, legend) => {
                                  const ci = legend.chart; const label = legendItem.text;
-                                 if (visibleChartCategories.has(label)) {
-                                     visibleChartCategories.delete(label); ci.hide(legendItem.index); legendItem.hidden = true;
+                                 const index = legendItem.index; // Correctly get index
+
+                                 // Check if the item is currently hidden *by Chart.js*
+                                 const meta = ci.getDatasetMeta(0); // Assuming one dataset
+                                 const currentlyHidden = meta.data[index].hidden;
+
+                                 if (currentlyHidden) {
+                                     visibleChartCategories.add(label);
+                                     ci.show(index);
+                                     legendItem.hidden = false; // Sync our state representation
                                  } else {
-                                     visibleChartCategories.add(label); ci.show(legendItem.index); legendItem.hidden = false;
+                                     visibleChartCategories.delete(label);
+                                     ci.hide(index);
+                                     legendItem.hidden = true; // Sync our state representation
                                  }
-                                 filterTransactionsForTable(); // This triggers the table update
+                                 // Use the updated visibleChartCategories to filter the table
+                                 filterTransactionsForTable();
                              }
                          },
                          tooltip: {
                              backgroundColor: 'rgba(255, 255, 255, 0.95)', titleColor: '#0f172a', bodyColor: '#334155', bodyFont: { size: 14 }, borderColor: '#e2e8f0', borderWidth: 1, padding: 12,
                              callbacks: {
-                                 label: function(context) { // Uses calculated totals
+                                 label: function(context) {
                                      let label = context.label || ''; if (label) label += ': ';
                                      const rawValue = context.raw; let actualValue = rawValue;
                                       if (context.label === 'Income') actualValue = income;
-                                      else if (context.label === 'Expenses') actualValue = expenses * -1; // Show expenses as negative
-                                      else if (context.label === 'Transfers') actualValue = transfers; // Show net transfers signed
-                                      else if (context.label === 'Fees') actualValue = fees * -1; // Show fees as negative
-                                     const total = chartDataPoints.reduce((a, b) => a + Math.abs(b), 0); // Sum of absolute values for percentage base
+                                      else if (context.label === 'Expenses') actualValue = expenses * -1;
+                                      else if (context.label === 'Transfers') actualValue = transfers;
+                                      else if (context.label === 'Fees') actualValue = fees * -1;
+                                     const total = chartDataPoints.reduce((a, b) => a + Math.abs(b), 0);
                                      const percentage = total !== 0 ? Math.round(Math.abs(actualValue) / total * 100) : 0;
                                      label += currencyFormatter.format(actualValue); if (total !== 0) label += ` (${percentage}%)`;
                                      return label;
@@ -533,43 +482,33 @@
              });
          }
 
-        // Account Balances Chart Function Removed
-        // function initializeAccountsChart() { ... }
-
         function populateTransactionsTable(transactions) {
-            const tableBody = document.querySelector('#transactions-table tbody');
+            const tableBody = document.getElementById('transactions-table-body');
             if (!tableBody) return;
-            tableBody.innerHTML = '';
+            tableBody.innerHTML = ''; // Clear previous content (including loading row)
+
              const sortedTransactions = [...transactions].sort((a, b) => {
-                 // Sort by standardized YYYY-MM-DD date string
-                 if (a.date < b.date) return 1; // Newer dates first
-                 if (a.date > b.date) return -1;
-                 return 0;
+                 if (a.date < b.date) return 1; if (a.date > b.date) return -1; return 0;
              });
 
             if (sortedTransactions.length === 0) {
                 const row = tableBody.insertRow(); const cell = row.insertCell();
                 cell.colSpan = 6; cell.textContent = visibleChartCategories.size === 0 ? 'No categories selected.' : 'No transactions found matching filter.';
-                cell.style.textAlign = 'center'; cell.style.padding = '2rem'; cell.style.color = 'var(--text-tertiary)';
+                cell.style.textAlign = 'center'; cell.style.padding = '3rem 1rem'; cell.style.color = 'var(--text-tertiary)';
+                cell.classList.add('loading-placeholder'); // Use same style for empty message
                 return;
             }
 
             sortedTransactions.forEach(transaction => {
                 const row = tableBody.insertRow();
-                const accountName = transaction.account; // Use the already standardized account name
-                // Simple initials for account icon
+                const accountName = transaction.account;
                 const accountInitials = accountName.split(' ').map(word => word[0]).join('').substring(0, 2).toUpperCase();
-                // Basic color coding for known accounts
-                let accountColor = '#64748b'; // Default
-                 if (accountName.includes('RBC Advantage')) accountColor = '#ef4444';
-                 else if (accountName.includes('CIBC Chequing')) accountColor = '#10b981';
-                 else if (accountName.includes('RBC Cash Back')) accountColor = '#f59e0b';
-                 else if (accountName.includes('CIBC VISA')) accountColor = '#8b5cf6';
-                 else if (accountName.includes('CIBC Savings')) accountColor = '#0ea5e9';
-                 else if (accountName.includes('Wise')) accountColor = '#9FE870'; // Wise green
+                let accountColor = '#64748b';
+                 if (accountName.includes('RBC')) accountColor = '#ef4444'; // Generic RBC Red
+                 else if (accountName.includes('CIBC')) accountColor = '#10b981'; // Generic CIBC Green
+                 else if (accountName.includes('Wise')) accountColor = '#9FE870'; // Wise Green
 
-                 // Use standardized type for badge class
-                const badgeClass = `badge-${transaction.type}`;
+                const badgeClass = `badge-${transaction.type}`; // Use standardized type
 
                 row.innerHTML = `
                     <td>${transaction.date}</td>
@@ -588,9 +527,11 @@
              Chart.defaults.plugins.legend.labels.usePointStyle = true;
              Chart.defaults.plugins.legend.labels.pointStyle = 'circle';
 
+            // Hide canvas initially while placeholder is shown
+            document.getElementById('cash-flow-chart').style.display = 'none';
+
             showMessage('info', `Loading transactions from CSV files...`);
 
-            // Fetch both files concurrently
             Promise.all([
                 fetch(WEALTHICA_CSV_PATH).then(response => {
                     if (!response.ok) throw new Error(`Failed to load ${WEALTHICA_CSV_PATH}: ${response.statusText}`);
@@ -608,32 +549,43 @@
                     const wiseTransactions = parseWiseCSV(wiseCsvText);
                     console.log(`Parsed ${wiseTransactions.length} Wise transactions.`);
 
-                    // Combine and store globally
                     allTransactionsData = [...wealthicaTransactions, ...wiseTransactions];
                     console.log(`Combined total: ${allTransactionsData.length} transactions.`);
 
                     if (allTransactionsData.length === 0) {
                         showMessage('warning', `No valid transactions found in the CSV files.`);
+                        // Still attempt to render empty state for table/chart
+                         updateDashboardHeader([]);
+                         updateSummaryCards([]);
+                         initializeCashFlowChart([]); // Render empty chart
+                         // Remove placeholders even if empty
+                         document.getElementById('cash-flow-container')?.querySelector('.loading-placeholder')?.remove();
+                         document.getElementById('transactions-table-body').innerHTML = ''; // Clear loading row
+                         populateTransactionsTable([]); // Show "No transactions" message
                     } else {
-                        clearMessage();
+                        clearMessage(); // Clear overlay message
+                        // Update UI with combined data
+                        updateDashboardHeader(allTransactionsData);
+                        updateSummaryCards(allTransactionsData);
+                        initializeCashFlowChart(allTransactionsData);
+                        // Populate table initially (will respect default filter state - all visible)
+                        filterTransactionsForTable();
                     }
-                    // Initial update using the full combined dataset
-                    updateDashboardHeader(allTransactionsData);
-                    updateSummaryCards(allTransactionsData);
-                    initializeCashFlowChart(allTransactionsData);
-                    // initializeAccountsChart(); // Removed
-                    filterTransactionsForTable(); // Populate table respecting initial (all) filters
 
                 } catch (parseError) {
-                    console.error("Error parsing CSV data:", parseError);
+                    console.error("Error processing CSV data:", parseError);
                     showMessage('error', `Error processing CSV data: ${parseError.message}`);
-                    updateDashboardHeader([]); updateSummaryCards([]); initializeCashFlowChart([]); populateTransactionsTable([]);
+                    // Clear placeholders on error to show the main error overlay clearly
+                    document.getElementById('cash-flow-container')?.querySelector('.loading-placeholder')?.remove();
+                    document.getElementById('transactions-table-body').innerHTML = '';
                 }
             })
             .catch(error => {
                 console.error('Error fetching or processing CSV files:', error);
                 showMessage('error', `Failed to load or process transaction data: ${error.message}. Check file paths and server setup.`);
-                updateDashboardHeader([]); updateSummaryCards([]); initializeCashFlowChart([]); populateTransactionsTable([]);
+                // Clear placeholders on fetch error
+                document.getElementById('cash-flow-container')?.querySelector('.loading-placeholder')?.remove();
+                document.getElementById('transactions-table-body').innerHTML = '';
             });
         }); // End DOMContentLoaded
 
