@@ -4,14 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Website - Home</title>
-    <!-- Font Awesome - Needed for Sidebar Icons -->
     <link
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
         rel="stylesheet"
     />
     <style>
-        /* --- Base & Layout Styles (Copied from original index (1).html) --- */
-        :root {
+        /* --- Base, Layout, Sidebar, Main Content, Mobile Styles --- */
+        /* --- (Keep ALL styles from the previous MPA version of index.html) --- */
+         :root { /* Ensure all needed vars are here */
             --bg-primary: #f8fafc;
             --bg-secondary: #ffffff;
             --text-primary: #0f172a;
@@ -20,291 +20,110 @@
             --accent-secondary: #0ea5e9;
             --border-color: #e2e8f0;
             --sidebar-width: 250px;
-            --header-height: 60px; /* Optional: Use if you add a header */
+            --header-height: 60px;
             --transition-speed: 0.3s;
             --font-primary: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            --bg-tertiary: #f1f5f9;
+            --text-tertiary: #64748b;
+            --accent-tertiary: #38bdf8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --border-radius: 12px;
+            --card-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: var(--font-primary);
-        }
-
-        body {
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-            font-size: 16px;
-            line-height: 1.5;
-            /* overflow-x: hidden; Remove this if not needed globally */
-        }
-
-        .layout {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* --- Sidebar Styling (Copied) --- */
-        .sidebar {
-            width: var(--sidebar-width);
-            background-color: var(--bg-secondary);
-            border-right: 1px solid var(--border-color);
-            height: 100vh;
-            position: fixed; /* Or 'sticky' if preferred */
-            top: 0;
-            left: 0;
-            overflow-y: auto;
-            z-index: 10;
-            transition: transform var(--transition-speed); /* For mobile */
-        }
-
-        .sidebar-header {
-            padding: 1.5rem;
-            display: flex;
-            align-items: center;
-            border-bottom: 1px solid var(--border-color);
-            height: var(--header-height); /* Match header height */
-        }
-
-        .sidebar-logo {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--accent-primary);
-            text-decoration: none; /* Ensure logo isn't underlined if it's a link */
-        }
-
-        .sidebar-nav {
-            padding: 1rem 0;
-        }
-
-        .nav-section {
-            margin-bottom: 1rem;
-        }
-
-        .nav-section-title {
-            padding: 0.5rem 1.5rem;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-secondary);
-            font-weight: 600;
-        }
-
-        .nav-items {
-            list-style: none;
-        }
-
-        .nav-item {
-            margin: 0.25rem 0;
-        }
-
-        .nav-link {
-            display: flex;
-            align-items: center;
-            padding: 0.75rem 1.5rem;
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: background-color var(--transition-speed),
-                color var(--transition-speed);
-            border-left: 3px solid transparent;
-        }
-
-        .nav-link:hover {
-            background-color: rgba(0, 0, 0, 0.05);
-            color: var(--accent-primary);
-        }
-
-        /* Style for the ACTIVE page link */
-        /* You might need a small script to add/remove 'active' class based on current URL, */
-        /* or manually set it in each file (less ideal) */
-        .nav-link.active { /* Example: Add class 'active' to the current page's link */
-            color: var(--accent-primary);
-            border-left-color: var(--accent-primary);
-            background-color: rgba(2, 132, 199, 0.1);
-            font-weight: 500;
-        }
-
-
-        .nav-icon {
-            margin-right: 0.75rem;
-            width: 20px;
-            text-align: center;
-        }
-
-        /* --- Main Content Area Styling --- */
-        .main-content {
-            flex: 1;
-            margin-left: var(--sidebar-width); /* Make space for the fixed sidebar */
-            padding: 2rem; /* Add padding to the content area */
-             min-height: 100vh; /* Ensure it takes full height */
-        }
-
-         /* Optional Header inside main content */
-         .page-header {
-            height: var(--header-height);
-            background-color: var(--bg-secondary);
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            padding: 0 2rem;
-            margin: -2rem -2rem 2rem -2rem; /* Adjust padding negation */
-         }
-         .page-header-title {
-             font-size: 1.25rem;
-            font-weight: 600;
-         }
-
-
-        /* --- Mobile Responsiveness (Copied & Adapted) --- */
-        .sidebar-toggle {
-            display: none; /* Hide toggle by default on desktop */
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 0.5rem;
-            color: var(--text-secondary);
-            position: fixed; /* Position it */
-            top: 10px;
-            left: 10px;
-            z-index: 20; /* Above sidebar */
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-primary); }
+        body { background-color: var(--bg-primary); color: var(--text-primary); font-size: 16px; line-height: 1.5; }
+        .layout { display: flex; min-height: 100vh; }
+        .sidebar { width: var(--sidebar-width); background-color: var(--bg-secondary); border-right: 1px solid var(--border-color); height: 100vh; position: fixed; top: 0; left: 0; overflow-y: auto; z-index: 10; transition: transform var(--transition-speed); }
+        .sidebar-header { padding: 1.5rem; display: flex; align-items: center; border-bottom: 1px solid var(--border-color); height: var(--header-height); }
+        .sidebar-logo { font-size: 1.25rem; font-weight: 700; color: var(--accent-primary); text-decoration: none; }
+        .sidebar-nav { padding: 1rem 0; }
+        .nav-section { margin-bottom: 1rem; }
+        .nav-section-title { padding: 0.5rem 1.5rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); font-weight: 600; }
+        .nav-items { list-style: none; }
+        .nav-item { margin: 0.25rem 0; }
+        .nav-link { display: flex; align-items: center; padding: 0.75rem 1.5rem; color: var(--text-secondary); text-decoration: none; transition: background-color var(--transition-speed), color var(--transition-speed); border-left: 3px solid transparent; }
+        .nav-link:hover { background-color: rgba(0, 0, 0, 0.05); color: var(--accent-primary); }
+        .nav-link.active { color: var(--accent-primary); border-left-color: var(--accent-primary); background-color: rgba(2, 132, 199, 0.1); font-weight: 500; }
+        .nav-icon { margin-right: 0.75rem; width: 20px; text-align: center; }
+        .main-content { flex: 1; margin-left: var(--sidebar-width); padding: 2rem; min-height: 100vh; }
+        .page-header { height: var(--header-height); background-color: var(--bg-secondary); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; padding: 0 2rem; margin: -2rem -2rem 2rem -2rem; }
+        .page-header-title { font-size: 1.25rem; font-weight: 600; }
+        .sidebar-toggle { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0.5rem; color: var(--text-secondary); position: fixed; top: 10px; left: 10px; z-index: 20; }
         @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%); /* Hide sidebar off-screen */
-            }
-            .sidebar.active { /* Show sidebar when active class is added */
-                transform: translateX(0);
-            }
-            .main-content {
-                margin-left: 0; /* Main content takes full width */
-                 padding: 1rem;
-                 margin-top: 50px; /* Add space for the toggle button if needed */
-            }
-             .page-header {
-                margin: -1rem -1rem 1rem -1rem; /* Adjust padding negation for mobile */
-                padding: 0 1rem;
-             }
-
-            .sidebar-toggle {
-                display: block; /* Show toggle button on mobile */
-            }
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.active { transform: translateX(0); }
+            .main-content { margin-left: 0; padding: 1rem; margin-top: 50px; }
+            .page-header { margin: -1rem -1rem 1rem -1rem; padding: 0 1rem; }
+            .sidebar-toggle { display: block; }
         }
-
-        /* --- Page Specific Styles for index.html --- */
-        .welcome-section {
-             background-color: var(--bg-secondary);
-             padding: 2rem;
-             border-radius: 8px;
-             box-shadow: 0 2px 10px rgba(0,0,0, 0.05);
-        }
-         .welcome-section h1 {
-             color: var(--accent-primary);
-             margin-bottom: 1rem;
-         }
-
+        .welcome-section { background-color: var(--bg-secondary); padding: 2rem; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0, 0.05); }
+        .welcome-section h1 { color: var(--accent-primary); margin-bottom: 1rem; }
+        /* Add specific scrollbar styles if needed */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-tertiary); }
+        ::-webkit-scrollbar-thumb { background: var(--accent-tertiary); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent-primary); }
     </style>
 </head>
 <body>
-    <!-- Button to toggle sidebar on mobile -->
     <button class="sidebar-toggle" id="sidebar-toggle">
         <i class="fas fa-bars"></i>
     </button>
 
     <div class="layout">
-        <!-- Sidebar Navigation (DUPLICATED STRUCTURE) -->
+        <!-- Full Sidebar for Homepage -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                 <!-- Link logo to homepage -->
-                <a href="index.html" class="sidebar-logo">My Website</a>
+                <a href="index.html" class="sidebar-logo" title="Go to Homepage">My Website</a>
             </div>
             <nav class="sidebar-nav">
                 <div class="nav-section">
                     <div class="nav-section-title">Pages</div>
                     <ul class="nav-items" id="page-nav">
                         <li class="nav-item">
-                            <!-- Add 'active' class MANUALLY for the current page -->
-                            <a href="index.html" class="nav-link active">
-                                <span class="nav-icon"><i class="fas fa-home"></i></span>
-                                <span>Home</span>
-                            </a>
+                            <a href="index.html" class="nav-link active"> <span class="nav-icon"><i class="fas fa-home"></i></span> <span>Home</span> </a>
                         </li>
                         <li class="nav-item">
-                            <!-- Direct link to the HTML file -->
-                            <a href="financial-dashboard.html" class="nav-link">
-                                <span class="nav-icon"><i class="fas fa-chart-line"></i></span>
-                                <span>Financial Dashboard</span>
-                            </a>
+                            <a href="financial-dashboard.html" class="nav-link"> <span class="nav-icon"><i class="fas fa-chart-line"></i></span> <span>Financial Dashboard</span> </a>
                         </li>
                         <li class="nav-item">
-                            <a href="ontario_vs_calgary.html" class="nav-link">
-                                <span class="nav-icon"><i class="fas fa-map-marked-alt"></i></span>
-                                <span>Ontario vs Calgary</span>
-                            </a>
+                            <a href="ontario_vs_calgary.html" class="nav-link"> <span class="nav-icon"><i class="fas fa-map-marked-alt"></i></span> <span>Ontario vs Calgary</span> </a>
                         </li>
                         <li class="nav-item">
-                            <a href="Ship_Technical_Data_Network_Light.html" class="nav-link">
-                                <span class="nav-icon"><i class="fas fa-ship"></i></span>
-                                <span>Ship Network Light</span>
-                            </a>
+                            <a href="Ship_Technical_Data_Network_Light.html" class="nav-link"> <span class="nav-icon"><i class="fas fa-ship"></i></span> <span>Ship Network Light</span> </a>
                         </li>
                         <li class="nav-item">
-                            <a href="Ship_Technical_Data_Network_Dark.html" class="nav-link">
-                                <span class="nav-icon"><i class="fas fa-moon"></i></span>
-                                <span>Ship Network Dark</span>
-                            </a>
+                            <a href="Ship_Technical_Data_Network_Dark.html" class="nav-link"> <span class="nav-icon"><i class="fas fa-moon"></i></span> <span>Ship Network Dark</span> </a>
                         </li>
                         <li class="nav-item">
-                            <a href="newfoundland_realestate.html" class="nav-link">
-                                <span class="nav-icon"><i class="fas fa-building"></i></span>
-                                <span>Newfoundland Real Estate</span>
-                            </a>
+                            <a href="newfoundland_realestate.html" class="nav-link"> <span class="nav-icon"><i class="fas fa-building"></i></span> <span>Newfoundland Real Estate</span> </a>
                         </li>
                     </ul>
                 </div>
             </nav>
         </aside>
 
-        <!-- Main Content Area -->
+        <!-- Main Content Area for Homepage -->
         <main class="main-content">
-            <!-- Optional Header for the page -->
              <header class="page-header">
                 <h1 class="page-header-title">Home</h1>
             </header>
-
-            <!-- Homepage Specific Content -->
             <div class="welcome-section">
                 <h1>Welcome to My Website!</h1>
-                <p>This is the homepage. Use the navigation on the left to explore other pages.</p>
-                <p>Each page is a separate HTML file loaded directly by your browser.</p>
+                <p>Use the navigation on the left to explore other pages.</p>
             </div>
-
-            <!-- Add more homepage content here if needed -->
-
         </main>
     </div>
 
-    <!-- JavaScript for Mobile Sidebar Toggle -->
+    <!-- Sidebar Toggle JS for Homepage -->
     <script>
         const sidebar = document.getElementById('sidebar');
         const toggleButton = document.getElementById('sidebar-toggle');
-
         if (toggleButton && sidebar) {
-            toggleButton.addEventListener('click', () => {
-                sidebar.classList.toggle('active');
-            });
-
-            // Optional: Close sidebar when clicking outside on mobile
-             document.addEventListener('click', function(event) {
-                const isClickInsideSidebar = sidebar.contains(event.target);
-                const isClickOnToggle = toggleButton.contains(event.target);
-
-                if (window.innerWidth <= 768 && !isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains('active')) {
-                    sidebar.classList.remove('active');
-                }
-            });
+            toggleButton.addEventListener('click', () => { sidebar.classList.toggle('active'); });
+            document.addEventListener('click', function(event) { /* ... (rest of toggle JS) ... */ const isClickInsideSidebar=sidebar.contains(event.target); const isClickOnToggle=toggleButton.contains(event.target); if(window.innerWidth<=768&&!isClickInsideSidebar&&!isClickOnToggle&&sidebar.classList.contains('active')){ sidebar.classList.remove('active'); } });
         }
     </script>
 </body>
