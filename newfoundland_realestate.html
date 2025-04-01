@@ -3,678 +3,899 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>St. John's Real Estate Investment Guide</title>
+    <title>Invest in St. John's, NL | Real Estate Guide</title> <!-- Updated Title -->
+
+    <!-- Preconnect for Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Using Poppins font for a modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js Dependency -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+
     <style>
-        /* CSS Styles */
+        /* --- Global Styles & Variables --- */
         :root {
-            --primary: #1a5276; /* Deep blue */
-            --secondary: #27ae60; /* Forest green */
-            --accent: #f39c12; /* Golden accent */
-            --light: #ecf0f1;
-            --dark: #2c3e50;
-            --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            --primary-hue: 205; /* Base hue for blues */
+            --secondary-hue: 145; /* Base hue for greens */
+            --accent-hue: 40; /* Base hue for gold/orange */
+
+            --primary-color: hsl(var(--primary-hue), 70%, 45%); /* #2074b2 */
+            --primary-dark: hsl(var(--primary-hue), 70%, 30%);
+            --primary-light: hsl(var(--primary-hue), 70%, 90%);
+            --secondary-color: hsl(var(--secondary-hue), 60%, 45%); /* #2ecc71 */
+            --secondary-light: hsl(var(--secondary-hue), 60%, 92%);
+            --accent-color: hsl(var(--accent-hue), 85%, 55%); /* #f39c12 */
+            --accent-light: hsl(var(--accent-hue), 85%, 95%);
+
+            --text-dark: #2c3e50; /* Dark Blue/Grey */
+            --text-medium: #596a7a;
+            --text-light: #95a5a6;
+            --bg-light: #f8f9fa; /* Very light grey */
+            --bg-white: #ffffff;
+            --border-color: #e9ecef;
+
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 5px 15px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.1);
+
+            --border-radius-sm: 4px;
+            --border-radius-md: 8px;
+            --border-radius-lg: 16px;
+
+            --transition-speed: 0.3s;
+            --font-primary: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth; /* Add smooth scrolling */
         }
-        
+
         body {
-            background-color: var(--light);
-            color: var(--dark);
-            line-height: 1.6;
+            font-family: var(--font-primary);
+            background-color: var(--bg-light);
+            color: var(--text-medium);
+            line-height: 1.7;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
-        
+
+        /* --- Layout & Containers --- */
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
-        
-        header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 2rem;
+
+        /* --- Header / Hero Section --- */
+        .hero {
+            background: linear-gradient(135deg, hsla(var(--primary-hue), 70%, 45%, 0.9), hsla(var(--secondary-hue), 60%, 45%, 0.9)), url('https://images.unsplash.com/photo-1587394160699-3aa87785ab7a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80') no-repeat center center;
+            /* Placeholder image - replace with a relevant St. John's image if possible */
+            background-size: cover;
+            color: var(--bg-white);
+            padding: 5rem 1.5rem;
             text-align: center;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            box-shadow: var(--shadow);
+            border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-md);
         }
-        
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3rem); /* Responsive font size */
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
         }
-        
-        .subtitle {
-            font-size: 1.2rem;
+
+        .hero .subtitle {
+            font-size: clamp(1rem, 3vw, 1.25rem);
             font-weight: 300;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
         }
-        
+
+        /* --- Tabs --- */
         .tabs {
             display: flex;
             justify-content: center;
-            margin-bottom: 20px;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+            margin-bottom: 2rem;
+            position: relative; /* For the underline effect */
+            border-bottom: 1px solid var(--border-color);
         }
-        
+
         .tab {
-            padding: 12px 24px;
-            background-color: white;
+            padding: 1rem 1.5rem;
+            background-color: transparent;
             border: none;
             cursor: pointer;
             font-size: 1rem;
             font-weight: 600;
-            transition: all 0.3s ease;
-            border-top-left-radius: 5px;
-            border-top-right-radius: 5px;
-            margin: 0 5px;
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
+            color: var(--text-medium);
+            transition: color var(--transition-speed), border-bottom-color var(--transition-speed);
+            border-bottom: 3px solid transparent;
+            margin: 0 0.5rem -1px 0.5rem; /* Overlap border-bottom */
+            position: relative;
+            top: 1px; /* Align with container border */
         }
-        
+
+        .tab:hover {
+            color: var(--primary-color);
+        }
+
         .tab.active {
-            background-color: var(--primary);
-            color: white;
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
         }
-        
+
+        /* --- Content Panels --- */
         .content-panel {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: var(--shadow);
+            background-color: transparent; /* Panels inherit body background */
+            padding: 1rem 0; /* Adjust padding */
             display: none;
+            animation: fadeIn 0.5s ease-out forwards; /* Fade-in animation */
         }
-        
+
         .content-panel.active {
             display: block;
         }
-        
-        .card {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: var(--shadow);
-            margin-bottom: 20px;
-            transition: transform 0.3s ease;
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        
+
+        /* --- General Content Styles --- */
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        h3 { /* Adjusted for card titles specifically below */
+             color: var(--primary-color);
+             font-weight: 600;
+        }
+
+        /* --- Cards --- */
+        .card {
+            background-color: var(--bg-white);
+            padding: 1.5rem; /* Increased padding */
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 1.5rem;
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+            border: 1px solid var(--border-color);
+            overflow: hidden; /* Ensure pseudo-elements are contained */
+            position: relative; /* For pseudo-elements */
+        }
+         .card::before { /* Subtle gradient highlight */
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--secondary-color), transparent);
+            opacity: 0.7;
+         }
+
+
         .card:hover {
             transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
         }
-        
-        .card-title {
-            color: var(--primary);
-            font-size: 1.4rem;
-            margin-bottom: 15px;
-            border-bottom: 2px solid var(--secondary);
-            padding-bottom: 10px;
+
+        .card .card-title { /* Specific styling for H3 inside cards */
+            color: var(--primary-dark);
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
         }
-        
-        .stat {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .stat-icon {
-            width: 40px;
-            height: 40px;
-            background-color: var(--primary);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            margin-right: 15px;
-            font-size: 1.2rem;
-        }
-        
-        .source-link {
-            display: inline-block;
-            font-size: 0.8rem;
-            color: var(--secondary);
-            text-decoration: none;
-            margin-left: 10px;
-            border-bottom: 1px dotted;
-        }
-        
-        .source-link:hover {
-            color: var(--accent);
-        }
-        
-        .highlight {
-            background-color: rgba(39, 174, 96, 0.1);
-            border-left: 4px solid var(--secondary);
-            padding: 15px;
-            margin: 20px 0;
-        }
-        
+         .card .card-title::after { /* Small accent line */
+             content: '';
+             position: absolute;
+             bottom: -1px; /* Position over the border */
+             left: 0;
+             width: 50px;
+             height: 3px;
+             background-color: var(--secondary-color);
+             border-radius: 3px;
+         }
+
+        /* --- Grid Layout --- */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
+            /* Use minmax for better responsiveness */
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+            gap: 1.5rem; /* Increased gap */
+            margin-top: 1.5rem;
         }
-        
+
+        /* --- Info Items within Cards --- */
         .info-item {
             display: flex;
-            margin-bottom: 15px;
-            align-items: flex-start;
+            align-items: flex-start; /* Align items to the start */
+            margin-bottom: 1rem;
+            gap: 0.8rem; /* Add gap for spacing */
+            font-size: 0.95rem; /* Slightly larger text */
         }
-        
+
         .info-icon {
-            color: var(--primary);
-            margin-right: 10px;
-            font-size: 1.2rem;
-            min-width: 24px;
-        }
-        
-        .cta-button {
-            display: inline-block;
-            background-color: var(--secondary);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: 600;
-            margin-top: 20px;
-            transition: all 0.3s ease;
-        }
-        
-        .cta-button:hover {
-            background-color: var(--accent);
-            transform: translateY(-2px);
-        }
-        
-        .chart-container {
-            height: 300px;
-            margin: 30px 0;
-        }
-        
-        footer {
+            color: var(--primary-color);
+            font-size: 1.3rem; /* Slightly larger icon */
+            line-height: 1.5; /* Align icon better with text */
+            min-width: 24px; /* Ensure consistent icon spacing */
             text-align: center;
-            margin-top: 50px;
-            color: var(--dark);
-            font-size: 0.9rem;
+            margin-top: 2px; /* Fine-tune vertical alignment */
         }
-        
-        /* Calculator Styles */
+
+        .source-link {
+            font-size: 0.8rem;
+            color: var(--secondary-color);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--secondary-color);
+            transition: color var(--transition-speed), border-bottom-color var(--transition-speed);
+            margin-left: 5px; /* Add space before source link */
+        }
+
+        .source-link:hover {
+            color: var(--accent-color);
+            border-bottom-color: var(--accent-color);
+        }
+
+        /* --- Highlight Section --- */
+        .highlight {
+            background-color: var(--secondary-light);
+            border-left: 5px solid var(--secondary-color);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: var(--border-radius-sm);
+            font-size: 1rem;
+            color: var(--text-dark);
+        }
+         .highlight p { margin: 0; }
+
+        /* --- Buttons --- */
+        .cta-button, .calculate-btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: var(--bg-white);
+            padding: 0.8rem 1.8rem; /* Adjusted padding */
+            border-radius: var(--border-radius-md);
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 1rem; /* Adjusted margin */
+            transition: background-color var(--transition-speed), transform var(--transition-speed), box-shadow var(--transition-speed);
+            border: none; /* Remove border */
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            font-size: 1rem;
+        }
+
+        .cta-button:hover, .calculate-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+         .cta-button { /* Specific style if needed */
+             background-color: var(--secondary-color);
+         }
+         .cta-button:hover {
+              background-color: hsl(var(--secondary-hue), 60%, 35%);
+         }
+
+        /* --- Chart --- */
+        .chart-container {
+            height: 350px; /* Slightly taller */
+            margin: 2rem 0; /* More margin */
+            padding: 1.5rem;
+            background-color: var(--bg-white);
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+        }
+         .chart-container canvas {
+             max-width: 100%;
+         }
+
+        /* --- Calculator --- */
         .calculator {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: var(--shadow);
+            background-color: var(--bg-white);
+            padding: 2rem; /* More padding */
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
         }
-        
+
         .calculator h3 {
-            color: var(--primary);
-            margin-bottom: 15px;
+            color: var(--primary-dark);
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+            text-align: center;
         }
-        
+
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 1.2rem; /* Increased margin */
         }
-        
+
         label {
             display: block;
-            margin-bottom: 5px;
-            font-weight: 600;
+            margin-bottom: 0.5rem; /* Increased margin */
+            font-weight: 500; /* Slightly bolder */
+            color: var(--text-dark);
+            font-size: 0.9rem;
         }
-        
-        input {
+
+        input[type="number"] {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 0.8rem 1rem; /* Adjusted padding */
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            font-size: 1rem;
+            font-family: var(--font-primary);
+            transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
         }
-        
-        .calculate-btn {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px hsla(var(--primary-hue), 70%, 50%, 0.2);
+        }
+
+        .result {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: var(--primary-light);
+            border-radius: var(--border-radius-sm);
+            border-left: 5px solid var(--primary-color);
+            display: none; /* Keep hidden initially */
+            animation: fadeIn 0.5s ease-out forwards; /* Add fade-in */
+        }
+
+        .result h4 {
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
             font-weight: 600;
         }
-        
-        .result {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: rgba(26, 82, 118, 0.1);
-            border-radius: 4px;
-            display: none;
+         .result p {
+             margin-bottom: 0.5rem;
+             font-size: 0.95rem;
+         }
+         .result strong {
+             font-weight: 600;
+             color: var(--text-dark);
+         }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            margin-top: 3rem; /* Increased margin */
+            padding: 1.5rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
         }
-        
-        .result h4 {
-            color: var(--primary);
-            margin-bottom: 10px;
+
+        /* --- Responsive Adjustments --- */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 3rem 1rem;
+            }
+            .tabs {
+                justify-content: flex-start; /* Align tabs left on mobile */
+                overflow-x: auto; /* Allow horizontal scrolling if needed */
+                 padding-bottom: 0.5rem;
+                 margin-bottom: 1rem;
+            }
+             .tab {
+                 padding: 0.8rem 1rem;
+                 font-size: 0.9rem;
+                 white-space: nowrap; /* Prevent wrapping within tab */
+             }
+            h2 { font-size: 1.5rem; }
+            .card { padding: 1rem; }
+            .card .card-title { font-size: 1.1rem; }
+            .calculator { padding: 1.5rem; }
         }
+
     </style>
 </head>
 <body>
+    <header class="hero">
+        <h1>Invest in St. John's, Newfoundland</h1>
+        <p class="subtitle">Unlock exceptional real estate opportunities in Canada's charming and affordable East Coast capital.</p>
+    </header>
+
     <div class="container">
-        <header>
-            <h1>St. John's, Newfoundland Real Estate Investment Guide</h1>
-            <p class="subtitle">Discover why this coastal gem offers exceptional investment opportunities</p>
-        </header>
-        
         <div class="tabs">
             <button class="tab active" data-tab="market-overview">Market Overview</button>
-            <button class="tab" data-tab="personal-experience">Investor Success Story</button>
-            <button class="tab" data-tab="investment-calculator">Investment Calculator</button>
+            <button class="tab" data-tab="personal-experience">Investor Success</button>
+            <button class="tab" data-tab="investment-calculator">ROI Calculator</button>
         </div>
-        
+
+        <!-- Market Overview Panel -->
         <div id="market-overview" class="content-panel active">
-            <h2>St. John's Real Estate Market Overview</h2>
-            
+            <h2>Why St. John's? The Market Advantage</h2>
+
             <div class="highlight">
-                <p>St. John's, Newfoundland, offers compelling reasons for real estate investment due to its affordability, market growth, and economic resilience.</p>
+                <p>Discover compelling value, strong growth potential, and a resilient economy making St. John's a prime location for savvy real estate investors.</p>
             </div>
-            
+
             <div class="grid">
                 <div class="card">
-                    <h3 class="card-title">Affordable Housing Market</h3>
+                    <h3 class="card-title">Unbeatable Affordability</h3>
                     <div class="info-item">
-                        <div class="info-icon">📊</div>
+                        <div class="info-icon">💰</div>
                         <div>
-                            Average sale price in 2024: $369,027—significantly lower than many major Canadian cities
+                            <strong>Avg. Sale Price (2024): $369,027</strong> - Significantly lower than most major Canadian cities.
                             <a href="https://blog.remax.ca/st-johns-newfoundland-housing-market-outlook/" class="source-link" target="_blank">[Source]</a>
                         </div>
                     </div>
                     <div class="info-item">
-                        <div class="info-icon">💰</div>
+                        <div class="info-icon">📐</div>
                         <div>
-                            Average price per square foot is around $204, indicating good value for investors
+                            <strong>Avg. Price/SqFt: ~$204</strong> - Get more property for your investment dollar.
                             <a href="https://www.larryhann.com/st-johns-nl-real-estate.php" class="source-link" target="_blank">[Source]</a>
                         </div>
                     </div>
-                </div>
-                
-                <div class="card">
-                    <h3 class="card-title">Strong Market Growth</h3>
                     <div class="info-item">
                         <div class="info-icon">📈</div>
+                        <div>Excellent value proposition for both new and experienced investors looking for accessible entry points.</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">Robust Market Growth</h3>
+                    <div class="info-item">
+                        <div class="info-icon">📊</div>
                         <div>
-                            8.6% increase in average sale prices between 2023 and 2024 with projected 8% rise in 2025
+                            <strong>+8.6% Price Increase (23-24)</strong> with another <strong>8% projected for 2025</strong>.
                             <a href="https://blog.remax.ca/st-johns-newfoundland-housing-market-outlook/" class="source-link" target="_blank">[Source]</a>
                         </div>
                     </div>
                     <div class="info-item">
                         <div class="info-icon">🏠</div>
                         <div>
-                            26% year-over-year increase in residential activity as of February 2025
+                            <strong>+26% YoY Residential Activity</strong> (Feb 2025) indicating strong, sustained demand.
                             <a href="https://stats.crea.ca/board/stjo/" class="source-link" target="_blank">[Source]</a>
                         </div>
                     </div>
                     <div class="info-item">
-                        <div class="info-icon">💲</div>
-                        <div>
-                            Properties often sell above asking prices due to high demand and limited inventory
+                        <div class="info-icon">🔥</div>
+                        <div>Properties frequently sell <strong>above asking price</strong> due to high demand and tight inventory.
                             <a href="https://www.cbc.ca/news/canada/newfoundland-labrador/housing-market-tight-1.7388195" class="source-link" target="_blank">[Source]</a>
                         </div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="grid">
+
                 <div class="card">
-                    <h3 class="card-title">Resilient Economy</h3>
+                     <h3 class="card-title">Resilient & Diversifying Economy</h3>
                     <div class="info-item">
-                        <div class="info-icon">🏭</div>
-                        <div>
-                            Diverse economy supported by industries such as oil and gas, technology, healthcare, and tourism
-                            <a href="https://www.sproutproperties.ca/post/exploring-investment-opportunities-in-the-gem-of-canada-s-east-coast-st-john-s-newfoundland" class="source-link" target="_blank">[Source]</a>
+                        <div class="info-icon">⚓</div>
+                        <div>Supported by stable industries: <strong>Oil & Gas, Technology, Healthcare, Tourism</strong>.
+                             <a href="https://www.sproutproperties.ca/post/exploring-investment-opportunities-in-the-gem-of-canada-s-east-coast-st-john-s-newfoundland" class="source-link" target="_blank">[Source]</a>
                         </div>
                     </div>
                     <div class="info-item">
-                        <div class="info-icon">⚡</div>
-                        <div>
-                            Emerging as a leader in renewable energy and innovation
+                        <div class="info-icon">💡</div>
+                        <div>Emerging leader in <strong>Renewable Energy</strong> and tech innovation, fostering future growth.
                             <a href="https://www.sproutproperties.ca/post/exploring-investment-opportunities-in-the-gem-of-canada-s-east-coast-st-john-s-newfoundland" class="source-link" target="_blank">[Source]</a>
                         </div>
+                    </div>
+                     <div class="info-item">
+                        <div class="info-icon">🎓</div>
+                        <div>Memorial University expansion adds economic stability and increases rental demand.</div>
                     </div>
                 </div>
-                
-                <div class="card">
-                    <h3 class="card-title">Favorable Market Conditions</h3>
+
+                 <div class="card">
+                    <h3 class="card-title">Favorable Investment Conditions</h3>
                     <div class="info-item">
                         <div class="info-icon">⚖️</div>
-                        <div>
-                            Seller's market due to low inventory levels and increasing demand
+                        <div>Currently a <strong>Seller's Market</strong> driven by low inventory and high buyer interest.
                             <a href="https://blog.remax.ca/st-johns-newfoundland-housing-market-outlook/" class="source-link" target="_blank">[Source]</a>
-                        </div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-icon">🔑</div>
-                        <div>
-                            Lower interest rates and extended amortizations improving affordability for buyers
-                            <a href="https://blog.remax.ca/st-johns-newfoundland-housing-market-outlook/" class="source-link" target="_blank">[Source]</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="chart-container">
-                <canvas id="price-chart"></canvas>
-            </div>
-        </div>
-        
-        <div id="personal-experience" class="content-panel">
-            <h2>Investor Success Story</h2>
-            
-            <div class="highlight">
-                <p>First-hand experience from a successful real estate investor in St. John's, Newfoundland</p>
-            </div>
-            
-            <div class="card">
-                <h3 class="card-title">Investment Highlights</h3>
-                <div class="info-item">
-                    <div class="info-icon">🏆</div>
-                    <div>
-                        Top 10% of real estate investors in Canada due to consistent monthly profits
-                        <a href="https://stats.crea.ca/board/stjo/" class="source-link" target="_blank">[Source: CREA Stats]</a>
-                    </div>
-                </div>
-                <div class="info-item">
-                    <div class="info-icon">🏫</div>
-                    <div>
-                        High demand from international students at Memorial University (which is expanding, adding stability)
-                    </div>
-                </div>
-                <div class="info-item">
-                    <div class="info-icon">💵</div>
-                    <div>
-                        Favorable rent-to-mortgage ratio
-                    </div>
-                </div>
-            </div>
-            
-            <div class="grid">
-                <div class="card">
-                    <h3 class="card-title">Rental Performance</h3>
-                    <div class="info-item">
-                        <div class="info-icon">📊</div>
-                        <div>
-                            Year lease room rates between $790 and $1,190 during high demand periods
                         </div>
                     </div>
                     <div class="info-item">
                         <div class="info-icon">📉</div>
-                        <div>
-                            Current rates: $550-660 per room
+                        <div>Potential for moderating interest rates and existing extended amortizations improve buyer affordability.
+                             <a href="https://blog.remax.ca/st-johns-newfoundland-housing-market-outlook/" class="source-link" target="_blank">[Source]</a>
                         </div>
+                    </div>
+                     <div class="info-item">
+                        <div class="info-icon">🔑</div>
+                        <div>Lower operational costs (no usage-based water fees, no dump fees) enhance profitability.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart Canvas -->
+            <div class="chart-container">
+                <canvas id="price-chart"></canvas>
+            </div>
+        </div>
+
+        <!-- Investor Success Panel -->
+        <div id="personal-experience" class="content-panel">
+            <h2>Real Investor Success in St. John's</h2>
+            <div class="highlight">
+                <p>Hear first-hand why experienced investors are thriving in the St. John's market.</p>
+            </div>
+
+             <div class="grid">
+                <div class="card">
+                    <h3 class="card-title">Proven Profitability</h3>
+                    <div class="info-item">
+                        <div class="info-icon">🏆</div>
+                        <div>Achieving <strong>Top 10% Investor status</strong> in Canada through consistent monthly profits generated in St. John's.</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">💵</div>
+                        <div><strong>Favorable Rent-to-Mortgage Ratio:</strong> Strong cash flow potential compared to property costs.</div>
                     </div>
                     <div class="info-item">
                         <div class="info-icon">📈</div>
-                        <div>
-                            Room rates haven't dropped below $450 in 20 years
-                            <a href="#" class="source-link">[Source: Rory O'regan]</a>
-                        </div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-icon">🏢</div>
-                        <div>
-                            New modern apartments in demand, with single apartments renting for around $3,000 (Churchill Square)
-                        </div>
+                        <div><strong>Stable Rental History:</strong> Room rates haven't dipped below $450 in 20 years, demonstrating market resilience. <a href="#" class="source-link">[Source: R. O'Regan]</a></div>
                     </div>
                 </div>
-                
+
                 <div class="card">
-                    <h3 class="card-title">Cost Benefits</h3>
+                    <h3 class="card-title">High Rental Demand</h3>
+                    <div class="info-item">
+                        <div class="info-icon">🎓</div>
+                        <div><strong>Memorial University Effect:</strong> High demand from international students, boosted by ongoing campus expansion.</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">📊</div>
+                        <div><strong>Peak Season Rates:</strong> Year-lease rooms command $790 - $1,190 during high demand periods.</div>
+                    </div>
+                     <div class="info-item">
+                        <div class="info-icon">🏢</div>
+                        <div><strong>Modern Apartment Appeal:</strong> New builds like Churchill Square see single apartments renting for ~$3,000, showing demand for quality housing.</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">Operational Cost Advantages</h3>
                     <div class="info-item">
                         <div class="info-icon">💧</div>
-                        <div>
-                            No water charge per use - just small annual fee
-                        </div>
+                        <div><strong>Minimal Water Costs:</strong> Flat, small annual fee instead of per-use charges.</div>
                     </div>
                     <div class="info-item">
                         <div class="info-icon">🗑️</div>
-                        <div>
-                            No dump fees
-                        </div>
+                        <div><strong>No Dump Fees:</strong> Reduces waste disposal expenses for landlords.</div>
                     </div>
                     <div class="info-item">
                         <div class="info-icon">⚡</div>
-                        <div>
-                            Oil-to-electric grants available
-                        </div>
+                        <div><strong>Incentives Available:</strong> Access grants for energy-efficient upgrades (e.g., oil-to-electric conversions).</div>
                     </div>
                     <div class="info-item">
                         <div class="info-icon">🔧</div>
-                        <div>
-                            Property manager is same as handyman and super cheap (roughly $25/hr)
-                        </div>
+                        <div><strong>Affordable Management:</strong> Property manager/handyman services available at competitive rates (approx. $25/hr).</div>
                     </div>
+                </div>
 
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3 class="card-title">Sample Property</h3>
-                <div class="info-item">
-                    <div class="info-icon">🏡</div>
-                    <div>
-                        6 beds 2.5 baths investment property example
+                 <div class="card">
+                    <h3 class="card-title">Example Scenario</h3>
+                     <div class="info-item">
+                        <div class="info-icon">🏡</div>
+                        <div>Consider a typical <strong>6-bedroom, 2.5-bathroom</strong> investment property.</div>
                     </div>
-                </div>
-                <p>Calculate your own returns based on the information provided:</p>
-                <ul>
-                    <li>Historical room rates: $450-$1,190</li>
-                    <li>Current market: $550-$660 per room</li>
-                    <li>6 bedrooms = potential $3,300-$3,960 monthly rental income</li>
-                </ul>
-                <button class="cta-button" id="calculator-btn">Try the Investment Calculator</button>
+                    <div class="info-item">
+                        <div class="info-icon">💲</div>
+                        <div><strong>Potential Gross Income:</strong> At current rates ($550-$660/room), potential monthly income ranges from $3,300 to $3,960.</div>
+                    </div>
+                     <div class="info-item">
+                        <div class="info-icon">🧮</div>
+                        <div>Use the calculator below to estimate your potential return based on this example or your own figures.</div>
+                    </div>
+                    <button class="cta-button" id="calculator-btn">Calculate Your Potential ROI</button>
+                 </div>
             </div>
         </div>
-        
+
+        <!-- Investment Calculator Panel -->
         <div id="investment-calculator" class="content-panel">
-            <h2>St. John's Real Estate Investment Calculator</h2>
-            
+            <h2>Estimate Your St. John's Investment ROI</h2>
             <div class="highlight">
-                <p>Estimate potential returns for your St. John's real estate investment</p>
+                <p>Use this calculator to project potential returns based on property details and market conditions. Adjust the pre-filled values based on the example or your target property.</p>
             </div>
-            
+
             <div class="calculator">
                 <h3>Rental Property Calculator</h3>
-                
-                <div class="form-group">
-                    <label for="purchase-price">Purchase Price ($)</label>
-                    <input type="number" id="purchase-price" value="369027">
+
+                <div class="grid"> <!-- Using grid for calculator layout -->
+                    <div class="form-group">
+                        <label for="purchase-price">Purchase Price ($)</label>
+                        <input type="number" id="purchase-price" value="219600" placeholder="e.g., 220000">
+                    </div>
+                    <div class="form-group">
+                        <label for="down-payment">Down Payment (%)</label>
+                        <input type="number" id="down-payment" value="20" placeholder="e.g., 20">
+                    </div>
+                    <div class="form-group">
+                        <label for="interest-rate">Interest Rate (%)</label>
+                        <input type="number" id="interest-rate" step="0.01" value="6.5" placeholder="e.g., 6.5">
+                    </div>
+                     <div class="form-group">
+                        <label for="mortgage-term">Mortgage Term (years)</label>
+                        <input type="number" id="mortgage-term" value="25" placeholder="e.g., 25">
+                    </div>
+                    <div class="form-group">
+                        <label for="monthly-rent">Gross Monthly Rent ($)</label>
+                        <input type="number" id="monthly-rent" value="3600" placeholder="e.g., 3600">
+                    </div>
+                     <div class="form-group">
+                        <label for="vacancy-rate">Vacancy Rate (%)</label>
+                        <input type="number" id="vacancy-rate" value="5" placeholder="e.g., 5"> <!-- Default lower vacancy -->
+                    </div>
+                    <div class="form-group">
+                        <label for="property-tax">Annual Property Tax ($)</label>
+                        <input type="number" id="property-tax" value="2000" placeholder="e.g., 2000">
+                    </div>
+                    <div class="form-group">
+                        <label for="maintenance">Monthly Maintenance ($)</label>
+                        <input type="number" id="maintenance" value="150" placeholder="e.g., 150"> <!-- Adjusted default -->
+                    </div>
+                    <div class="form-group">
+                        <label for="utilities">Monthly Utilities ($)</label>
+                        <input type="number" id="utilities" value="650" placeholder="e.g., 650">
+                    </div>
+                    <div class="form-group">
+                        <label for="exterminator">Monthly Misc. Fees ($)</label> <!-- Renamed -->
+                        <input type="number" id="exterminator" value="80" placeholder="e.g., 80">
+                    </div>
                 </div>
-                
-                <div class="form-group">
-                    <label for="down-payment">Down Payment (%)</label>
-                    <input type="number" id="down-payment" value="20">
+
+                <div style="text-align: center; margin-top: 1rem;"> <!-- Center button -->
+                    <button class="calculate-btn" id="calculate">Calculate Returns</button>
                 </div>
-                
-                <div class="form-group">
-                    <label for="interest-rate">Interest Rate (%)</label>
-                    <input type="number" id="interest-rate" step="0.01" value="5.5">
-                </div>
-                
-                <div class="form-group">
-                    <label for="mortgage-term">Mortgage Term (years)</label>
-                    <input type="number" id="mortgage-term" value="25">
-                </div>
-                
-                <div class="form-group">
-                    <label for="monthly-rent">Monthly Rent ($)</label>
-                    <input type="number" id="monthly-rent" value="3600">
-                </div>
-                
-                <div class="form-group">
-                    <label for="property-tax">Annual Property Tax ($)</label>
-                    <input type="number" id="property-tax" value="3000">
-                </div>
-                
-                <div class="form-group">
-                    <label for="maintenance">Monthly Maintenance ($)</label>
-                    <input type="number" id="maintenance" value="250">
-                </div>
-                
-                <div class="form-group">
-                    <label for="utilities">Monthly Utilities ($)</label>
-                    <input type="number" id="utilities" value="150">
-                </div>
-                
-                <div class="form-group">
-                    <label for="exterminator">Monthly Exterminator Fees ($)</label>
-                    <input type="number" id="exterminator" value="50">
-                </div>
-                
-                <div class="form-group">
-                    <label for="vacancy-rate">Vacancy Rate (%)</label>
-                    <input type="number" id="vacancy-rate" value="5">
-                </div>
-                
-                <button class="calculate-btn" id="calculate">Calculate Returns</button>
-                
+
+
                 <div class="result" id="result">
                     <h4>Investment Analysis</h4>
-                    <p><strong>Monthly Mortgage Payment:</strong> <span id="mortgage-payment"></span></p>
-                    <p><strong>Monthly Cash Flow:</strong> <span id="cash-flow"></span></p>
-                    <p><strong>Cash-on-Cash Return:</strong> <span id="cash-return"></span></p>
-                    <p><strong>Cap Rate:</strong> <span id="cap-rate"></span></p>
+                    <p><strong>Monthly Mortgage Payment:</strong> <span id="mortgage-payment">--</span></p>
+                    <p><strong>Estimated Monthly Cash Flow:</strong> <span id="cash-flow">--</span></p>
+                    <p><strong>Estimated Cash-on-Cash Return (Annual):</strong> <span id="cash-return">--</span></p>
+                    <p><strong>Estimated Capitalization Rate (Cap Rate):</strong> <span id="cap-rate">--</span></p>
+                    <p style="font-size: 0.85rem; margin-top: 1rem; color: var(--text-medium);"><i>Note: Estimates only. Does not include closing costs, insurance, or potential appreciation. Consult with a financial advisor.</i></p>
                 </div>
             </div>
         </div>
-        
+
         <footer>
-            <p>Created to highlight St. John's, Newfoundland real estate investment opportunities</p>
+            <p>© 2024 Real Estate Insights. Information provided for illustrative purposes only.</p>
         </footer>
     </div>
 
     <!-- JavaScript for Interactivity -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
     <script>
-        // Tab functionality
-        const tabs = document.querySelectorAll('.tab');
-        const contentPanels = document.querySelectorAll('.content-panel');
-        
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                const targetPanel = tab.getAttribute('data-tab');
-                
-                // Update active tab
-                tabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                
-                // Show corresponding panel
-                contentPanels.forEach(panel => {
-                    panel.classList.remove('active');
-                    if (panel.id === targetPanel) {
-                        panel.classList.add('active');
-                    }
+        document.addEventListener('DOMContentLoaded', () => { // Run after DOM is loaded
+
+            // --- Tab Functionality ---
+            const tabs = document.querySelectorAll('.tab');
+            const contentPanels = document.querySelectorAll('.content-panel');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const targetPanelId = tab.getAttribute('data-tab');
+
+                    // Update active tab styling
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    // Show corresponding panel with animation handled by CSS
+                    contentPanels.forEach(panel => {
+                         // Use class toggling for smoother transition potentially
+                         // panel.style.display = panel.id === targetPanelId ? 'block' : 'none';
+                         if (panel.id === targetPanelId) {
+                             panel.classList.add('active');
+                         } else {
+                             panel.classList.remove('active');
+                         }
+                    });
                 });
             });
-        });
-        
-        // Navigate to calculator tab from investor story
-        document.getElementById('calculator-btn').addEventListener('click', () => {
-            tabs.forEach(tab => {
-                if (tab.getAttribute('data-tab') === 'investment-calculator') {
-                    tab.click();
-                }
-            });
-        });
-        
-        // Create price chart
-        const priceCtx = document.getElementById('price-chart');
-        const priceChart = new Chart(priceCtx, {
-            type: 'line',
-            data: {
-                labels: ['2020', '2021', '2022', '2023', '2024', '2025 (Proj)'],
-                datasets: [{
-                    label: 'Average Home Price ($)',
-                    data: [290000, 310000, 340000, 340000, 369027, 398349],
-                    backgroundColor: 'rgba(39, 174, 96, 0.2)',
-                    borderColor: 'rgba(39, 174, 96, 1)',
-                    borderWidth: 2,
-                    tension: 0.1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: false,
-                        title: {
-                            display: true,
-                            text: 'Price ($)'
+
+            // --- Navigate to calculator tab button ---
+            const calculatorBtn = document.getElementById('calculator-btn');
+            if (calculatorBtn) {
+                calculatorBtn.addEventListener('click', () => {
+                    tabs.forEach(tab => {
+                        if (tab.getAttribute('data-tab') === 'investment-calculator') {
+                            tab.click(); // Activate the tab
+                            // Scroll to the calculator section smoothly
+                            const calculatorSection = document.getElementById('investment-calculator');
+                            if (calculatorSection) {
+                                // Get the header height if you have a fixed header, otherwise 0
+                                const headerOffset = 0; // Adjust if you have a sticky header
+                                const elementPosition = calculatorSection.getBoundingClientRect().top;
+                                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                                window.scrollTo({
+                                    top: offsetPosition,
+                                    behavior: "smooth"
+                                });
+                            }
                         }
-                    },
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Year'
-                        }
-                    }
-                },
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'St. John\'s Average Home Price Trend',
-                        font: {
-                            size: 16
-                        }
-                    }
-                }
+                    });
+                });
             }
-        });
-        
-        // Investment Calculator
-        document.getElementById('calculate').addEventListener('click', () => {
-            const purchasePrice = parseFloat(document.getElementById('purchase-price').value);
-            const downPaymentPercent = parseFloat(document.getElementById('down-payment').value);
-            const interestRate = parseFloat(document.getElementById('interest-rate').value);
-            const mortgageTerm = parseFloat(document.getElementById('mortgage-term').value);
-            const monthlyRent = parseFloat(document.getElementById('monthly-rent').value);
-            const propertyTax = parseFloat(document.getElementById('property-tax').value);
-            const maintenance = parseFloat(document.getElementById('maintenance').value);
-            const vacancyRate = parseFloat(document.getElementById('vacancy-rate').value);
-            
-            // Calculate loan amount
-            const downPayment = purchasePrice * (downPaymentPercent / 100);
-            const loanAmount = purchasePrice - downPayment;
-            
-            // Calculate monthly mortgage payment
-            const monthlyInterest = interestRate / 100 / 12;
-            const payments = mortgageTerm * 12;
-            const x = Math.pow(1 + monthlyInterest, payments);
-            const monthlyPayment = (loanAmount * x * monthlyInterest) / (x - 1);
-            
-            // Calculate monthly expenses
-            const monthlyTax = propertyTax / 12;
-            const utilities = parseFloat(document.getElementById('utilities').value);
-            const exterminator = parseFloat(document.getElementById('exterminator').value);
-            const totalExpenses = monthlyPayment + monthlyTax + maintenance + utilities + exterminator;
-            
-            // Calculate effective rent (accounting for vacancy)
-            const effectiveRent = monthlyRent * (1 - vacancyRate / 100);
-            
-            // Calculate cash flow
-            const cashFlow = effectiveRent - totalExpenses;
-            
-            // Calculate returns
-            const annualCashFlow = cashFlow * 12;
-            const cashOnCashReturn = (annualCashFlow / downPayment) * 100;
-            
-            // Calculate cap rate
-            const netOperatingIncome = (monthlyRent * 12) * (1 - vacancyRate / 100) - (maintenance * 12) - propertyTax - (utilities * 12) - (exterminator * 12);
-            const capRate = (netOperatingIncome / purchasePrice) * 100;
-            
-            // Display results
-            document.getElementById('mortgage-payment').textContent = '$' + monthlyPayment.toFixed(2);
-            document.getElementById('cash-flow').textContent = '$' + cashFlow.toFixed(2) + ' per month';
-            document.getElementById('cash-return').textContent = cashOnCashReturn.toFixed(2) + '%';
-            document.getElementById('cap-rate').textContent = capRate.toFixed(2) + '%';
-            
-            document.getElementById('result').style.display = 'block';
-        });
+
+            // --- Create Price Chart ---
+            const priceCtx = document.getElementById('price-chart');
+            if (priceCtx) {
+                try {
+                    const priceChart = new Chart(priceCtx, {
+                        type: 'line',
+                        data: {
+                            labels: ['2020', '2021', '2022', '2023', '2024', '2025 (Proj.)'],
+                            datasets: [{
+                                label: 'Average Home Price ($)',
+                                data: [290000, 310000, 340000, 340000, 369027, 398349],
+                                // Use CSS variables for colors
+                                backgroundColor: 'hsla(var(--secondary-hue), 60%, 45%, 0.2)',
+                                borderColor: 'hsl(var(--secondary-hue), 60%, 45%)',
+                                borderWidth: 2.5, // Slightly thicker line
+                                pointBackgroundColor: 'hsl(var(--secondary-hue), 60%, 45%)',
+                                pointBorderColor: '#fff',
+                                pointHoverRadius: 6,
+                                pointHoverBackgroundColor: '#fff',
+                                pointHoverBorderColor: 'hsl(var(--secondary-hue), 60%, 45%)',
+                                tension: 0.3 // Smoother curve
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: false,
+                                    title: { display: true, text: 'Price ($)', color: 'var(--text-medium)', font: { weight: '500' } },
+                                    ticks: { color: 'var(--text-light)', callback: value => '$' + value.toLocaleString() }, // Format ticks
+                                    grid: { color: 'var(--border-color)' } // Lighter grid lines
+                                },
+                                x: {
+                                    title: { display: true, text: 'Year', color: 'var(--text-medium)', font: { weight: '500' } },
+                                    ticks: { color: 'var(--text-light)' },
+                                    grid: { display: false } // Hide vertical grid lines
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    display: false // Hide legend as there's only one dataset
+                                },
+                                tooltip: {
+                                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                                    titleColor: '#fff',
+                                    bodyColor: '#fff',
+                                    padding: 10,
+                                    cornerRadius: var(--border-radius-sm),
+                                    displayColors: false, // Hide color box in tooltip
+                                    callbacks: {
+                                        label: function(context) {
+                                            return ` Avg Price: ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'CAD', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(context.parsed.y)}`;
+                                        }
+                                    }
+                                },
+                                title: { /* Removed default chart title, using H2 above */
+                                     display: false
+                                }
+                            },
+                            interaction: { // Better hover interaction
+                                mode: 'index',
+                                intersect: false,
+                            },
+                        }
+                    });
+                 } catch (e) {
+                     console.error("Error creating price chart:", e);
+                     priceCtx.parentElement.innerHTML = "<p style='color: red; text-align: center;'>Error loading chart.</p>";
+                 }
+            } else {
+                console.warn("Chart canvas 'price-chart' not found.");
+            }
+
+            // --- Investment Calculator Logic ---
+            const calculateBtn = document.getElementById('calculate');
+            if (calculateBtn) {
+                calculateBtn.addEventListener('click', () => {
+                    // Get values safely
+                    const purchasePrice = parseFloat(document.getElementById('purchase-price').value) || 0;
+                    const downPaymentPercent = parseFloat(document.getElementById('down-payment').value) || 0;
+                    const interestRate = parseFloat(document.getElementById('interest-rate').value) || 0;
+                    const mortgageTerm = parseFloat(document.getElementById('mortgage-term').value) || 0;
+                    const monthlyRent = parseFloat(document.getElementById('monthly-rent').value) || 0;
+                    const propertyTax = parseFloat(document.getElementById('property-tax').value) || 0;
+                    const maintenance = parseFloat(document.getElementById('maintenance').value) || 0;
+                    const utilities = parseFloat(document.getElementById('utilities').value) || 0;
+                    const exterminator = parseFloat(document.getElementById('exterminator').value) || 0; // Misc fees
+                    const vacancyRate = parseFloat(document.getElementById('vacancy-rate').value) || 0;
+                    const resultDiv = document.getElementById('result');
+
+                    // Basic validation
+                    if (purchasePrice <= 0 || downPaymentPercent < 0 || interestRate < 0 || mortgageTerm <= 0) {
+                        alert('Please enter valid numbers for Price, Down Payment (%), Interest Rate (%), and Term.');
+                        if(resultDiv) resultDiv.style.display = 'none';
+                        return;
+                    }
+
+                    // --- Calculations ---
+                    const currencyFormatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'CAD' });
+                    const percentFormatter = new Intl.NumberFormat('en-US', { style: 'percent', minimumFractionDigits: 1, maximumFractionDigits: 1 });
+
+                    const downPayment = purchasePrice * (downPaymentPercent / 100);
+                    const loanAmount = purchasePrice - downPayment;
+
+                    let monthlyPayment = 0;
+                    if (loanAmount > 0 && interestRate > 0 && mortgageTerm > 0) {
+                        const monthlyInterest = interestRate / 100 / 12;
+                        const payments = mortgageTerm * 12;
+                        const x = Math.pow(1 + monthlyInterest, payments);
+                        if (x !== 1 && isFinite(x)) {
+                            monthlyPayment = (loanAmount * x * monthlyInterest) / (x - 1);
+                        } else if (interestRate === 0 && payments > 0) {
+                            monthlyPayment = loanAmount / payments;
+                        }
+                    } else if (loanAmount === 0) {
+                         monthlyPayment = 0;
+                    }
+
+                    const monthlyTax = propertyTax / 12;
+                    const totalMonthlyExpenses = monthlyPayment + monthlyTax + maintenance + utilities + exterminator;
+                    const effectiveRent = monthlyRent * (1 - vacancyRate / 100);
+                    const cashFlow = effectiveRent - totalMonthlyExpenses;
+                    const annualCashFlow = cashFlow * 12;
+
+                    let cashOnCashReturn = 0;
+                    if (downPayment > 0) {
+                        cashOnCashReturn = annualCashFlow / downPayment;
+                    }
+
+                    const annualNOI = (monthlyRent * 12 * (1 - vacancyRate / 100)) - (maintenance * 12) - propertyTax - (utilities * 12) - (exterminator * 12);
+                    let capRate = 0;
+                    if (purchasePrice > 0) {
+                        capRate = annualNOI / purchasePrice;
+                    }
+
+                    // --- Display Results ---
+                     const mortgagePaymentEl = document.getElementById('mortgage-payment');
+                     const cashFlowEl = document.getElementById('cash-flow');
+                     const cashReturnEl = document.getElementById('cash-return');
+                     const capRateEl = document.getElementById('cap-rate');
+
+                    if (mortgagePaymentEl) mortgagePaymentEl.textContent = isFinite(monthlyPayment) ? currencyFormatter.format(monthlyPayment) : 'N/A';
+                    if (cashFlowEl) cashFlowEl.textContent = isFinite(cashFlow) ? `${currencyFormatter.format(cashFlow)}` : 'N/A';
+                    if (cashReturnEl) cashReturnEl.textContent = isFinite(cashOnCashReturn) ? percentFormatter.format(cashOnCashReturn) : 'N/A';
+                    if (capRateEl) capRateEl.textContent = isFinite(capRate) ? percentFormatter.format(capRate) : 'N/A';
+
+                     // Style cash flow based on positive/negative
+                     if (cashFlowEl) {
+                         cashFlowEl.style.color = cashFlow >= 0 ? 'hsl(var(--secondary-hue), 60%, 40%)' : 'hsl(0, 70%, 50%)';
+                         cashFlowEl.style.fontWeight = '600';
+                     }
+
+
+                    if (resultDiv) resultDiv.style.display = 'block'; // Show results
+                });
+            } else {
+                console.warn("Calculate button 'calculate' not found.");
+            }
+
+        }); // End DOMContentLoaded
     </script>
 </body>
 </html>
