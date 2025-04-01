@@ -1,454 +1,311 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My GitHub Pages Website</title>
-  <link
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    rel="stylesheet"
-  />
-  <style>
-    :root {
-      --bg-primary: #f8fafc;
-      --bg-secondary: #ffffff;
-      --text-primary: #0f172a;
-      --text-secondary: #334155;
-      --accent-primary: #0284c7;
-      --accent-secondary: #0ea5e9;
-      --border-color: #e2e8f0;
-      --sidebar-width: 250px;
-      --header-height: 60px;
-      --transition-speed: 0.3s;
-      --font-primary: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Website - Home</title>
+    <!-- Font Awesome - Needed for Sidebar Icons -->
+    <link
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        rel="stylesheet"
+    />
+    <style>
+        /* --- Base & Layout Styles (Copied from original index (1).html) --- */
+        :root {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
+            --accent-primary: #0284c7;
+            --accent-secondary: #0ea5e9;
+            --border-color: #e2e8f0;
+            --sidebar-width: 250px;
+            --header-height: 60px; /* Optional: Use if you add a header */
+            --transition-speed: 0.3s;
+            --font-primary: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: var(--font-primary);
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-primary);
+        }
 
-    body {
-      background-color: var(--bg-primary);
-      color: var(--text-primary);
-      font-size: 16px;
-      line-height: 1.5;
-      overflow-x: hidden;
-    }
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 16px;
+            line-height: 1.5;
+            /* overflow-x: hidden; Remove this if not needed globally */
+        }
 
-    .layout {
-      display: flex;
-      min-height: 100vh;
-    }
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
 
-    /* Sidebar Styling */
-    .sidebar {
-      width: var(--sidebar-width);
-      background-color: var(--bg-secondary);
-      border-right: 1px solid var(--border-color);
-      height: 100vh;
-      position: fixed;
-      top: 0;
-      left: 0;
-      overflow-y: auto;
-      transition: transform var(--transition-speed);
-      z-index: 10;
-    }
+        /* --- Sidebar Styling (Copied) --- */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            height: 100vh;
+            position: fixed; /* Or 'sticky' if preferred */
+            top: 0;
+            left: 0;
+            overflow-y: auto;
+            z-index: 10;
+            transition: transform var(--transition-speed); /* For mobile */
+        }
 
-    .sidebar-header {
-      padding: 1.5rem;
-      display: flex;
-      align-items: center;
-      border-bottom: 1px solid var(--border-color);
-    }
+        .sidebar-header {
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            height: var(--header-height); /* Match header height */
+        }
 
-    .sidebar-logo {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--accent-primary);
-    }
+        .sidebar-logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            text-decoration: none; /* Ensure logo isn't underlined if it's a link */
+        }
 
-    .sidebar-nav {
-      padding: 1rem 0;
-    }
+        .sidebar-nav {
+            padding: 1rem 0;
+        }
 
-    .nav-section {
-      margin-bottom: 1rem;
-    }
+        .nav-section {
+            margin-bottom: 1rem;
+        }
 
-    .nav-section-title {
-      padding: 0.5rem 1.5rem;
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-secondary);
-      font-weight: 600;
-    }
+        .nav-section-title {
+            padding: 0.5rem 1.5rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
 
-    .nav-items {
-      list-style: none;
-    }
+        .nav-items {
+            list-style: none;
+        }
 
-    .nav-item {
-      margin: 0.25rem 0;
-    }
+        .nav-item {
+            margin: 0.25rem 0;
+        }
 
-    .nav-link {
-      display: flex;
-      align-items: center;
-      padding: 0.75rem 1.5rem;
-      color: var(--text-secondary);
-      text-decoration: none;
-      transition: background-color var(--transition-speed),
-        color var(--transition-speed);
-      border-left: 3px solid transparent;
-    }
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: background-color var(--transition-speed),
+                color var(--transition-speed);
+            border-left: 3px solid transparent;
+        }
 
-    .nav-link:hover {
-      background-color: rgba(0, 0, 0, 0.05);
-      color: var(--accent-primary);
-    }
+        .nav-link:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+            color: var(--accent-primary);
+        }
 
-    .nav-link.active {
-      color: var(--accent-primary);
-      border-left-color: var(--accent-primary);
-      background-color: rgba(2, 132, 199, 0.1);
-    }
+        /* Style for the ACTIVE page link */
+        /* You might need a small script to add/remove 'active' class based on current URL, */
+        /* or manually set it in each file (less ideal) */
+        .nav-link.active { /* Example: Add class 'active' to the current page's link */
+            color: var(--accent-primary);
+            border-left-color: var(--accent-primary);
+            background-color: rgba(2, 132, 199, 0.1);
+            font-weight: 500;
+        }
 
-    .nav-icon {
-      margin-right: 0.75rem;
-      width: 20px;
-      text-align: center;
-    }
 
-    /* Main Content */
-    .main-content {
-      flex: 1;
-      margin-left: var(--sidebar-width);
-      position: relative;
-    }
+        .nav-icon {
+            margin-right: 0.75rem;
+            width: 20px;
+            text-align: center;
+        }
 
-    .header {
-      height: var(--header-height);
-      background-color: var(--bg-secondary);
-      border-bottom: 1px solid var(--border-color);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 2rem;
-      position: sticky;
-      top: 0;
-      z-index: 5;
-    }
+        /* --- Main Content Area Styling --- */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width); /* Make space for the fixed sidebar */
+            padding: 2rem; /* Add padding to the content area */
+             min-height: 100vh; /* Ensure it takes full height */
+        }
 
-    .header-title {
-      font-size: 1.25rem;
-      font-weight: 600;
-    }
+         /* Optional Header inside main content */
+         .page-header {
+            height: var(--header-height);
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+            margin: -2rem -2rem 2rem -2rem; /* Adjust padding negation */
+         }
+         .page-header-title {
+             font-size: 1.25rem;
+            font-weight: 600;
+         }
 
-    .content-container {
-      padding: 2rem;
-      height: calc(100vh - var(--header-height));
-      overflow-y: auto;
-    }
 
-    /* Mobile Sidebar Toggle */
-    .sidebar-toggle {
-      display: none;
-      background: none;
-      border: none;
-      color: var(--text-secondary);
-      font-size: 1.25rem;
-      cursor: pointer;
-    }
+        /* --- Mobile Responsiveness (Copied & Adapted) --- */
+        .sidebar-toggle {
+            display: none; /* Hide toggle by default on desktop */
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            color: var(--text-secondary);
+            position: fixed; /* Position it */
+            top: 10px;
+            left: 10px;
+            z-index: 20; /* Above sidebar */
+        }
 
-    /* Responsive Layout */
-    @media (max-width: 768px) {
-      .sidebar {
-        transform: translateX(-100%);
-      }
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%); /* Hide sidebar off-screen */
+            }
+            .sidebar.active { /* Show sidebar when active class is added */
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0; /* Main content takes full width */
+                 padding: 1rem;
+                 margin-top: 50px; /* Add space for the toggle button if needed */
+            }
+             .page-header {
+                margin: -1rem -1rem 1rem -1rem; /* Adjust padding negation for mobile */
+                padding: 0 1rem;
+             }
 
-      .sidebar.active {
-        transform: translateX(0);
-      }
+            .sidebar-toggle {
+                display: block; /* Show toggle button on mobile */
+            }
+        }
 
-      .main-content {
-        margin-left: 0;
-      }
+        /* --- Page Specific Styles for index.html --- */
+        .welcome-section {
+             background-color: var(--bg-secondary);
+             padding: 2rem;
+             border-radius: 8px;
+             box-shadow: 0 2px 10px rgba(0,0,0, 0.05);
+        }
+         .welcome-section h1 {
+             color: var(--accent-primary);
+             margin-bottom: 1rem;
+         }
 
-      .sidebar-toggle {
-        display: block;
-      }
-
-      .content-container {
-        padding: 1rem;
-      }
-    }
-  </style>
+    </style>
 </head>
 <body>
-  <div class="layout">
-    <!-- Sidebar Navigation -->
-    <aside class="sidebar" id="sidebar">
-      <div class="sidebar-header">
-        <div class="sidebar-logo">My Website</div>
-      </div>
-      <nav class="sidebar-nav">
-        <div class="nav-section">
-          <div class="nav-section-title">Pages</div>
-          <ul class="nav-items" id="page-nav">
-            <li class="nav-item">
-              <a href="#" class="nav-link active" data-page="home">
-                <span class="nav-icon"><i class="fas fa-home"></i></span>
-                <span>Home</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link" data-page="financial-dashboard">
-                <span class="nav-icon"><i class="fas fa-chart-line"></i></span>
-                <span>Financial Dashboard</span>
-              </a>
-            </li>
-            <!-- Hard-coded static pages -->
-            <li class="nav-item">
-              <a href="#" class="nav-link" data-page="ontario_vs_calgary">
-                <span class="nav-icon"><i class="fas fa-chart-line"></i></span>
-                <span>Ontario vs Calgary</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link" data-page="Ship_Technical_Data_Network_Light">
-                <span class="nav-icon"><i class="fas fa-sun"></i></span>
-                <span>Ship Technical Data Network Light</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link" data-page="Ship_Technical_Data_Network_Dark">
-                <span class="nav-icon"><i class="fas fa-moon"></i></span>
-                <span>Ship Technical Data Network Dark</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link" data-page="newfoundland_realestate">
-                <span class="nav-icon"><i class="fas fa-building"></i></span>
-                <span>Newfoundland Real Estate</span>
-              </a>
-            </li>
-            <!-- Additional pages will be appended below if not already present -->
-          </ul>
-        </div>
-      </nav>
-    </aside>
+    <!-- Button to toggle sidebar on mobile -->
+    <button class="sidebar-toggle" id="sidebar-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
 
-    <!-- Main Content Area -->
-    <main class="main-content">
-      <header class="header">
-        <button class="sidebar-toggle" id="sidebar-toggle">
-          <i class="fas fa-bars"></i>
-        </button>
-        <h1 class="header-title" id="page-title">Home</h1>
-        <div></div>
-      </header>
-
-      <div class="content-container" id="content">
-        <!-- Content will be loaded here -->
-      </div>
-
-      <!-- Template for home content (hidden, used for the home page) -->
-      <template id="home-template">
-        <div>
-          <h2>Welcome to My GitHub Pages Website</h2>
-          <p>Select a page from the sidebar to view its content.</p>
-          <p>To add a new page, simply create an HTML file and add it to your GitHub repository.</p>
-        </div>
-      </template>
-    </main>
-  </div>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      // DOM Elements
-      const sidebar = document.getElementById("sidebar");
-      const sidebarToggle = document.getElementById("sidebar-toggle");
-      const pageTitle = document.getElementById("page-title");
-      const contentContainer = document.getElementById("content");
-      const pageNav = document.getElementById("page-nav");
-
-      // Toggle sidebar on mobile
-      sidebarToggle.addEventListener("click", function () {
-        sidebar.classList.toggle("active");
-      });
-
-      // Close sidebar when clicking outside on mobile
-      document.addEventListener("click", function (event) {
-        if (
-          window.innerWidth <= 768 &&
-          !sidebar.contains(event.target) &&
-          event.target !== sidebarToggle
-        ) {
-          sidebar.classList.remove("active");
-        }
-      });
-
-      // Function to load page content
-      async function loadPageContent(pageName) {
-        try {
-          if (!pageName) pageName = "home";
-
-          if (pageName === "home") {
-            const homeTemplate = document.getElementById("home-template");
-            contentContainer.innerHTML = homeTemplate ? homeTemplate.innerHTML : `
-              <div>
-                <h2>Welcome to My GitHub Pages Website</h2>
-                <p>Select a page from the sidebar to view its content.</p>
-                <p>To add a new page, simply create an HTML file and add it to your GitHub repository.</p>
-              </div>
-            `;
-            pageTitle.textContent = "Home";
-            return;
-          }
-
-          const response = await fetch(`${pageName}.html`);
-          if (!response.ok) {
-            throw new Error(`Failed to load page: ${response.status}`);
-          }
-          const html = await response.text();
-
-          // Extract title
-          const titleMatch = html.match(/<title>(.*?)<\/title>/i);
-          pageTitle.textContent = titleMatch ? titleMatch[1] : pageName;
-
-          // Extract body content
-          const bodyMatch = html.match(/<body[^>]*>([\s\S]*)<\/body>/i);
-          contentContainer.innerHTML = bodyMatch ? bodyMatch[1] : html;
-
-          // Handle styles
-          const styleMatch = html.match(/<style[^>]*>([\s\S]*?)<\/style>/gi);
-          if (styleMatch) {
-            const oldStyles = document.querySelectorAll(`style[data-page="${pageName}"]`);
-            oldStyles.forEach((style) => style.remove());
-            styleMatch.forEach((styleTag) => {
-              const styleContent = styleTag.match(/<style[^>]*>([\s\S]*?)<\/style>/i)[1];
-              const style = document.createElement("style");
-              style.setAttribute("data-page", pageName);
-              style.textContent = styleContent;
-              document.head.appendChild(style);
-            });
-          }
-
-          // Extract and execute scripts
-          const scriptTags = html.match(/<script[^>]*>([\s\S]*?)<\/script>/g);
-          if (scriptTags) {
-            await Promise.all(
-              scriptTags.map(async (scriptTag) => {
-                const scriptContent = scriptTag.match(/<script[^>]*>([\s\S]*?)<\/script>/)[1];
-                try {
-                  const script = document.createElement("script");
-                  script.textContent = scriptContent;
-                  await new Promise((resolve) => setTimeout(resolve, 100));
-                  document.body.appendChild(script);
-                  await new Promise((resolve) => (script.onload = resolve));
-                  script.remove();
-                } catch (error) {
-                  console.error("Error executing script:", error);
-                }
-              })
-            );
-          }
-        } catch (error) {
-          console.error("Error loading page:", error);
-          contentContainer.innerHTML = `
-            <div style="text-align: center; padding: 2rem;">
-              <h2>Error Loading Page</h2>
-              <p>Sorry, we couldn't load the requested page. Please try again later.</p>
-              <p><small>${error.message}</small></p>
+    <div class="layout">
+        <!-- Sidebar Navigation (DUPLICATED STRUCTURE) -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                 <!-- Link logo to homepage -->
+                <a href="index.html" class="sidebar-logo">My Website</a>
             </div>
-          `;
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Pages</div>
+                    <ul class="nav-items" id="page-nav">
+                        <li class="nav-item">
+                            <!-- Add 'active' class MANUALLY for the current page -->
+                            <a href="index.html" class="nav-link active">
+                                <span class="nav-icon"><i class="fas fa-home"></i></span>
+                                <span>Home</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <!-- Direct link to the HTML file -->
+                            <a href="financial-dashboard.html" class="nav-link">
+                                <span class="nav-icon"><i class="fas fa-chart-line"></i></span>
+                                <span>Financial Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="ontario_vs_calgary.html" class="nav-link">
+                                <span class="nav-icon"><i class="fas fa-map-marked-alt"></i></span>
+                                <span>Ontario vs Calgary</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="Ship_Technical_Data_Network_Light.html" class="nav-link">
+                                <span class="nav-icon"><i class="fas fa-ship"></i></span>
+                                <span>Ship Network Light</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="Ship_Technical_Data_Network_Dark.html" class="nav-link">
+                                <span class="nav-icon"><i class="fas fa-moon"></i></span>
+                                <span>Ship Network Dark</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="newfoundland_realestate.html" class="nav-link">
+                                <span class="nav-icon"><i class="fas fa-building"></i></span>
+                                <span>Newfoundland Real Estate</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Optional Header for the page -->
+             <header class="page-header">
+                <h1 class="page-header-title">Home</h1>
+            </header>
+
+            <!-- Homepage Specific Content -->
+            <div class="welcome-section">
+                <h1>Welcome to My Website!</h1>
+                <p>This is the homepage. Use the navigation on the left to explore other pages.</p>
+                <p>Each page is a separate HTML file loaded directly by your browser.</p>
+            </div>
+
+            <!-- Add more homepage content here if needed -->
+
+        </main>
+    </div>
+
+    <!-- JavaScript for Mobile Sidebar Toggle -->
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const toggleButton = document.getElementById('sidebar-toggle');
+
+        if (toggleButton && sidebar) {
+            toggleButton.addEventListener('click', () => {
+                sidebar.classList.toggle('active');
+            });
+
+            // Optional: Close sidebar when clicking outside on mobile
+             document.addEventListener('click', function(event) {
+                const isClickInsideSidebar = sidebar.contains(event.target);
+                const isClickOnToggle = toggleButton.contains(event.target);
+
+                if (window.innerWidth <= 768 && !isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains('active')) {
+                    sidebar.classList.remove('active');
+                }
+            });
         }
-      }
-
-      // Update the active navigation link
-      function updateActiveNavLink(pageName) {
-        const links = document.querySelectorAll(".nav-link");
-        links.forEach(link => {
-          if (link.getAttribute("data-page") === pageName) {
-            link.classList.add("active");
-          } else {
-            link.classList.remove("active");
-          }
-        });
-      }
-
-      // Handle navigation clicks
-      document.addEventListener("click", function (event) {
-        const link = event.target.closest(".nav-link");
-        if (link) {
-          event.preventDefault();
-          const pageName = link.getAttribute("data-page");
-          window.location.hash = pageName;
-          updateActiveNavLink(pageName);
-          loadPageContent(pageName);
-          if (window.innerWidth <= 768) sidebar.classList.remove("active");
-        }
-      });
-
-      // Handle URL hash changes
-      window.addEventListener("hashchange", function () {
-        const pageName = window.location.hash.substring(1) || "home";
-        updateActiveNavLink(pageName);
-        loadPageContent(pageName);
-      });
-
-      // Update navigation with pages from pages.json without removing hard-coded items
-      async function fetchAvailablePages() {
-        try {
-          const response = await fetch("pages.json");
-          if (response.ok) {
-            const pages = await response.json();
-            updateNavigation(pages);
-          } else {
-            console.warn("Could not load pages.json, using default navigation");
-          }
-        } catch (error) {
-          console.warn("Error loading pages.json:", error);
-        }
-      }
-
-      // Modified updateNavigation: Append only new pages.
-      function updateNavigation(pages = []) {
-        if (!pages.length) return;
-        pages.forEach((page) => {
-          // Check if the page already exists in the navigation
-          if (!document.querySelector(`.nav-link[data-page="${page.id}"]`)) {
-            const item = document.createElement("li");
-            item.className = "nav-item";
-            const icon = page.icon || "fa-file";
-            item.innerHTML = `
-              <a href="#" class="nav-link" data-page="${page.id}">
-                <span class="nav-icon"><i class="fas ${icon}"></i></span>
-                <span>${page.title}</span>
-              </a>
-            `;
-            pageNav.appendChild(item);
-          }
-        });
-        // Refresh active link state after appending new items.
-        const pageName = window.location.hash.substring(1) || "home";
-        updateActiveNavLink(pageName);
-      }
-
-      // Initialize the site
-      function initSite() {
-        const pageName = window.location.hash.substring(1) || "home";
-        updateActiveNavLink(pageName);
-        loadPageContent(pageName);
-        fetchAvailablePages();
-      }
-
-      initSite();
-    });
-  </script>
+    </script>
 </body>
 </html>
