@@ -6,7 +6,7 @@
     <title>Our Future: Career & Life Planning</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
     <style>
-        /* Styles remain the same as previous version */
+        /* Styles from the improved version (layout, labels, etc.) */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
 
         * {
@@ -246,7 +246,7 @@
             .each(function(d) { const gr = d3.select(this); gr.append("stop").attr("offset", "0%").attr("stop-color", () => d.source.group === "root" ? "#94a3b8" : colorScale(d.source.id)).attr("stop-opacity", 0.7); gr.append("stop").attr("offset", "100%").attr("stop-color", () => d.target.group === "category" ? colorScale(d.target.id) : colorScale(d.target.category)).attr("stop-opacity", 0.7); });
         const link = linkGroups.append("path").attr("class", "link").attr("stroke", (d, i) => `url(#link-gradient-${i})`).attr("stroke-width", 1.8).attr("fill", "none");
 
-        // --- Node Rendering (Same) ---
+        // --- Node Rendering (Same Structure) ---
         const nodeGroups = g.append("g").attr("class", "node-groups").selectAll("g").data(data.nodes).enter().append("g").attr("class", d => `node-group ${d.group}`); // Added drag later
         const defs = svg.append("defs");
         const glowFilter = defs.append("filter").attr("id", "glow").attr("x", "-50%").attr("y", "-50%").attr("width", "200%").attr("height", "200%");
@@ -254,9 +254,40 @@
         const node = nodeGroups.append("g").attr("class", "node-container").style("transform-origin", "center center");
         node.append("circle").attr("class", d => `node-base ${d.group}`).attr("r", d => d.group === "root" ? 50 : (d.group === "category" ? 40 : 25)).attr("fill", "#ffffff").attr("stroke", d => d.group === "root" ? "#475569" : (d.group === "category" ? colorScale(d.id) : colorScale(d.category))).attr("stroke-width", d => (d.group === 'root' ? 3.5 : (d.group === 'category' ? 3 : 2.5))).attr("filter", "url(#glow)");
         node.append("circle").attr("class", d => `node-inner ${d.group}`).attr("r", d => d.group === "root" ? 40 : (d.group === "category" ? 30 : 18)).attr("fill", d => d.group === "root" ? "#f1f5f9" : (d.group === "category" ? colorScale(d.id) : colorScale(d.category))).attr("opacity", 0.4);
+
+        // --- Node Labels (Root Label Fixed) ---
         const nodeLabelGroups = nodeGroups.append("g").attr("class", d => `node-label ${d.group}`);
-        nodeLabelGroups.filter(".root").append("text").text(d => d.id).attr("fill", "#1e293b").attr("font-size", "15px").attr("text-anchor", "middle").attr("dominant-baseline", "middle").attr("font-weight", "600");
+
+        // Root node label (split into two lines)
+        nodeLabelGroups.filter(".root")
+            .each(function(d) {
+                const el = d3.select(this);
+                const line1 = "Our Future";
+                const line2 = "Together";
+                const fontSize = "14px"; // Slightly reduced font size for two lines
+                const fontWeight = "600";
+
+                 el.append("text")
+                    .text(line1)
+                    .attr("dy", "-0.35em") // Adjust vertical position for first line
+                    .attr("fill", "#1e293b")
+                    .attr("font-size", fontSize)
+                    .attr("text-anchor", "middle")
+                    .attr("font-weight", fontWeight);
+
+                 el.append("text")
+                    .text(line2)
+                    .attr("dy", "0.95em") // Adjust vertical position for second line
+                    .attr("fill", "#1e293b")
+                    .attr("font-size", fontSize)
+                    .attr("text-anchor", "middle")
+                    .attr("font-weight", fontWeight);
+            });
+
+        // Category node labels
         nodeLabelGroups.filter(".category").each(function(d) { const w = d.id.split(/[\s&]+/); const el = d3.select(this); if (w.length > 1) { const l1 = w[0], l2 = w.slice(1).join(' '); el.append("text").text(l1).attr("dy", "-0.35em").attr("font-size", "12px").attr("text-anchor", "middle").attr("font-weight", "500"); el.append("text").text(l2).attr("dy", "0.95em").attr("font-size", "12px").attr("text-anchor", "middle").attr("font-weight", "500"); } else { el.append("text").text(d.id).attr("font-size", "12px").attr("text-anchor", "middle").attr("dominant-baseline", "middle").attr("font-weight", "500"); } });
+
+        // Decision Node Labels (Multi-line)
         nodeLabelGroups.filter(".decision").each(function(d) { const w = d.id.split(' '); const el = d3.select(this); const maxC = 15; let lines = [], curr = ""; w.forEach(word => { if (curr.length === 0) { curr = word; } else if (curr.length + word.length + 1 <= maxC) { curr += " " + word; } else { lines.push(curr); curr = word; } }); lines.push(curr); const lh = 1.2, sy = -(lines.length - 1) * 0.5 * lh; lines.forEach((line, i) => { el.append("text").text(line).attr("dy", `${sy + i * lh}em`).attr("text-anchor", "middle"); }); });
 
         // --- Simulation Tick (Same) ---
@@ -271,7 +302,7 @@
          function dragged(event, d) { d.fx = event.x; d.fy = event.y; }
          function dragended(event, d) { if (!event.active) simulation.alphaTarget(0); }
 
-        // --- Hover Effects (NO Transitions on opacity/stroke) ---
+        // --- Hover Effects (NO Transitions on opacity/stroke, NO scaling) ---
         nodeGroups.on("mouseover", function(event, d) {
             const thisNodeGroup = d3.select(this);
 
@@ -291,12 +322,10 @@
 
             // Apply styles INSTANTLY (no transition)
              g.selectAll(".link")
-                // .transition().duration(150) // REMOVED Transition
                 .style("stroke-opacity", link => relatedLinks.includes(link) ? 0.9 : 0.05)
                 .style("stroke-width", link => relatedLinks.includes(link) ? 3 : 1);
 
              g.selectAll(".node-group")
-                // .transition().duration(150) // REMOVED Transition
                 .style("opacity", node => relatedNodeIds.has(node.id) ? 1 : 0.1);
 
             // Show tooltip (same logic)
@@ -309,12 +338,10 @@
         .on("mouseout", function() {
             // Restore styles INSTANTLY (no transition)
             g.selectAll(".link")
-                // .transition().duration(200) // REMOVED Transition
                 .style("stroke-opacity", 0.6)
                 .style("stroke-width", 1.8);
 
             g.selectAll(".node-group")
-                // .transition().duration(200) // REMOVED Transition
                 .style("opacity", 1);
 
             tooltip.style("opacity", 0);
@@ -336,7 +363,6 @@
                  resetHighlightsAndZoom();
                  event.stopPropagation();
             }
-            // Allow click to fall through for drag to start if not category/root
         });
 
 
@@ -360,11 +386,9 @@
 
              // Apply styles instantly
              g.selectAll(".node-group")
-                 // .transition().duration(300) // REMOVED Transition
                  .style("opacity", node => relatedNodeIds.has(node.id) ? 1 : 0.1);
 
              g.selectAll(".link")
-                 // .transition().duration(300) // REMOVED Transition
                  .style("stroke-opacity", link => { const sId = typeof link.source === 'object' ? link.source.id : link.source; const tId = typeof link.target === 'object' ? link.target.id : link.target; return (sId === "Our Future Together" && tId === category) || (sId === category) ? 0.9 : 0.05; })
                  .style("stroke-width", link => { const sId = typeof link.source === 'object' ? link.source.id : link.source; const tId = typeof link.target === 'object' ? link.target.id : link.target; return (sId === "Our Future Together" && tId === category) || (sId === category) ? 3 : 1; });
          }
