@@ -1,18 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Financial Dashboard</title> <!-- Specific Title -->
-
-    <!-- CSS Dependencies: Font Awesome (for sidebar/icons) -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My GitHub Pages Website</title>
+    <!-- Global Stylesheets (Load Here) -->
     <link
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
         rel="stylesheet"
     />
-
     <style>
-        /* --- Base & Layout Styles (COPIED FROM index.html) --- */
+        /* Base layout styles from index (1).html */
         :root {
             --bg-primary: #f8fafc;
             --bg-secondary: #ffffff;
@@ -25,7 +23,7 @@
             --header-height: 60px;
             --transition-speed: 0.3s;
             --font-primary: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-            /* Add dashboard specific vars here */
+            /* Add dashboard vars here IF they should be global, otherwise keep them page-specific */
             --bg-tertiary: #f1f5f9;
             --text-tertiary: #64748b;
             --accent-tertiary: #38bdf8;
@@ -35,155 +33,231 @@
             --border-radius: 12px;
             --card-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-primary); }
-        body { background-color: var(--bg-primary); color: var(--text-primary); font-size: 16px; line-height: 1.5; }
-        .layout { display: flex; min-height: 100vh; }
 
-        /* --- Sidebar Styling (COPIED FROM index.html) --- */
-        .sidebar { width: var(--sidebar-width); background-color: var(--bg-secondary); border-right: 1px solid var(--border-color); height: 100vh; position: fixed; top: 0; left: 0; overflow-y: auto; z-index: 10; transition: transform var(--transition-speed); }
-        .sidebar-header { padding: 1.5rem; display: flex; align-items: center; border-bottom: 1px solid var(--border-color); height: var(--header-height); }
-        .sidebar-logo { font-size: 1.25rem; font-weight: 700; color: var(--accent-primary); text-decoration: none; }
-        .sidebar-nav { padding: 1rem 0; }
-        .nav-section { margin-bottom: 1rem; }
-        .nav-section-title { padding: 0.5rem 1.5rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); font-weight: 600; }
-        .nav-items { list-style: none; }
-        .nav-item { margin: 0.25rem 0; }
-        .nav-link { display: flex; align-items: center; padding: 0.75rem 1.5rem; color: var(--text-secondary); text-decoration: none; transition: background-color var(--transition-speed), color var(--transition-speed); border-left: 3px solid transparent; }
-        .nav-link:hover { background-color: rgba(0, 0, 0, 0.05); color: var(--accent-primary); }
-        .nav-link.active { color: var(--accent-primary); border-left-color: var(--accent-primary); background-color: rgba(2, 132, 199, 0.1); font-weight: 500; }
-        .nav-icon { margin-right: 0.75rem; width: 20px; text-align: center; }
-
-        /* --- Main Content Area Styling (COPIED FROM index.html) --- */
-         .main-content { flex: 1; margin-left: var(--sidebar-width); padding: 2rem; min-height: 100vh; }
-         .page-header { height: var(--header-height); background-color: var(--bg-secondary); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; padding: 0 2rem; margin: -2rem -2rem 2rem -2rem; }
-         .page-header-title { font-size: 1.25rem; font-weight: 600; }
-
-
-        /* --- Mobile Responsiveness (COPIED FROM index.html) --- */
-        .sidebar-toggle { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0.5rem; color: var(--text-secondary); position: fixed; top: 10px; left: 10px; z-index: 20; }
-        @media (max-width: 768px) {
-            .sidebar { transform: translateX(-100%); }
-            .sidebar.active { transform: translateX(0); }
-            .main-content { margin-left: 0; padding: 1rem; margin-top: 50px;}
-            .page-header { margin: -1rem -1rem 1rem -1rem; padding: 0 1rem; }
-            .sidebar-toggle { display: block; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-primary);
         }
 
-        /* --- Styles SPECIFIC to Financial Dashboard (Copied from original dashboard file) --- */
-        /* .dashboard { max-width: 1440px; margin: 0 auto; } */ /* No longer needed if .main-content handles layout */
-        .dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); }
-        .dashboard-title h1 { font-size: 1.5rem; /* Adjusted size to fit potentially smaller header */ font-weight: 700; margin-bottom: 0.25rem; color: var(--accent-primary); }
-        .dashboard-title p { color: var(--text-secondary); font-size: 0.9rem; }
-        .dashboard-meta { display: flex; align-items: center; gap: 1.5rem; }
-        .dashboard-meta-item { text-align: right; }
-        .dashboard-meta-value { font-size: 1.1rem; font-weight: 600; color: var(--text-primary); }
-        .dashboard-meta-label { font-size: 0.7rem; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; }
-        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; } /* Responsive grid */
-        .card { background-color: var(--bg-secondary); border-radius: var(--border-radius); padding: 1.5rem; box-shadow: var(--card-shadow); transition: transform var(--transition-speed), box-shadow var(--transition-speed); position: relative; overflow: hidden; border: 1px solid var(--border-color); }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1); }
-        .card::after { content: ""; position: absolute; top: 0; left: 0; width: 4px; height: 100%; }
-        .card-income::after { background: linear-gradient(to bottom, var(--success), transparent); }
-        .card-expense::after { background: linear-gradient(to bottom, var(--danger), transparent); }
-        .card-transfer::after { background: linear-gradient(to bottom, var(--accent-primary), transparent); }
-        .card-net::after { background: linear-gradient(to bottom, var(--accent-secondary), transparent); }
-        .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
-        .card-title { font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.25rem; font-weight: 500; }
-        .card-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.125rem; flex-shrink: 0; }
-        .card-income .card-icon { background-color: rgba(16, 185, 129, 0.1); color: var(--success); }
-        .card-expense .card-icon { background-color: rgba(239, 68, 68, 0.1); color: var(--danger); }
-        .card-transfer .card-icon { background-color: rgba(14, 165, 233, 0.1); color: var(--accent-primary); }
-        .card-net .card-icon { background-color: rgba(6, 182, 212, 0.1); color: var(--accent-secondary); }
-        .card-value { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; line-height: 1.1; }
-        .positive { color: var(--success); }
-        .negative { color: var(--danger); }
-        .neutral { color: var(--accent-primary); }
-        .card-subtitle { font-size: 0.75rem; color: var(--text-tertiary); }
-        .chart-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; } /* Responsive grid */
-        .chart-card { background-color: var(--bg-secondary); border-radius: var(--border-radius); padding: 1.5rem; box-shadow: var(--card-shadow); border: 1px solid var(--border-color); }
-        .chart-header { margin-bottom: 1rem; }
-        .chart-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.25rem; color: var(--text-primary); }
-        .chart-subtitle { font-size: 0.875rem; color: var(--text-tertiary); }
-        .chart-container { position: relative; height: 350px; width: 100%; margin-top: 1rem; }
-        .transactions-card { background-color: var(--bg-secondary); border-radius: var(--border-radius); padding: 1.5rem; box-shadow: var(--card-shadow); margin-bottom: 2rem; border: 1px solid var(--border-color); }
-        .transactions-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); }
-        .transactions-title { font-size: 1.25rem; font-weight: 600; color: var(--text-primary); }
-        .table-container { overflow-x: auto; max-height: 500px; overflow-y: auto; }
-        .transactions-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 700px; }
-        .transactions-table th { background-color: var(--bg-tertiary); padding: 1rem; text-align: left; font-weight: 600; color: var(--text-secondary); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 1; }
-        .transactions-table th:first-child { border-top-left-radius: 8px; }
-        .transactions-table th:last-child { border-top-right-radius: 8px; }
-        .transactions-table td { padding: 1rem; font-size: 0.875rem; color: var(--text-primary); border-bottom: 1px solid var(--border-color); white-space: nowrap; }
-        .transactions-table td:nth-child(3) { white-space: normal; }
-        .transactions-table tr:last-child td { border-bottom: none; }
-        .transactions-table tr:hover td { background-color: var(--bg-tertiary); }
-        .account-cell { display: flex; align-items: center; gap: 0.75rem; }
-        .account-icon { width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 600; color: white; background-color: var(--text-tertiary); flex-shrink: 0; }
-        .tx-badge { display: inline-flex; align-items: center; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.75rem; font-weight: 500; text-transform: capitalize; }
-        .badge-deposit { background-color: rgba(16, 185, 129, 0.1); color: var(--success); }
-        .badge-withdrawal { background-color: rgba(239, 68, 68, 0.1); color: var(--danger); }
-        .badge-transfer { background-color: rgba(14, 165, 233, 0.1); color: var(--accent-primary); }
-        .badge-fee { background-color: rgba(245, 158, 11, 0.1); color: var(--warning); }
-        .dashboard-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid var(--border-color); font-size: 0.875rem; color: var(--text-tertiary); margin-top: 2rem; }
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg-tertiary); }
-        ::-webkit-scrollbar-thumb { background: var(--accent-tertiary); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--accent-primary); }
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 16px;
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
 
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            overflow-y: auto;
+            transition: transform var(--transition-speed);
+            z-index: 10;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar-logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+
+        .sidebar-nav {
+            padding: 1rem 0;
+        }
+
+        .nav-section {
+            margin-bottom: 1rem;
+        }
+
+        .nav-section-title {
+            padding: 0.5rem 1.5rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .nav-items {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin: 0.25rem 0;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: background-color var(--transition-speed),
+                color var(--transition-speed);
+            border-left: 3px solid transparent;
+            cursor: pointer; /* Ensure pointer cursor */
+        }
+
+        .nav-link:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+            color: var(--accent-primary);
+        }
+
+        .nav-link.active {
+            color: var(--accent-primary);
+            border-left-color: var(--accent-primary);
+            background-color: rgba(2, 132, 199, 0.1);
+        }
+
+        .nav-icon {
+            margin-right: 0.75rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            position: relative;
+        }
+
+        .header {
+            height: var(--header-height);
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 5;
+        }
+
+        .header-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .content-container {
+            padding: 2rem;
+            /* Let content determine height; remove fixed height calculation */
+            overflow-y: auto; /* Allows scrolling if content exceeds viewport */
+            min-height: calc(100vh - var(--header-height)); /* Ensure it takes at least remaining height */
+        }
+
+        /* Page-specific styles will be injected dynamically below */
+
+        /* Mobile Sidebar Toggle */
+        .sidebar-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+            cursor: pointer;
+        }
+
+        /* Responsive Layout */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .sidebar-toggle {
+                display: block;
+                margin-right: 1rem; /* Add some spacing */
+            }
+
+            .content-container {
+                padding: 1rem;
+            }
+             .header {
+                padding: 0 1rem;
+             }
+        }
     </style>
+    <!-- Placeholder for dynamically injected page styles -->
+    <style id="page-specific-styles"></style>
 </head>
 <body>
-    <!-- Button to toggle sidebar on mobile -->
-    <button class="sidebar-toggle" id="sidebar-toggle">
-        <i class="fas fa-bars"></i>
-    </button>
-
     <div class="layout">
-        <!-- Sidebar Navigation (DUPLICATED STRUCTURE) -->
+        <!-- Sidebar Navigation -->
         <aside class="sidebar" id="sidebar">
-             <div class="sidebar-header">
-                 <a href="index.html" class="sidebar-logo">My Website</a> <!-- Link back to home -->
+            <div class="sidebar-header">
+                <div class="sidebar-logo">My Website</div>
             </div>
             <nav class="sidebar-nav">
                 <div class="nav-section">
                     <div class="nav-section-title">Pages</div>
                     <ul class="nav-items" id="page-nav">
                         <li class="nav-item">
-                            <a href="index.html" class="nav-link"> <!-- Not active on this page -->
+                            <a class="nav-link active" data-page="home">
                                 <span class="nav-icon"><i class="fas fa-home"></i></span>
                                 <span>Home</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                             <!-- Add 'active' class MANUALLY for the current page -->
-                            <a href="financial-dashboard.html" class="nav-link active">
+                            <a class="nav-link" data-page="financial-dashboard">
                                 <span class="nav-icon"><i class="fas fa-chart-line"></i></span>
                                 <span>Financial Dashboard</span>
                             </a>
                         </li>
-                         <li class="nav-item">
-                            <a href="ontario_vs_calgary.html" class="nav-link">
+                        <!-- Hard-coded static pages -->
+                        <li class="nav-item">
+                            <a class="nav-link" data-page="ontario_vs_calgary">
                                 <span class="nav-icon"><i class="fas fa-map-marked-alt"></i></span>
                                 <span>Ontario vs Calgary</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="Ship_Technical_Data_Network_Light.html" class="nav-link">
+                            <a class="nav-link" data-page="Ship_Technical_Data_Network_Light">
                                 <span class="nav-icon"><i class="fas fa-ship"></i></span>
                                 <span>Ship Network Light</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="Ship_Technical_Data_Network_Dark.html" class="nav-link">
+                            <a class="nav-link" data-page="Ship_Technical_Data_Network_Dark">
                                 <span class="nav-icon"><i class="fas fa-moon"></i></span>
                                 <span>Ship Network Dark</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="newfoundland_realestate.html" class="nav-link">
+                            <a class="nav-link" data-page="newfoundland_realestate">
                                 <span class="nav-icon"><i class="fas fa-building"></i></span>
                                 <span>Newfoundland Real Estate</span>
                             </a>
                         </li>
+                        <!-- Additional pages will be appended below if not already present -->
                     </ul>
                 </div>
             </nav>
@@ -191,94 +265,221 @@
 
         <!-- Main Content Area -->
         <main class="main-content">
-            <!-- Optional Header for the page -->
-             <header class="page-header">
-                <h1 class="page-header-title">Financial Dashboard</h1>
+            <header class="header">
+                <button class="sidebar-toggle" id="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="header-title" id="page-title">Home</h1>
+                <div></div> <!-- Spacer -->
             </header>
 
-            <!-- Dashboard Specific Content (Copied from original dashboard file's body) -->
-            <div class="dashboard"> <!-- Removed extra outer div -->
-                <div class="dashboard-header">
-                    <div class="dashboard-title">
-                        <h1>Financial Analysis</h1> <!-- Example slightly different title -->
-                        <p>November 2024 Transactions</p>
-                    </div>
-                    <div class="dashboard-meta">
-                         <div class="dashboard-meta-item">
-                            <div class="dashboard-meta-value">21</div>
-                            <div class="dashboard-meta-label">Transactions</div>
-                        </div>
-                        <div class="dashboard-meta-item">
-                            <div class="dashboard-meta-value">5</div>
-                            <div class="dashboard-meta-label">Accounts</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-grid">
-                     <div class="card card-income"> <div class="card-header"> <div> <div class="card-title">TOTAL INCOME</div> </div> <div class="card-icon"> <i class="fas fa-arrow-down"></i> </div> </div> <div class="card-value positive">$2,664.91</div> <div class="card-subtitle">November deposits</div> </div>
-                     <div class="card card-expense"> <div class="card-header"> <div> <div class="card-title">TOTAL EXPENSES</div> </div> <div class="card-icon"> <i class="fas fa-arrow-up"></i> </div> </div> <div class="card-value negative">$3,933.12</div> <div class="card-subtitle">November withdrawals</div> </div>
-                     <div class="card card-transfer"> <div class="card-header"> <div> <div class="card-title">TRANSFERS</div> </div> <div class="card-icon"> <i class="fas fa-exchange-alt"></i> </div> </div> <div class="card-value neutral">$1,384.08</div> <div class="card-subtitle">November transfers</div> </div>
-                     <div class="card card-net"> <div class="card-header"> <div> <div class="card-title">NET CASH FLOW</div> </div> <div class="card-icon"> <i class="fas fa-chart-line"></i> </div> </div> <div class="card-value positive">$115.87</div> <div class="card-subtitle">November net flow</div> </div>
-                </div>
-
-                <div class="chart-row">
-                     <div class="chart-card"> <div class="chart-header"> <div class="chart-title">Cash Flow</div> <div class="chart-subtitle">Income vs Expenses by Type</div> </div> <div class="chart-container"> <canvas id="cash-flow-chart"></canvas> </div> </div>
-                     <div class="chart-card"> <div class="chart-header"> <div class="chart-title">Account Balances</div> <div class="chart-subtitle">Current Balance Across Accounts</div> </div> <div class="chart-container"> <canvas id="accounts-chart"></canvas> </div> </div>
-                </div>
-
-                 <div class="transactions-card"> <div class="transactions-header"> <div class="transactions-title">Recent Transactions</div> </div> <div class="table-container"> <table class="transactions-table" id="transactions-table"> <thead> <tr> <th>Date</th> <th>Account</th> <th>Description</th> <th>Category</th> <th>Type</th> <th>Amount</th> </tr> </thead> <tbody> <!-- Populated by JS --> </tbody> </table> </div> </div>
-
-                 <div class="dashboard-footer"> <div>Financial Dashboard © 2024</div> <div>Data powered by Wealthica</div> </div>
+            <div class="content-container" id="content">
+                <!-- Content will be loaded here -->
             </div>
-            <!-- End Dashboard Specific Content -->
 
+            <!-- Template for home content -->
+            <template id="home-template">
+                <div>
+                    <h2>Welcome to My GitHub Pages Website</h2>
+                    <p>Select a page from the sidebar to view its content.</p>
+                </div>
+            </template>
         </main>
     </div>
 
-    <!-- JavaScript Dependencies: Chart.js (Load AFTER content) -->
+    <!-- Load Chart.js Library HERE, once for all pages -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 
-    <!-- Dashboard Specific JavaScript (Copied & adapted) -->
+    <!-- Main Application Script -->
     <script>
-        // Ensure this script runs AFTER the Chart.js library is loaded and DOM is ready
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener("DOMContentLoaded", function () {
+            // DOM Elements
+            const sidebar = document.getElementById("sidebar");
+            const sidebarToggle = document.getElementById("sidebar-toggle");
+            const pageTitle = document.getElementById("page-title");
+            const contentContainer = document.getElementById("content");
+            const pageNav = document.getElementById("page-nav");
+            const pageSpecificStyles = document.getElementById("page-specific-styles");
+            const homeTemplate = document.getElementById("home-template");
 
-            // --- Chart.js Global Config (Optional: Can be set per chart) ---
-             Chart.defaults.font.family = "'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif";
-             Chart.defaults.color = '#64748b';
-             Chart.defaults.plugins.legend.labels.usePointStyle = true;
-             Chart.defaults.plugins.legend.labels.pointStyle = 'circle';
+            // Toggle sidebar on mobile
+            sidebarToggle.addEventListener("click", function () {
+                sidebar.classList.toggle("active");
+            });
 
-            // --- Data Definitions ---
-            const novemberTransactions = [ { date: '11/8/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'Contactless Interac purchase - 8827 COSTCO WHOLESAL', category: 'General Merchandise', type: 'withdrawal', amount: -13.64 }, { date: '11/8/24', account: 'CIBC Online Banking (Recommended) (Chequing)', description: 'Electronic Funds Transfer PREAUTHORIZED DEBIT BELL ALIANT', category: 'Transfers', type: 'transfer', amount: -115.92 }, { date: '11/7/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'Loan payment', category: null, type: 'withdrawal', amount: -1045.8 }, { date: '11/7/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'ATM Withdrawal', category: null, type: 'withdrawal', amount: -16.5 }, { date: '11/7/24', account: 'RBC Online Banking (RBC Cash Back Mastercard)', description: 'Credit Card Payment', category: 'Credit Card Payments', type: 'transfer', amount: 1000.00 }, { date: '11/6/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Restaurant Purchase', category: 'Restaurants/Dining', type: 'withdrawal', amount: -52.36 }, { date: '11/6/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Service Fee', category: 'Service Charges/Fees', type: 'fee', amount: -5.00 }, { date: '11/6/24', account: 'RBC Online Banking (RBC Cash Back Mastercard)', description: 'Gasoline Purchase', category: 'Gasoline/Fuel', type: 'withdrawal', amount: -46.79 }, { date: '11/5/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'ATM Withdrawal', category: null, type: 'withdrawal', amount: -200.00 }, { date: '11/5/24', account: 'CIBC Online Banking (Recommended) (Chequing)', description: 'Mobile Deposit', category: null, type: 'deposit', amount: 856.23 }, { date: '11/5/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Shopping - Clothing', category: 'Clothing/Shoes', type: 'withdrawal', amount: -89.32 }, { date: '11/4/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Gas Station Purchase', category: 'Automotive Expenses', type: 'withdrawal', amount: -67.85 }, { date: '11/4/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'Utility Bill Payment', category: 'Utilities', type: 'withdrawal', amount: -145.32 }, { date: '11/4/24', account: 'CIBC Online Banking (Recommended) (Savings)', description: 'Transfer from Savings', category: 'Transfers', type: 'transfer', amount: 500.00 }, { date: '11/3/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Credit Card Payment', category: 'Credit Card Payments', type: 'transfer', amount: 200.00 }, { date: '11/3/24', account: 'CIBC Online Banking (Recommended) (Chequing)', description: 'Grocery Shopping', category: 'Groceries', type: 'withdrawal', amount: -142.76 }, { date: '11/2/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'Restaurant Dining', category: 'Restaurants/Dining', type: 'withdrawal', amount: -56.78 }, { date: '11/2/24', account: 'RBC Online Banking (RBC Cash Back Mastercard)', description: 'Online Subscription', category: 'Online Services', type: 'withdrawal', amount: -14.99 }, { date: '11/1/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'Payroll Deposit', category: null, type: 'deposit', amount: 1808.68 }, { date: '11/1/24', account: 'CIBC Online Banking (Recommended) (Chequing)', description: 'Mortgage Payment', category: 'Transfers', type: 'transfer', amount: -1050.00 }, { date: '11/1/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Home Improvement Store', category: 'Home Improvement', type: 'withdrawal', amount: -264.39 } ];
-            const accountsData = { labels: ['RBC Advantage', 'CIBC Chequing', 'RBC Mastercard', 'CIBC VISA', 'CIBC Savings'], balances: [-1718.09, 1118.11, -304.35, -1083.24, -1674.63] };
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener("click", function (event) {
+                const isClickInsideSidebar = sidebar.contains(event.target);
+                const isClickOnToggle = sidebarToggle.contains(event.target); // Check if click is on toggle or its children (like the icon)
 
-            // --- Chart/Table Initialization Functions (Same as before) ---
-            function initializeCashFlowChart() { const ctx = document.getElementById('cash-flow-chart')?.getContext('2d'); if (!ctx) return; const income = novemberTransactions .filter(t => t.type === 'deposit') .reduce((sum, t) => sum + t.amount, 0); const expenses = Math.abs(novemberTransactions .filter(t => t.type === 'withdrawal') .reduce((sum, t) => sum + t.amount, 0)); const netTransfers = novemberTransactions .filter(t => t.type === 'transfer') .reduce((sum, t) => sum + t.amount, 0); const fees = Math.abs(novemberTransactions .filter(t => t.type === 'fee') .reduce((sum, t) => sum + t.amount, 0)); const chartLabels = ['Income', 'Expenses', 'Net Transfers', 'Fees']; const chartDataPoints = [income, expenses, netTransfers, fees]; const backgroundColors = [ 'rgba(16, 185, 129, 0.7)', 'rgba(239, 68, 68, 0.7)', netTransfers >= 0 ? 'rgba(14, 165, 233, 0.7)' : 'rgba(245, 158, 11, 0.7)', 'rgba(245, 158, 11, 0.7)' ]; const borderColors = [ 'rgb(16, 185, 129)', 'rgb(239, 68, 68)', netTransfers >= 0 ? 'rgb(14, 165, 233)' : 'rgb(245, 158, 11)', 'rgb(245, 158, 11)' ]; new Chart(ctx, { type: 'pie', data: { labels: chartLabels, datasets: [{ data: chartDataPoints, backgroundColor: backgroundColors, borderColor: borderColors, borderWidth: 2 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top', labels: { padding: 15 } }, tooltip: { backgroundColor: 'rgba(255, 255, 255, 0.95)', titleColor: '#0f172a', bodyColor: '#334155', bodyFont: { size: 14 }, borderColor: '#e2e8f0', borderWidth: 1, padding: 12, callbacks: { label: function(context) { let label = context.label || ''; if (label) { label += ': '; } const value = context.raw; const total = context.dataset.data.reduce((a, b) => a + Math.abs(b), 0); const percentage = total !== 0 ? Math.round(Math.abs(value) / total * 100) : 0; label += `$${value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`; if (total !== 0) { label += ` (${percentage}%)`; } return label; } } } } } }); }
-            function initializeAccountsChart() { const ctx = document.getElementById('accounts-chart')?.getContext('2d'); if (!ctx) return; new Chart(ctx, { type: 'bar', data: { labels: accountsData.labels, datasets: [{ label: 'Account Balance', data: accountsData.balances, backgroundColor: accountsData.balances.map(b => b >= 0 ? 'rgba(16, 185, 129, 0.7)' : 'rgba(239, 68, 68, 0.7)'), borderColor: accountsData.balances.map(b => b >= 0 ? 'rgb(16, 185, 129)' : 'rgb(239, 68, 68)'), borderWidth: 2, borderRadius: 6 }] }, options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { grid: { color: 'rgba(226, 232, 240, 0.5)' }, ticks: { callback: function(value) { return '$' + value.toLocaleString(); } } }, y: { grid: { display: false } } }, plugins: { legend: { display: false }, tooltip: { backgroundColor: 'rgba(255, 255, 255, 0.95)', titleColor: '#0f172a', bodyColor: '#334155', bodyFont: { size: 14 }, borderColor: '#e2e8f0', borderWidth: 1, padding: 12, callbacks: { title: (ti) => ti[0].label + ' Account', label: function(context) { return `Balance: $${context.raw.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`; } } } } } }); }
-            function populateTransactionsTable() { const tableBody = document.querySelector('#transactions-table tbody'); if (!tableBody) return; tableBody.innerHTML = ''; const sortedTransactions = [...novemberTransactions].sort((a, b) => new Date(b.date) - new Date(a.date)); const currencyFormatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 }); sortedTransactions.forEach(transaction => { const row = tableBody.insertRow(); const accountName = transaction.account.split(' (')[0]; const accountInitials = accountName.split(' ').map(word => word[0]).join('').substring(0, 2).toUpperCase(); let accountColor = '#64748b'; if (accountName.includes('RBC Advantage')) accountColor = '#ef4444'; else if (accountName.includes('CIBC Chequing')) accountColor = '#10b981'; else if (accountName.includes('RBC Cash Back')) accountColor = '#f59e0b'; else if (accountName.includes('CIBC VISA')) accountColor = '#8b5cf6'; else if (accountName.includes('CIBC Savings')) accountColor = '#0ea5e9'; row.innerHTML = ` <td>${transaction.date}</td> <td> <div class="account-cell"> <div class="account-icon" style="background-color: ${accountColor};">${accountInitials}</div> <div>${accountName}</div> </div> </td> <td>${transaction.description}</td> <td>${transaction.category || 'Uncategorized'}</td> <td> <span class="tx-badge badge-${transaction.type}"> ${transaction.type} </span> </td> <td class="${transaction.amount >= 0 ? 'positive' : 'negative'}"> ${currencyFormatter.format(transaction.amount)} </td> `; }); }
+                if (
+                    window.innerWidth <= 768 &&
+                    !isClickInsideSidebar &&
+                    !isClickOnToggle && // Don't close if clicking the toggle itself
+                    sidebar.classList.contains("active")
+                ) {
+                    sidebar.classList.remove("active");
+                }
+            });
 
-            // --- Call Initializers ---
-            initializeCashFlowChart();
-            initializeAccountsChart();
-            populateTransactionsTable();
+            // Function to load page content
+            async function loadPageContent(pageName) {
+                // Clear previous page-specific styles and content
+                pageSpecificStyles.textContent = '';
+                contentContainer.innerHTML = ''; // Clear previous content immediately
 
-        }); // End DOMContentLoaded listener
+                // Reset page title (useful if loading fails)
+                pageTitle.textContent = pageName.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 
-        // --- Sidebar Toggle JS (COPIED FROM index.html) ---
-         const sidebar = document.getElementById('sidebar');
-         const toggleButton = document.getElementById('sidebar-toggle');
-         if (toggleButton && sidebar) {
-             toggleButton.addEventListener('click', () => { sidebar.classList.toggle('active'); });
-             document.addEventListener('click', function(event) {
-                 const isClickInsideSidebar = sidebar.contains(event.target);
-                 const isClickOnToggle = toggleButton.contains(event.target);
-                 if (window.innerWidth <= 768 && !isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains('active')) {
-                     sidebar.classList.remove('active');
-                 }
-             });
-         }
+                 // Clean up any previous page's initialization function if needed
+                if (window.currentPageCleanup) {
+                    window.currentPageCleanup();
+                    window.currentPageCleanup = null; // Remove reference
+                }
+
+                if (!pageName || pageName === "home") {
+                    contentContainer.innerHTML = homeTemplate.innerHTML;
+                    pageTitle.textContent = "Home";
+                    updateActiveNavLink("home");
+                    return; // Exit early for home page
+                }
+
+                try {
+                    const response = await fetch(`${pageName}.html`);
+                    if (!response.ok) {
+                         throw new Error(`Page not found (${response.status})`);
+                    }
+                    const html = await response.text();
+
+                    // Use DOMParser to safely parse the fetched HTML
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+
+                    // Extract Title (optional, can use data-page name)
+                    const titleElement = doc.querySelector('title');
+                    if (titleElement && titleElement.textContent) {
+                         pageTitle.textContent = titleElement.textContent;
+                    } else {
+                         // Fallback title generation
+                         pageTitle.textContent = pageName.split(/[_\-]/) // Split by underscore or dash
+                                                        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                                                        .join(' ');
+                    }
+
+
+                    // Extract Styles
+                    const styleElement = doc.querySelector('style');
+                    if (styleElement) {
+                        pageSpecificStyles.textContent = styleElement.textContent;
+                    }
+
+                    // Extract Content (assuming content is wrapped in a single top-level div)
+                    // Find the first direct child div of body, or body itself if no div
+                    const bodyContent = doc.body.firstElementChild?.tagName === 'DIV'
+                                        ? doc.body.firstElementChild
+                                        : doc.body; // Adjust if your content isn't wrapped in a div
+
+                    if (bodyContent) {
+                        contentContainer.innerHTML = bodyContent.innerHTML;
+                    } else {
+                        throw new Error("Could not find main content in fetched page.");
+                    }
+
+                    // Find and Execute Initialization Script
+                    // Look for a script with a specific ID or a naming convention
+                    const initScriptElement = doc.querySelector('script#page-init-script'); // Recommend adding id="page-init-script" to your page scripts
+
+                    if (initScriptElement && initScriptElement.textContent) {
+                       try {
+                           // IMPORTANT: Evaluate script in a way that allows it to define functions globally
+                           // or attach them to window. We'll execute it directly here.
+                           // A function constructor is safer than eval
+                           const initFn = new Function(initScriptElement.textContent + "\n return typeof initializePage === 'function' ? initializePage : null;");
+                           const initializePage = initFn();
+
+                           if (initializePage) {
+                               initializePage(); // Call the initialization function
+
+                               // Optional: Store a cleanup function if the page script defines one
+                               if (typeof cleanupPage === 'function') {
+                                  window.currentPageCleanup = cleanupPage;
+                               }
+                           } else {
+                               console.warn(`No initializePage function found or returned from script in ${pageName}.html`);
+                           }
+                       } catch (scriptError) {
+                           console.error(`Error executing initialization script for ${pageName}:`, scriptError);
+                           contentContainer.innerHTML = `<p>Error initializing page content.</p><pre>${scriptError}</pre>`;
+                       }
+                    } else {
+                         console.log(`No initialization script found (script#page-init-script) for ${pageName}.`);
+                    }
+
+                } catch (error) {
+                    console.error(`Error loading page ${pageName}:`, error);
+                    contentContainer.innerHTML = `
+                        <div style="text-align: center; padding: 2rem; color: var(--danger);">
+                            <h2>Error Loading Page</h2>
+                            <p>Sorry, the page '${pageName}.html' could not be loaded.</p>
+                            <p><small>${error.message}</small></p>
+                        </div>`;
+                    pageTitle.textContent = "Error";
+                } finally {
+                   updateActiveNavLink(pageName); // Ensure nav link is updated even if loading fails
+                }
+            }
+
+            // Update the active navigation link
+            function updateActiveNavLink(pageName) {
+                const links = pageNav.querySelectorAll(".nav-link");
+                links.forEach(link => {
+                    if (link.getAttribute("data-page") === pageName) {
+                        link.classList.add("active");
+                    } else {
+                        link.classList.remove("active");
+                    }
+                });
+            }
+
+            // Handle navigation clicks (using event delegation)
+            pageNav.addEventListener("click", function (event) {
+                const link = event.target.closest(".nav-link");
+                if (link && link.dataset.page) { // Check if it's a nav link with a data-page attribute
+                    event.preventDefault();
+                    const pageName = link.dataset.page;
+                    // Update hash only if it's different to avoid redundant loads/history entries
+                    if (window.location.hash !== `#${pageName}`) {
+                       window.location.hash = pageName;
+                    } else {
+                       // If hash is the same, maybe force reload content? Or do nothing.
+                       // For simplicity, we'll reload if clicked again on the same link
+                       loadPageContent(pageName);
+                    }
+                    if (window.innerWidth <= 768) sidebar.classList.remove("active");
+                }
+            });
+
+            // Handle URL hash changes (for back/forward buttons and direct links)
+            window.addEventListener("hashchange", function () {
+                const pageName = window.location.hash.substring(1) || "home";
+                loadPageContent(pageName);
+                // No need to call updateActiveNavLink here, loadPageContent does it
+            });
+
+            // --- No need for pages.json fetching in this simplified version ---
+            // async function fetchAvailablePages() { ... }
+            // function updateNavigation(pages = []) { ... }
+
+
+            // Initialize the site
+            function initSite() {
+                const pageName = window.location.hash.substring(1) || "home";
+                loadPageContent(pageName);
+                 // fetchAvailablePages(); // Only if using pages.json
+            }
+
+            initSite();
+        });
     </script>
 </body>
 </html>
