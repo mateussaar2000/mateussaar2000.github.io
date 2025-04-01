@@ -10,204 +10,62 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
 
-        :root {
-            /* Existing color variables */
-            --bg-primary: #ffffff; /* White background */
-            --bg-secondary: #f8fafc; /* Slate 50 - for cards/sections */
-            --text-primary: #1e293b; /* Slate 800 */
-            --text-secondary: #475569; /* Slate 600 */
-            --text-muted: #94a3b8;    /* Slate 400 */
-            --accent-primary: #0ea5e9; /* Sky 500 */
-            --accent-secondary: #38bdf8; /* Sky 400 */
-            --border-color: #e2e8f0; /* Slate 200 */
-            --font-primary: 'Inter', -apple-system, sans-serif;
-            --timeline-line-color: var(--border-color);
+        :root { /* CSS Variables remain the same */
+            --bg-primary: #ffffff; --bg-secondary: #f8fafc; --text-primary: #1e293b;
+            --text-secondary: #475569; --text-muted: #94a3b8; --accent-primary: #0ea5e9;
+            --accent-secondary: #38bdf8; --border-color: #e2e8f0;
+            --font-primary: 'Inter', -apple-system, sans-serif; --timeline-line-color: var(--border-color);
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: var(--font-primary);
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-            margin: 0;
-            padding: 0;
-            overflow-y: auto; /* Allow vertical scrolling */
-            font-weight: 400;
-            text-rendering: optimizeLegibility;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        h1 {
-            color: var(--text-primary);
-            margin: 25px 0;
-            text-align: center;
-            font-weight: 500;
-            letter-spacing: -0.02em;
-            font-size: 1.85rem;
-        }
-
-        .controls {
-            margin: 0 0 25px;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            justify-content: center;
-            z-index: 10;
-            width: 100%;
-            max-width: 950px;
-        }
-
-        button {
-            background-color: #f1f5f9; color: #334155; border: 1px solid #cbd5e1;
-            padding: 9px 18px; border-radius: 6px; cursor: pointer;
-            font-weight: 500; font-size: 0.9rem; transition: all 0.2s ease;
-            font-family: 'Inter', sans-serif; box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-primary); background-color: var(--bg-primary); color: var(--text-primary); margin: 0; padding: 0; overflow-y: auto; font-weight: 400; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        .container { width: 100%; max-width: 1400px; margin: 0 auto; padding: 0 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        h1 { color: var(--text-primary); margin: 25px 0; text-align: center; font-weight: 500; letter-spacing: -0.02em; font-size: 1.85rem; }
+        .controls { margin: 0 0 25px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; z-index: 10; width: 100%; max-width: 950px; }
+        button { background-color: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; padding: 9px 18px; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 0.9rem; transition: all 0.2s ease; font-family: 'Inter', sans-serif; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
         button:hover { background-color: #e2e8f0; color: #1e293b; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-
-        #graph-wrapper {
-             width: 100%;
-             position: relative;
-             height: 70vh;
-             max-height: 700px;
-             margin-bottom: 40px;
-         }
-
+        #graph-wrapper { width: 100%; position: relative; height: 70vh; max-height: 700px; margin-bottom: 40px; }
         #graph { width: 100%; height: 100%; position: relative; }
-
-        /* Node and Link styling */
         .node { cursor: pointer; }
-        .link { stroke-opacity: 0.6; }
+        .link { stroke-opacity: 0.6; transition: stroke-opacity 0.3s ease, stroke-width 0.3s ease; /* Added transition back */ }
         .node-label text { pointer-events: none; text-anchor: middle; dominant-baseline: middle; font-weight: 400; fill: #1e293b; }
         .decision .node-label { transform: translateY(-38px); }
         .decision .node-label text { font-size: 9.5px; line-height: 1.2; dominant-baseline: auto; text-anchor: middle; }
-
-        /* Tooltip */
         .tooltip { position: absolute; padding: 12px 16px; background-color: rgba(255, 255, 255, 0.95); color: #334155; border-radius: 4px; pointer-events: none; opacity: 0; transition: opacity 0.2s ease; max-width: 280px; z-index: 1000; border: 1px solid #e2e8f0; font-size: 0.875rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); backdrop-filter: blur(2px); }
         .tooltip h3 { margin: 0 0 8px 0; font-weight: 600; font-size: 1rem; }
         .tooltip p { margin: 0 0 6px 0; line-height: 1.5; color: #475569; font-weight: 400; }
         .tooltip p strong { color: #1e293b; font-weight: 500; }
-
-        /* Legend */
         .legend { position: absolute; top: 15px; right: 15px; background-color: rgba(255, 255, 255, 0.9); padding: 16px; border-radius: 6px; border: 1px solid var(--border-color); z-index: 10; font-size: 0.875rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); backdrop-filter: blur(2px); }
         .legend h3 { margin: 0 0 12px 0; font-weight: 500; font-size: 1rem; color: var(--text-primary); }
         .legend-item { display: flex; align-items: center; margin-bottom: 8px; color: var(--text-secondary); }
         .legend-color { width: 12px; height: 12px; border-radius: 3px; margin-right: 10px; flex-shrink: 0; }
+        .node-group { transition: opacity 0.3s ease; /* Added transition back */ }
 
-        .node-group {} /* No transitions on hover */
-
-        /* --- Timeline Section Styling --- */
-        #timeline-section {
-            width: 100%;
-            max-width: 900px;
-            margin: 0 auto 50px auto;
-            background-color: var(--bg-secondary);
-            padding: 25px 30px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 12px rgba(0,0,0, 0.05);
-        }
-
-        #timeline-section h2 {
-            text-align: center; color: var(--text-primary); font-weight: 500;
-            font-size: 1.5rem; margin-bottom: 30px; letter-spacing: -0.01em;
-        }
-
-        .timeline-year {
-            margin-bottom: 35px; padding-left: 25px; position: relative;
-            border-left: 2px solid var(--timeline-line-color);
-        }
+        /* --- Timeline Section Styling (remains same) --- */
+        #timeline-section { width: 100%; max-width: 900px; margin: 0 auto 50px auto; background-color: var(--bg-secondary); padding: 25px 30px; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 4px 12px rgba(0,0,0, 0.05); }
+        #timeline-section h2 { text-align: center; color: var(--text-primary); font-weight: 500; font-size: 1.5rem; margin-bottom: 30px; letter-spacing: -0.01em; }
+        .timeline-year { margin-bottom: 35px; padding-left: 25px; position: relative; border-left: 2px solid var(--timeline-line-color); }
         .timeline-year:last-child { margin-bottom: 10px; }
-
-        .timeline-year-header {
-            font-size: 1.2rem; font-weight: 600; color: var(--accent-primary);
-            margin-bottom: 15px; position: relative; left: -38px; top: -5px;
-            display: inline-block; background-color: var(--bg-secondary); padding: 0 10px 0 0;
-        }
-
-         /* Year marker on the timeline */
-         .timeline-year-header::before {
-            content: '';
-            position: absolute;
-            left: -18px; /* ADJUSTED for better spacing */
-            top: 50%;
-            transform: translateY(-50%);
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background-color: var(--accent-primary);
-            border: 2px solid var(--bg-secondary);
-            z-index: 1;
-        }
-
+        .timeline-year-header { font-size: 1.2rem; font-weight: 600; color: var(--accent-primary); margin-bottom: 15px; position: relative; left: -38px; top: -5px; display: inline-block; background-color: var(--bg-secondary); padding: 0 10px 0 0; }
+        .timeline-year-header::before { content: ''; position: absolute; left: -18px; /* Corrected spacing */ top: 50%; transform: translateY(-50%); width: 12px; height: 12px; border-radius: 50%; background-color: var(--accent-primary); border: 2px solid var(--bg-secondary); z-index: 1; }
         .timeline-events { list-style: none; padding-left: 10px; }
-
-        .timeline-event {
-            margin-bottom: 12px; font-size: 0.95rem; color: var(--text-secondary);
-            line-height: 1.6; position: relative; padding-left: 20px;
-        }
-
-         /* Event marker/icon */
-         .timeline-event::before {
-            font-family: "Font Awesome 6 Free"; font-weight: 900; content: "\f111";
-            position: absolute; left: 0; top: 5px; font-size: 0.6em; color: var(--text-muted);
-         }
-
-         /* Specific icons */
-         .timeline-event.icon-graduation-cap::before { content: "\f19d"; color: var(--accent-primary); }
-         .timeline-event.icon-briefcase::before { content: "\f0b1"; color: #14b8a6; }
-         .timeline-event.icon-home::before { content: "\f015"; color: #22c55e; }
-         .timeline-event.icon-plane-departure::before { content: "\f5b0"; color: #a855f7; }
-         .timeline-event.icon-heart::before { content: "\f004"; color: #ec4899; }
-         .timeline-event.icon-calendar-check::before { content: "\f274"; color: #f59e0b; }
-         .timeline-event.icon-comments-dollar::before { content: "\f653"; color: #f59e0b; }
-         .timeline-event.icon-user-graduate::before { content: "\f501"; color: #14b8a6; }
-
+        .timeline-event { margin-bottom: 12px; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; position: relative; padding-left: 20px; }
+        .timeline-event::before { font-family: "Font Awesome 6 Free"; font-weight: 900; content: "\f111"; position: absolute; left: 0; top: 5px; font-size: 0.6em; color: var(--text-muted); }
+        .timeline-event.icon-graduation-cap::before { content: "\f19d"; color: var(--accent-primary); } .timeline-event.icon-briefcase::before { content: "\f0b1"; color: #14b8a6; } .timeline-event.icon-home::before { content: "\f015"; color: #22c55e; } .timeline-event.icon-plane-departure::before { content: "\f5b0"; color: #a855f7; } .timeline-event.icon-heart::before { content: "\f004"; color: #ec4899; } .timeline-event.icon-calendar-check::before { content: "\f274"; color: #f59e0b; } .timeline-event.icon-comments-dollar::before { content: "\f653"; color: #f59e0b; } .timeline-event.icon-user-graduate::before { content: "\f501"; color: #14b8a6; }
         .timeline-event strong { font-weight: 500; color: var(--text-primary); }
-
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Our Future: Career & Life Planning</h1>
         <div class="controls">
-            <!-- Buttons remain the same -->
-            <button id="resetZoom">Reset View</button>
-            <button id="showCareerYou">Career (You)</button>
-            <button id="showCareerPartner">Career (Partner)</button>
-            <button id="showLocation">Location & Home</button>
-            <button id="showFinancial">Financial Goals</button>
-            <button id="showPersonal">Personal Growth</button>
-            <button id="showRelationship">Relationship & Family</button>
+            <button id="resetZoom">Reset View</button> <button id="showCareerYou">Career (You)</button> <button id="showCareerPartner">Career (Partner)</button> <button id="showLocation">Location & Home</button> <button id="showFinancial">Financial Goals</button> <button id="showPersonal">Personal Growth</button> <button id="showRelationship">Relationship & Family</button>
         </div>
 
-        <!-- Wrapper for Graph and Overlays -->
         <div id="graph-wrapper">
             <div id="graph"></div>
             <div class="tooltip"></div>
             <div class="legend">
-                <!-- Legend content remains the same -->
                 <h3>Life Areas</h3>
                  <div class="legend-item"><div class="legend-color" style="background-color: #3b82f6;"></div><div>Career (You)</div></div>
                  <div class="legend-item"><div class="legend-color" style="background-color: #14b8a6;"></div><div>Career (Partner)</div></div>
@@ -218,8 +76,8 @@
             </div>
         </div>
 
-        <!-- Timeline Section (HTML content remains the same) -->
         <section id="timeline-section">
+             <!-- Timeline HTML remains the same -->
             <h2>Our 5-Year Outlook</h2>
             <div class="timeline-year">
                 <div class="timeline-year-header">2025</div>
@@ -272,8 +130,7 @@
                  </ul>
             </div>
         </section>
-
-    </div><!-- End .container -->
+    </div>
 
     <script>
         // --- Data (Same) ---
@@ -306,9 +163,33 @@
          function dragged(event, d) { d.fx = event.x; d.fy = event.y; }
          function dragended(event, d) { if (!event.active) simulation.alphaTarget(0); }
 
-        // --- Hover Effects (NO Transitions, NO scaling) ---
-        nodeGroups.on("mouseover",function(event, d){const thisNodeGroup=d3.select(this);const relatedLinks=data.links.filter(link=>{const sId=typeof link.source==='object'?link.source.id:link.source;const tId=typeof link.target==='object'?link.target.id:link.target;return sId===d.id||tId===d.id});const relatedNodeIds=new Set();relatedLinks.forEach(link=>{const sId=typeof link.source==='object'?link.source.id:link.source;const tId=typeof link.target==='object'?link.target.id:link.target;relatedNodeIds.add(sId);relatedNodeIds.add(tId)});relatedNodeIds.add(d.id);g.selectAll(".link").style("stroke-opacity",link=>relatedLinks.includes(link)?0.9:0.05).style("stroke-width",link=>relatedLinks.includes(link)?3:1);g.selectAll(".node-group").style("opacity",node=>relatedNodeIds.has(node.id)?1:0.1);let ttC='';let nC='#64748b';if(d.group==="category"){ttC=`<h3>${d.id}</h3><p>Area of focus. Click to highlight.</p>`;nC=colorScale(d.id)}else if(d.group==="decision"){ttC=`<h3>${d.id}</h3><p><strong>Category:</strong> ${d.category}</p><p><strong>Details:</strong> ${d.details||'Discuss details...'}</p>`;nC=colorScale(d.category)}else if(d.group==="root"){ttC=`<h3>${d.id}</h3><p>Central hub.</p>`}if(ttC){tooltip.style("opacity",1).html(ttC).style("left",(event.pageX+15)+"px").style("top",(event.pageY-28)+"px").style("border",`1px solid ${nC}`).select("h3").style("color",nC)}})
-        .on("mouseout",function(){g.selectAll(".link").style("stroke-opacity",0.6).style("stroke-width",1.8);g.selectAll(".node-group").style("opacity",1);tooltip.style("opacity",0)});
+        // --- Hover Effects (WITH Transitions added back) ---
+        nodeGroups.on("mouseover",function(event, d){
+            const thisNodeGroup=d3.select(this);
+            const relatedLinks=data.links.filter(link=>{const sId=typeof link.source==='object'?link.source.id:link.source;const tId=typeof link.target==='object'?link.target.id:link.target;return sId===d.id||tId===d.id});
+            const relatedNodeIds=new Set();relatedLinks.forEach(link=>{const sId=typeof link.source==='object'?link.source.id:link.source;const tId=typeof link.target==='object'?link.target.id:link.target;relatedNodeIds.add(sId);relatedNodeIds.add(tId)});relatedNodeIds.add(d.id);
+
+            // Apply styles WITH TRANSITION
+             g.selectAll(".link")
+                .transition().duration(150) // Added Back
+                .style("stroke-opacity",link=>relatedLinks.includes(link)?0.9:0.05)
+                .style("stroke-width",link=>relatedLinks.includes(link)?3:1);
+             g.selectAll(".node-group")
+                .transition().duration(150) // Added Back
+                .style("opacity",node=>relatedNodeIds.has(node.id)?1:0.1);
+
+            // Tooltip logic remains same
+            let ttC='';let nC='#64748b';if(d.group==="category"){ttC=`<h3>${d.id}</h3><p>Area of focus. Click to highlight.</p>`;nC=colorScale(d.id)}else if(d.group==="decision"){ttC=`<h3>${d.id}</h3><p><strong>Category:</strong> ${d.category}</p><p><strong>Details:</strong> ${d.details||'Discuss details...'}</p>`;nC=colorScale(d.category)}else if(d.group==="root"){ttC=`<h3>${d.id}</h3><p>Central hub.</p>`}if(ttC){tooltip.style("opacity",1).html(ttC).style("left",(event.pageX+15)+"px").style("top",(event.pageY-28)+"px").style("border",`1px solid ${nC}`).select("h3").style("color",nC)}})
+        .on("mouseout",function(){
+            // Restore styles WITH TRANSITION
+            g.selectAll(".link")
+                .transition().duration(200) // Added Back
+                .style("stroke-opacity",0.6)
+                .style("stroke-width",1.8);
+            g.selectAll(".node-group")
+                .transition().duration(200) // Added Back
+                .style("opacity",1);
+            tooltip.style("opacity",0)});
 
         // Add drag behavior AFTER hover/mouseout
         nodeGroups.call(d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended));
@@ -322,8 +203,19 @@
         function resetHighlightsAndZoom() { svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity); g.selectAll(".node-group").transition().duration(300).style("opacity", 1); g.selectAll(".link").transition().duration(300).style("stroke-opacity", 0.6).style("stroke-width", 1.8); data.nodes.forEach(n => { n.fx = null; n.fy = null; }); simulation.alphaTarget(0.1).restart(); }
         d3.select("#resetZoom").on("click", resetHighlightsAndZoom);
 
-        // Highlight Category (NO Transitions, NO scaling)
-        function highlightCategory(category) { const relatedNodeIds=new Set(["Our Future Together",category]);data.nodes.filter(n=>n.category===category).forEach(n=>relatedNodeIds.add(n.id));g.selectAll(".node-group").style("opacity",node=>relatedNodeIds.has(node.id)?1:0.1);g.selectAll(".link").style("stroke-opacity",link=>{const sId=typeof link.source==='object'?link.source.id:link.source;const tId=typeof link.target==='object'?link.target.id:link.target;return (sId==="Our Future Together"&&tId===category)||(sId===category)?0.9:0.05}).style("stroke-width",link=>{const sId=typeof link.source==='object'?link.source.id:link.source;const tId=typeof link.target==='object'?link.target.id:link.target;return (sId==="Our Future Together"&&tId===category)||(sId===category)?3:1}) }
+        // Highlight Category (Keeping transitions for this seems ok)
+        function highlightCategory(category) {
+            const categoryColor=colorScale(category);
+            const relatedNodeIds=new Set(["Our Future Together",category]);data.nodes.filter(n=>n.category===category).forEach(n=>relatedNodeIds.add(n.id));
+             // Use transitions for button clicks
+             g.selectAll(".node-group")
+                 .transition().duration(300)
+                 .style("opacity",node=>relatedNodeIds.has(node.id)?1:0.1);
+             g.selectAll(".link")
+                 .transition().duration(300)
+                 .style("stroke-opacity",link=>{const sId=typeof link.source==='object'?link.source.id:link.source;const tId=typeof link.target==='object'?link.target.id:link.target;return (sId==="Our Future Together"&&tId===category)||(sId===category)?0.9:0.05})
+                 .style("stroke-width",link=>{const sId=typeof link.source==='object'?link.source.id:link.source;const tId=typeof link.target==='object'?link.target.id:link.target;return (sId==="Our Future Together"&&tId===category)||(sId===category)?3:1});
+         }
 
         // Connect buttons
         d3.select("#showCareerYou").on("click",()=>highlightCategory("Career (You)"));d3.select("#showCareerPartner").on("click",()=>highlightCategory("Career (Partner)"));d3.select("#showLocation").on("click",()=>highlightCategory("Location & Home"));d3.select("#showFinancial").on("click",()=>highlightCategory("Financial Goals"));d3.select("#showPersonal").on("click",()=>highlightCategory("Personal Growth"));d3.select("#showRelationship").on("click",()=>highlightCategory("Relationship & Family"));
