@@ -21,7 +21,7 @@
             --accent-primary: #0284c7;
             --accent-secondary: #0ea5e9;
             --border-color: #e2e8f0;
-            --header-height: 60px;
+            /* --header-height: 60px; /* No longer needed */
             --transition-speed: 0.3s;
             --font-primary: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
             /* Dashboard specific vars */
@@ -39,26 +39,17 @@
 
         /* --- Main Content Area Styling --- */
          .main-content {
-             padding: 2rem;
+             padding: 2rem; /* Keep padding for overall spacing */
              min-height: 100vh;
              max-width: 1600px;
              margin: 0 auto;
          }
-         .page-header {
-             height: var(--header-height);
-             background-color: var(--bg-secondary);
-             border-bottom: 1px solid var(--border-color);
-             display: flex;
-             align-items: center;
-             padding: 0 2rem;
-             margin: -2rem -2rem 2rem -2rem;
-         }
-         .page-header-title { font-size: 1.25rem; font-weight: 600; }
+         /* Removed .page-header and .page-header-title styles as they are no longer used */
 
         /* --- Mobile Responsiveness --- */
         @media (max-width: 768px) {
             .main-content { padding: 1rem; }
-            .page-header { margin: -1rem -1rem 1rem -1rem; padding: 0 1rem; }
+            /* Removed .page-header responsive styles */
             .card-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
              .chart-row { grid-template-columns: 1fr; gap: 1rem; }
             .card-value { font-size: 1.5rem; }
@@ -146,10 +137,12 @@
 <body>
     <!-- Main Content Area -->
     <main class="main-content">
-        <!-- Page Header -->
+        <!-- Page Header Removed -->
+        <!--
          <header class="page-header">
             <h1 class="page-header-title">Financial Dashboard</h1>
         </header>
+         -->
 
         <!-- Dashboard Specific Content -->
         <div class="dashboard">
@@ -459,7 +452,7 @@
                 let accountColor = '#64748b';
                  if (accountName.includes('RBC Advantage')) accountColor = '#ef4444';
                  else if (accountName.includes('CIBC Chequing')) accountColor = '#10b981';
-                 else if (accountName.includes('RBC Cash Back')) accountColor = '#f59e0b';
+                 else if (accountName.includes('RBC Cash Back')) accountColor = '#f59e0b'; // Assuming RBC Mastercard maps here
                  else if (accountName.includes('CIBC VISA')) accountColor = '#8b5cf6';
                  else if (accountName.includes('CIBC Savings')) accountColor = '#0ea5e9';
                 const badgeClass = `badge-${transaction.type}`;
