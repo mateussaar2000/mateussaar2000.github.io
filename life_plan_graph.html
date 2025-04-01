@@ -94,7 +94,7 @@
         .link {
             /* Stroke managed by JS gradient */
             stroke-opacity: 0.6;
-            transition: all 0.2s ease;
+            transition: stroke-opacity 0.3s ease, stroke-width 0.3s ease; /* Added transition */
         }
         
         .node-label text {
@@ -104,12 +104,23 @@
             font-weight: 400;
             fill: #1e293b; /* Slate 800 */
         }
+
+        /* --- Improved Label Positioning --- */
+        .decision .node-label { /* Target labels only for decision nodes */
+             transform: translateY(-38px); /* Increased vertical offset */
+        }
+         .decision .node-label text {
+            font-size: 9.5px; /* Slightly adjusted font size */
+            line-height: 1.2;
+            dominant-baseline: auto; /* Reset baseline for multi-line */
+            text-anchor: middle;
+         }
         
         /* Tooltip styling */
         .tooltip {
             position: absolute;
             padding: 12px 16px;
-            background-color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.95); /* Slightly transparent */
             color: #334155;
             border-radius: 4px;
             pointer-events: none;
@@ -120,12 +131,13 @@
             border: 1px solid #e2e8f0; /* Slate 200 */
             font-size: 0.875rem;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(2px); /* Subtle blur effect */
         }
         
         .tooltip h3 {
             margin: 0 0 8px 0;
             /* Color will be set dynamically based on node category */
-            font-weight: 500;
+            font-weight: 600; /* Bolder heading */
             font-size: 1rem;
         }
         
@@ -146,13 +158,14 @@
             position: absolute;
             top: 20px;
             right: 20px;
-            background-color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent */
             padding: 16px;
             border-radius: 4px;
             border: 1px solid #e2e8f0; /* Slate 200 */
             z-index: 10;
             font-size: 0.875rem;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            backdrop-filter: blur(2px); /* Subtle blur */
         }
         
         .legend h3 {
@@ -174,7 +187,13 @@
             height: 12px;
             border-radius: 3px;
             margin-right: 12px;
+            flex-shrink: 0; /* Prevent shrinking */
         }
+
+        /* Style node groups for opacity transitions */
+         .node-group {
+             transition: opacity 0.3s ease;
+         }
 
     </style>
 </head>
@@ -194,7 +213,6 @@
         <div class="tooltip"></div>
         <div class="legend">
             <h3>Life Areas</h3>
-            <!-- Legend items will be populated by JS if needed, or hardcoded -->
              <div class="legend-item">
                 <div class="legend-color" style="background-color: #3b82f6;"></div> <!-- Blue 500 -->
                 <div>Career (You)</div>
@@ -223,12 +241,11 @@
     </div>
 
     <script>
-        // Data preparation for Career & Life Planning
+        // --- Data (Keep your customized data here) ---
         const data = {
             nodes: [
                 // Root node
                 { id: "Our Future Together", group: "root", level: 0 },
-                
                 // Category nodes (Life Areas)
                 { id: "Career (You)", group: "category", level: 1 },
                 { id: "Career (Partner)", group: "category", level: 1 },
@@ -236,132 +253,112 @@
                 { id: "Financial Goals", group: "category", level: 1 },
                 { id: "Personal Growth", group: "category", level: 1 },
                 { id: "Relationship & Family", group: "category", level: 1 },
-                
                 // Decision/Topic Nodes - Examples (Customize these!)
                 // Career (You)
                 { id: "Your Target Industry", group: "decision", level: 2, category: "Career (You)", details: "Explore options like Tech, Healthcare, Education, Creative..." },
                 { id: "Your Desired Role", group: "decision", level: 2, category: "Career (You)", details: "Management, Specialist, Entrepreneur? What skills are needed?" },
                 { id: "Your Work-Life Balance", group: "decision", level: 2, category: "Career (You)", details: "Priorities? Remote work? Flexible hours?" },
                 { id: "Your Salary Goals", group: "decision", level: 2, category: "Career (You)", details: "Short-term and long-term targets based on role and location." },
-
                 // Career (Partner)
                 { id: "Partner's Target Industry", group: "decision", level: 2, category: "Career (Partner)", details: "Discuss Partner's preferred fields and opportunities." },
                 { id: "Partner's Desired Role", group: "decision", level: 2, category: "Career (Partner)", details: "Partner's ambitions: Leadership, technical track, etc." },
                 { id: "Partner's Work-Life Balance", group: "decision", level: 2, category: "Career (Partner)", details: "What does Partner value? How does it align with yours?" },
                 { id: "Partner's Salary Goals", group: "decision", level: 2, category: "Career (Partner)", details: "Partner's financial expectations and career path." },
-
                 // Location & Home
                 { id: "Ideal City/Region", group: "decision", level: 2, category: "Location & Home", details: "Factors: Job markets, cost of living, proximity to family, lifestyle." },
                 { id: "Rent vs Buy", group: "decision", level: 2, category: "Location & Home", details: "Timeline? Financial readiness? Market conditions?" },
                 { id: "Type of Home", group: "decision", level: 2, category: "Location & Home", details: "Apartment, house, condo? Size? Future needs?" },
                 { id: "Commute Considerations", group: "decision", level: 2, category: "Location & Home", details: "Acceptable commute times? Public transport? Car dependency?" },
-
                 // Financial Goals
                 { id: "Savings Strategy", group: "decision", level: 2, category: "Financial Goals", details: "Emergency fund, retirement (RRSP/401k), down payment. Percentage goals?" },
                 { id: "Investment Approach", group: "decision", level: 2, category: "Financial Goals", details: "Risk tolerance? Joint or separate investments? Robo-advisor?" },
                 { id: "Debt Management", group: "decision", level: 2, category: "Financial Goals", details: "Student loans, credit cards. Payoff plan?" },
                 { id: "Budgeting Together", group: "decision", level: 2, category: "Financial Goals", details: "Shared expenses? Joint accounts? Budgeting tools?" },
-
                 // Personal Growth
                 { id: "Skill Development", group: "decision", level: 2, category: "Personal Growth", details: "Individual or shared skills/hobbies to learn (language, coding, cooking)." },
                 { id: "Travel Aspirations", group: "decision", level: 2, category: "Personal Growth", details: "Dream destinations? Travel style (budget/luxury)? Frequency?" },
                 { id: "Health & Wellness", group: "decision", level: 2, category: "Personal Growth", details: "Fitness goals, mental health practices, healthy eating habits." },
                 { id: "Further Education", group: "decision", level: 2, category: "Personal Growth", details: "Degrees, certifications, workshops for personal enrichment." },
-
                 // Relationship & Family
                 { id: "Marriage Timeline", group: "decision", level: 2, category: "Relationship & Family", details: "Expectations and desired timeframe, if applicable." },
                 { id: "Starting a Family?", group: "decision", level: 2, category: "Relationship & Family", details: "Kids? How many? Timeline considerations?" },
                 { id: "Shared Quality Time", group: "decision", level: 2, category: "Relationship & Family", details: "Date nights, shared hobbies, traditions." },
                 { id: "Pet Ownership", group: "decision", level: 2, category: "Relationship & Family", details: "Ready for a pet? Type? Responsibilities?" }
-            ],
-            links: []
+             ],
+            links: [] // Links generated below
         };
         
         // Create links automatically
-        // Root to categories
         data.nodes.filter(node => node.group === "category").forEach(categoryNode => {
             data.links.push({ source: "Our Future Together", target: categoryNode.id, value: 1 });
         });
-        
-        // Categories to decisions/topics
         data.nodes.filter(node => node.group === "decision").forEach(decisionNode => {
             data.links.push({ source: decisionNode.category, target: decisionNode.id, value: 1 });
         });
         
-        // --- D3 Visualization Setup --- (Largely similar to the original graph)
-        const width = window.innerWidth;
-        const height = window.innerHeight - 150; // Adjust as needed
-        
+        // --- D3 Visualization Setup ---
+        const graphContainer = document.getElementById('graph');
+        const width = graphContainer.clientWidth;
+        const height = graphContainer.clientHeight;
+
         const svg = d3.select("#graph")
             .append("svg")
             .attr("width", "100%")
             .attr("height", "100%")
             .attr("viewBox", [-width / 2, -height / 2, width, height])
-            .call(d3.zoom().on("zoom", (event) => {
+            .call(d3.zoom().scaleExtent([0.3, 3]).on("zoom", (event) => { // Adjusted scaleExtent
                 g.attr("transform", event.transform);
             }));
 
-        // Add subtle grid pattern
+        // --- Improved Background Grid ---
         svg.append("defs")
             .append("pattern")
             .attr("id", "grid")
-            .attr("width", 40)
-            .attr("height", 40)
+            .attr("width", 50) // Slightly larger grid squares
+            .attr("height", 50)
             .attr("patternUnits", "userSpaceOnUse")
             .append("path")
-            .attr("d", "M 40 0 L 0 0 0 40")
+            .attr("d", "M 50 0 L 0 0 0 50")
             .attr("fill", "none")
-            .attr("stroke", "#e2e8f0") // Slate 200
-            .attr("stroke-width", 1);
+            .attr("stroke", "#e5e7eb") // Gray 200 - slightly more visible
+            .attr("stroke-width", 0.8); // Slightly thicker
         
         svg.append("rect")
-            .attr("width", width * 2) // Make grid larger to cover zoomed-out view
-            .attr("height", height * 2)
-            .attr("x", -width)
-            .attr("y", -height)
+            .attr("width", width * 3) // Ensure grid covers large area when zoomed out
+            .attr("height", height * 3)
+            .attr("x", -width * 1.5)
+            .attr("y", -height * 1.5)
             .attr("fill", "url(#grid)")
-            .attr("opacity", 0.5);
+            .attr("opacity", 0.6); // Slightly more opaque
 
         const g = svg.append("g");
         
-        // New color scheme for life planning categories
+        // Color scale (same as before)
         const colorScale = d3.scaleOrdinal()
-            .domain([
-                "Career (You)", 
-                "Career (Partner)", 
-                "Location & Home", 
-                "Financial Goals", 
-                "Personal Growth", 
-                "Relationship & Family"
-            ])
-            .range([
-                "#3b82f6", // Blue 500
-                "#14b8a6", // Teal 500
-                "#22c55e", // Green 500
-                "#f59e0b", // Amber 500
-                "#a855f7", // Purple 500
-                "#ec4899"  // Pink 500
-            ]);
+            .domain(["Career (You)", "Career (Partner)", "Location & Home", "Financial Goals", "Personal Growth", "Relationship & Family"])
+            .range(["#3b82f6", "#14b8a6", "#22c55e", "#f59e0b", "#a855f7", "#ec4899"]);
         
         const tooltip = d3.select(".tooltip");
         
+        // --- Adjusted Force Simulation ---
         const simulation = d3.forceSimulation(data.nodes)
             .force("link", d3.forceLink(data.links).id(d => d.id).distance(d => {
-                if (d.source.group === "root") return 180; // Slightly more space from root
-                return 130; // More space between category and decisions
-            }))
+                if (d.source.group === "root") return 220; // Increased distance from root
+                return 160; // Increased distance from category to decision
+            }).strength(0.8)) // Slightly stronger link force
             .force("charge", d3.forceManyBody().strength(d => {
-                if (d.group === "root") return -2000;
-                if (d.group === "category") return -1200;
-                return -600; // More repulsion for decision nodes
+                if (d.group === "root") return -3000; // Increased repulsion for root
+                if (d.group === "category") return -1800; // Increased repulsion for categories
+                return -900; // Increased repulsion for decisions
             }))
-            .force("x", d3.forceX().strength(0.08)) // Weaker centering force
-            .force("y", d3.forceY().strength(0.08))
+            .force("x", d3.forceX().strength(0.06)) // Slightly weaker centering
+            .force("y", d3.forceY().strength(0.06))
             .force("center", d3.forceCenter(0, 0))
             .force("collide", d3.forceCollide(d => {
-                 if (d.group === "root") return 70; // Larger collision radius for root
-                 if (d.group === "category") return 60; // Category collision
-                 return 55; // Decision node collision (ensure labels have space)
+                 // Increased collision radii
+                 if (d.group === "root") return 80;
+                 if (d.group === "category") return 70;
+                 return 65; // Give decision labels more space
             }));
 
         // --- Link Rendering (with Gradients) ---
@@ -374,32 +371,24 @@
         linkGroups.append("linearGradient")
             .attr("id", (d, i) => `link-gradient-${i}`)
             .attr("gradientUnits", "userSpaceOnUse")
-            .attr("x1", d => d.source.x) // Set gradient direction based on initial positions
-            .attr("y1", d => d.source.y)
-            .attr("x2", d => d.target.x)
-            .attr("y2", d => d.target.y)
+            .attr("x1", d => d.source.x || 0) // Initial positions
+            .attr("y1", d => d.source.y || 0)
+            .attr("x2", d => d.target.x || 0)
+            .attr("y2", d => d.target.y || 0)
             .each(function(d) {
                 const gradient = d3.select(this);
-                gradient.append("stop")
-                    .attr("offset", "0%")
-                    .attr("stop-color", () => {
-                        if (d.source.group === "root") return "#94a3b8"; // Slate 400
-                        return colorScale(d.source.id); // Category color
-                    })
+                gradient.append("stop").attr("offset", "0%")
+                    .attr("stop-color", () => d.source.group === "root" ? "#94a3b8" : colorScale(d.source.id))
                     .attr("stop-opacity", 0.7);
-                gradient.append("stop")
-                    .attr("offset", "100%")
-                    .attr("stop-color", () => {
-                        if (d.target.group === "category") return colorScale(d.target.id);
-                        return colorScale(d.target.category); // Decision node gets its category color
-                    })
+                gradient.append("stop").attr("offset", "100%")
+                    .attr("stop-color", () => d.target.group === "category" ? colorScale(d.target.id) : colorScale(d.target.category))
                     .attr("stop-opacity", 0.7);
             });
 
         const link = linkGroups.append("path")
             .attr("class", "link")
             .attr("stroke", (d, i) => `url(#link-gradient-${i})`)
-            .attr("stroke-width", 1.5)
+            .attr("stroke-width", 1.8) // Slightly thicker default links
             .attr("fill", "none");
             
         // --- Node Rendering ---
@@ -408,120 +397,135 @@
             .selectAll("g")
             .data(data.nodes)
             .enter().append("g")
-            .attr("class", d => `node-group ${d.group}`)
+            .attr("class", d => `node-group ${d.group}`) // Added group class here
             .call(d3.drag()
                 .on("start", dragstarted)
                 .on("drag", dragged)
                 .on("end", dragended));
 
-        // Add glow filter (same as original)
+        // Glow filter (same as before)
         const defs = svg.append("defs");
         const glowFilter = defs.append("filter")
             .attr("id", "glow")
             .attr("x", "-50%").attr("y", "-50%")
             .attr("width", "200%").attr("height", "200%");
-        glowFilter.append("feGaussianBlur").attr("stdDeviation", "2").attr("result", "coloredBlur");
+        glowFilter.append("feGaussianBlur").attr("stdDeviation", "2.5").attr("result", "coloredBlur"); // Slightly stronger glow
         const glowMerge = glowFilter.append("feMerge");
         glowMerge.append("feMergeNode").attr("in", "coloredBlur");
         glowMerge.append("feMergeNode").attr("in", "SourceGraphic");
 
-        // Node circles (base + inner)
-        const node = nodeGroups.append("g").attr("class", "node-container");
+        // --- Improved Node Circles ---
+        const node = nodeGroups.append("g")
+            .attr("class", "node-container")
+            .style("transform-origin", "center center"); // For scaling transitions
 
         node.append("circle") // Outer circle (border)
             .attr("class", d => `node-base ${d.group}`)
-            .attr("r", d => {
-                if (d.group === "root") return 45;
-                if (d.group === "category") return 35;
-                return 22; // Decision nodes
+            .attr("r", d => { // Slightly adjusted sizes
+                if (d.group === "root") return 50;
+                if (d.group === "category") return 40;
+                return 25; // Decision nodes slightly larger
             })
             .attr("fill", "#ffffff")
             .attr("stroke", d => {
-                if (d.group === "root") return "#64748b"; // Slate 500
+                if (d.group === "root") return "#475569"; // Darker Slate 600 for root border
                 if (d.group === "category") return colorScale(d.id);
-                return colorScale(d.category); // Decision nodes use category color
+                return colorScale(d.category);
             })
-            .attr("stroke-width", d => (d.group === 'root' ? 3 : (d.group === 'category' ? 2.5 : 2)))
+            .attr("stroke-width", d => (d.group === 'root' ? 3.5 : (d.group === 'category' ? 3 : 2.5))) // Thicker strokes
             .attr("filter", "url(#glow)");
 
         node.append("circle") // Inner circle (fill)
             .attr("class", d => `node-inner ${d.group}`)
-            .attr("r", d => {
-                if (d.group === "root") return 35;
-                if (d.group === "category") return 25;
-                return 15; // Decision nodes
+            .attr("r", d => { // Adjusted inner sizes
+                if (d.group === "root") return 40;
+                if (d.group === "category") return 30;
+                return 18;
             })
             .attr("fill", d => {
-                if (d.group === "root") return "#f8fafc"; // Slate 50
+                if (d.group === "root") return "#f1f5f9"; // Lighter Slate 100 for root fill
                 if (d.group === "category") return colorScale(d.id);
-                return colorScale(d.category); // Decision nodes use category color
+                return colorScale(d.category);
             })
-            .attr("opacity", 0.3);
+            .attr("opacity", 0.4); // Slightly more opaque inner circle
 
         // --- Node Labels ---
         const nodeLabelGroups = nodeGroups.append("g")
-            .attr("class", "node-label");
+            .attr("class", d => `node-label ${d.group}`); // Added group class here for easier selection
 
         // Root node label
-        nodeLabelGroups.filter(d => d.group === "root")
+        nodeLabelGroups.filter(".root")
             .append("text")
             .text(d => d.id)
-            .attr("fill", "#334155") // Slate 700
-            .attr("font-size", "14px") // Slightly smaller for longer text
+            .attr("fill", "#1e293b") // Slate 800
+            .attr("font-size", "15px")
             .attr("text-anchor", "middle")
             .attr("dominant-baseline", "middle")
-            .attr("font-weight", "500");
+            .attr("font-weight", "600"); // Bolder root label
 
-        // Category node labels (multi-line adapted)
-        nodeLabelGroups.filter(d => d.group === "category")
+        // Category node labels
+        nodeLabelGroups.filter(".category")
             .each(function(d) {
-                const words = d.id.split(' ');
+                const words = d.id.split(/[\s&]+/); // Split on space or ampersand
                 const el = d3.select(this);
-                if (words.length > 1 && d.id !== "Location & Home") { // Special case or adjust logic as needed
-                    const firstLine = words[0];
-                    const secondLine = words.slice(1).join(' ');
-                     el.append("text").text(firstLine).attr("dy", "-0.3em").attr("font-size", "11px").attr("text-anchor", "middle").attr("font-weight", "500");
-                     el.append("text").text(secondLine).attr("dy", "0.9em").attr("font-size", "11px").attr("text-anchor", "middle").attr("font-weight", "500");
-                } else { // Handle single word or specific cases like "Location & Home"
-                     el.append("text").text(d.id).attr("font-size", "11px").attr("text-anchor", "middle").attr("dominant-baseline", "middle").attr("font-weight", "500");
+                 // Simple two-line split logic
+                if (words.length > 1) {
+                    const line1 = words[0];
+                    const line2 = words.slice(1).join(' ');
+                     el.append("text").text(line1).attr("dy", "-0.35em").attr("font-size", "12px").attr("text-anchor", "middle").attr("font-weight", "500");
+                     el.append("text").text(line2).attr("dy", "0.95em").attr("font-size", "12px").attr("text-anchor", "middle").attr("font-weight", "500");
+                } else {
+                     el.append("text").text(d.id).attr("font-size", "12px").attr("text-anchor", "middle").attr("dominant-baseline", "middle").attr("font-weight", "500");
                 }
             });
 
-        // Decision node labels (above the circle)
-        nodeLabelGroups.filter(d => d.group === "decision")
+        // --- Improved Decision Node Labels (Multi-line) ---
+        nodeLabelGroups.filter(".decision")
             .each(function(d) {
                 const words = d.id.split(' ');
                 const el = d3.select(this);
-                el.attr("transform", "translate(0, -28)"); // Position above node
-                
-                 // Simple splitting logic for demonstration
-                if (words.length > 2) {
-                    const midpoint = Math.ceil(words.length / 2);
-                    const line1 = words.slice(0, midpoint).join(' ');
-                    const line2 = words.slice(midpoint).join(' ');
-                     el.append("text").text(line1).attr("dy", "-0.4em").attr("font-size", "9px").attr("text-anchor", "middle");
-                     el.append("text").text(line2).attr("dy", "0.8em").attr("font-size", "9px").attr("text-anchor", "middle");
-                } else {
-                     el.append("text").text(d.id).attr("font-size", "10px").attr("text-anchor", "middle");
-                }
+                const maxCharsPerLine = 15; // Adjust as needed
+                let lines = [];
+                let currentLine = "";
+
+                words.forEach(word => {
+                    if (currentLine.length === 0) {
+                        currentLine = word;
+                    } else if (currentLine.length + word.length + 1 <= maxCharsPerLine) {
+                        currentLine += " " + word;
+                    } else {
+                        lines.push(currentLine);
+                        currentLine = word;
+                    }
+                });
+                lines.push(currentLine); // Add the last line
+
+                const lineHeight = 1.2; // em
+                const startY = -(lines.length - 1) * 0.5 * lineHeight; // Center vertically
+
+                lines.forEach((line, i) => {
+                    el.append("text")
+                        .text(line)
+                        .attr("dy", `${startY + i * lineHeight}em`) // Position each line
+                        .attr("text-anchor", "middle");
+                        // Inherits font-size/etc from CSS rule .decision .node-label text
+                });
             });
 
         // --- Simulation Tick ---
         simulation.on("tick", () => {
-            // Update link paths with curve
-             link.attr("d", d => {
+            link.attr("d", d => {
                  const dx = d.target.x - d.source.x;
                  const dy = d.target.y - d.source.y;
-                 const dr = Math.sqrt(dx * dx + dy * dy) * 1.5; // Adjust curve strength if needed
+                 // Increased curve factor for more separation
+                 const dr = Math.sqrt(dx * dx + dy * dy) * 1.8;
                  return `M${d.source.x},${d.source.y}A${dr},${dr} 0 0,1 ${d.target.x},${d.target.y}`;
              });
             
-            // Update link gradient endpoints for accuracy during simulation
+            // Update link gradient endpoints
              d3.selectAll(".links linearGradient")
-                 .attr("x1", d => d.source.x)
-                 .attr("y1", d => d.source.y)
-                 .attr("x2", d => d.target.x)
-                 .attr("y2", d => d.target.y);
+                 .attr("x1", d => d.source.x).attr("y1", d => d.source.y)
+                 .attr("x2", d => d.target.x).attr("y2", d => d.target.y);
 
             nodeGroups.attr("transform", d => `translate(${d.x}, ${d.y})`);
         });
@@ -531,6 +535,7 @@
             if (!event.active) simulation.alphaTarget(0.3).restart();
             d.fx = d.x;
             d.fy = d.y;
+            d3.select(this).raise(); // Bring dragged node to front
         }
 
         function dragged(event, d) {
@@ -539,35 +544,46 @@
         }
 
         function dragended(event, d) {
-            if (!event.active) simulation.alphaTarget(0);
-            d.fx = null; // Release the node position
-            d.fy = null;
+            if (!event.active) simulation.alphaTarget(0); // Cool down
+            // Keep position fixed if user explicitly moved it
+            // d.fx = null;
+            // d.fy = null;
+            // ^^ Commented out: if you drag, it stays there until reset or further simulation nudge
         }
 
-        // Node hover effects
+        // --- Improved Hover Effects ---
         nodeGroups.on("mouseover", function(event, d) {
-            const relatedLinks = data.links.filter(link => link.source.id === d.id || link.target.id === d.id);
-            const relatedNodes = new Set();
-            relatedLinks.forEach(link => {
-                relatedNodes.add(link.source.id);
-                relatedNodes.add(link.target.id);
-            });
-            relatedNodes.add(d.id); // Ensure the hovered node is included
+            const thisNodeGroup = d3.select(this);
+            thisNodeGroup.raise(); // Bring hovered node group to front
 
-            d3.selectAll(".link")
-                .style("stroke-opacity", link => relatedLinks.includes(link) ? 0.9 : 0.1)
-                .style("stroke-width", link => relatedLinks.includes(link) ? 2.5 : 1);
-
-            d3.selectAll(".node-base, .node-inner")
+             // Scale up the hovered node slightly
+             thisNodeGroup.select('.node-container')
                 .transition().duration(150)
-                .style("opacity", node => relatedNodes.has(node.id) ? 1 : 0.1);
-            
-            // Show tooltip
+                .attr('transform', 'scale(1.1)');
+
+            const relatedLinks = data.links.filter(link => link.source.id === d.id || link.target.id === d.id);
+            const relatedNodeIds = new Set();
+            relatedLinks.forEach(link => {
+                relatedNodeIds.add(link.source.id);
+                relatedNodeIds.add(link.target.id);
+            });
+            relatedNodeIds.add(d.id);
+
+            // Fade out non-related items
+             g.selectAll(".link")
+                .transition().duration(150)
+                .style("stroke-opacity", link => relatedLinks.includes(link) ? 0.9 : 0.05) // Stronger highlight, fainter others
+                .style("stroke-width", link => relatedLinks.includes(link) ? 3 : 1); // Thicker highlight
+
+             g.selectAll(".node-group")
+                .transition().duration(150)
+                .style("opacity", node => relatedNodeIds.has(node.id) ? 1 : 0.1); // Fade non-related nodes
+
+            // Show tooltip (same logic as before, ensure it uses pageX/pageY)
             let tooltipContent = '';
-            let nodeColor = '#64748b'; // Default color (Slate 500)
-            
+            let nodeColor = '#64748b';
             if (d.group === "category") {
-                 tooltipContent = `<h3>${d.id}</h3><p>Area of focus. Click to highlight related decisions.</p>`;
+                 tooltipContent = `<h3>${d.id}</h3><p>Area of focus. Click to highlight.</p>`;
                  nodeColor = colorScale(d.id);
             } else if (d.group === "decision") {
                  tooltipContent = `<h3>${d.id}</h3><p><strong>Category:</strong> ${d.category}</p><p><strong>Considerations:</strong> ${d.details || 'Discuss details...'}</p>`;
@@ -575,82 +591,94 @@
             } else if (d.group === "root") {
                 tooltipContent = `<h3>${d.id}</h3><p>Central hub for our joint planning.</p>`;
             }
-
             if (tooltipContent) {
                 tooltip
-                    .style("opacity", 0.95)
+                    .style("opacity", 1) // Use 1 for full opacity
                     .html(tooltipContent)
                     .style("left", (event.pageX + 15) + "px")
                     .style("top", (event.pageY - 28) + "px")
-                    .style("border", `1px solid ${nodeColor}`) // Add border color hint
-                    .select("h3").style("color", nodeColor); // Color the heading
+                    .style("border", `1px solid ${nodeColor}`)
+                    .select("h3").style("color", nodeColor);
             }
         })
         .on("mouseout", function() {
-            // Restore default opacity and stroke width
-            d3.selectAll(".link")
+            // Restore default styles
+            g.selectAll(".link")
                 .transition().duration(200)
                 .style("stroke-opacity", 0.6)
-                .style("stroke-width", 1.5);
+                .style("stroke-width", 1.8);
             
-            d3.selectAll(".node-base, .node-inner")
+            g.selectAll(".node-group")
                 .transition().duration(200)
-                .style("opacity", d => d.group === 'node-inner' ? 0.3 : 1); // Reset based on original opacity
-                
+                .style("opacity", 1) // Restore opacity
+                .select('.node-container') // Select the container to reset scale
+                .attr('transform', 'scale(1)'); // Reset scale
+
             tooltip.style("opacity", 0);
         })
         .on("click", function(event, d) {
             if (d.group === "category") {
                 highlightCategory(d.id);
+                // Keep node highlighted after click
+                 event.stopPropagation(); // Prevent triggering mouseout immediately if click+drag
+            } else if (d.group === 'root') {
+                 resetHighlightsAndZoom(); // Allow clicking root to reset
             }
-            // Optional: Add click behavior for decision nodes if needed
         });
 
         // --- Button Interactions ---
-        d3.select("#resetZoom").on("click", function() {
-            svg.transition()
-                .duration(750)
-                .call(d3.zoom().transform, d3.zoomIdentity); // Resets zoom and pan
-            
+        const zoom = d3.zoom().scaleExtent([0.3, 3]).on("zoom", (event) => {
+             g.attr("transform", event.transform);
+         });
+
+         svg.call(zoom); // Apply zoom handler
+
+         function resetHighlightsAndZoom() {
+            // Smoothly reset zoom/pan
+             svg.transition().duration(750)
+                 .call(zoom.transform, d3.zoomIdentity);
+
             // Reset highlights
-            d3.selectAll(".node-base, .node-inner").style("opacity", d => d.group === 'node-inner' ? 0.3 : 1);
-            d3.selectAll(".link").style("stroke-opacity", 0.6).style("stroke-width", 1.5);
-        });
+             g.selectAll(".node-group")
+                .transition().duration(300)
+                .style("opacity", 1)
+                .select('.node-container')
+                .attr('transform', 'scale(1)'); // Reset scale
+
+             g.selectAll(".link")
+                .transition().duration(300)
+                .style("stroke-opacity", 0.6)
+                .style("stroke-width", 1.8);
+
+             // Reset physics if nodes were fixed by dragging
+             data.nodes.forEach(n => { n.fx = null; n.fy = null; });
+             simulation.alphaTarget(0.1).restart(); // Give a small nudge to resettle
+         }
+
+        d3.select("#resetZoom").on("click", resetHighlightsAndZoom);
 
         function highlightCategory(category) {
             const categoryColor = colorScale(category);
+            const relatedNodeIds = new Set([ "Our Future Together", category ]);
+            data.nodes.filter(n => n.category === category).forEach(n => relatedNodeIds.add(n.id));
 
-            // Highlight relevant nodes (root, category, related decisions)
-             d3.selectAll(".node-base, .node-inner")
+            // Highlight relevant nodes
+             g.selectAll(".node-group")
                  .transition().duration(300)
-                 .style("opacity", node => 
-                     node.group === "root" || node.id === category || (node.group === "decision" && node.category === category) 
-                     ? (node.group === 'node-inner' ? 0.8 : 1) // Brighter inner on highlight
-                     : 0.1);
+                 .style("opacity", node => relatedNodeIds.has(node.id) ? 1 : 0.1) // Fade others
+                 .select('.node-container') // Handle scaling
+                 .attr('transform', node => node.id === category ? 'scale(1.15)' : 'scale(1)'); // Enlarge category node
 
             // Highlight relevant links
-             d3.selectAll(".link")
+             g.selectAll(".link")
                  .transition().duration(300)
-                 .style("stroke-opacity", link => 
-                     (link.source.id === "Our Future Together" && link.target.id === category) || (link.source.id === category) 
-                     ? 0.9 : 0.05)
-                 .style("stroke-width", link => 
-                     (link.source.id === "Our Future Together" && link.target.id === category) || (link.source.id === category) 
-                     ? 2.5 : 1);
-                     
-             // Optional: Slightly enlarge the category node on highlight
-             d3.selectAll(`.node-group.category`)
-                 .filter(d => d.id === category)
-                 .select('.node-container')
-                 .transition().duration(300)
-                 .attr('transform', 'scale(1.1)');
-             // Reset scale for other category nodes
-             d3.selectAll(`.node-group.category`)
-                 .filter(d => d.id !== category)
-                 .select('.node-container')
-                 .transition().duration(300)
-                 .attr('transform', 'scale(1)');
-        }
+                 .style("stroke-opacity", link =>
+                     (link.source.id === "Our Future Together" && link.target.id === category) || (link.source.id === category)
+                     ? 0.9 : 0.05) // Highlight relevant, fade others
+                 .style("stroke-width", link =>
+                     (link.source.id === "Our Future Together" && link.target.id === category) || (link.source.id === category)
+                     ? 3 : 1); // Thicken relevant links
+         }
 
         // Connect buttons to highlight function
         d3.select("#showCareerYou").on("click", () => highlightCategory("Career (You)"));
@@ -660,8 +688,8 @@
         d3.select("#showPersonal").on("click", () => highlightCategory("Personal Growth"));
         d3.select("#showRelationship").on("click", () => highlightCategory("Relationship & Family"));
         
-        // Initial simulation start
-        simulation.alpha(1).restart();
+        // Initial simulation start with slightly higher alpha
+        simulation.alpha(1.2).restart(); // Start with more energy for better initial spread
 
     </script>
 </body>
