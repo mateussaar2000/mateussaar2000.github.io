@@ -1,0 +1,444 @@
+Transaction ID,Type,Status,Date,Amount,Currency,Description,Running Balance,Exchange Rate From,Exchange Rate To,Payment Reference,Merchant Name
+CARD-2346230192,CREDIT,,2025-03-27T19:18:04.389534Z,0.77,CAD,Card transaction of 35.79 CAD issued by Uber Canada/ubereats TORONTO,24.09,,,,Uber Canada/ubereats
+CARD-2345394078,DEBIT,,2025-03-27T11:50:05.761981Z,-27.6,CAD,Card transaction of 27.60 CAD issued by Wix Com VANCOUVER,59.88,,,,Wix Com
+CARD-2345365937,DEBIT,,2025-03-27T11:39:13.791153Z,-14.68,CAD,Card transaction of 14.68 CAD issued by Google *Power Mobile L g.co/helppay#,87.48,,,,Google *Power Mobile L
+CARD-2340508879,CREDIT,,2025-03-25T21:00:04.372194Z,1.32,CAD,Card transaction of 1.32 CAD issued by Uber Canada/ubereats TORONTO,102.16,,,,Uber Canada/ubereats
+CARD-2341025946,DEBIT,,2025-03-25T17:55:49.732439Z,-17.79,CAD,Card transaction of 17.79 CAD issued by Wendy's Restaurant Q1r ST JOHN'S,100.84,,,,Wendy's Restaurant Q1r
+CARD-2340878366,DEBIT,,2025-03-25T16:59:05.507736Z,-1.0,CAD,Card transaction of 1.00 CAD issued by Uber* Eats UBER.COM/CA/E,118.63,,,,Uber* Eats
+CARD-2340657972,DEBIT,,2025-03-25T15:32:31.466666Z,-1.0,CAD,Card transaction of 1.00 CAD issued by Uber Canada/ubereats TORONTO,119.63,,,,Uber Canada/ubereats
+CARD-2340360472,CREDIT,,2025-03-25T14:30:53.808687Z,1.32,CAD,Card transaction of 23.85 CAD issued by Uber* Eats TORONTO,121.95,,,,Uber* Eats
+CARD-2340256606,DEBIT,,2025-03-25T12:51:26.197359Z,-32.43,CAD,Card transaction of 22.60 USD issued by Openai *Chatgpt Subscr OPENAI.COM,145.8,0.696886 (CAD to USD),,,Openai *Chatgpt Subscr
+CARD-2337861769,DEBIT,,2025-03-24T22:28:50.141648Z,-0.34,CAD,Card transaction of 25.51 CAD issued by Uber* Eats TORONTO,178.23,,,,Uber* Eats
+TRANSFER-1466251979,DEBIT,,2025-03-23T15:12:00.001694Z,-101.78,CAD,Sent money to Athanasia Filntissis,203.74,,,,
+CARD-2333763641,DEBIT,,2025-03-22T20:59:51.815138Z,-19.75,CAD,Card transaction of 19.75 CAD issued by Uber Canada/ubereats TORONTO,305.52,,,,Uber Canada/ubereats
+CARD-2333464862,DEBIT,,2025-03-22T18:36:19.33904Z,-28.84,CAD,"Card transaction of 20.00 USD issued by Cursor, Ai Powered Ide CURSOR.COM",325.27,0.693481 (CAD to USD),,,"Cursor, Ai Powered Ide"
+CARD-2332873290,CREDIT,,2025-03-22T17:16:20.177863Z,0.35,CAD,Card transaction of 58.37 CAD issued by Uber Canada/ubereats TORONTO,354.11,,,,Uber Canada/ubereats
+CARD-2330596185,DEBIT,,2025-03-21T18:26:39.798428Z,-1.5,CAD,Card transaction of 1.50 CAD issued by Uber Canada/ubereats TORONTO,412.48,,,,Uber Canada/ubereats
+CARD-2330287028,CREDIT,,2025-03-21T17:26:41.272576Z,1.33,CAD,Card transaction of 29.63 CAD issued by Uber Canada/ubereats TORONTO,413.98,,,,Uber Canada/ubereats
+TRANSFER-1464165760,DEBIT,,2025-03-21T12:37:53.382641Z,-4602.46,CAD,Sent money to Ben Didham,443.61,,,final portion of payment - with 1250 disc,
+CARD-2327769216,DEBIT,,2025-03-20T18:13:38.807142Z,-28.26,CAD,Card transaction of 28.26 CAD issued by Uber Canada/ubereats TORONTO,5046.07,,,,Uber Canada/ubereats
+CARD-2327407184,DEBIT,,2025-03-20T15:56:55.821645Z,-17.1,CAD,Card transaction of 17.10 CAD issued by Wendy's Restaurant Q1r ST JOHN'S,5074.33,,,,Wendy's Restaurant Q1r
+TRANSFER-1462987202,DEBIT,,2025-03-20T15:25:24.602944Z,-5852.46,CAD,Sent money to Ben Didham,5091.43,,,first half of payment,
+CARD-2326334935,DEBIT,,2025-03-20T08:45:25.249683Z,-14.94,CAD,Card transaction of 14.94 CAD issued by Apple.com/bill 866-712-7753,10943.89,,,,Apple.com/bill
+CARD-2325402303,DEBIT,,2025-03-19T20:38:05.459683Z,-28.26,CAD,Card transaction of 28.26 CAD issued by Uber Canada/ubereats TORONTO,10958.83,,,,Uber Canada/ubereats
+CARD-2324549083,DEBIT,,2025-03-19T14:35:49.185402Z,-18.3,CAD,Card transaction of 18.30 CAD issued by Wendy's Restaurant Q1r ST JOHN'S,10987.09,,,,Wendy's Restaurant Q1r
+CARD-2322723678,DEBIT,,2025-03-18T20:05:48.550585Z,-38.35,CAD,Card transaction of 38.35 CAD issued by Uber Canada/ubereats TORONTO,11005.39,,,,Uber Canada/ubereats
+CARD-2321616570,DEBIT,,2025-03-18T12:29:28.47254Z,-32.2,CAD,Card transaction of 32.20 CAD issued by Claude.ai Subscription ANTHROPIC.COM,11043.74,,,,Claude.ai Subscription
+CARD-2320098107,DEBIT,,2025-03-17T20:01:21.307749Z,-8.63,CAD,Card transaction of 8.63 CAD issued by Dollarama #1263 ST. JOHN'S,11075.94,,,,Dollarama #1263
+CARD-2320047285,DEBIT,,2025-03-17T19:35:26.460404Z,-9.19,CAD,Card transaction of 9.19 CAD issued by Little Caesars #4908-0001 ST. JOHN'S,11084.57,,,,Little Caesars #4908-0001
+CARD-2319935188,DEBIT,,2025-03-17T18:43:24.279009Z,-16.09,CAD,Card transaction of 16.09 CAD issued by Tesla Toronto,11093.76,,,,Tesla
+CARD-2319698758,DEBIT,,2025-03-17T17:10:16.098763Z,-22.34,CAD,Card transaction of 22.34 CAD issued by Uber Canada/ubereats TORONTO,11109.85,,,,Uber Canada/ubereats
+CARD-2319598569,DEBIT,,2025-03-17T16:33:23.596207Z,-45.52,CAD,Card transaction of 45.52 CAD issued by Dominos Pizza 10959 709-737-9444,11132.19,,,,Dominos Pizza 10959
+CARD-2319048155,DEBIT,,2025-03-17T12:59:05.037552Z,-46.0,CAD,Card transaction of 46.00 CAD issued by Cabot Pest Control ST. JOHN`S,11177.71,,,,Cabot Pest Control
+CARD-2316763116,DEBIT,,2025-03-17T02:37:10.265101Z,-0.12,CAD,Card transaction of 19.96 CAD issued by Uber* Eats TORONTO,11223.71,,,,Uber* Eats
+CARD-2317389954,DEBIT,,2025-03-16T19:24:15.54791Z,-28.16,CAD,Card transaction of 28.16 CAD issued by Wendy's Restaurant Q1r ST JOHN'S,11223.83,,,,Wendy's Restaurant Q1r
+CARD-2316354858,DEBIT,,2025-03-16T11:48:59.349854Z,-116.09,CAD,Card transaction of 116.09 CAD issued by Www Costco Ca 888-426-7826,11271.83,,,,Www Costco Ca
+CARD-2314973079,DEBIT,,2025-03-15T20:13:18.755872Z,-4.24,CAD,Card transaction of 4.24 CAD issued by Wendy's Restaurant Q1r ST JOHN'S,11387.92,,,,Wendy's Restaurant Q1r
+CARD-2314902646,DEBIT,,2025-03-15T19:39:38.259936Z,-25.56,CAD,Card transaction of 25.56 CAD issued by Dominos Pizza 109qps 709-579-9444,11392.16,,,,Dominos Pizza 109qps
+CARD-2314446267,DEBIT,,2025-03-15T16:39:37.107133Z,-16.6,CAD,Card transaction of 16.60 CAD issued by Uber Canada/ubereats TORONTO,11417.72,,,,Uber Canada/ubereats
+BALANCE-3189164694,CREDIT,,2025-03-15T10:24:51.449651Z,8808.38,CAD,"Withdrawn 8,808.38 CAD from Insurance",11434.32,,,,
+CARD-2311866999,DEBIT,,2025-03-14T18:30:18.383105Z,-16.6,CAD,Card transaction of 16.60 CAD issued by Uber Canada/ubereats TORONTO,2625.94,,,,Uber Canada/ubereats
+CARD-2311421601,DEBIT,,2025-03-14T15:50:45.382385Z,-16.6,CAD,Card transaction of 16.60 CAD issued by Uber Canada/ubereats TORONTO,2642.54,,,,Uber Canada/ubereats
+CARD-2311323481,DEBIT,,2025-03-14T15:14:56.335038Z,-22.59,CAD,Card transaction of 22.59 CAD issued by Amazon* Ht6oq4mx3 VANCOUVER,2659.14,,,,Amazon* Ht6oq4mx3
+CARD-2309312616,CREDIT,,2025-03-14T07:28:17.416858Z,15.64,CAD,Card transaction of 15.64 CAD issued by Uber Canada/ubereats TORONTO,2681.73,,,,Uber Canada/ubereats
+CARD-2310170023,DEBIT,,2025-03-14T07:28:14.456711Z,-15.71,CAD,Card transaction of 15.71 CAD issued by Uber Canada/ubereats TORONTO,2666.09,,,,Uber Canada/ubereats
+CARD-2309097668,DEBIT,,2025-03-13T18:43:41.283955Z,-28.26,CAD,Card transaction of 28.26 CAD issued by Uber Canada/ubereats TORONTO,2697.44,,,,Uber Canada/ubereats
+CARD-2308550837,DEBIT,,2025-03-13T15:09:34.490256Z,-3.0,CAD,Card transaction of 3.00 CAD issued by Rubber Duck Car Wash - St ST. JOHNS,2725.7,,,,Rubber Duck Car Wash - St
+CARD-2308450502,DEBIT,,2025-03-13T14:29:03.636959Z,-339.0,CAD,Card transaction of 339.00 CAD issued by Joom Riga,2728.7,,,,Joom
+CARD-2308371920,DEBIT,,2025-03-13T13:57:34.243271Z,-10.27,CAD,Card transaction of 10.27 CAD issued by Wendy's Restaurant Q1r ST JOHN'S,3067.7,,,,Wendy's Restaurant Q1r
+CARD-2306615126,DEBIT,,2025-03-12T20:03:35.969021Z,-15.23,CAD,Card transaction of 15.23 CAD issued by Dominos Pizza 109qps 709-579-9444,3077.97,,,,Dominos Pizza 109qps
+CARD-2306531533,DEBIT,,2025-03-12T19:22:33.937058Z,-54.0,CAD,Card transaction of 54.00 CAD issued by Vagaro* Fogtown Barber ST. JOHNS,3093.2,,,,Vagaro* Fogtown Barber
+CARD-2306349143,DEBIT,,2025-03-12T18:03:13.675592Z,-5.45,CAD,Card transaction of 5.45 CAD issued by Sobeys #857 ST. JOHN'S,3147.2,,,,Sobeys #857
+CARD-2305899820,DEBIT,,2025-03-12T15:08:24.111281Z,-15.2,CAD,Card transaction of 15.20 CAD issued by Wendy's Restaurant Q1r ST JOHN'S,3152.65,,,,Wendy's Restaurant Q1r
+CARD-2303957856,DEBIT,,2025-03-12T07:49:03.90973Z,-0.11,CAD,Card transaction of 22.89 CAD issued by Uber* Eats TORONTO,3167.85,,,,Uber* Eats
+CARD-2303326731,DEBIT,,2025-03-12T03:35:54.58373Z,-0.05,CAD,Card transaction of 10.74 CAD issued by Uber* Eats TORONTO,3167.96,,,,Uber* Eats
+CARD-2303434944,DEBIT,,2025-03-11T16:15:13.623063Z,-18.3,CAD,Card transaction of 18.30 CAD issued by Wendy's Restaurant Q1r ST JOHN'S,3190.79,,,,Wendy's Restaurant Q1r
+TRANSFER-1450897970,CREDIT,,2025-03-11T15:11:08.530187Z,1300.0,CAD,Received money from Javier Gené Morales  with reference March-April J Gene-Morales,3219.78,,,March-April J Gene-Morales,
+CARD-2286103383,CREDIT,,2025-03-11T11:39:30.962676Z,96.34,CAD,Card transaction of 96.34 CAD issued by Uber Canada/ubereats TORONTO,1919.78,,,,Uber Canada/ubereats
+CARD-2301408821,DEBIT,,2025-03-10T20:29:49.837367Z,-30.17,CAD,Card transaction of 30.17 CAD issued by Sobeys #320 ST. JOHN'S,1823.44,,,,Sobeys #320
+CARD-2301329320,DEBIT,,2025-03-10T19:46:57.475442Z,-15.23,CAD,Card transaction of 15.23 CAD issued by Dominos Pizza 109qps 709-579-9444,1853.61,,,,Dominos Pizza 109qps
+CARD-2300861339,DEBIT,,2025-03-10T16:36:21.648981Z,-18.87,CAD,Card transaction of 18.87 CAD issued by Wendy's Restaurant Q1r ST JOHN'S,1868.84,,,,Wendy's Restaurant Q1r
+CARD-2299903724,DEBIT,,2025-03-10T10:29:11.381635Z,-14.12,CAD,Card transaction of 14.12 CAD issued by Circle K / Irving #qps210 ST-JOHN'S,1887.71,,,,Circle K / Irving #qps210
+CARD-2298733474,DEBIT,,2025-03-09T20:23:40.563609Z,-22.75,CAD,Card transaction of 22.75 CAD issued by Skipthedishes Winnipeg,1901.83,,,,Skipthedishes
+CARD-2298377765,DEBIT,,2025-03-09T17:21:53.193331Z,-22.89,CAD,Card transaction of 22.89 CAD issued by Wendy's Restaurant Q1r ST JOHN'S,1924.58,,,,Wendy's Restaurant Q1r
+CARD-2297986186,DEBIT,,2025-03-09T14:36:04.26019Z,-11.49,CAD,Card transaction of 11.49 CAD issued by Amazon.ca Prime Member amazon.ca/pri,1947.47,,,,Amazon.ca Prime Member
+CARD-2297669299,DEBIT,,2025-03-09T12:27:34.812445Z,-32.2,CAD,Card transaction of 32.20 CAD issued by Claude.ai Subscription ANTHROPIC.COM,1958.96,,,,Claude.ai Subscription
+CARD-2297493558,DEBIT,,2025-03-09T11:12:41.593549Z,-14.12,CAD,Card transaction of 14.12 CAD issued by Circle K / Irving #qps210 ST JOHN'S,1991.16,,,,Circle K / Irving #qps210
+CARD-2295485137,DEBIT,,2025-03-08T15:46:47.333341Z,-42.0,CAD,Card transaction of 42.00 CAD issued by Vagaro* Fogtown Barber ST. JOHNS,2005.28,,,,Vagaro* Fogtown Barber
+CARD-2295225384,DEBIT,,2025-03-08T14:18:40.171188Z,-14.58,CAD,Card transaction of 14.58 CAD issued by Harvey's #2637e 709-576-7024,2047.28,,,,Harvey's #2637e
+CARD-2294742710,DEBIT,,2025-03-08T11:35:04.24625Z,-14.12,CAD,Card transaction of 14.12 CAD issued by Circle K / Irving #qps210 ST JOHN'S,2061.86,,,,Circle K / Irving #qps210
+CARD-2293227950,DEBIT,,2025-03-07T20:22:57.684058Z,-20.09,CAD,Card transaction of 20.09 CAD issued by Harvey's #2637e 709-576-7024,2075.98,,,,Harvey's #2637e
+CARD-2292348434,DEBIT,,2025-03-07T14:58:53.497502Z,-13.2,CAD,Card transaction of 13.20 CAD issued by Wendy's Restaurant Q1r ST JOHN'S,2096.07,,,,Wendy's Restaurant Q1r
+CARD-2292135860,DEBIT,,2025-03-07T13:43:42.214202Z,-28.81,CAD,"Card transaction of 20.00 USD issued by Cursor, Ai Powered Ide CURSOR.COM",2109.27,0.694203 (CAD to USD),,,"Cursor, Ai Powered Ide"
+CARD-2291864661,DEBIT,,2025-03-07T12:10:07.299477Z,-50.0,CAD,Card transaction of 50.00 CAD issued by Campus Card Mun ST. JOHN'S,2138.08,,,,Campus Card Mun
+CARD-2291667332,DEBIT,,2025-03-07T11:01:38.144705Z,-14.12,CAD,Card transaction of 14.12 CAD issued by Circle K / Irving #qps210 ST-JOHN'S,2188.08,,,,Circle K / Irving #qps210
+CARD-2290295619,DEBIT,,2025-03-06T20:41:10.225178Z,-6.91,CAD,Card transaction of 6.91 CAD issued by Sobeys #320 ST. JOHN'S,2202.2,,,,Sobeys #320
+CARD-2290283889,DEBIT,,2025-03-06T20:35:01.351784Z,-31.49,CAD,Card transaction of 31.49 CAD issued by Subway 16906 St Johns,2209.11,,,,Subway 16906
+CARD-2289942388,DEBIT,,2025-03-06T18:05:23.55599Z,-14.58,CAD,Card transaction of 14.58 CAD issued by Harvey's #2637e 709-576-7024,2240.6,,,,Harvey's #2637e
+TRANSFER-1444309047,DEBIT,,2025-03-06T13:57:18.886607Z,-3002.0,CAD,Sent money to Mateus Saar,2255.18,,,,
+BALANCE-3155813393,CREDIT,,2025-03-06T13:56:30.100017Z,5000.0,CAD,"Withdrawn 5,000.00 CAD from Insurance",5257.18,,,,
+CARD-2288961277,DEBIT,,2025-03-06T12:03:15.487448Z,-14.12,CAD,Card transaction of 14.12 CAD issued by Circle K / Irving #qps210 ST-JOHN'S,257.18,,,,Circle K / Irving #qps210
+CARD-2287554716,DEBIT,,2025-03-05T21:15:28.959418Z,-11.95,CAD,Card transaction of 11.95 CAD issued by Tim Hortons #2557 ST. JOHN'S,271.3,,,,Tim Hortons #2557
+CARD-2287481608,DEBIT,,2025-03-05T20:36:04.646561Z,-57.48,CAD,Card transaction of 57.48 CAD issued by Rubberduckcarwash.com OROMOCTO,283.25,,,,Rubberduckcarwash.com
+CARD-2287413587,DEBIT,,2025-03-05T20:01:42.909033Z,-15.23,CAD,Card transaction of 15.23 CAD issued by Dominos Pizza 109qps 709-579-9444,340.73,,,,Dominos Pizza 109qps
+CARD-2286711232,DEBIT,,2025-03-05T15:28:29.1302Z,-2.0,CAD,Card transaction of 2.00 CAD issued by Longshore Holdings ST MARYS,355.96,,,,Longshore Holdings
+CARD-2286686795,CREDIT,,2025-03-05T15:19:11.548676Z,1.0,CAD,Card transaction of 1.00 CAD issued by Chargepoint Canada VANCOUVER,357.96,,,,Chargepoint Canada
+CARD-2286208005,DEBIT,,2025-03-05T12:17:50.803028Z,-5.06,CAD,Card transaction of 5.06 CAD issued by Tim Hortons #2557 ST. JOHN'S,357.96,,,,Tim Hortons #2557
+CARD-2286047505,DEBIT,,2025-03-05T11:18:45.36152Z,-88.32,CAD,Card transaction of 88.32 CAD issued by Uber Canada/uberone TORONTO,459.36,,,,Uber Canada/uberone
+CARD-2286035628,DEBIT,,2025-03-05T11:14:26.485119Z,-14.12,CAD,Card transaction of 14.12 CAD issued by Circle K / Irving #qps210 ST JOHN'S,547.68,,,,Circle K / Irving #qps210
+CARD-2285028138,DEBIT,,2025-03-05T00:32:50.077198Z,-15.63,CAD,Card transaction of 15.63 CAD issued by Wendy's Restaurant Q1r ST JOHN'S,561.8,,,,Wendy's Restaurant Q1r
+CARD-2284665759,DEBIT,,2025-03-04T20:27:15.73811Z,-22.91,CAD,Card transaction of 22.91 CAD issued by Wendy's Restaurant Q1r ST JOHN'S,577.43,,,,Wendy's Restaurant Q1r
+CARD-2283209894,DEBIT,,2025-03-04T10:57:18.645538Z,-21.18,CAD,Card transaction of 21.18 CAD issued by Circle K / Irving #qps210 ST-JOHN'S,600.34,,,,Circle K / Irving #qps210
+CARD-2281768547,DEBIT,,2025-03-03T19:28:19.418705Z,-5.79,CAD,Card transaction of 5.79 CAD issued by Sobeys #320 ST. JOHN'S,621.52,,,,Sobeys #320
+CARD-2281747294,DEBIT,,2025-03-03T19:18:45.284129Z,-15.23,CAD,Card transaction of 15.23 CAD issued by Dominos Pizza 109qps 709-579-9444,627.31,,,,Dominos Pizza 109qps
+CARD-2281401526,DEBIT,,2025-03-03T17:05:49.742485Z,-12.05,CAD,Card transaction of 12.05 CAD issued by Wendy's Restaurant Q1r ST JOHN'S,642.54,,,,Wendy's Restaurant Q1r
+CARD-2281253412,DEBIT,,2025-03-03T16:13:45.444933Z,-9.08,CAD,Card transaction of 9.08 CAD issued by Jumping Bean Elizabeth ST. JOHN'S,654.59,,,,Jumping Bean Elizabeth
+CARD-2280870717,DEBIT,,2025-03-03T13:52:15.739694Z,-116.09,CAD,Card transaction of 116.09 CAD issued by Www Costco Ca 888-426-7826,663.67,,,,Www Costco Ca
+TRANSFER-1439225958,DEBIT,,2025-03-03T13:27:44.74245Z,-3002.0,CAD,Sent money to Mateus Saar,779.76,,,,
+CARD-2280295939,DEBIT,,2025-03-03T10:19:19.774366Z,-14.12,CAD,Card transaction of 14.12 CAD issued by Circle K / Irving #qps210 ST JOHN'S,3781.76,,,,Circle K / Irving #qps210
+CARD-2278977698,DEBIT,,2025-03-02T19:51:34.738091Z,-34.69,CAD,Card transaction of 34.69 CAD issued by Nlc #041 ST. JOHN'S,3795.88,,,,Nlc #041
+CARD-2278952867,DEBIT,,2025-03-02T19:38:45.880045Z,-28.85,CAD,Card transaction of 28.85 CAD issued by Dollarama # 838 ST JOHN'S,3830.57,,,,Dollarama # 838
+CARD-2278722305,DEBIT,,2025-03-02T17:50:25.080401Z,-20.67,CAD,Card transaction of 20.67 CAD issued by Wendy's            Q1r ST. JOHN'S,3859.42,,,,Wendy's            Q1r
+CARD-2278217684,DEBIT,,2025-03-02T14:27:48.066088Z,-15.85,CAD,Card transaction of 15.85 CAD issued by Tim Hortons #0387 ST. JOHN'S,3880.09,,,,Tim Hortons #0387
+CARD-2277862870,DEBIT,,2025-03-02T12:09:19.258769Z,-7.06,CAD,Card transaction of 7.06 CAD issued by Circle K / Irving #qps210 ST-JOHN'S,3895.94,,,,Circle K / Irving #qps210
+CARD-2276772216,CREDIT,,2025-03-02T11:41:18.40676Z,4.76,CAD,Card transaction of 121.30 CAD issued by Uber Canada/ubereats TORONTO,3903.0,,,,Uber Canada/ubereats
+CARD-2277744992,DEBIT,,2025-03-02T11:20:43.149524Z,-4.51,CAD,Card transaction of 4.51 CAD issued by Google *Google One g.co/helppay#,3898.24,,,,Google *Google One
+CARD-2276577065,DEBIT,,2025-03-01T22:33:27.291037Z,-13.3,CAD,Card transaction of 13.30 CAD issued by Sobeys #320 ST. JOHN'S,4028.81,,,,Sobeys #320
+CARD-2276497846,DEBIT,,2025-03-01T21:50:10.083464Z,-30.16,CAD,Card transaction of 30.16 CAD issued by Dominos Pizza 109qps 709-579-9444,4042.11,,,,Dominos Pizza 109qps
+CARD-2276193750,DEBIT,,2025-03-01T19:25:19.858308Z,-11.58,CAD,Card transaction of 11.58 CAD issued by Wifionboard Air Canada 877-350-0038,4072.27,,,,Wifionboard Air Canada
+CARD-2275479128,DEBIT,,2025-03-01T15:28:49.71861Z,-11.28,CAD,Card transaction of 11.28 CAD issued by Yyz Otg T1 Cibo D20 MISSISSAUGA,4083.85,,,,Yyz Otg T1 Cibo D20
+CARD-2275283784,CREDIT,,2025-03-01T14:30:07.681518Z,119.51,CAD,Card transaction of 130.49 CAD issued by Petro-Canada 00460 MISSISSAUGA,4095.13,,,,Petro-Canada 00460
+CARD-2270106607,DEBIT,,2025-02-27T21:13:15.523963Z,-122.67,CAD,Card transaction of 122.67 CAD issued by Healing Place Rehab Cent MARKHAM,4225.62,,,,Healing Place Rehab Cent
+CARD-2269863296,DEBIT,,2025-02-27T19:10:37.616709Z,-5.41,CAD,Card transaction of 5.41 CAD issued by Petro-Canada 33370 MARKHAM,4348.29,,,,Petro-Canada 33370
+CARD-2269768216,DEBIT,,2025-02-27T18:30:50.411735Z,-26.78,CAD,Card transaction of 26.78 CAD issued by Uber Canada/ubereats TORONTO,4353.7,,,,Uber Canada/ubereats
+CARD-2269232295,DEBIT,,2025-02-27T15:09:53.011548Z,-6.78,CAD,Card transaction of 6.78 CAD issued by Esso Circle K MARKHAM,4380.48,,,,Esso Circle K
+CARD-2268702662,DEBIT,,2025-02-27T11:50:04.065814Z,-27.6,CAD,Card transaction of 27.60 CAD issued by Wix Com VANCOUVER,4387.26,,,,Wix Com
+CARD-2268673691,DEBIT,,2025-02-27T11:39:12.185949Z,-14.68,CAD,Card transaction of 14.68 CAD issued by Google *Power Mobile L g.co/helppay#,4414.86,,,,Google *Power Mobile L
+CARD-2263923251,CREDIT,,2025-02-27T00:59:08.660526Z,19.62,CAD,Card transaction of 91.46 CAD issued by Walmart.ca MISSISSAUGA,4429.54,,,,Walmart.ca
+CARD-2267492139,DEBIT,,2025-02-26T22:50:50.900096Z,-26.44,CAD,Card transaction of 26.44 CAD issued by Microsoft*Store HALIFAX,4409.92,,,,Microsoft*Store
+CARD-2267464929,DEBIT,,2025-02-26T22:30:57.011882Z,-21.88,CAD,Card transaction of 21.88 CAD issued by Papa John's Pizza #127 647-400-3129,4436.36,,,,Papa John's Pizza #127
+CARD-2264804398,DEBIT,,2025-02-25T23:10:09.602185Z,-49.89,CAD,Card transaction of 49.89 CAD issued by Food Basics  661 MARKHAM,4458.24,,,,Food Basics  661
+CARD-2264231632,DEBIT,,2025-02-25T17:56:57.24572Z,-15.81,CAD,Card transaction of 15.81 CAD issued by Osmow's MARKHAM,4508.13,,,,Osmow's
+CARD-2264116841,DEBIT,,2025-02-25T17:12:00.30301Z,-15.4,CAD,Card transaction of 15.40 CAD issued by Uber* Eats TORONTO,4523.94,,,,Uber* Eats
+CARD-2263716715,DEBIT,,2025-02-25T14:32:38.140823Z,-9.13,CAD,Card transaction of 9.13 CAD issued by Mcdonald's 5898 Non Mobil UNIONVILLE,4650.42,,,,Mcdonald's 5898 Non Mobil
+CARD-2258892179,DEBIT,,2025-02-23T17:31:44.777377Z,-40.88,CAD,Card transaction of 40.88 CAD issued by Pita Nutso OAKVILLE,4659.55,,,,Pita Nutso
+CARD-2256004344,CREDIT,,2025-02-23T04:47:25.665211Z,115.67,CAD,Card transaction of 115.67 CAD issued by Uber Canada/ubereats TORONTO,4700.43,,,,Uber Canada/ubereats
+CARD-2257430075,DEBIT,,2025-02-23T04:47:22.384015Z,-122.66,CAD,Card transaction of 122.66 CAD issued by Uber* Eats UBER.COM/CA/E,4584.76,,,,Uber* Eats
+CARD-2257332642,DEBIT,,2025-02-23T03:16:30.9792Z,-18.54,CAD,Card transaction of 18.54 CAD issued by Uber Canada/ubertrip TORONTO,4707.42,,,,Uber Canada/ubertrip
+CARD-2257291700,DEBIT,,2025-02-23T02:45:44.283419Z,-1.0,CAD,Card transaction of 1.00 CAD issued by Uber Canada/ubertrip TORONTO,4725.96,,,,Uber Canada/ubertrip
+CARD-2257290715,DEBIT,,2025-02-23T02:45:01.420188Z,-26.42,CAD,Card transaction of 26.42 CAD issued by Uber Canada/ubertrip TORONTO,4726.96,,,,Uber Canada/ubertrip
+CARD-2257264252,CREDIT,,2025-02-23T02:26:38.841482Z,27.29,CAD,Card transaction of 27.29 CAD issued by Uber Canada/ubertrip TORONTO,4753.38,,,,Uber Canada/ubertrip
+CARD-2256894390,DEBIT,,2025-02-22T21:57:50.683315Z,-4.01,CAD,Card transaction of 4.01 CAD issued by Tim Hortons #8462 ST JOHN'S,4753.38,,,,Tim Hortons #8462
+CARD-2256858374,DEBIT,,2025-02-22T21:36:20.357469Z,-2.25,CAD,Card transaction of 2.25 CAD issued by Browning Harvey Limite ST. JOHN'S,4757.39,,,,Browning Harvey Limite
+CARD-2256647543,DEBIT,,2025-02-22T19:44:41.661553Z,-15.5,CAD,Card transaction of 15.50 CAD issued by Tim Hortons #8462 ST JOHN'S,4759.64,,,,Tim Hortons #8462
+CARD-2256531821,DEBIT,,2025-02-22T18:52:46.335409Z,-34.69,CAD,Card transaction of 34.69 CAD issued by Nlc #041 ST. JOHN'S,4775.14,,,,Nlc #041
+CARD-2256281157,DEBIT,,2025-02-22T17:16:04.312369Z,-11.49,CAD,Card transaction of 11.49 CAD issued by Tim Hortons #0275 ST. JOHN'S,4809.83,,,,Tim Hortons #0275
+CARD-2255863687,DEBIT,,2025-02-22T14:47:05.369924Z,-14.58,CAD,Card transaction of 14.58 CAD issued by Harvey's #2637e 709-576-7024,4936.99,,,,Harvey's #2637e
+CARD-2255062295,DEBIT,,2025-02-22T10:03:09.622444Z,-21.18,CAD,Card transaction of 21.18 CAD issued by Circle K / Irving #qps210 ST JOHN'S,4951.57,,,,Circle K / Irving #qps210
+CARD-2254069919,DEBIT,,2025-02-21T22:36:25.304745Z,-16.89,CAD,Card transaction of 16.89 CAD issued by Subway 32256 St Johns,4972.75,,,,Subway 32256
+CARD-2253512600,DEBIT,,2025-02-21T18:11:10.355128Z,-17.8,CAD,Card transaction of 17.80 CAD issued by Tim Hortons #0275 ST. JOHN'S,4989.64,,,,Tim Hortons #0275
+CARD-2252976975,DEBIT,,2025-02-21T15:00:30.342803Z,-3.0,CAD,Card transaction of 3.00 CAD issued by Rubber Duck Car Wash - St ST. JOHNS,5007.44,,,,Rubber Duck Car Wash - St
+CARD-2251004577,DEBIT,,2025-02-20T20:59:32.540518Z,-10.1,CAD,Card transaction of 10.10 CAD issued by Canadian Tire Gas Bar #18 ST. JOHN'S,5010.44,,,,Canadian Tire Gas Bar #18
+CARD-2250983025,DEBIT,,2025-02-20T20:47:14.481066Z,-16.89,CAD,Card transaction of 16.89 CAD issued by Subway 16906 St Johns,5020.54,,,,Subway 16906
+CARD-2250676531,DEBIT,,2025-02-20T18:22:38.369504Z,-11.49,CAD,Card transaction of 11.49 CAD issued by Tim Hortons #0275 ST. JOHN'S,5037.43,,,,Tim Hortons #0275
+CARD-2250218948,DEBIT,,2025-02-20T15:26:21.539796Z,-12.05,CAD,Card transaction of 12.05 CAD issued by Wendy's Restaurant Q1r ST JOHN'S,5048.92,,,,Wendy's Restaurant Q1r
+CARD-2249526200,DEBIT,,2025-02-20T11:01:29.67747Z,-14.12,CAD,Card transaction of 14.12 CAD issued by Circle K / Irving #qps210 ST JOHN'S,5060.97,,,,Circle K / Irving #qps210
+CARD-2249344116,DEBIT,,2025-02-20T09:45:55.642717Z,-14.94,CAD,Card transaction of 14.94 CAD issued by Apple.com/bill 866-712-7753,5075.09,,,,Apple.com/bill
+CARD-2248269076,DEBIT,,2025-02-19T20:41:53.299311Z,-16.89,CAD,Card transaction of 16.89 CAD issued by Subway 16906 St Johns,5090.03,,,,Subway 16906
+CARD-2248080569,DEBIT,,2025-02-19T19:06:24.072879Z,-11.49,CAD,Card transaction of 11.49 CAD issued by Tim Hortons #0275 ST. JOHN'S,5106.92,,,,Tim Hortons #0275
+CARD-2247650961,DEBIT,,2025-02-19T16:17:58.914492Z,-12.89,CAD,Card transaction of 12.89 CAD issued by Ls Five Guys Avalon Ma MONTREAL,5118.41,,,,Ls Five Guys Avalon Ma
+CARD-2246912220,DEBIT,,2025-02-19T11:36:07.313661Z,-25.53,CAD,Card transaction of 25.53 CAD issued by Walmart.ca MISSISSAUGA,5131.3,,,,Walmart.ca
+CARD-2246769088,DEBIT,,2025-02-19T10:42:09.129729Z,-21.18,CAD,Card transaction of 21.18 CAD issued by Circle K / Irving #qps210 ST JOHN'S,5156.83,,,,Circle K / Irving #qps210
+CARD-2245659286,DEBIT,,2025-02-18T21:31:58.701011Z,-70.91,CAD,Card transaction of 70.91 CAD issued by Salarmy Kenmount Thrift S ST. JOHN'S,5178.01,,,,Salarmy Kenmount Thrift S
+CARD-2245510680,DEBIT,,2025-02-18T20:03:30.81393Z,-16.89,CAD,Card transaction of 16.89 CAD issued by Subway 16906 St Johns,5248.92,,,,Subway 16906
+CARD-2245263706,DEBIT,,2025-02-18T18:09:33.623177Z,-11.49,CAD,Card transaction of 11.49 CAD issued by Tim Hortons #0275 ST. JOHN'S,5265.81,,,,Tim Hortons #0275
+CARD-2244930418,DEBIT,,2025-02-18T16:00:16.055804Z,-25.25,CAD,Card transaction of 25.25 CAD issued by Supplement King St. Johns ST. JOHN'S,5277.3,,,,Supplement King St. Johns
+CARD-2244915652,DEBIT,,2025-02-18T15:54:18.439245Z,-8.96,CAD,Card transaction of 8.96 CAD issued by Wendy's Restaurant Q1r ST JOHN'S,5302.55,,,,Wendy's Restaurant Q1r
+CARD-2242997742,DEBIT,,2025-02-17T21:21:05.784117Z,-21.84,CAD,Card transaction of 21.84 CAD issued by Uber Canada/ubereats TORONTO,5311.51,,,,Uber Canada/ubereats
+CARD-2242694838,DEBIT,,2025-02-17T18:43:24.084257Z,-16.09,CAD,Card transaction of 16.09 CAD issued by Tesla Toronto,5333.35,,,,Tesla
+CARD-2242465698,DEBIT,,2025-02-17T17:14:47.096291Z,-22.46,CAD,Card transaction of 22.46 CAD issued by Ls Five Guys Avalon Ma MONTREAL,5349.44,,,,Ls Five Guys Avalon Ma
+CARD-2241951431,DEBIT,,2025-02-17T13:58:01.09288Z,-46.0,CAD,Card transaction of 46.00 CAD issued by Cabot Pest Control ST. JOHN`S,5371.9,,,,Cabot Pest Control
+CARD-2241217118,DEBIT,,2025-02-17T09:17:02.652243Z,-21.18,CAD,Card transaction of 21.18 CAD issued by Circle K / Irving #qps210 ST JOHN'S,5417.9,,,,Circle K / Irving #qps210
+CARD-2239989585,DEBIT,,2025-02-16T18:29:20.427612Z,-18.38,CAD,Card transaction of 18.38 CAD issued by Little Caesars #4908-0001 ST. JOHN'S,5439.08,,,,Little Caesars #4908-0001
+CARD-2239969367,DEBIT,,2025-02-16T18:19:11.020752Z,-17.75,CAD,Card transaction of 17.75 CAD issued by Wal-Mart Supercenter#3196 ST. JOHN'S,5457.46,,,,Wal-Mart Supercenter#3196
+CARD-2237552902,DEBIT,,2025-02-15T19:14:05.416366Z,-11.61,CAD,Card transaction of 11.61 CAD issued by Mcdonald's #29133 ST. JOHN'S,5475.21,,,,Mcdonald's #29133
+CARD-2237502026,DEBIT,,2025-02-15T18:51:51.832111Z,-20.31,CAD,Card transaction of 20.31 CAD issued by Uber Canada/ubereats TORONTO,5486.82,,,,Uber Canada/ubereats
+CARD-2237020387,DEBIT,,2025-02-15T15:50:53.148223Z,-9.99,CAD,Card transaction of 9.99 CAD issued by Tim Hortons #2557 ST. JOHN'S,5507.13,,,,Tim Hortons #2557
+CARD-2236447323,DEBIT,,2025-02-15T12:30:41.417333Z,-45.99,CAD,Card transaction of 45.99 CAD issued by Www.sportchek.ca OAKVILLE,5517.12,,,,Www.sportchek.ca
+CARD-2236330375,DEBIT,,2025-02-15T11:49:47.328154Z,-18.48,CAD,Card transaction of 18.48 CAD issued by Circle K / Irving #qps210 ST-JOHN'S,5563.11,,,,Circle K / Irving #qps210
+CARD-2234889876,DEBIT,,2025-02-14T21:04:36.167212Z,-7.99,CAD,Card transaction of 7.99 CAD issued by Little Caesars #4908-0001 ST. JOHN'S,5581.59,,,,Little Caesars #4908-0001
+CARD-2234863675,DEBIT,,2025-02-14T20:51:09.099425Z,-19.98,CAD,Card transaction of 19.98 CAD issued by Wendy's Restaurant Q1r ST JOHN'S,5589.58,,,,Wendy's Restaurant Q1r
+CARD-2234774895,DEBIT,,2025-02-14T20:07:42.649998Z,-16.52,CAD,Card transaction of 16.52 CAD issued by Uber* Eats TORONTO,5609.56,,,,Uber* Eats
+CARD-2233856381,CREDIT,,2025-02-14T17:01:28.069505Z,38.13,CAD,Card transaction of 34.47 CAD issued by Uber Canada/ubereats TORONTO,5626.08,,,,Uber Canada/ubereats
+CARD-2234239866,DEBIT,,2025-02-14T16:47:12.438757Z,-20.31,CAD,Card transaction of 20.31 CAD issued by Uber Canada/ubereats TORONTO,5587.95,,,,Uber Canada/ubereats
+CARD-2233860310,DEBIT,,2025-02-14T14:35:39.400872Z,-12.32,CAD,Card transaction of 12.32 CAD issued by Circle K / Irving #qps210 ST-JOHN'S,5608.26,,,,Circle K / Irving #qps210
+CARD-2233382819,CREDIT,,2025-02-14T14:31:17.629855Z,63.31,CAD,Card transaction of 63.31 CAD issued by Uber* Eats Pending UBER.COM/CA/E,5693.18,,,,Uber* Eats Pending
+CARD-2233743774,DEBIT,,2025-02-14T13:55:07.85525Z,-24.89,CAD,Card transaction of 24.89 CAD issued by Uber Canada/ubereats TORONTO,5629.87,,,,Uber Canada/ubereats
+CARD-2233718670,DEBIT,,2025-02-14T13:46:40.378068Z,-77.97,CAD,Card transaction of 77.97 CAD issued by Flower Fantasy MISSISSAUGA,5654.76,,,,Flower Fantasy
+CARD-2233707254,CREDIT,,2025-02-14T13:46:28.683244Z,77.97,CAD,Card transaction of 77.97 CAD issued by Flower Fantasy +12898858995,5732.73,,,,Flower Fantasy
+CARD-2231953023,DEBIT,,2025-02-13T21:18:57.339841Z,-5.0,CAD,Card transaction of 5.00 CAD issued by Sobeys #320 ST. JOHN'S,5796.04,,,,Sobeys #320
+TRANSFER-1415740396,DEBIT,,2025-02-13T21:10:16.691427Z,-500.0,CAD,Sent money to Athanasia Filntissis,5801.04,,,front tenants,
+CARD-2231933551,DEBIT,,2025-02-13T21:07:25.400133Z,-35.13,CAD,Card transaction of 35.13 CAD issued by Dominos Pizza 109qps 709-579-9444,6301.04,,,,Dominos Pizza 109qps
+CARD-2231516401,DEBIT,,2025-02-13T17:50:23.740873Z,-12.68,CAD,Card transaction of 12.68 CAD issued by Harvey's #2637e 709-576-7024,6336.17,,,,Harvey's #2637e
+CARD-2230710338,DEBIT,,2025-02-13T12:41:21.312361Z,-330.24,CAD,Card transaction of 230.00 USD issued by Openai *Chatgpt Subscr OPENAI.COM,6348.85,0.696463 (CAD to USD),,,Openai *Chatgpt Subscr
+CARD-2230269746,DEBIT,,2025-02-13T09:51:49.363779Z,-18.48,CAD,Card transaction of 18.48 CAD issued by Circle K / Irving #qps210 ST JOHN'S,6679.09,,,,Circle K / Irving #qps210
+CARD-2229209036,DEBIT,,2025-02-12T21:01:42.423179Z,-5.99,CAD,Card transaction of 5.99 CAD issued by Sobeys #320 ST. JOHN'S,6697.57,,,,Sobeys #320
+CARD-2229183257,DEBIT,,2025-02-12T20:46:55.681583Z,-13.39,CAD,Card transaction of 13.39 CAD issued by Dominos Pizza 109qps 709-579-9444,6703.56,,,,Dominos Pizza 109qps
+CARD-2228576973,DEBIT,,2025-02-12T16:24:57.952918Z,-12.68,CAD,Card transaction of 12.68 CAD issued by Harvey's #2637e 709-576-7024,6716.95,,,,Harvey's #2637e
+CARD-2228160487,DEBIT,,2025-02-12T13:42:06.506231Z,-4.97,CAD,Card transaction of 4.97 CAD issued by Circle K  #2531 ST. JOHN'S,6729.63,,,,Circle K  #2531
+CARD-2228110683,CREDIT,,2025-02-12T13:24:23.177306Z,66.0,CAD,Card transaction of 66.00 CAD issued by Fogtown Barber ST. JOHN'S,6734.6,,,,Fogtown Barber
+CARD-2228111808,DEBIT,,2025-02-12T13:23:33.448377Z,-66.0,CAD,Card transaction of 66.00 CAD issued by Vagaro* Fogtown Barber ST. JOHNS,6668.6,,,,Vagaro* Fogtown Barber
+CARD-2226493378,DEBIT,,2025-02-11T20:58:26.840384Z,-7.99,CAD,Card transaction of 7.99 CAD issued by Little Caesars #4908-0001 ST. JOHN'S,6800.6,,,,Little Caesars #4908-0001
+CARD-2226462840,DEBIT,,2025-02-11T20:40:05.843796Z,-8.99,CAD,Card transaction of 8.99 CAD issued by Tim Hortons #0275 ST. JOHN'S,6808.59,,,,Tim Hortons #0275
+CARD-2226283158,DEBIT,,2025-02-11T19:08:10.805837Z,-7.79,CAD,Card transaction of 7.79 CAD issued by Tim Hortons #0275 ST. JOHN'S,6817.58,,,,Tim Hortons #0275
+CARD-2225797688,DEBIT,,2025-02-11T15:54:44.229026Z,-0.4,CAD,Card transaction of 0.40 CAD issued by Tim Hortons #1300 ST. JOHN'S,6825.37,,,,Tim Hortons #1300
+CARD-2225659327,DEBIT,,2025-02-11T14:59:13.925338Z,-12.68,CAD,Card transaction of 12.68 CAD issued by Harvey's #2637e 709-576-7024,6825.77,,,,Harvey's #2637e
+CARD-2224836403,DEBIT,,2025-02-11T09:36:02.313211Z,-18.48,CAD,Card transaction of 18.48 CAD issued by Circle K / Irving #qps210 ST JOHN'S,6838.45,,,,Circle K / Irving #qps210
+TRANSFER-1408939780,CREDIT,,2025-02-11T06:53:50.284561Z,1300.0,CAD,Received money from Javier Gené Morales  with reference February-March J Gene-Morales,6856.93,,,February-March J Gene-Morales,
+CARD-2209951238,DEBIT,,2025-02-10T23:16:38.514041Z,-30.58,CAD,Card transaction of 30.58 CAD issued by 3 Sister Vietnamese Subs ST. JOHN'S,5556.93,,,,3 Sister Vietnamese Subs
+CARD-2223636501,DEBIT,,2025-02-10T19:13:56.414232Z,-15.28,CAD,Card transaction of 15.28 CAD issued by Dominos Pizza 109qps 709-579-9444,5556.93,,,,Dominos Pizza 109qps
+CARD-2223484710,DEBIT,,2025-02-10T18:09:04.361521Z,-5.59,CAD,Card transaction of 5.59 CAD issued by Tim Hortons #2557 ST. JOHN'S,5572.21,,,,Tim Hortons #2557
+CARD-2223413120,DEBIT,,2025-02-10T17:41:15.094224Z,-9.98,CAD,Card transaction of 9.98 CAD issued by Wendy's Restaurant Q1r ST JOHN'S,5577.8,,,,Wendy's Restaurant Q1r
+CARD-2222606564,DEBIT,,2025-02-10T12:35:08.918899Z,-4.4,CAD,Card transaction of 4.40 CAD issued by Tim Hortons #1522 ST. JOHN'S,5587.78,,,,Tim Hortons #1522
+CARD-2220977128,DEBIT,,2025-02-09T19:28:50.710923Z,-20.23,CAD,Card transaction of 20.23 CAD issued by Pizza Pizza #1130 ETOBICOKE,5592.18,,,,Pizza Pizza #1130
+CARD-2220562629,DEBIT,,2025-02-09T16:09:57.209179Z,-20.31,CAD,Card transaction of 20.31 CAD issued by Uber Canada/ubereats TORONTO,5612.41,,,,Uber Canada/ubereats
+CARD-2220326534,DEBIT,,2025-02-09T14:29:36.167399Z,-11.49,CAD,Card transaction of 11.49 CAD issued by Amazon.ca Prime Member amazon.ca/pri,5632.72,,,,Amazon.ca Prime Member
+CARD-2219886656,DEBIT,,2025-02-09T11:27:49.599081Z,-18.48,CAD,Card transaction of 18.48 CAD issued by Circle K / Irving #qps210 ST JOHN'S,5644.21,,,,Circle K / Irving #qps210
+CARD-2218630950,DEBIT,,2025-02-08T20:57:43.085086Z,-9.37,CAD,Card transaction of 9.37 CAD issued by Mcdonald's #29133 ST. JOHN'S,5662.69,,,,Mcdonald's #29133
+CARD-2218571555,DEBIT,,2025-02-08T20:26:27.264851Z,-20.31,CAD,Card transaction of 20.31 CAD issued by Uber Canada/ubereats TORONTO,5672.06,,,,Uber Canada/ubereats
+CARD-2217955187,DEBIT,,2025-02-08T16:15:09.290906Z,-12.68,CAD,Card transaction of 12.68 CAD issued by Harvey's #2637e 709-576-7024,5692.37,,,,Harvey's #2637e
+CARD-2216904051,DEBIT,,2025-02-08T10:02:18.809397Z,-18.48,CAD,Card transaction of 18.48 CAD issued by Circle K / Irving #qps210 ST JOHN'S,5705.05,,,,Circle K / Irving #qps210
+CARD-2215673891,DEBIT,,2025-02-07T20:20:43.787279Z,-12.56,CAD,Card transaction of 12.56 CAD issued by Mcdonald's #29133 ST. JOHN'S,5723.53,,,,Mcdonald's #29133
+CARD-2215603027,DEBIT,,2025-02-07T19:47:10.751556Z,-20.31,CAD,Card transaction of 20.31 CAD issued by Uber* Eats TORONTO,5736.09,,,,Uber* Eats
+CARD-2215420581,DEBIT,,2025-02-07T18:30:40.914655Z,-9.98,CAD,Card transaction of 9.98 CAD issued by Wendy's Restaurant Q1r ST JOHN'S,5756.4,,,,Wendy's Restaurant Q1r
+CARD-2212893108,DEBIT,,2025-02-06T21:14:37.980865Z,-3.0,CAD,Card transaction of 3.00 CAD issued by Rubber Duck Car Wash - St ST. JOHNS,5766.38,,,,Rubber Duck Car Wash - St
+CARD-2212789428,DEBIT,,2025-02-06T20:16:34.972517Z,-2.99,CAD,Card transaction of 2.99 CAD issued by Sobeys #320 ST. JOHN'S,5769.38,,,,Sobeys #320
+CARD-2212776603,DEBIT,,2025-02-06T20:09:54.587619Z,-13.39,CAD,Card transaction of 13.39 CAD issued by Dominos Pizza 109qps 709-579-9444,5772.37,,,,Dominos Pizza 109qps
+CARD-2212460104,DEBIT,,2025-02-06T17:50:30.295571Z,-10.18,CAD,Card transaction of 10.18 CAD issued by Harveys 0002637 ST. JOHN'S,5785.76,,,,Harveys 0002637
+CARD-2212058395,DEBIT,,2025-02-06T15:16:35.190274Z,-50.0,CAD,Card transaction of 50.00 CAD issued by Campus Card Mun ST. JOHN'S,5795.94,,,,Campus Card Mun
+CARD-2212019602,DEBIT,,2025-02-06T15:01:25.78183Z,-5.19,CAD,Card transaction of 5.19 CAD issued by Wendy's Restaurant Q1r ST JOHN'S,5845.94,,,,Wendy's Restaurant Q1r
+CARD-2210087576,DEBIT,,2025-02-05T21:17:59.540968Z,-9.29,CAD,Card transaction of 9.29 CAD issued by Tim Hortons #2557 ST. JOHN'S,5851.13,,,,Tim Hortons #2557
+CARD-2209134155,DEBIT,,2025-02-05T14:48:00.991777Z,-6.19,CAD,Card transaction of 6.19 CAD issued by Wendy's Restaurant Q1r ST JOHN'S,5891.0,,,,Wendy's Restaurant Q1r
+CARD-2203269802,CREDIT,,2025-02-05T01:07:41.990748Z,0.01,CAD,Card transaction of 31.89 CAD issued by Walmart.ca MISSISSAUGA,5897.19,,,,Walmart.ca
+CARD-2207268381,DEBIT,,2025-02-04T20:43:27.984386Z,-9.15,CAD,Card transaction of 9.15 CAD issued by Circle K / Irving #qps210 ST JOHN'S,5897.18,,,,Circle K / Irving #qps210
+CARD-2207117029,DEBIT,,2025-02-04T19:24:22.392086Z,-22.78,CAD,Card transaction of 22.78 CAD issued by Dominos Pizza 109qps 709-579-9444,5906.33,,,,Dominos Pizza 109qps
+CARD-2207074715,DEBIT,,2025-02-04T19:04:20.163116Z,-7.91,CAD,Card transaction of 5.49 USD issued by Uber   *One HELP.UBER.COM,5929.11,0.694058 (CAD to USD),,,Uber   *One
+CARD-2206930718,DEBIT,,2025-02-04T18:03:17.069892Z,-1.48,CAD,Card transaction of 1.48 CAD issued by Tim Hortons #0275 ST. JOHN'S,5937.02,,,,Tim Hortons #0275
+CARD-2206832347,DEBIT,,2025-02-04T17:25:14.233591Z,-12.68,CAD,Card transaction of 12.68 CAD issued by Harveys #2687e 705-576-7024,5938.5,,,,Harveys #2687e
+CARD-2206328865,DEBIT,,2025-02-04T14:09:29.630152Z,-6.16,CAD,Card transaction of 6.16 CAD issued by Circle K / Irving #qps210 ST-JOHN'S,5951.18,,,,Circle K / Irving #qps210
+CARD-2205982676,DEBIT,,2025-02-04T11:58:48.319337Z,-2.71,CAD,Card transaction of 2.71 CAD issued by Shoppers Drug Mart #01 ST JOHNS,5957.34,,,,Shoppers Drug Mart #01
+CARD-2202908274,CREDIT,,2025-02-04T10:42:54.843937Z,343.84,CAD,Card transaction of -343.84 CAD issued by Amazon* Z562v9yh2 VANCOUVER,5960.05,,,,Amazon* Z562v9yh2
+CARD-2204586397,DEBIT,,2025-02-03T20:51:37.337148Z,-3.54,CAD,Card transaction of 3.54 CAD issued by Burger King #18409 ST. JOHN'S,5616.21,,,,Burger King #18409
+CARD-2204522459,DEBIT,,2025-02-03T20:15:49.865826Z,-4.49,CAD,Card transaction of 4.49 CAD issued by Colemans ST. JOHN'S,5619.75,,,,Colemans
+CARD-2204503700,DEBIT,,2025-02-03T20:05:59.432666Z,-13.24,CAD,Card transaction of 13.24 CAD issued by Dominos Pizza 109qps 709-579-9444,5624.24,,,,Dominos Pizza 109qps
+CARD-2203898672,DEBIT,,2025-02-03T16:00:39.591421Z,-8.18,CAD,Card transaction of 8.18 CAD issued by Wendy's Restaurant Q1r ST JOHN'S,5637.48,,,,Wendy's Restaurant Q1r
+CARD-2203257332,DEBIT,,2025-02-03T12:00:42.673243Z,-111.34,CAD,Card transaction of 111.34 CAD issued by Walmart.ca MISSISSAUGA,5677.56,,,,Walmart.ca
+CARD-2200564973,DEBIT,,2025-02-02T11:20:43.762651Z,-4.51,CAD,Card transaction of 4.51 CAD issued by Google *Google One g.co/helppay#,5788.9,,,,Google *Google One
+CARD-2199259417,DEBIT,,2025-02-01T20:43:06.871782Z,-12.99,CAD,Card transaction of 12.99 CAD issued by Dominos Pizza 109qps 709-579-9444,5793.41,,,,Dominos Pizza 109qps
+CARD-2198864664,DEBIT,,2025-02-01T17:56:28.763089Z,-12.68,CAD,Card transaction of 12.68 CAD issued by Harveys #2687e 705-576-7024,5806.4,,,,Harveys #2687e
+CARD-2196105949,DEBIT,,2025-01-31T20:17:34.736138Z,-12.99,CAD,Card transaction of 12.99 CAD issued by Dominos Pizza 10959 709-737-9444,5819.08,,,,Dominos Pizza 10959
+CARD-2195380830,DEBIT,,2025-01-31T15:36:18.617777Z,-12.68,CAD,Card transaction of 12.68 CAD issued by Harvey's #2637e 709-576-7024,5832.07,,,,Harvey's #2637e
+CARD-2193201120,DEBIT,,2025-01-30T19:52:32.616585Z,-13.49,CAD,Card transaction of 13.49 CAD issued by Dominos Pizza 109qps 709-579-9444,5844.75,,,,Dominos Pizza 109qps
+CARD-2192725972,DEBIT,,2025-01-30T16:33:39.668937Z,-7.49,CAD,Card transaction of 7.49 CAD issued by Harvey's #2637e 709-576-7024,5858.24,,,,Harvey's #2637e
+CARD-2191772750,DEBIT,,2025-01-30T10:19:40.558121Z,-501.54,CAD,Card transaction of 501.54 CAD issued by Harveys Home Heating ST. JOHN'S,5865.73,,,,Harveys Home Heating
+CARD-2190959617,DEBIT,,2025-01-30T00:32:30.38274Z,-16.94,CAD,Card transaction of 16.94 CAD issued by Google *Spotify Music g.co/helppay#,6367.27,,,,Google *Spotify Music
+CARD-2190582246,DEBIT,,2025-01-29T20:06:16.142302Z,-13.24,CAD,Card transaction of 13.24 CAD issued by Dominos Pizza 109qps 709-579-9444,6384.21,,,,Dominos Pizza 109qps
+CARD-2189481510,DEBIT,,2025-01-29T12:37:22.765058Z,-83.83,CAD,Card transaction of 83.83 CAD issued by Shopify PICKERING,6397.45,,,,Shopify
+CARD-2189328276,DEBIT,,2025-01-29T11:39:12.124868Z,-14.68,CAD,Card transaction of 14.68 CAD issued by Google *Power Mobile L g.co/helppay#,6481.28,,,,Google *Power Mobile L
+CARD-2185387801,DEBIT,,2025-01-27T20:51:55.087851Z,-15.98,CAD,Card transaction of 15.98 CAD issued by Little Caesars #4908-0001 ST. JOHN'S,6495.96,,,,Little Caesars #4908-0001
+CARD-2184058824,DEBIT,,2025-01-27T11:47:17.82409Z,-30.47,CAD,Card transaction of 30.47 CAD issued by Wix.com Luxembourg,6511.94,,,,Wix.com
+CARD-2184054750,DEBIT,,2025-01-27T11:45:47.628896Z,-27.6,CAD,Card transaction of 27.60 CAD issued by Wix.com Luxembourg,6542.41,,,,Wix.com
+CARD-2180503676,DEBIT,,2025-01-25T23:13:49.341441Z,-13.65,CAD,Card transaction of 13.65 CAD issued by Quesada SAINT-LAURENT,6570.01,,,,Quesada
+CARD-2180256266,DEBIT,,2025-01-25T20:40:50.664598Z,-15.98,CAD,Card transaction of 15.98 CAD issued by Little Caesars #4908-0001 ST. JOHN'S,6583.66,,,,Little Caesars #4908-0001
+CARD-2179527212,DEBIT,,2025-01-25T15:41:35.868578Z,-57.48,CAD,Card transaction of 57.48 CAD issued by Rubberduckcarwash.com OROMOCTO,6599.64,,,,Rubberduckcarwash.com
+CARD-2177629135,DEBIT,,2025-01-24T22:49:08.706119Z,-410.87,CAD,Card transaction of 410.87 CAD issued by Air Can*    0142112838135 AIRCANADA.COM,6657.12,,,,Air Can*    0142112838135
+CARD-2171854991,DEBIT,,2025-01-22T20:01:10.525748Z,-15.98,CAD,Card transaction of 15.98 CAD issued by Little Caesars #4908-0001 ST. JOHN'S,7067.99,,,,Little Caesars #4908-0001
+CARD-2171113541,DEBIT,,2025-01-22T14:55:01.732925Z,-41.39,CAD,Card transaction of 41.39 CAD issued by Amazon* Zc3zy25b2 VANCOUVER,7083.97,,,,Amazon* Zc3zy25b2
+CARD-2169373763,DEBIT,,2025-01-21T22:06:02.632209Z,-12.99,CAD,Card transaction of 12.99 CAD issued by Dominos Pizza 109qps 709-579-9444,7125.36,,,,Dominos Pizza 109qps
+TRANSFER-1383710830,DEBIT,,2025-01-21T10:21:35.396856Z,-1000.0,CAD,Sent money to Athanasia Filntissis,7138.35,,,basement signing bonus,
+TRANSFER-1381769338,CREDIT,,2025-01-21T06:57:57.974891Z,1300.0,CAD,Received money from Javier Gené Morales  with reference January-February J Gene-Morales,8138.35,,,January-February J Gene-Morales,
+CARD-2166499341,DEBIT,,2025-01-20T19:53:34.814499Z,-15.98,CAD,Card transaction of 15.98 CAD issued by Little Caesars #4908-0001 ST. JOHN'S,6838.35,,,,Little Caesars #4908-0001
+CARD-2166207943,DEBIT,,2025-01-20T17:45:09.753253Z,-14.94,CAD,Card transaction of 14.94 CAD issued by Apple.com/bill 866-712-7753,6854.33,,,,Apple.com/bill
+CARD-2163090279,CREDIT,,2025-01-19T15:41:18.913673Z,57.48,CAD,Card transaction of 57.48 CAD issued by The Home Depot #7077 ST JOHNS,6869.27,,,,The Home Depot #7077
+CARD-2163205667,DEBIT,,2025-01-19T15:07:37.27916Z,-113.85,CAD,Card transaction of 113.85 CAD issued by The Home Depot #7077 ST JOHNS,6811.79,,,,The Home Depot #7077
+CARD-2162934407,DEBIT,,2025-01-19T13:16:28.859648Z,-45.68,CAD,Card transaction of 45.68 CAD issued by The Home Depot #7077 ST JOHNS,6983.12,,,,The Home Depot #7077
+CARD-2161523938,DEBIT,,2025-01-18T21:57:47.286953Z,-12.99,CAD,Card transaction of 12.99 CAD issued by Dominos Pizza 109qps 709-579-9444,7028.8,,,,Dominos Pizza 109qps
+CARD-2158244337,DEBIT,,2025-01-17T18:45:24.020746Z,-16.09,CAD,Card transaction of 16.09 CAD issued by Tesla Toronto,7041.79,,,,Tesla
+CARD-2157844597,DEBIT,,2025-01-17T16:20:23.522973Z,-96.46,CAD,Card transaction of 96.46 CAD issued by Wal-Mart Supercenter#3196 ST. JOHN'S,7057.88,,,,Wal-Mart Supercenter#3196
+CARD-2157839303,DEBIT,,2025-01-17T16:18:36.075384Z,-241.01,CAD,Card transaction of 241.01 CAD issued by Wal-Mart Supercenter#3196 ST. JOHN'S,7154.34,,,,Wal-Mart Supercenter#3196
+CARD-2157549493,DEBIT,,2025-01-17T14:42:40.60463Z,-138.0,CAD,Card transaction of 138.00 CAD issued by Cabot Pest Control ST. JOHN`S,7395.35,,,,Cabot Pest Control
+CARD-2157423446,DEBIT,,2025-01-17T13:57:24.904416Z,-9.39,CAD,Card transaction of 9.39 CAD issued by Tim Hortons #1522 ST. JOHN'S,7533.35,,,,Tim Hortons #1522
+CARD-2156915388,DEBIT,,2025-01-17T10:55:44.581002Z,-864.26,CAD,Card transaction of 864.26 CAD issued by Harveys Home Heating ST. JOHN'S,7542.74,,,,Harveys Home Heating
+TRANSFER-1373692617,CREDIT,,2025-01-16T22:00:25.589211Z,2500.0,CAD,Topped up balance,8407.0,,,,
+CARD-2155322386,DEBIT,,2025-01-16T18:29:03.174903Z,-21.17,CAD,Card transaction of 21.17 CAD issued by The Home Depot #7077 ST JOHNS,5907.0,,,,The Home Depot #7077
+CARD-2151850567,CREDIT,,2025-01-16T03:24:27.238978Z,0.01,CAD,Card transaction of 400.08 CAD issued by Walmart.ca MISSISSAUGA,5928.17,,,,Walmart.ca
+CARD-2152902532,DEBIT,,2025-01-15T20:35:54.708162Z,-15.98,CAD,Card transaction of 15.98 CAD issued by Little Caesars #4908-0001 ST. JOHN'S,5928.16,,,,Little Caesars #4908-0001
+TRANSFER-1377088985,CREDIT,,2025-01-15T18:52:54.326711Z,975.0,CAD,Received money from Javier Gené Morales  with reference Security deposit JavierGene,5944.14,,,Security deposit JavierGene,
+CARD-2152003440,DEBIT,,2025-01-15T14:21:15.343636Z,-550.67,CAD,Card transaction of 550.67 CAD issued by The Home Depot #7077 ST JOHNS,4969.14,,,,The Home Depot #7077
+CARD-2151885620,DEBIT,,2025-01-15T13:34:56.781849Z,-44.84,CAD,Card transaction of 44.84 CAD issued by Amazon* Z50dt6590 VANCOUVER,5519.81,,,,Amazon* Z50dt6590
+CARD-2151884935,DEBIT,,2025-01-15T13:34:41.735717Z,-80.49,CAD,Card transaction of 80.49 CAD issued by Amazon* Zd9ca5i51 VANCOUVER,5564.65,,,,Amazon* Zd9ca5i51
+CARD-2150541309,DEBIT,,2025-01-15T00:35:08.069951Z,-25.98,CAD,Card transaction of 25.98 CAD issued by Amazon* Z548c5vt0 VANCOUVER,6045.23,,,,Amazon* Z548c5vt0
+CARD-2149752226,DEBIT,,2025-01-14T17:05:20.314626Z,-410.25,CAD,Card transaction of 410.25 CAD issued by Harvey's Home Heating ST. JOHN'S,6071.21,,,,Harvey's Home Heating
+CARD-2147603207,DEBIT,,2025-01-13T20:48:10.343826Z,-24.97,CAD,Card transaction of 24.97 CAD issued by Uber Canada/ubereats TORONTO,6481.46,,,,Uber Canada/ubereats
+CARD-2147519377,DEBIT,,2025-01-13T20:00:33.426492Z,-15.98,CAD,Card transaction of 15.98 CAD issued by Little Caesars #4908-0001 ST. JOHN'S,6506.43,,,,Little Caesars #4908-0001
+CARD-2146249610,DEBIT,,2025-01-13T11:40:02.439213Z,-306.28,CAD,Card transaction of 211.32 USD issued by Openai *Chatgpt Subscr HTTPSOPENAI.C,6522.41,0.689957 (CAD to USD),,,Openai *Chatgpt Subscr
+TRANSFER-1373694545,CREDIT,,2025-01-13T11:35:01.188976Z,1500.0,CAD,Topped up balance,6828.69,,,,
+TRANSFER-1373693078,CREDIT,,2025-01-13T11:33:59.437831Z,2500.0,CAD,Topped up balance,5328.69,,,,
+TRANSFER-1373689069,CREDIT,,2025-01-13T11:33:12.66876Z,2500.0,CAD,Topped up balance,2828.69,,,,
+BALANCE-2953672662,CREDIT,,2025-01-13T11:30:46.628101Z,300.0,CAD,Withdrawn 300.00 CAD from Insurance,328.69,,,,
+CARD-2145229670,DEBIT,,2025-01-13T00:56:28.348324Z,-343.84,CAD,Card transaction of 343.84 CAD issued by Amazon* Z562v9yh2 VANCOUVER,28.69,,,,Amazon* Z562v9yh2
+CARD-2145083257,DEBIT,,2025-01-12T22:51:26.084263Z,-11.49,CAD,Card transaction of 11.49 CAD issued by Amazon.ca Prime Member amazon.ca/pri,372.53,,,,Amazon.ca Prime Member
+BALANCE-2952007157,CREDIT,,2025-01-12T22:50:05.035857Z,300.0,CAD,Withdrawn 300.00 CAD from Insurance,384.02,,,,
+CARD-2144730481,DEBIT,,2025-01-12T19:04:45.346862Z,-15.98,CAD,Card transaction of 15.98 CAD issued by Little Caesars #4908-0001 ST. JOHN'S,84.02,,,,Little Caesars #4908-0001
+BALANCE-2951545308,CREDIT,,2025-01-12T19:02:39.702713Z,100.0,CAD,Withdrawn 100.00 CAD from Insurance,100.0,,,,
+BALANCE-2948906625,DEBIT,,2025-01-11T21:38:45.853612Z,-9508.38,CAD,"Added 9,508.38 CAD to Insurance",0.0,,,,
+TRANSFER-1372186143,CREDIT,,2025-01-11T21:38:26.684267Z,478.0,CAD,Topped up balance,9508.38,,,,
+TRANSFER-1372175889,CREDIT,,2025-01-11T21:20:32.429315Z,1500.0,CAD,Topped up balance,9030.38,,,,
+TRANSFER-1372175534,CREDIT,,2025-01-11T21:19:52.644366Z,2500.0,CAD,Topped up balance,7530.38,,,,
+TRANSFER-1372163009,CREDIT,,2025-01-11T20:58:31.886279Z,2500.0,CAD,Topped up balance,5030.38,,,,
+TRANSFER-1372161199,CREDIT,,2025-01-11T20:56:50.465274Z,2500.0,CAD,Topped up balance,2530.38,,,,
+BALANCE-2945303829,DEBIT,,2025-01-10T20:40:42.793048Z,-5000.0,CAD,"Added 5,000.00 CAD to Insurance",30.38,,,,
+TRANSFER-1371198143,CREDIT,,2025-01-10T20:39:04.673984Z,2500.0,CAD,Topped up balance,5030.38,,,,
+TRANSFER-1371197734,CREDIT,,2025-01-10T20:38:30.599089Z,2500.0,CAD,Topped up balance,2530.38,,,,
+BALANCE-2944977935,CREDIT,,2025-01-10T18:48:22.668874Z,30.38,CAD,Withdrawn 30.38 CAD from Car,30.38,,,,
+BALANCE-2944907762,DEBIT,,2025-01-10T18:32:13.836049Z,-30.38,CAD,Added 30.38 CAD to Car,0.0,,,,
+BALANCE-2944442630,DEBIT,,2025-01-10T16:23:50.110309Z,-2836.99,CAD,"Added 2,836.99 CAD to House",30.38,,,,
+TRANSFER-1370917353,CREDIT,,2025-01-10T16:22:50.612217Z,2836.99,CAD,Topped up balance,2867.37,,,,
+BALANCE-2944214327,CREDIT,,2025-01-10T15:23:36.100886Z,30.38,CAD,Converted 734.58 THB to 30.38 CAD,30.38,,0.041357 (THB to CAD),,
+CARD_ORDER_CHECKOUT-invoice-15271794,DEBIT,,2025-01-09T14:25:38.88181Z,-0.49,CAD,Wise Card Acquisition,0.0,,,,
+BALANCE-2835529474,DEBIT,,2024-12-13T10:30:26.962378Z,-55.0,CAD,"Converted 55.00 CAD to 1,311.13 THB",0.49,23.838727 (CAD to THB),,,
+TRANSFER-1334755369,CREDIT,,2024-12-13T10:29:31.94678Z,50.0,CAD,Topped up balance,55.49,,,,
+BALANCE-2823209166,DEBIT,,2024-12-10T05:45:25.407139Z,-200.0,CAD,"Converted 200.00 CAD to 4,715.32 THB",5.49,23.576600 (CAD to THB),,,
+TRANSFER-1330099502,CREDIT,,2024-12-10T05:45:09.590166Z,200.0,CAD,Topped up balance,205.49,,,,
+CARD-2049353195,DEBIT,,2024-12-10T04:55:22.964926Z,-3.18,CAD,Card transaction of 75.00 THB issued by Www.grab.com BANGKOK,5.49,23.584906 (CAD to THB),,,Www.grab.com
+CARD-2049270807,DEBIT,,2024-12-10T03:39:49.228537Z,-10.66,CAD,Card transaction of 256.00 THB issued by Www.grab.com BANGKOK,8.67,23.585366 (CAD to THB),,,Www.grab.com
+BALANCE-2774587942,DEBIT,,2024-11-28T02:35:01.610683Z,-200.0,CAD,"Converted 200.00 CAD to 4,886.73 THB",19.33,24.433650 (CAD to THB),,,
+TRANSFER-1313206323,CREDIT,,2024-11-28T02:34:09.653709Z,200.0,CAD,Topped up balance,219.33,,,,
+BALANCE-2758881656,DEBIT,,2024-11-23T17:20:02.17161Z,-500.0,CAD,"Converted 500.00 CAD to 12,264.19 THB",19.33,24.528380 (CAD to THB),,,
+TRANSFER-1307745381,CREDIT,,2024-11-23T17:19:34.333333Z,500.0,CAD,Topped up balance,519.33,,,,
+BALANCE-2758861583,DEBIT,,2024-11-23T17:13:59.277649Z,-500.0,CAD,"Converted 500.00 CAD to 12,264.19 THB",19.33,24.528380 (CAD to THB),,,
+TRANSFER-1307736096,CREDIT,,2024-11-23T17:09:20.304092Z,500.0,CAD,Topped up balance,519.33,,,,
+CARD_ORDER_CHECKOUT-invoice-14206516,DEBIT,,2024-11-05T18:03:03.481369Z,-27.16,CAD,Wise Card Acquisition,19.33,,,,
+TRANSFER-1285326937,CREDIT,,2024-11-05T18:03:02.521647Z,27.16,CAD,Topped up balance,46.49,,,,
+TRANSFER-1285323341,CREDIT,,2024-11-05T18:00:28.758689Z,20.0,CAD,Topped up balance,19.33,,,,
+CARD-1556907797,DEBIT,,2024-06-21T07:50:48.111228Z,-0.67,CAD,Card transaction of 7.52 CAD issued by Chargepoint Canada - (pst VANCOUVER,-0.67,,,,Chargepoint Canada - (pst
+CARD-1554815448,DEBIT,,2024-06-20T07:35:37.387121Z,-1.66,CAD,Card transaction of 6.66 CAD issued by Chargepoint Canada - (pst VANCOUVER,1.85,,,,Chargepoint Canada - (pst
+CARD-1555099671,DEBIT,,2024-06-18T23:38:36.175323Z,-8.64,CAD,Card transaction of 8.64 CAD issued by A&w #9315 Danny Drive ST. JOHN'S,8.51,,,,A&w #9315 Danny Drive
+CARD-1555041912,DEBIT,,2024-06-18T22:41:08.651776Z,-4.0,CAD,Card transaction of 4.00 CAD issued by Rubber Duck Car Wash - ST. JOHNS,17.15,,,,Rubber Duck Car Wash -
+CARD-1555034552,DEBIT,,2024-06-18T22:34:27.271769Z,-5.0,CAD,Card transaction of 5.00 CAD issued by Rubber Duck Car Wash - ST. JOHNS,21.15,,,,Rubber Duck Car Wash -
+CARD-1554928777,DEBIT,,2024-06-18T21:15:20.994759Z,-14.2,CAD,Card transaction of 14.20 CAD issued by Burritos Mexican  Gril ST. JOHN'S,26.15,,,,Burritos Mexican  Gril
+CARD-1554891507,DEBIT,,2024-06-18T20:50:54.717235Z,-48.28,CAD,Card transaction of 48.28 CAD issued by Sobeys #855 MOUNT PEARL,40.35,,,,Sobeys #855
+CARD-1554797507,DEBIT,,2024-06-18T19:56:31.155788Z,-80.97,CAD,Card transaction of 80.97 CAD issued by Walmart Store #3093 MOUNT PEARL,93.63,,,,Walmart Store #3093
+CARD-1528199382,CREDIT,,2024-06-15T21:15:53.899835Z,1.0,CAD,Card transaction of 1.00 CAD issued by Chargepoint Canada VANCOUVER,174.6,,,,Chargepoint Canada
+CARD-1519686684,DEBIT,,2024-06-12T22:05:10.10547Z,-25.27,CAD,Card transaction of 25.27 CAD issued by Atlantic Cannabis Galway ST. JOHN'S,173.6,,,,Atlantic Cannabis Galway
+TRANSFER-1101156005,CREDIT,,2024-06-09T14:40:54.650593Z,100.0,CAD,Topped up balance,173.6,,,,
+CARD-1528193910,DEBIT,,2024-06-08T21:08:35.407007Z,-30.0,CAD,Card transaction of 30.00 CAD issued by Chargepoint Canada VANCOUVER,74.6,,,,Chargepoint Canada
+TRANSFER-1100660773,CREDIT,,2024-06-08T21:08:00.428882Z,100.0,CAD,Topped up balance,104.6,,,,
+CARD-1521865088,DEBIT,,2024-06-06T17:05:29.146622Z,-13.78,CAD,Card transaction of 13.78 CAD issued by Wendy's Restaurant MOUNT PEARL,4.6,,,,Wendy's Restaurant
+CARD-1519665756,DEBIT,,2024-06-05T21:05:22.229988Z,-20.0,CAD,Card transaction of 20.00 CAD issued by Chargepoint Canada VANCOUVER,43.65,,,,Chargepoint Canada
+TRANSFER-1096239216,DEBIT,,2024-06-05T10:22:13.89912Z,-10500.0,CAD,Sent money to Mateus Saar,63.65,,,,
+CARD-1517164656,DEBIT,,2024-06-05T00:19:06.330658Z,-8.72,CAD,Card transaction of 8.72 CAD issued by Mcdonald's #29132 PARADISE,10563.65,,,,Mcdonald's #29132
+CARD-1516887945,DEBIT,,2024-06-04T20:36:30.326685Z,-9.76,CAD,Card transaction of 9.76 CAD issued by Mcdonald's #7957 MOUNT PEARL,10572.37,,,,Mcdonald's #7957
+CARD-1516773789,DEBIT,,2024-06-04T19:38:44.030059Z,-14.24,CAD,Card transaction of 14.24 CAD issued by Harveys #2687 MOUNT PEARL,10582.13,,,,Harveys #2687
+CARD-1516270043,DEBIT,,2024-06-04T16:15:43.410629Z,-13.78,CAD,Card transaction of 13.78 CAD issued by Wendys 6740 ST. JOHN'S,10596.37,,,,Wendys 6740
+CARD-1514235022,DEBIT,,2024-06-03T21:04:53.415181Z,-0.35,CAD,Card transaction of 0.35 CAD issued by Tim Hortons #9027 ST. JOHN'S,10610.15,,,,Tim Hortons #9027
+CARD-1514223495,DEBIT,,2024-06-03T20:57:37.577338Z,-9.19,CAD,Card transaction of 9.19 CAD issued by Tim Hortons #9027 ST. JOHN'S,10610.5,,,,Tim Hortons #9027
+CARD-1514198885,DEBIT,,2024-06-03T20:42:31.177144Z,-10.67,CAD,Card transaction of 10.67 CAD issued by A&w #9315 Danny Drive ST. JOHN'S,10619.69,,,,A&w #9315 Danny Drive
+CARD-1514185180,DEBIT,,2024-06-03T20:34:26.050483Z,-77.02,CAD,Card transaction of 77.02 CAD issued by Marshalls 785/homesense 1 ST. JOHN'S,10630.36,,,,Marshalls 785/homesense 1
+CARD-1514078020,DEBIT,,2024-06-03T19:38:29.650845Z,-7.12,CAD,Card transaction of 7.12 CAD issued by Harveys #2687 MOUNT PEARL,10707.38,,,,Harveys #2687
+CARD-1513741023,DEBIT,,2024-06-03T17:21:20.913801Z,-13.78,CAD,Card transaction of 13.78 CAD issued by Wendys 6740 ST. JOHN'S,10714.5,,,,Wendys 6740
+CARD-1511485805,DEBIT,,2024-06-02T21:12:50.18495Z,-0.46,CAD,Card transaction of 0.46 CAD issued by Tim Hortons #9027 ST. JOHN'S,10728.28,,,,Tim Hortons #9027
+CARD-1511462476,DEBIT,,2024-06-02T20:58:02.753599Z,-10.79,CAD,Card transaction of 10.79 CAD issued by Little Caesars #4908-0 ST. JOHN'S,10728.74,,,,Little Caesars #4908-0
+CARD-1511231098,DEBIT,,2024-06-02T18:54:56.949229Z,-14.24,CAD,Card transaction of 14.24 CAD issued by Harveys #2687 MOUNT PEARL,10739.53,,,,Harveys #2687
+CARD-1510993589,DEBIT,,2024-06-02T17:06:10.132678Z,-6.89,CAD,Card transaction of 6.89 CAD issued by Wendy's Restaurant MOUNT PEARL,10753.77,,,,Wendy's Restaurant
+CARD-1510681166,DEBIT,,2024-06-02T15:00:33.005907Z,-11.49,CAD,Card transaction of 11.49 CAD issued by Wendy's            Q1r ST. JOHN'S,10760.66,,,,Wendy's            Q1r
+CARD-1509001415,DEBIT,,2024-06-01T22:59:43.094011Z,-20.0,CAD,Card transaction of 20.00 CAD issued by Chargepoint Canada VANCOUVER,10772.15,,,,Chargepoint Canada
+CARD-1508861146,DEBIT,,2024-06-01T21:24:36.43104Z,-103.78,CAD,Card transaction of 103.78 CAD issued by Best Buy #909 ST. JOHN'S,10792.15,,,,Best Buy #909
+CARD-1508760727,DEBIT,,2024-06-01T20:27:48.019683Z,-25.71,CAD,Card transaction of 25.71 CAD issued by Harveys #2687 MOUNT PEARL,10895.93,,,,Harveys #2687
+CARD-1508139222,DEBIT,,2024-06-01T16:29:53.960831Z,-4.97,CAD,Card transaction of 4.97 CAD issued by Walmart Store #3093 MOUNT PEARL,10921.64,,,,Walmart Store #3093
+CARD-1508091505,DEBIT,,2024-06-01T16:13:35.600852Z,-13.78,CAD,Card transaction of 13.78 CAD issued by Wendy's Restaurant MOUNT PEARL,10926.61,,,,Wendy's Restaurant
+CARD-1506746446,DEBIT,,2024-06-01T08:58:07.423114Z,-0.46,CAD,Card transaction of 0.46 CAD issued by Tim Hortons #2327 MOUNT PEARL,10940.39,,,,Tim Hortons #2327
+CARD-1505826490,DEBIT,,2024-05-31T21:30:56.407842Z,-20.0,CAD,Card transaction of 20.00 CAD issued by Chargepoint Canada VANCOUVER,10940.85,,,,Chargepoint Canada
+CARD-1505763238,DEBIT,,2024-05-31T20:54:24.058608Z,-23.0,CAD,Card transaction of 23.00 CAD issued by Marshalls 785/homesense 1 ST. JOHN'S,10960.85,,,,Marshalls 785/homesense 1
+CARD-1505654771,DEBIT,,2024-05-31T19:58:49.459384Z,-32.45,CAD,Card transaction of 32.45 CAD issued by Burritos Mexican  Gril ST. JOHN'S,10983.85,,,,Burritos Mexican  Gril
+CARD-1505398105,DEBIT,,2024-05-31T18:09:40.359687Z,-13.78,CAD,Card transaction of 13.78 CAD issued by Wendys 6740 ST. JOHN'S,11016.3,,,,Wendys 6740
+CARD-1504039312,DEBIT,,2024-05-31T10:04:29.028406Z,-0.46,CAD,Card transaction of 0.46 CAD issued by Tim Hortons #2557 ST. JOHN'S,11030.08,,,,Tim Hortons #2557
+CARD-1503994501,DEBIT,,2024-05-31T09:47:16.884903Z,-58.5,CAD,Card transaction of 58.50 CAD issued by Sq *Tera Brazilian Jiu Ji St. John's,11030.54,,,,Sq *Tera Brazilian Jiu Ji
+CARD-1503116658,DEBIT,,2024-05-30T22:57:22.516284Z,-1.6,CAD,Card transaction of 1.60 CAD issued by Little Caesars #4908-0 ST. JOHN'S,11089.04,,,,Little Caesars #4908-0
+CARD-1503116186,DEBIT,,2024-05-30T22:56:58.506063Z,-9.19,CAD,Card transaction of 9.19 CAD issued by Little Caesars #4908-0 ST. JOHN'S,11090.64,,,,Little Caesars #4908-0
+CARD-1502909283,DEBIT,,2024-05-30T20:29:39.02622Z,-7.12,CAD,Card transaction of 7.12 CAD issued by Starbucks Coffee #55467 ST.JOHN`S,11099.83,,,,Starbucks Coffee #55467
+CARD-1502819576,DEBIT,,2024-05-30T19:42:36.686823Z,-27.75,CAD,Card transaction of 27.75 CAD issued by Burritos Mexican  Gril ST. JOHN'S,11106.95,,,,Burritos Mexican  Gril
+CARD-1502347867,DEBIT,,2024-05-30T16:22:32.130648Z,-13.78,CAD,Card transaction of 13.78 CAD issued by Wendy's Restaurant MOUNT PEARL,11134.7,,,,Wendy's Restaurant
+CARD-1501140889,DEBIT,,2024-05-30T08:20:59.031186Z,-0.46,CAD,Card transaction of 0.46 CAD issued by Tim Hortons #2327 MOUNT PEARL,11148.48,,,,Tim Hortons #2327
+CARD-1497446755,DEBIT,,2024-05-30T07:36:31.212084Z,-3.77,CAD,Card transaction of 8.77 CAD issued by Chargepoint Canada - (pst VANCOUVER,11148.94,,,,Chargepoint Canada - (pst
+CARD-1500292006,DEBIT,,2024-05-29T20:29:00.534392Z,-20.0,CAD,Card transaction of 20.00 CAD issued by Chargepoint Canada VANCOUVER,11152.71,,,,Chargepoint Canada
+CARD-1500247399,DEBIT,,2024-05-29T20:06:58.22285Z,-22.98,CAD,Card transaction of 22.98 CAD issued by Burritos Mexican  Gril ST. JOHN'S,11172.71,,,,Burritos Mexican  Gril
+CARD-1499828669,DEBIT,,2024-05-29T17:06:39.369353Z,-9.38,CAD,Card transaction of 9.38 CAD issued by Walmart Store #3093 MOUNT PEARL,11195.69,,,,Walmart Store #3093
+CARD-1499789811,DEBIT,,2024-05-29T16:52:12.257189Z,-13.78,CAD,Card transaction of 13.78 CAD issued by Wendy's Restaurant MOUNT PEARL,11205.07,,,,Wendy's Restaurant
+CARD-1499286732,DEBIT,,2024-05-29T13:40:41.371573Z,-15.37,CAD,Card transaction of 15.37 CAD issued by M.u.n- St John's Bookstor ST JOHN'S,11218.85,,,,M.u.n- St John's Bookstor
+CARD-1494833632,DEBIT,,2024-05-29T07:48:17.781398Z,-9.4,CAD,Card transaction of 14.40 CAD issued by Chargepoint Canada - (pst VANCOUVER,11234.22,,,,Chargepoint Canada - (pst
+CARD-1497805479,DEBIT,,2024-05-28T22:42:20.269747Z,-13.6,CAD,Card transaction of 13.60 CAD issued by A&w #9315 Danny Drive ST. JOHN'S,11243.62,,,,A&w #9315 Danny Drive
+CARD-1497789514,DEBIT,,2024-05-28T22:27:51.400689Z,-0.46,CAD,Card transaction of 0.46 CAD issued by Tim Hortons #9027 ST. JOHN'S,11257.22,,,,Tim Hortons #9027
+CARD-1497774465,DEBIT,,2024-05-28T22:14:26.410039Z,-12.99,CAD,Card transaction of 12.99 CAD issued by Burritos Mexican  Gril ST. JOHN'S,11257.68,,,,Burritos Mexican  Gril
+CARD-1497426217,DEBIT,,2024-05-28T18:49:03.949649Z,-17.69,CAD,Card transaction of 17.69 CAD issued by Little Caesars #4908-0 ST. JOHN'S,11275.67,,,,Little Caesars #4908-0
+CARD-1497185347,DEBIT,,2024-05-28T17:09:16.155493Z,-6.89,CAD,Card transaction of 6.89 CAD issued by Wendys 6740 ST. JOHN'S,11293.36,,,,Wendys 6740
+CARD-1497026922,DEBIT,,2024-05-28T16:09:05.92988Z,-11.49,CAD,Card transaction of 11.49 CAD issued by Burritos Mexican  Gril ST. JOHN'S,11300.25,,,,Burritos Mexican  Gril
+CARD-1491158563,CREDIT,,2024-05-28T11:06:50.819807Z,0.41,CAD,Card transaction of 4.59 CAD issued by Chargepoint Canada - (pst VANCOUVER,11311.74,,,,Chargepoint Canada - (pst
+CARD-1492534234,DEBIT,,2024-05-28T09:36:45.606596Z,-7.02,CAD,Card transaction of 12.02 CAD issued by Chargepoint Canada - (pst VANCOUVER,11311.33,,,,Chargepoint Canada - (pst
+CARD-1494980919,DEBIT,,2024-05-27T20:08:53.480516Z,-16.08,CAD,Card transaction of 16.08 CAD issued by Wendy's Restaurant MOUNT PEARL,11318.35,,,,Wendy's Restaurant
+CARD-1494708130,DEBIT,,2024-05-27T17:57:39.590043Z,-204.9,CAD,Card transaction of 204.90 CAD issued by Nlc #042 MT. PEARL,11339.43,,,,Nlc #042
+CARD-1494609346,DEBIT,,2024-05-27T17:17:52.067529Z,-19.87,CAD,Card transaction of 19.87 CAD issued by Subway 2133 Mount Pearl,11544.33,,,,Subway 2133
+CARD-1494274721,DEBIT,,2024-05-27T15:10:44.324327Z,-6.89,CAD,Card transaction of 6.89 CAD issued by Wendys 6740 ST. JOHN'S,11564.2,,,,Wendys 6740
+CARD-1489867972,CREDIT,,2024-05-27T09:23:01.482636Z,2.21,CAD,Card transaction of 2.79 CAD issued by Chargepoint Canada - (pst VANCOUVER,11571.09,,,,Chargepoint Canada - (pst
+CARD-1490062000,DEBIT,,2024-05-27T07:52:58.849244Z,-6.4,CAD,Card transaction of 11.40 CAD issued by Chargepoint Canada - (pst VANCOUVER,11568.88,,,,Chargepoint Canada - (pst
+CARD-1492600778,DEBIT,,2024-05-26T22:51:44.989142Z,-1.6,CAD,Card transaction of 1.60 CAD issued by Little Caesars #4908-0 ST. JOHN'S,11575.28,,,,Little Caesars #4908-0
+CARD-1492600363,DEBIT,,2024-05-26T22:51:21.112998Z,-9.19,CAD,Card transaction of 9.19 CAD issued by Little Caesars #4908-0 ST. JOHN'S,11576.88,,,,Little Caesars #4908-0
+CARD-1492517344,DEBIT,,2024-05-26T21:41:31.567291Z,-15.16,CAD,Card transaction of 15.16 CAD issued by Harveys #2687 MOUNT PEARL,11591.07,,,,Harveys #2687
+CARD-1492188983,DEBIT,,2024-05-26T18:28:56.993952Z,-16.96,CAD,Card transaction of 16.96 CAD issued by A&w # 9313 Kenmount ST. JOHN'S,11606.23,,,,A&w # 9313 Kenmount
+CARD-1492172860,DEBIT,,2024-05-26T18:21:17.312614Z,-48.85,CAD,Card transaction of 48.85 CAD issued by Chapters 943 ST JOHN'S,11623.19,,,,Chapters 943
+CARD-1491844926,DEBIT,,2024-05-26T15:55:07.578247Z,-17.24,CAD,Card transaction of 17.24 CAD issued by Rubberduck Car Wash - ST. JOHN'S,11672.04,,,,Rubberduck Car Wash -
+CARD-1491747532,DEBIT,,2024-05-26T15:12:03.646752Z,-6.9,CAD,Card transaction of 6.90 CAD issued by Wendys 6740 ST. JOHN'S,11689.28,,,,Wendys 6740
+CARD-1491415069,DEBIT,,2024-05-26T12:52:56.888732Z,-0.46,CAD,Card transaction of 0.46 CAD issued by Tim Hortons #2327 MOUNT PEARL,11696.18,,,,Tim Hortons #2327
+CARD-1487228784,DEBIT,,2024-05-26T07:40:29.182799Z,-3.49,CAD,Card transaction of 8.49 CAD issued by Chargepoint Canada - (pst VANCOUVER,11701.64,,,,Chargepoint Canada - (pst
+CARD-1489928595,DEBIT,,2024-05-25T20:06:59.84872Z,-34.17,CAD,Card transaction of 34.17 CAD issued by Mary Brown's # 1048 PARADISE,11710.13,,,,Mary Brown's # 1048
+CARD-1489524861,DEBIT,,2024-05-25T17:16:55.065428Z,-11.48,CAD,Card transaction of 11.48 CAD issued by Wendy's Restaurant MOUNT PEARL,11749.3,,,,Wendy's Restaurant
+CARD-1489498089,DEBIT,,2024-05-25T17:06:47.794612Z,-4.97,CAD,Card transaction of 4.97 CAD issued by Walmart Store #3093 MOUNT PEARL,11760.78,,,,Walmart Store #3093
+CARD-1484304756,DEBIT,,2024-05-25T07:52:29.03666Z,-3.96,CAD,Card transaction of 8.96 CAD issued by Chargepoint Canada - (pst VANCOUVER,11765.75,,,,Chargepoint Canada - (pst
+CARD-1487197388,DEBIT,,2024-05-24T20:38:44.786551Z,-48.92,CAD,Card transaction of 48.92 CAD issued by Sushi Island ST JOHNS,11774.71,,,,Sushi Island
+CARD-1487078808,DEBIT,,2024-05-24T19:40:40.266956Z,-1.03,CAD,Card transaction of 1.03 CAD issued by St. John's Municipal Coun ST. JOHN'S,11823.63,,,,St. John's Municipal Coun
+CARD-1486629530,DEBIT,,2024-05-24T16:45:41.176411Z,-13.78,CAD,Card transaction of 13.78 CAD issued by Wendy's Restaurant ST.JOHN'S,11824.66,,,,Wendy's Restaurant
+CARD-1481817555,CREDIT,,2024-05-24T09:26:38.995099Z,4.5,CAD,Card transaction of 0.50 CAD issued by Chargepoint Canada - (pst VANCOUVER,11838.44,,,,Chargepoint Canada - (pst
+CARD-1484577841,DEBIT,,2024-05-23T22:55:44.771242Z,-11.6,CAD,Card transaction of 11.60 CAD issued by Tim Hortons #9027 ST. JOHN'S,11833.94,,,,Tim Hortons #9027
+CARD-1484353494,DEBIT,,2024-05-23T20:19:49.08147Z,-45.98,CAD,Card transaction of 45.98 CAD issued by Marshalls 785/homesense 1 ST. JOHN'S,11845.54,,,,Marshalls 785/homesense 1
+CARD-1484288389,DEBIT,,2024-05-23T19:46:23.342666Z,-12.87,CAD,Card transaction of 12.87 CAD issued by Harveys #2687 MOUNT PEARL,11896.52,,,,Harveys #2687
+CARD-1484206050,DEBIT,,2024-05-23T19:06:56.584904Z,-17.73,CAD,Card transaction of 17.73 CAD issued by 3 Sister Vietnamese Su ST. JOHN'S,11909.39,,,,3 Sister Vietnamese Su
+CARD-1484091507,DEBIT,,2024-05-23T18:16:15.290534Z,-1.9,CAD,Card transaction of 1.90 CAD issued by St. John's Municipal Coun ST. JOHN'S,11927.12,,,,St. John's Municipal Coun
+CARD-1483832271,DEBIT,,2024-05-23T16:34:27.626461Z,-3.65,CAD,Card transaction of 3.65 CAD issued by St. John's Municipal Coun ST. JOHN'S,11929.02,,,,St. John's Municipal Coun
+CARD-1483756496,DEBIT,,2024-05-23T16:05:32.635952Z,-6.89,CAD,Card transaction of 6.89 CAD issued by Wendy's Restaurant ST.JOHN'S,11932.67,,,,Wendy's Restaurant
+CARD-1481935197,DEBIT,,2024-05-22T22:40:07.154667Z,-13.77,CAD,Card transaction of 13.77 CAD issued by Wendy's Restaurant MOUNT PEARL,11939.56,,,,Wendy's Restaurant
+CARD-1481795981,DEBIT,,2024-05-22T20:52:29.548341Z,-13.21,CAD,Card transaction of 13.21 CAD issued by Burritos Mexican  Gril ST. JOHN'S,11958.33,,,,Burritos Mexican  Gril
+CARD-1481563307,DEBIT,,2024-05-22T18:51:50.574055Z,-9.18,CAD,Card transaction of 9.18 CAD issued by Wendy's            Q1r ST. JOHN'S,11971.54,,,,Wendy's            Q1r
+TRANSFER-1079378185,DEBIT,,2024-05-22T18:43:06.49966Z,-1000.0,CAD,Sent money to Mateus Saar,11980.72,,,,
+CARD-1480942513,DEBIT,,2024-05-22T14:45:01.336902Z,-25.85,CAD,Card transaction of 25.85 CAD issued by M.u.n- St John's Bookstor ST JOHN'S,12980.72,,,,M.u.n- St John's Bookstor
+CARD-1475376190,DEBIT,,2024-05-22T07:48:05.040097Z,-8.15,CAD,Card transaction of 13.15 CAD issued by Chargepoint Canada - (pst VANCOUVER,13006.57,,,,Chargepoint Canada - (pst
+CARD-1479428541,DEBIT,,2024-05-22T00:14:39.319501Z,-63.85,CAD,Card transaction of 63.85 CAD issued by Doordashmcdonalds +16506819470,13014.72,,,,Doordashmcdonalds
+CARD-1478883810,DEBIT,,2024-05-21T18:10:36.890768Z,-13.47,CAD,Card transaction of 13.47 CAD issued by Nlc #051 MOUNT PEARL,13078.57,,,,Nlc #051
+CARD-1478864931,DEBIT,,2024-05-21T18:02:59.988396Z,-101.19,CAD,Card transaction of 101.19 CAD issued by Our Pleasure MOUNT PEARL,13092.04,,,,Our Pleasure
+TRANSFER-1078164913,DEBIT,,2024-05-21T18:01:50.382085Z,-130.0,CAD,Sent money to Athanasia Filntissis,13193.23,,,,
+CARD-1478813572,DEBIT,,2024-05-21T17:41:51.578442Z,-12.64,CAD,Card transaction of 12.64 CAD issued by Our Pleasure Inc - 462 To ST. JOHN'S,13323.23,,,,Our Pleasure Inc - 462 To
+CARD-1478264720,DEBIT,,2024-05-21T14:08:11.909606Z,-11.48,CAD,Card transaction of 11.48 CAD issued by Wendy's Restaurant ST.JOHN'S,13335.87,,,,Wendy's Restaurant
+CARD-1478239964,DEBIT,,2024-05-21T13:58:26.544678Z,-6.47,CAD,Card transaction of 6.47 CAD issued by Walmart Store #3196 ST. JOHN'S,13347.35,,,,Walmart Store #3196
+CARD-1477575280,DEBIT,,2024-05-21T09:41:35.605817Z,-20.09,CAD,Card transaction of 20.09 CAD issued by Canadian Tire Gas Bar MOUNT PEARL,13353.82,,,,Canadian Tire Gas Bar
+CARD-1476820504,DEBIT,,2024-05-20T23:53:29.111061Z,-116.72,CAD,Card transaction of 116.72 CAD issued by Sushi Island ST JOHNS,13373.91,,,,Sushi Island
+BALANCE-2060418545,CREDIT,,2024-05-20T13:49:46.766007Z,6651.34,CAD,"Converted 4,902.25 USD to 6,651.34 CAD",13490.63,,1.356793 (USD to CAD),,
+BALANCE-2017696736,CREDIT,,2024-05-07T22:16:17.496789Z,6839.01,CAD,"Converted 5,000.00 USD to 6,839.01 CAD",6844.29,,1.367802 (USD to CAD),,
+CARD-1415410980,DEBIT,,2024-04-26T19:49:08.179977Z,-47.36,CAD,Card transaction of 47.36 CAD issued by Uber* Eats Pending UBER.COM/CA/E,5.28,,,,Uber* Eats Pending
+TRANSFER-1048645591,DEBIT,,2024-04-26T15:44:51.60954Z,-4050.0,CAD,Sent money to Mateus Saar,52.64,,,,
+BALANCE-1979944959,CREDIT,,2024-04-26T13:59:57.491158Z,4080.2,CAD,"Converted 3,000.00 USD to 4,080.20 CAD",4102.64,,1.360067 (USD to CAD),,
+CARD-1414544972,DEBIT,,2024-04-26T13:54:03.354987Z,-7.33,CAD,Card transaction of 7.33 CAD issued by Wendy's Restaurant #00006 MARKHAM,22.44,,,,Wendy's Restaurant #00006
+CARD-1413204097,DEBIT,,2024-04-26T00:18:36.300233Z,-36.42,CAD,Card transaction of 36.42 CAD issued by Wendy's Restaurant #00006 MARKHAM,29.77,,,,Wendy's Restaurant #00006
+TRANSFER-1047162168,DEBIT,,2024-04-25T14:28:59.904076Z,-1000.0,CAD,Sent money to Mateus Saar,66.19,,,,
+BALANCE-1976589765,CREDIT,,2024-04-25T14:11:57.56884Z,1066.19,CAD,"Converted 780.61 USD to 1,066.19 CAD",1066.19,,1.365842 (USD to CAD),,
+CARD-1399044246,DEBIT,,2024-04-19T19:57:46.548075Z,-12.54,CAD,Card transaction of 58.06 CAD issued by Uber Canada/ubereats TORONTO,0.0,,,,Uber Canada/ubereats
+CARD-1295870566,DEBIT,,2024-03-04T17:20:38.765038Z,-17.46,CAD,Card transaction of 12.80 USD issued by Starbucks Store 10618 AUSTIN,12.54,0.733104 (CAD to USD),,,Starbucks Store 10618
+TRANSFER-984833197,CREDIT,,2024-03-04T09:50:06.168709Z,30.0,CAD,Topped up balance,30.0,,,,
