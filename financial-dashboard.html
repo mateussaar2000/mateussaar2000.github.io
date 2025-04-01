@@ -1,3 +1,5 @@
+--- START OF FILE financial-dashboard.html ---
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -113,7 +115,8 @@
         .transactions-table th:first-child { border-top-left-radius: 8px; }
         .transactions-table th:last-child { border-top-right-radius: 8px; }
         .transactions-table td { padding: 1rem; font-size: 0.875rem; color: var(--text-primary); border-bottom: 1px solid var(--border-color); white-space: nowrap; }
-        .transactions-table td:nth-child(3) { white-space: normal; }
+        /* Allow description to wrap */
+        .transactions-table td:nth-child(3) { white-space: normal; min-width: 250px; }
         .transactions-table tr:last-child td { border-bottom: none; }
         .transactions-table tr:hover td { background-color: var(--bg-tertiary); }
         .account-cell { display: flex; align-items: center; gap: 0.75rem; }
@@ -123,11 +126,33 @@
         .badge-withdrawal { background-color: rgba(239, 68, 68, 0.1); color: var(--danger); }
         .badge-transfer { background-color: rgba(14, 165, 233, 0.1); color: var(--accent-primary); }
         .badge-fee { background-color: rgba(245, 158, 11, 0.1); color: var(--warning); }
+        /* Add style for interest if needed, mapping to deposit for now */
+        .badge-interest { background-color: rgba(16, 185, 129, 0.1); color: var(--success); }
+
         .dashboard-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid var(--border-color); font-size: 0.875rem; color: var(--text-tertiary); margin-top: 2rem; }
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg-tertiary); }
         ::-webkit-scrollbar-thumb { background: var(--accent-tertiary); border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--accent-primary); }
+
+        /* Loading/Error Message Style */
+        .message-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(248, 250, 252, 0.8); /* --bg-primary with opacity */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 5;
+            padding: 2rem;
+            text-align: center;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            border-radius: var(--border-radius); /* Match card radius */
+        }
 
     </style>
 </head>
@@ -196,40 +221,54 @@
                 <h1 class="page-header-title">Financial Dashboard</h1>
             </header>
 
-            <!-- Dashboard Specific Content (Copied from original dashboard file's body) -->
-            <div class="dashboard"> <!-- Removed extra outer div -->
+            <!-- Dashboard Specific Content -->
+            <div class="dashboard">
+                 <!-- Loading/Error Message Area -->
+                 <div id="message-area"></div>
+
                 <div class="dashboard-header">
                     <div class="dashboard-title">
-                        <h1>Financial Analysis</h1> <!-- Example slightly different title -->
-                        <p>November 2024 Transactions</p>
+                        <h1>Financial Analysis</h1>
+                        <p id="dashboard-month-year">Loading...</p>
                     </div>
                     <div class="dashboard-meta">
                          <div class="dashboard-meta-item">
-                            <div class="dashboard-meta-value">21</div>
+                            <div class="dashboard-meta-value" id="transaction-count">--</div>
                             <div class="dashboard-meta-label">Transactions</div>
                         </div>
+                         <!-- Account count might be dynamic or fixed depending on source -->
                         <div class="dashboard-meta-item">
-                            <div class="dashboard-meta-value">5</div>
+                            <div class="dashboard-meta-value" id="account-count">5</div> <!-- Keep fixed or calculate from data -->
                             <div class="dashboard-meta-label">Accounts</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="card-grid">
-                     <div class="card card-income"> <div class="card-header"> <div> <div class="card-title">TOTAL INCOME</div> </div> <div class="card-icon"> <i class="fas fa-arrow-down"></i> </div> </div> <div class="card-value positive">$2,664.91</div> <div class="card-subtitle">November deposits</div> </div>
-                     <div class="card card-expense"> <div class="card-header"> <div> <div class="card-title">TOTAL EXPENSES</div> </div> <div class="card-icon"> <i class="fas fa-arrow-up"></i> </div> </div> <div class="card-value negative">$3,933.12</div> <div class="card-subtitle">November withdrawals</div> </div>
-                     <div class="card card-transfer"> <div class="card-header"> <div> <div class="card-title">TRANSFERS</div> </div> <div class="card-icon"> <i class="fas fa-exchange-alt"></i> </div> </div> <div class="card-value neutral">$1,384.08</div> <div class="card-subtitle">November transfers</div> </div>
-                     <div class="card card-net"> <div class="card-header"> <div> <div class="card-title">NET CASH FLOW</div> </div> <div class="card-icon"> <i class="fas fa-chart-line"></i> </div> </div> <div class="card-value positive">$115.87</div> <div class="card-subtitle">November net flow</div> </div>
+                     <!-- Card content will be updated by JS -->
+                     <div class="card card-income"> <div class="card-header"> <div> <div class="card-title">TOTAL INCOME</div> </div> <div class="card-icon"> <i class="fas fa-arrow-down"></i> </div> </div> <div class="card-value positive" id="total-income">$0.00</div> <div class="card-subtitle" id="income-subtitle">Loading...</div> </div>
+                     <div class="card card-expense"> <div class="card-header"> <div> <div class="card-title">TOTAL EXPENSES</div> </div> <div class="card-icon"> <i class="fas fa-arrow-up"></i> </div> </div> <div class="card-value negative" id="total-expenses">$0.00</div> <div class="card-subtitle" id="expense-subtitle">Loading...</div> </div>
+                     <div class="card card-transfer"> <div class="card-header"> <div> <div class="card-title">NET TRANSFERS</div> </div> <div class="card-icon"> <i class="fas fa-exchange-alt"></i> </div> </div> <div class="card-value neutral" id="total-transfers">$0.00</div> <div class="card-subtitle" id="transfer-subtitle">Loading...</div> </div>
+                     <div class="card card-net"> <div class="card-header"> <div> <div class="card-title">NET CASH FLOW</div> </div> <div class="card-icon"> <i class="fas fa-chart-line"></i> </div> </div> <div class="card-value" id="net-cash-flow">$0.00</div> <div class="card-subtitle" id="net-subtitle">Loading...</div> </div>
                 </div>
 
                 <div class="chart-row">
-                     <div class="chart-card"> <div class="chart-header"> <div class="chart-title">Cash Flow</div> <div class="chart-subtitle">Income vs Expenses by Type</div> </div> <div class="chart-container"> <canvas id="cash-flow-chart"></canvas> </div> </div>
-                     <div class="chart-card"> <div class="chart-header"> <div class="chart-title">Account Balances</div> <div class="chart-subtitle">Current Balance Across Accounts</div> </div> <div class="chart-container"> <canvas id="accounts-chart"></canvas> </div> </div>
+                     <div class="chart-card">
+                        <div class="chart-header"> <div class="chart-title">Cash Flow</div> <div class="chart-subtitle">Income vs Expenses by Type</div> </div>
+                        <div class="chart-container"> <canvas id="cash-flow-chart"></canvas> </div>
+                    </div>
+                     <div class="chart-card">
+                        <div class="chart-header"> <div class="chart-title">Account Balances</div> <div class="chart-subtitle">Current Balance Across Accounts</div> </div>
+                        <div class="chart-container"> <canvas id="accounts-chart"></canvas> </div>
+                     </div>
                 </div>
 
-                 <div class="transactions-card"> <div class="transactions-header"> <div class="transactions-title">Recent Transactions</div> </div> <div class="table-container"> <table class="transactions-table" id="transactions-table"> <thead> <tr> <th>Date</th> <th>Account</th> <th>Description</th> <th>Category</th> <th>Type</th> <th>Amount</th> </tr> </thead> <tbody> <!-- Populated by JS --> </tbody> </table> </div> </div>
+                 <div class="transactions-card">
+                    <div class="transactions-header"> <div class="transactions-title">Recent Transactions</div> </div>
+                    <div class="table-container"> <table class="transactions-table" id="transactions-table"> <thead> <tr> <th>Date</th> <th>Account</th> <th>Description</th> <th>Category</th> <th>Type</th> <th>Amount</th> </tr> </thead> <tbody> <!-- Populated by JS --> </tbody> </table> </div>
+                 </div>
 
-                 <div class="dashboard-footer"> <div>Financial Dashboard © 2024</div> <div>Data powered by Wealthica</div> </div>
+                 <div class="dashboard-footer"> <div>Financial Dashboard © 2024</div> <div>Data sourced from CSV</div> </div>
             </div>
             <!-- End Dashboard Specific Content -->
 
@@ -239,34 +278,402 @@
     <!-- JavaScript Dependencies: Chart.js (Load AFTER content) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 
-    <!-- Dashboard Specific JavaScript (Copied & adapted) -->
+    <!-- Dashboard Specific JavaScript (Modified for CSV Loading) -->
     <script>
-        // Ensure this script runs AFTER the Chart.js library is loaded and DOM is ready
+        // Define month/year for filtering
+        const TARGET_MONTH = 11; // November
+        const TARGET_YEAR = 2024;
+        const TARGET_YEAR_SHORT = '24';
+        const CSV_FILE_PATH = 'wealthica-transactions-2024-11-19.csv';
+
+        // Global variable to hold processed transaction data for the target month
+        let novemberTransactions = [];
+        // Static account data (or could be derived from transactions if needed)
+        const accountsData = { labels: ['RBC Advantage', 'CIBC Chequing', 'RBC Mastercard', 'CIBC VISA', 'CIBC Savings'], balances: [-1718.09, 1118.11, -304.35, -1083.24, -1674.63] }; // Assuming this is still relevant/static
+
+
+        // --- Utility Functions ---
+        const currencyFormatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'CAD', // Assuming CAD based on CSV header
+            minimumFractionDigits: 2
+        });
+
+        function showMessage(type, text) {
+            const messageArea = document.getElementById('message-area');
+            if (!messageArea) return;
+            const messageClass = type === 'error' ? 'negative' : 'neutral'; // Use existing CSS classes
+            messageArea.innerHTML = `<div class="message-overlay"><p class="${messageClass}">${text}</p></div>`;
+        }
+
+        function clearMessage() {
+            const messageArea = document.getElementById('message-area');
+            if (messageArea) messageArea.innerHTML = '';
+        }
+
+        // --- CSV Parsing Function ---
+        function parseCSV(csvText) {
+            const lines = csvText.trim().split('\n');
+            if (lines.length < 2) {
+                throw new Error("CSV file is empty or has no data rows.");
+            }
+
+            // Simple header parsing (assumes no commas in headers)
+            const headers = lines[0].split(',').map(h => h.trim());
+            const data = [];
+
+            // Find column indices (more robust than hardcoding)
+            const idx = {
+                date: headers.indexOf('Trade Date'),
+                account: headers.indexOf('Asset/Account'),
+                description: headers.indexOf('Description'),
+                type: headers.indexOf('Type'),
+                category: headers.indexOf('Category'),
+                amount: headers.indexOf('Amount (CAD)')
+            };
+
+            // Check if essential columns are present
+            if (idx.date === -1 || idx.account === -1 || idx.description === -1 || idx.type === -1 || idx.amount === -1) {
+                console.error("Missing essential columns in CSV:", headers);
+                throw new Error("CSV file is missing required columns (Date, Account, Description, Type, Amount).");
+            }
+
+
+            for (let i = 1; i < lines.length; i++) {
+                const values = lines[i].split(','); // Simple split, assumes no commas within quoted fields
+
+                // Basic check for row validity
+                if (values.length >= headers.length) {
+                    const amountCAD = parseFloat(values[idx.amount]?.trim());
+                    if (isNaN(amountCAD)) continue; // Skip rows with invalid amount
+
+                    // Map CSV type to dashboard type
+                    let transactionType = values[idx.type]?.trim().toLowerCase() || '';
+                    if (transactionType === 'interest') {
+                        transactionType = 'deposit'; // Map interest to deposit for summary
+                    } else if (!['withdrawal', 'deposit', 'transfer', 'fee'].includes(transactionType)) {
+                        // Assign type based on amount if CSV type is unrecognized/missing
+                        transactionType = amountCAD >= 0 ? 'deposit' : 'withdrawal';
+                    }
+
+
+                    const transaction = {
+                        date: values[idx.date]?.trim() || '',
+                        account: values[idx.account]?.trim() || 'Unknown Account',
+                        description: values[idx.description]?.trim() || 'No Description',
+                        category: values[idx.category]?.trim() || null, // Keep null if empty
+                        type: transactionType,
+                        amount: amountCAD
+                    };
+                    data.push(transaction);
+                } else {
+                    console.warn(`Skipping malformed CSV row ${i + 1}:`, lines[i]);
+                }
+            }
+            return data;
+        }
+
+        // --- Filtering Function ---
+        function filterTransactionsByMonth(transactions, month, yearShort) {
+            return transactions.filter(t => {
+                if (!t.date) return false;
+                // Expects MM/DD/YY format from CSV
+                const parts = t.date.split('/');
+                if (parts.length === 3) {
+                    const m = parseInt(parts[0], 10);
+                    const y = parts[2]; // Keep as string 'YY'
+                    return m === month && y === yearShort;
+                }
+                return false; // Invalid date format
+            });
+        }
+
+
+        // --- Update UI Elements ---
+        function updateDashboardHeader(transactions) {
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            document.getElementById('dashboard-month-year').textContent = `${monthNames[TARGET_MONTH - 1]} ${TARGET_YEAR} Transactions`;
+            document.getElementById('transaction-count').textContent = transactions.length;
+            // Optional: Calculate unique accounts if needed
+            // const uniqueAccounts = new Set(transactions.map(t => t.account));
+            // document.getElementById('account-count').textContent = uniqueAccounts.size;
+        }
+
+        function updateSummaryCards(transactions) {
+            let totalIncome = 0;
+            let totalExpenses = 0;
+            let netTransfers = 0;
+            // let totalFees = 0; // Fees are often included in expenses
+
+            transactions.forEach(t => {
+                if (t.type === 'deposit') {
+                    totalIncome += t.amount;
+                } else if (t.type === 'withdrawal' || t.type === 'fee') { // Include fees in expenses
+                    totalExpenses += Math.abs(t.amount); // Use absolute value for expenses sum
+                } else if (t.type === 'transfer') {
+                    netTransfers += t.amount; // Keep sign for net transfers
+                }
+            });
+
+            const netCashFlow = totalIncome - totalExpenses + netTransfers; // Note: Transfers might impact net differently depending on definition
+
+            document.getElementById('total-income').textContent = currencyFormatter.format(totalIncome);
+            document.getElementById('income-subtitle').textContent = `November deposits`;
+
+            document.getElementById('total-expenses').textContent = currencyFormatter.format(totalExpenses * -1); // Display as negative
+            document.getElementById('expense-subtitle').textContent = `November withdrawals & fees`;
+
+            document.getElementById('total-transfers').textContent = currencyFormatter.format(netTransfers);
+            document.getElementById('total-transfers').classList.toggle('positive', netTransfers >= 0);
+            document.getElementById('total-transfers').classList.toggle('negative', netTransfers < 0);
+            document.getElementById('transfer-subtitle').textContent = `November net transfers`;
+
+            document.getElementById('net-cash-flow').textContent = currencyFormatter.format(netCashFlow);
+            document.getElementById('net-cash-flow').classList.toggle('positive', netCashFlow >= 0);
+            document.getElementById('net-cash-flow').classList.toggle('negative', netCashFlow < 0);
+             document.getElementById('net-subtitle').textContent = `November net flow`;
+        }
+
+
+        // --- Chart/Table Initialization Functions (Modified to accept data) ---
+        let cashFlowChartInstance = null;
+        let accountsChartInstance = null;
+
+        function initializeCashFlowChart(transactions) {
+            const ctx = document.getElementById('cash-flow-chart')?.getContext('2d');
+            if (!ctx) return;
+
+            // Destroy previous chart instance if exists
+            if (cashFlowChartInstance) {
+                cashFlowChartInstance.destroy();
+            }
+
+            // Calculate data based on *filtered* transactions
+             const income = transactions .filter(t => t.type === 'deposit') .reduce((sum, t) => sum + t.amount, 0);
+             const expenses = Math.abs(transactions .filter(t => t.type === 'withdrawal') .reduce((sum, t) => sum + t.amount, 0));
+             const netTransfers = transactions .filter(t => t.type === 'transfer') .reduce((sum, t) => sum + t.amount, 0);
+             const fees = Math.abs(transactions .filter(t => t.type === 'fee') .reduce((sum, t) => sum + t.amount, 0));
+
+             const chartLabels = ['Income', 'Expenses', 'Net Transfers', 'Fees'];
+             // Use absolute for pie chart segments, except net transfers can be pos/neg visually
+             const chartDataPoints = [income, expenses, Math.abs(netTransfers), fees];
+
+            const backgroundColors = [
+                'rgba(16, 185, 129, 0.7)', // Income (Success)
+                'rgba(239, 68, 68, 0.7)',  // Expenses (Danger)
+                netTransfers >= 0 ? 'rgba(14, 165, 233, 0.7)' : 'rgba(245, 158, 11, 0.7)', // Transfers (Accent/Warning)
+                'rgba(245, 158, 11, 0.7)' // Fees (Warning)
+             ];
+             const borderColors = [
+                 'rgb(16, 185, 129)',
+                 'rgb(239, 68, 68)',
+                 netTransfers >= 0 ? 'rgb(14, 165, 233)' : 'rgb(245, 158, 11)',
+                 'rgb(245, 158, 11)'
+             ];
+
+             cashFlowChartInstance = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: chartLabels,
+                    datasets: [{
+                        data: chartDataPoints,
+                        backgroundColor: backgroundColors,
+                        borderColor: borderColors,
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top', labels: { padding: 15 } },
+                        tooltip: { /* Tooltip options remain the same */
+                             backgroundColor: 'rgba(255, 255, 255, 0.95)', titleColor: '#0f172a', bodyColor: '#334155', bodyFont: { size: 14 }, borderColor: '#e2e8f0', borderWidth: 1, padding: 12,
+                             callbacks: {
+                                 label: function(context) {
+                                     let label = context.label || '';
+                                     if (label) { label += ': '; }
+                                     const rawValue = context.raw; // Value shown in pie (abs for most)
+                                     let actualValue = rawValue;
+                                     // Get original signed value for display
+                                     if (context.label === 'Income') actualValue = income;
+                                     else if (context.label === 'Expenses') actualValue = expenses * -1;
+                                     else if (context.label === 'Net Transfers') actualValue = netTransfers;
+                                     else if (context.label === 'Fees') actualValue = fees * -1;
+
+                                     const total = context.dataset.data.reduce((a, b) => a + Math.abs(b), 0);
+                                     const percentage = total !== 0 ? Math.round(Math.abs(actualValue) / total * 100) : 0;
+
+                                     label += currencyFormatter.format(actualValue);
+                                     if (total !== 0) { label += ` (${percentage}%)`; }
+                                     return label;
+                                 }
+                             }
+                        }
+                    }
+                }
+            });
+        }
+
+        function initializeAccountsChart() { // Using static data for now
+            const ctx = document.getElementById('accounts-chart')?.getContext('2d');
+            if (!ctx) return;
+
+            // Destroy previous instance
+            if (accountsChartInstance) {
+                accountsChartInstance.destroy();
+            }
+
+            // Check if data is valid before creating chart
+            if (!accountsData || !accountsData.labels || !accountsData.balances || accountsData.labels.length !== accountsData.balances.length) {
+                console.error("Invalid accountsData for chart.");
+                // Optionally display an error message on the chart canvas area
+                return;
+            }
+
+
+            accountsChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: accountsData.labels,
+                    datasets: [{
+                        label: 'Account Balance',
+                        data: accountsData.balances,
+                        backgroundColor: accountsData.balances.map(b => b >= 0 ? 'rgba(16, 185, 129, 0.7)' : 'rgba(239, 68, 68, 0.7)'),
+                        borderColor: accountsData.balances.map(b => b >= 0 ? 'rgb(16, 185, 129)' : 'rgb(239, 68, 68)'),
+                        borderWidth: 2,
+                        borderRadius: 6
+                    }]
+                },
+                options: { /* Options remain the same */
+                    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                    scales: { x: { grid: { color: 'rgba(226, 232, 240, 0.5)' }, ticks: { callback: function(value) { return '$' + value.toLocaleString(); } } }, y: { grid: { display: false } } },
+                    plugins: { legend: { display: false }, tooltip: { backgroundColor: 'rgba(255, 255, 255, 0.95)', titleColor: '#0f172a', bodyColor: '#334155', bodyFont: { size: 14 }, borderColor: '#e2e8f0', borderWidth: 1, padding: 12, callbacks: { title: (ti) => ti[0].label + ' Account', label: function(context) { return `Balance: ${currencyFormatter.format(context.raw)}`; } } } }
+                }
+            });
+        }
+
+        function populateTransactionsTable(transactions) {
+            const tableBody = document.querySelector('#transactions-table tbody');
+            if (!tableBody) return;
+            tableBody.innerHTML = ''; // Clear previous content
+
+             // Sort transactions by date descending before populating
+             const sortedTransactions = [...transactions].sort((a, b) => {
+                // Basic date sort MM/DD/YY - assumes valid format
+                const dateA = new Date(`20${a.date.split('/')[2]}`, a.date.split('/')[0] - 1, a.date.split('/')[1]);
+                const dateB = new Date(`20${b.date.split('/')[2]}`, b.date.split('/')[0] - 1, b.date.split('/')[1]);
+                return dateB - dateA; // Descending
+             });
+
+            if (sortedTransactions.length === 0) {
+                const row = tableBody.insertRow();
+                const cell = row.insertCell();
+                cell.colSpan = 6; // Span all columns
+                cell.textContent = 'No transactions found for November 2024.';
+                cell.style.textAlign = 'center';
+                cell.style.padding = '2rem';
+                cell.style.color = 'var(--text-tertiary)';
+                return;
+            }
+
+
+            sortedTransactions.forEach(transaction => {
+                const row = tableBody.insertRow();
+
+                // Extract short account name and determine icon color (similar logic as before)
+                const accountName = transaction.account.split(' (')[0];
+                const accountInitials = accountName.split(' ').map(word => word[0]).join('').substring(0, 2).toUpperCase();
+                let accountColor = '#64748b'; // Default
+                 if (accountName.includes('RBC Advantage')) accountColor = '#ef4444'; // danger
+                 else if (accountName.includes('CIBC Chequing')) accountColor = '#10b981'; // success
+                 else if (accountName.includes('RBC Cash Back')) accountColor = '#f59e0b'; // warning
+                 else if (accountName.includes('CIBC VISA')) accountColor = '#8b5cf6'; // purple-ish accent
+                 else if (accountName.includes('CIBC Savings')) accountColor = '#0ea5e9'; // accent-secondary
+
+                // Map transaction type to badge class
+                const badgeClass = `badge-${transaction.type}`; // e.g., badge-withdrawal
+
+                row.innerHTML = `
+                    <td>${transaction.date}</td>
+                    <td>
+                        <div class="account-cell">
+                            <div class="account-icon" style="background-color: ${accountColor};">${accountInitials}</div>
+                            <div>${accountName}</div>
+                        </div>
+                    </td>
+                    <td>${transaction.description}</td>
+                    <td>${transaction.category || 'Uncategorized'}</td>
+                    <td> <span class="tx-badge ${badgeClass}"> ${transaction.type} </span> </td>
+                    <td class="${transaction.amount >= 0 ? 'positive' : 'negative'}">
+                        ${currencyFormatter.format(transaction.amount)}
+                    </td>
+                `;
+            });
+        }
+
+        // --- Main Execution Logic ---
         document.addEventListener('DOMContentLoaded', function() {
 
-            // --- Chart.js Global Config (Optional: Can be set per chart) ---
+             // --- Chart.js Global Config (Optional) ---
              Chart.defaults.font.family = "'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif";
-             Chart.defaults.color = '#64748b';
+             Chart.defaults.color = '#64748b'; // --text-tertiary
              Chart.defaults.plugins.legend.labels.usePointStyle = true;
              Chart.defaults.plugins.legend.labels.pointStyle = 'circle';
 
-            // --- Data Definitions ---
-            const novemberTransactions = [ { date: '11/8/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'Contactless Interac purchase - 8827 COSTCO WHOLESAL', category: 'General Merchandise', type: 'withdrawal', amount: -13.64 }, { date: '11/8/24', account: 'CIBC Online Banking (Recommended) (Chequing)', description: 'Electronic Funds Transfer PREAUTHORIZED DEBIT BELL ALIANT', category: 'Transfers', type: 'transfer', amount: -115.92 }, { date: '11/7/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'Loan payment', category: null, type: 'withdrawal', amount: -1045.8 }, { date: '11/7/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'ATM Withdrawal', category: null, type: 'withdrawal', amount: -16.5 }, { date: '11/7/24', account: 'RBC Online Banking (RBC Cash Back Mastercard)', description: 'Credit Card Payment', category: 'Credit Card Payments', type: 'transfer', amount: 1000.00 }, { date: '11/6/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Restaurant Purchase', category: 'Restaurants/Dining', type: 'withdrawal', amount: -52.36 }, { date: '11/6/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Service Fee', category: 'Service Charges/Fees', type: 'fee', amount: -5.00 }, { date: '11/6/24', account: 'RBC Online Banking (RBC Cash Back Mastercard)', description: 'Gasoline Purchase', category: 'Gasoline/Fuel', type: 'withdrawal', amount: -46.79 }, { date: '11/5/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'ATM Withdrawal', category: null, type: 'withdrawal', amount: -200.00 }, { date: '11/5/24', account: 'CIBC Online Banking (Recommended) (Chequing)', description: 'Mobile Deposit', category: null, type: 'deposit', amount: 856.23 }, { date: '11/5/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Shopping - Clothing', category: 'Clothing/Shoes', type: 'withdrawal', amount: -89.32 }, { date: '11/4/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Gas Station Purchase', category: 'Automotive Expenses', type: 'withdrawal', amount: -67.85 }, { date: '11/4/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'Utility Bill Payment', category: 'Utilities', type: 'withdrawal', amount: -145.32 }, { date: '11/4/24', account: 'CIBC Online Banking (Recommended) (Savings)', description: 'Transfer from Savings', category: 'Transfers', type: 'transfer', amount: 500.00 }, { date: '11/3/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Credit Card Payment', category: 'Credit Card Payments', type: 'transfer', amount: 200.00 }, { date: '11/3/24', account: 'CIBC Online Banking (Recommended) (Chequing)', description: 'Grocery Shopping', category: 'Groceries', type: 'withdrawal', amount: -142.76 }, { date: '11/2/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'Restaurant Dining', category: 'Restaurants/Dining', type: 'withdrawal', amount: -56.78 }, { date: '11/2/24', account: 'RBC Online Banking (RBC Cash Back Mastercard)', description: 'Online Subscription', category: 'Online Services', type: 'withdrawal', amount: -14.99 }, { date: '11/1/24', account: 'RBC Online Banking (RBC Advantage Banking)', description: 'Payroll Deposit', category: null, type: 'deposit', amount: 1808.68 }, { date: '11/1/24', account: 'CIBC Online Banking (Recommended) (Chequing)', description: 'Mortgage Payment', category: 'Transfers', type: 'transfer', amount: -1050.00 }, { date: '11/1/24', account: 'CIBC Online Banking (Recommended) (CIBC VISA)', description: 'Home Improvement Store', category: 'Home Improvement', type: 'withdrawal', amount: -264.39 } ];
-            const accountsData = { labels: ['RBC Advantage', 'CIBC Chequing', 'RBC Mastercard', 'CIBC VISA', 'CIBC Savings'], balances: [-1718.09, 1118.11, -304.35, -1083.24, -1674.63] };
+            // --- Fetch and Process Data ---
+            showMessage('info', `Loading transactions from ${CSV_FILE_PATH}...`);
 
-            // --- Chart/Table Initialization Functions (Same as before) ---
-            function initializeCashFlowChart() { const ctx = document.getElementById('cash-flow-chart')?.getContext('2d'); if (!ctx) return; const income = novemberTransactions .filter(t => t.type === 'deposit') .reduce((sum, t) => sum + t.amount, 0); const expenses = Math.abs(novemberTransactions .filter(t => t.type === 'withdrawal') .reduce((sum, t) => sum + t.amount, 0)); const netTransfers = novemberTransactions .filter(t => t.type === 'transfer') .reduce((sum, t) => sum + t.amount, 0); const fees = Math.abs(novemberTransactions .filter(t => t.type === 'fee') .reduce((sum, t) => sum + t.amount, 0)); const chartLabels = ['Income', 'Expenses', 'Net Transfers', 'Fees']; const chartDataPoints = [income, expenses, netTransfers, fees]; const backgroundColors = [ 'rgba(16, 185, 129, 0.7)', 'rgba(239, 68, 68, 0.7)', netTransfers >= 0 ? 'rgba(14, 165, 233, 0.7)' : 'rgba(245, 158, 11, 0.7)', 'rgba(245, 158, 11, 0.7)' ]; const borderColors = [ 'rgb(16, 185, 129)', 'rgb(239, 68, 68)', netTransfers >= 0 ? 'rgb(14, 165, 233)' : 'rgb(245, 158, 11)', 'rgb(245, 158, 11)' ]; new Chart(ctx, { type: 'pie', data: { labels: chartLabels, datasets: [{ data: chartDataPoints, backgroundColor: backgroundColors, borderColor: borderColors, borderWidth: 2 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top', labels: { padding: 15 } }, tooltip: { backgroundColor: 'rgba(255, 255, 255, 0.95)', titleColor: '#0f172a', bodyColor: '#334155', bodyFont: { size: 14 }, borderColor: '#e2e8f0', borderWidth: 1, padding: 12, callbacks: { label: function(context) { let label = context.label || ''; if (label) { label += ': '; } const value = context.raw; const total = context.dataset.data.reduce((a, b) => a + Math.abs(b), 0); const percentage = total !== 0 ? Math.round(Math.abs(value) / total * 100) : 0; label += `$${value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`; if (total !== 0) { label += ` (${percentage}%)`; } return label; } } } } } }); }
-            function initializeAccountsChart() { const ctx = document.getElementById('accounts-chart')?.getContext('2d'); if (!ctx) return; new Chart(ctx, { type: 'bar', data: { labels: accountsData.labels, datasets: [{ label: 'Account Balance', data: accountsData.balances, backgroundColor: accountsData.balances.map(b => b >= 0 ? 'rgba(16, 185, 129, 0.7)' : 'rgba(239, 68, 68, 0.7)'), borderColor: accountsData.balances.map(b => b >= 0 ? 'rgb(16, 185, 129)' : 'rgb(239, 68, 68)'), borderWidth: 2, borderRadius: 6 }] }, options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { grid: { color: 'rgba(226, 232, 240, 0.5)' }, ticks: { callback: function(value) { return '$' + value.toLocaleString(); } } }, y: { grid: { display: false } } }, plugins: { legend: { display: false }, tooltip: { backgroundColor: 'rgba(255, 255, 255, 0.95)', titleColor: '#0f172a', bodyColor: '#334155', bodyFont: { size: 14 }, borderColor: '#e2e8f0', borderWidth: 1, padding: 12, callbacks: { title: (ti) => ti[0].label + ' Account', label: function(context) { return `Balance: $${context.raw.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`; } } } } } }); }
-            function populateTransactionsTable() { const tableBody = document.querySelector('#transactions-table tbody'); if (!tableBody) return; tableBody.innerHTML = ''; const sortedTransactions = [...novemberTransactions].sort((a, b) => new Date(b.date) - new Date(a.date)); const currencyFormatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 }); sortedTransactions.forEach(transaction => { const row = tableBody.insertRow(); const accountName = transaction.account.split(' (')[0]; const accountInitials = accountName.split(' ').map(word => word[0]).join('').substring(0, 2).toUpperCase(); let accountColor = '#64748b'; if (accountName.includes('RBC Advantage')) accountColor = '#ef4444'; else if (accountName.includes('CIBC Chequing')) accountColor = '#10b981'; else if (accountName.includes('RBC Cash Back')) accountColor = '#f59e0b'; else if (accountName.includes('CIBC VISA')) accountColor = '#8b5cf6'; else if (accountName.includes('CIBC Savings')) accountColor = '#0ea5e9'; row.innerHTML = ` <td>${transaction.date}</td> <td> <div class="account-cell"> <div class="account-icon" style="background-color: ${accountColor};">${accountInitials}</div> <div>${accountName}</div> </div> </td> <td>${transaction.description}</td> <td>${transaction.category || 'Uncategorized'}</td> <td> <span class="tx-badge badge-${transaction.type}"> ${transaction.type} </span> </td> <td class="${transaction.amount >= 0 ? 'positive' : 'negative'}"> ${currencyFormatter.format(transaction.amount)} </td> `; }); }
+            fetch(CSV_FILE_PATH)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status} - Could not load ${CSV_FILE_PATH}`);
+                    }
+                    return response.text();
+                })
+                .then(csvText => {
+                    try {
+                        const allTransactions = parseCSV(csvText);
+                        novemberTransactions = filterTransactionsByMonth(allTransactions, TARGET_MONTH, TARGET_YEAR_SHORT);
 
-            // --- Call Initializers ---
-            initializeCashFlowChart();
-            initializeAccountsChart();
-            populateTransactionsTable();
+                        if (novemberTransactions.length === 0) {
+                            showMessage('warning', `No transactions found for November ${TARGET_YEAR}. Displaying empty dashboard.`);
+                        } else {
+                            clearMessage(); // Clear loading message on success
+                        }
+
+                        // --- Initialize Dashboard with loaded data ---
+                        updateDashboardHeader(novemberTransactions);
+                        updateSummaryCards(novemberTransactions);
+                        initializeCashFlowChart(novemberTransactions);
+                        initializeAccountsChart(); // Uses static data
+                        populateTransactionsTable(novemberTransactions);
+
+                    } catch (parseError) {
+                        console.error("Error parsing CSV:", parseError);
+                        showMessage('error', `Error processing CSV data: ${parseError.message}`);
+                         // Initialize with empty data to prevent JS errors later
+                        updateDashboardHeader([]);
+                        updateSummaryCards([]);
+                        initializeCashFlowChart([]);
+                        initializeAccountsChart(); // Still try to init static chart
+                        populateTransactionsTable([]);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching or processing CSV:', error);
+                    showMessage('error', `Failed to load or process transaction data: ${error.message}. Please ensure '${CSV_FILE_PATH}' is in the same directory and the file is accessible.`);
+                     // Initialize with empty data
+                     updateDashboardHeader([]);
+                     updateSummaryCards([]);
+                     initializeCashFlowChart([]);
+                     initializeAccountsChart();
+                     populateTransactionsTable([]);
+                });
 
         }); // End DOMContentLoaded listener
 
-        // --- Sidebar Toggle JS (COPIED FROM index.html) ---
+        // --- Sidebar Toggle JS (COPIED FROM index.html - unchanged) ---
          const sidebar = document.getElementById('sidebar');
          const toggleButton = document.getElementById('sidebar-toggle');
          if (toggleButton && sidebar) {
@@ -282,3 +689,4 @@
     </script>
 </body>
 </html>
+--- END OF FILE financial-dashboard.html ---
